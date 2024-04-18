@@ -164,7 +164,6 @@ body {
   line-height: 1;
   word-wrap: break-word;
   overflow-x: hidden;
-  overflow-y: hidden;
 }
 
 strong {
@@ -593,7 +592,7 @@ p {
   }
 
   #main > .inner {
-    width: 40rem;
+    width: 39.1rem;
   }
 }
 
@@ -906,7 +905,7 @@ p {
 
 @media (max-width: 768px) {
   .logo-container img {
-    width: 50px; /* Smaller size on smaller screens */
+    width: 100px; /* Smaller size on smaller screens */
   }
 }
 
