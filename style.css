@@ -846,7 +846,7 @@ p {
   }
 
   #first-text {
-    font-size: 1.5em;
+    font-size: 2em;
   }
 
   #first-container > .inner {
@@ -909,6 +909,11 @@ p {
   max-height: 50px;
   margin: 0 10px;
   }
+
+  #first-text {
+    font-size: 2em;
+  }
+
 }
 
 }
