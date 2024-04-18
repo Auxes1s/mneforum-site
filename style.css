@@ -587,12 +587,12 @@ p {
 
 @media (max-width: 1920px) {
   body:before {
-    width: calc(100% - 40rem);
-    width: calc(100vw - 40rem);
+    width: calc(100% - 50rem);
+    width: calc(100vw - 50rem);
   }
 
   #main > .inner {
-    width: 39.1rem;
+    width: 50rem;
   }
 }
 
