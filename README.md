@@ -1,2 +1,0 @@
-# Carrd
-Minimal profile template
