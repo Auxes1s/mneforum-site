@@ -905,8 +905,8 @@ p {
 
 @media (max-width: 768px) {
   .logo-container img {
-  max-width: 50px;
-  max-height: 50px;
+  max-width: 75px;
+  max-height: 75px;
   margin: 0 10px;
   }
 
