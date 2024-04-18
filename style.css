@@ -905,7 +905,9 @@ p {
 
 @media (max-width: 768px) {
   .logo-container img {
-    width: 100px; /* Smaller size on smaller screens */
+  width: auto;
+  max-height: 50;
+  margin: 0 10px;
   }
 }
 
