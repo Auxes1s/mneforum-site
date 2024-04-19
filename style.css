@@ -1,3 +1,14 @@
+#credits-container {
+text-align: center;
+padding: 1rem 0;
+background-color: transparent;
+}
+
+#credits-text {
+font-size: 0.9em;
+color: #666;
+}
+
 html,
 body,
 div,
@@ -913,7 +924,16 @@ p {
   #first-text {
     font-size: 2em;
   }
+#credits-container {
+text-align: center;
+padding: 1rem 0;
+background-color: transparent;
+}
 
+#credits-text {
+font-size: 0.9em;
+color: #666;
+}
 }
 
 }
