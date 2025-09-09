@@ -165,12 +165,15 @@ h1, h2, h3 {
 }
 
 .logo--agency {
-  height: 60px;
+  height: 80px;
   width: auto;
   filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
 }
 
 .header__title_logo {
+  /* Base size for mobile */
+  width: 80%; /* Adjust as needed */
+  max-width: 350px; /* Prevents it from becoming too large on small screens */
   filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
   animation: fadeInScaleUp 1s ease-out forwards;
 }
@@ -208,13 +211,17 @@ h1, h2, h3 {
 }
 
 .header__divider {
-  border: none; /* Removes the default 3D border */
-  height: 1px; /* Sets a clean, thin line */
-  width: 80%; /* Prevents the line from touching the edges */
-  background-color: var(--border-color); /* Uses your theme's color */
-  margin-top: 1rem; /* Adds some space above the line */
+  border: none;
+  height: 1px;
+  width: 50%;
+  background-color: var(--border-color);
+  margin-top: 1rem;
+  /* Add these two lines to center the element */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
-
 /* ---------------------------------- */
 /* 5. Components                 */
 /* ---------------------------------- */
@@ -327,10 +334,91 @@ h1, h2, h3 {
   box-shadow: 0 6px 12px rgba(0,0,0,0.1);
   text-decoration: none;
 }
+/* ---------------------------------- */
+/* 8. Background Shapes          */
+/* ---------------------------------- */
+.bg-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
 
+.bg-shape {
+  position: absolute;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.bg-shape:nth-child(1) {
+  top: 10%;
+  left: 5%;
+  width: 450px;
+  animation-name: float-and-rotate-1;
+  animation-duration: 25s;
+  animation-delay: 0s;
+}
+
+.bg-shape:nth-child(2) {
+  top: 20%;
+  right: 10%;
+  width: 600px;
+  animation-name: float-and-rotate-2;
+  animation-duration: 35s;
+  animation-delay: 5s;
+  animation-direction: alternate;
+}
+
+.bg-shape:nth-child(3) {
+  bottom: 15%;
+  left: 20%;
+  width: 360px;
+  animation-name: float-and-rotate-2;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.bg-shape:nth-child(4) {
+  bottom: 5%;
+  right: 25%;
+  width: 540px;
+  animation-name: float-and-rotate-1;
+  animation-duration: 30s;
+  animation-delay: 7s;
+  animation-direction: alternate;
+}
+
+.bg-shape:nth-child(5) {
+  top: 50%;
+  left: 40%;
+  width: 400px;
+  animation-name: float-and-rotate-3;
+  animation-duration: 40s;
+  animation-delay: 3s;
+  animation-direction: alternate;
+}
+
+.bg-shape:nth-child(6) {
+  top: 60%;
+  right: 45%;
+  width: 500px;
+  animation-name: float-and-rotate-2;
+  animation-duration: 45s;
+  animation-delay: 1s;
+  animation-direction: alternate;
+}
 /* ---------------------------------- */
 /* 6. Responsiveness             */
 /* ---------------------------------- */
+@media (min-width: 1024px) {
+  .header__title_logo {
+    max-width: 600px; /* An even larger size for desktops to emphasize it */
+  }
+}
 
 @media (max-width: 768px) {
   .countdown {
@@ -341,6 +429,69 @@ h1, h2, h3 {
   .countdown__item {
     min-width: 80px;
     padding: calc(var(--spacing-unit) * 0.75);
+  }
+
+  .header__title_logo {
+    max-width: 500px; /* A larger size for tablets */
+  }
+
+  /* --- Repositioned Shapes --- */
+  .bg-shape:nth-child(1) {
+    top: 15%; /* Stays near the top */
+    left: 20%;
+    width: 450px;
+    animation-name: float-and-rotate-1;
+    animation-duration: 25s;
+    animation-delay: 0s;
+  }
+
+  .bg-shape:nth-child(2) {
+    top: 15%; /* A little lower than the first shape */
+    right: 20%;
+    width: 600px;
+    animation-name: float-and-rotate-2;
+    animation-duration: 35s;
+    animation-delay: 5s;
+    animation-direction: alternate;
+  }
+
+  .bg-shape:nth-child(3) {
+    top: 70%; /* Changed from 'bottom' and moved significantly down */
+    left: 20%;
+    width: 360px;
+    animation-name: float-and-rotate-2;
+    animation-duration: 20s;
+    animation-delay: 2s;
+  }
+
+  .bg-shape:nth-child(4) {
+    bottom: 5%; /* Stays near the bottom */
+    right: 25%;
+    width: 540px;
+    animation-name: float-and-rotate-1;
+    animation-duration: 30s;
+    animation-delay: 7s;
+    animation-direction: alternate;
+  }
+
+  .bg-shape:nth-child(5) {
+    top: 45%; /* Positioned in the middle */
+    left: 40%;
+    width: 400px;
+    animation-name: float-and-rotate-3;
+    animation-duration: 40s;
+    animation-delay: 3s;
+    animation-direction: alternate;
+  }
+
+  .bg-shape:nth-child(6) {
+    bottom: 15%; /* Positioned in the lower part of the screen */
+    right: 45%;
+    width: 500px;
+    animation-name: float-and-rotate-2;
+    animation-duration: 45s;
+    animation-delay: 1s;
+    animation-direction: alternate;
   }
 }
 
@@ -365,5 +516,64 @@ h1, h2, h3 {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+
+
+/* ---------------------------------- */
+/* 9. Keyframe Animations        */
+/* ---------------------------------- */
+@keyframes float-and-rotate-1 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) translateX(5px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(0) translateX(10px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(20px) translateX(5px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+  }
+}
+
+@keyframes float-and-rotate-2 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(15px) translateX(-8px) rotate(-90deg);
+  }
+  50% {
+    transform: translateY(0) translateX(-15px) rotate(-180deg);
+  }
+  75% {
+    transform: translateY(-15px) translateX(-8px) rotate(-270deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(-360deg);
+  }
+}
+
+@keyframes float-and-rotate-3 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) translateX(-10px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(0) translateX(5px) rotate(90deg);
+  }
+  75% {
+    transform: translateY(10px) translateX(-5px) rotate(135deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(180deg);
   }
 }
