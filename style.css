@@ -384,7 +384,6 @@ h1, h2, h3 {
 
 .bg-shape {
   position: absolute;
-  opacity: 0.15; /* Make them very subtle */
   bottom: 0; /* Start off-screen to float in */
   animation-iteration-count: infinite;
   animation-timing-function: linear;
@@ -392,7 +391,7 @@ h1, h2, h3 {
 
 .bg-shape:nth-child(1) {
   left: 10%;
-  width: 150px;
+  width: 225px;
   animation-name: float-and-rotate-1;
   animation-duration: 25s;
   animation-delay: 0s;
@@ -400,7 +399,7 @@ h1, h2, h3 {
 
 .bg-shape:nth-child(2) {
   left: 35%;
-  width: 200px;
+  width: 300px;
   animation-name: float-and-rotate-2;
   animation-duration: 35s;
   animation-delay: 5s;
@@ -409,7 +408,7 @@ h1, h2, h3 {
 
 .bg-shape:nth-child(3) {
   right: 30%;
-  width: 120px;
+  width: 180px;
   animation-name: float-and-rotate-2;
   animation-duration: 20s;
   animation-delay: 2s;
@@ -417,7 +416,7 @@ h1, h2, h3 {
 
 .bg-shape:nth-child(4) {
   right: 5%;
-  width: 180px;
+  width: 270px;
   animation-name: float-and-rotate-1;
   animation-duration: 30s;
   animation-delay: 7s;
