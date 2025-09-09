@@ -135,6 +135,7 @@ h1, h2, h3 {
   gap: 0.5rem;
   padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 1.5);
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   z-index: 1;
   border-radius: 12px; /* Match the rounded corners of your .section class */
   overflow: hidden;    /* This clips the child pseudo-element to the rounded shape */
@@ -584,50 +585,4 @@ h1, h2, h3 {
   100% {
     transform: translateY(0) translateX(0) rotate(180deg);
   }
-}
-/* ---------------------------------- */
-/* 10. Accessibility             */
-/* ---------------------------------- */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  z-index: -9999;
-  background: var(--neutral-bg);
-  color: white;
-  padding: 1rem;
-  border-radius: 0 0 8px 0;
-  font-weight: 600;
-  transition: transform 0.2s ease-in-out;
-}
-
-.skip-link:focus {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  z-index: 1000;
-  transform: translateY(0);
-}
-
-/* Enhanced Focus States for interactive elements */
-a:focus-visible,
-button:focus-visible,
-[tabindex]:not([tabindex="-1"]):focus-visible {
-  outline: 3px solid var(--brand-yellow);
-  outline-offset: 2px;
-  border-radius: 4px; /* A subtle curve */
-  transition: outline-offset 0.1s ease;
-}
-
-/* Remove default outline for non-keyboard focus to avoid visual noise */
-a:focus:not(:focus-visible),
-button:focus:not(:focus-visible),
-[tabindex]:not([tabindex="-1"]):focus:not(:focus-visible) {
-  outline: none;
 }
