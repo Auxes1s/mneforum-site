@@ -7,13 +7,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap');
 
 /* ---------------------------------- */
-/*      1. Design System & Fonts      */
+/* 1. Design System & Fonts      */
 /* ---------------------------------- */
 :root {
   --brand-blue-dark: #0a57a3;  /* For 'SHAPING CHANGE' text and main headers */
   --brand-blue-medium: #4498d3; /* For decorative shapes, accents */
-  --brand-yellow: #f1a81e;      /* Accent color for icons, highlights */
-  --brand-red: #b73e57;         /* Accent color for highlights, CTAs */
+  --brand-yellow: #f1a81e;     /* Accent color for icons, highlights */
+  --brand-red: #b73e57;        /* Accent color for highlights, CTAs */
   --neutral-bg: #f8f4eb;       /* A very light off-white/blue for backgrounds */
   --text-dark: #333333;        /* For body copy */
   --text-light: #666666;       /* For secondary text */
@@ -26,7 +26,7 @@
 }
 
 /* ---------------------------------- */
-/*      2. Reset & Base Styles        */
+/* 2. Reset & Base Styles        */
 /* ---------------------------------- */
 *,
 *::before,
@@ -75,7 +75,7 @@ h1, h2, h3 {
 }
 
 /* ---------------------------------- */
-/*      3. Layout & Structure         */
+/* 3. Layout & Structure         */
 /* ---------------------------------- */
 .main-content {
   max-width: 900px;
@@ -99,40 +99,23 @@ h1, h2, h3 {
 }
 
 /* ---------------------------------- */
-/*      4. Header & Footer            */
+/* 4. Header & Footer            */
 /* ---------------------------------- */
 .header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Default to center for mobile */
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center;    /* Centers items horizontally */
+  gap: 1rem;              /* Adds space between logos and text */
   padding: calc(var(--spacing-unit) * 1.5);
-  background-color: var(--neutral-bg);
   border-bottom: 1px solid var(--border-color);
 }
 
-.header__logos {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center; /* Center on mobile */
-  align-items: center;
-}
-
-.header__logos img {
-  height: 45px; /* Adjust as needed */
+.logo--agency {
+  height: 60px; /* Adjust size as needed */
   width: auto;
 }
 
-.header__title_logo {
-    flex: 2 1 450px; /* Takes more space */
-    max-width: 450px;
-    height: auto;
-    margin: 0 auto;
-}
-
 .header__subtitle {
-  flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
   color: var(--text-dark);
@@ -148,7 +131,7 @@ h1, h2, h3 {
 }
 
 /* ---------------------------------- */
-/*      5. Components                 */
+/* 5. Components                 */
 /* ---------------------------------- */
 
 /* Countdown Timer */
@@ -266,19 +249,8 @@ h1, h2, h3 {
 }
 
 /* ---------------------------------- */
-/*      6. Responsiveness             */
+/* 6. Responsiveness             */
 /* ---------------------------------- */
-@media (min-width: 769px) {
-  .header {
-    justify-content: space-between;
-    text-align: left;
-  }
-
-  .header__logos {
-    justify-content: flex-start;
-  }
-}
-
 @media (max-width: 768px) {
 
   .countdown {
