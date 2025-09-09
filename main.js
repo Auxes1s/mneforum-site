@@ -6,6 +6,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // 0. Set viewport height unit
+  // This addresses the issue on mobile browsers where the viewport height changes
+  // when the address bar hides/shows on scroll. By setting a CSS custom property
+  // (--vh) to the window's inner height, we create a stable unit that can be
+  // used in CSS to prevent layout shifts or "zooming" backgrounds.
+  const setVh = () => {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+  };
+
+  // Set the value on initial load
+  setVh();
+
+  // Also set it on resize (e.g., orientation change)
+  window.addEventListener('resize', setVh);
+
   // 1. Handle the initial loading animation
   // Fades the page in by removing the 'loading' class from the body.
   // The transition is handled in CSS.
