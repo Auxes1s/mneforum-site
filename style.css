@@ -45,11 +45,12 @@ body {
   font-family: var(--font-primary);
   line-height: 1.6;
   color: var(--text-dark);
-  background-color: var(--neutral-bg);
-  /* Add these background properties */
-  background-image: linear-gradient(rgba(248, 244, 235, 0.85), rgba(248, 244, 235, 1)), url('assets/background.svg');
-  background-repeat: no-repeat;
-  background-position: top center;
+  background-color: var(--neutral-bg); /* Fallback color */
+  background-image: url('assets/background.svg'); /* The new image */
+  background-attachment: fixed; /* This makes it static on scroll */
+  background-position: top right; /* Positions it in the corner */
+  background-repeat: no-repeat; /* Ensures it doesn't tile */
+  background-size: 40%; /* Controls the size of the image */
 
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
@@ -135,12 +136,11 @@ h1, h2, h3 {
 .logo--agency {
   height: 60px; /* Adjust size as needed */
   width: auto;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
 }
 
 .header__title_logo {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-  /* This applies the 1-second animation */
+  filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
   animation: fadeInScaleUp 1s ease-out forwards;
 }
 
