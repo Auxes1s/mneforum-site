@@ -48,6 +48,7 @@ body {
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
   background-color: var(--neutral-bg);
+  background-size: 60%;
 }
 
 body::before {
@@ -362,8 +363,8 @@ h1, h2, h3 {
 }
 
 .bg-shape:nth-child(1) {
-  top: 10%;
-  left: 5%;
+  top: 60%;
+  left: -10%;
   width: 550px;
   animation-name: float-and-rotate-1;
   animation-duration: 25s;
