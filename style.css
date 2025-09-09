@@ -46,11 +46,11 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--neutral-bg); /* Fallback color */
-  background-image: url('assets/background.png'); /* The new image */
+  background-image: url('assets/background.svg'); /* The new image */
   background-attachment: fixed; /* This makes it static on scroll */
   background-position: top right; /* Positions it in the corner */
   background-repeat: no-repeat; /* Ensures it doesn't tile */
-  background-size: 100%; /* Controls the size of the image */
+  background-size: 40%; /* Controls the size of the image */
 
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
@@ -126,11 +126,12 @@ h1, h2, h3 {
 .header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Change this from 'center' */
   gap: 0.5rem; /* Reduced gap for a tighter grouping */
   padding: calc(var(--spacing-unit) * 1.5);
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 2rem;
+  background: linear-gradient(to bottom, rgba(248, 244, 235, 1) 50%, rgba(248, 244, 235, 0));
 }
 
 .logo--agency {
@@ -220,6 +221,7 @@ h1, h2, h3 {
 
 .accordion__button {
   width: 100%;
+  background-color: var(--neutral-bg);
   border: none;
   padding: calc(var(--spacing-unit) * 1.5);
   font-family: var(--font-primary);
@@ -298,6 +300,16 @@ h1, h2, h3 {
 /* 6. Responsiveness             */
 /* ---------------------------------- */
 @media (max-width: 768px) {
+  body {
+    /* Makes the background image much smaller on mobile */
+    background-size: 70%;
+    background-position: top 10px right -50px; /* Adjusts position */
+  }
+
+  .header {
+    /* Reduces header padding on smaller screens */
+    padding: var(--spacing-unit);
+  }
 
   .countdown {
     flex-wrap: wrap;
