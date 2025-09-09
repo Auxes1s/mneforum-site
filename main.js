@@ -91,8 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (scrollPosition > 0) {
         // Calculate opacity: 0 at top, 1 when header is about to scroll out of view
         let opacity = scrollPosition / (headerHeight * 1); // Adjust 0.9 to control fade speed
-        opacity = Math.min(opacity, 0.5); // Ensure opacity doesn't exceed 1
-
+        if (scrollPosition > headerHeight) {
+          opacity = 0;
+        } else {
+          opacity = Math.min(opacity, 0.5); // Ensure opacity doesn't exceed 1
+          }
         // Use a CSS custom property to set the opacity on the ::before pseudo-element
         header.style.setProperty('--header-overlay-opacity', opacity);
       } else {
