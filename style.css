@@ -173,7 +173,6 @@ h1, h2, h3 {
 .header__title_logo {
   /* Base size for mobile */
   width: 80%; /* Adjust as needed */
-  max-width: 350px; /* Prevents it from becoming too large on small screens */
   filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
   animation: fadeInScaleUp 1s ease-out forwards;
 }
@@ -213,7 +212,7 @@ h1, h2, h3 {
 .header__divider {
   border: none;
   height: 1px;
-  width: 50%;
+  width: 45%;
   background-color: var(--border-color);
   margin-top: 1rem;
   /* Add these two lines to center the element */
@@ -416,7 +415,7 @@ h1, h2, h3 {
 /* ---------------------------------- */
 @media (min-width: 1024px) {
   .header__title_logo {
-    max-width: 600px; /* An even larger size for desktops to emphasize it */
+    max-width: 700px; /* An even larger size for desktops to emphasize it */
   }
 }
 
@@ -436,7 +435,7 @@ h1, h2, h3 {
   }
 
   .header__title_logo {
-    max-width: 500px; /* A larger size for tablets */
+    max-width: 1000px; /* A larger size for tablets */
   }
 
   /* --- Repositioned Shapes --- */
@@ -580,4 +579,50 @@ h1, h2, h3 {
   100% {
     transform: translateY(0) translateX(0) rotate(180deg);
   }
+}
+/* ---------------------------------- */
+/* 10. Accessibility             */
+/* ---------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: -9999;
+  background: var(--brand-blue-dark);
+  color: white;
+  padding: 1rem;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+  transition: transform 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  z-index: 1000;
+  transform: translateY(0);
+}
+
+/* Enhanced Focus States for interactive elements */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 3px solid var(--brand-yellow);
+  outline-offset: 2px;
+  border-radius: 4px; /* A subtle curve */
+  transition: outline-offset 0.1s ease;
+}
+
+/* Remove default outline for non-keyboard focus to avoid visual noise */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+[tabindex]:not([tabindex="-1"]):focus:not(:focus-visible) {
+  outline: none;
 }
