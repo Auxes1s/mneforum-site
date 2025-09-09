@@ -48,7 +48,6 @@ body {
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
   background-color: var(--neutral-bg);
-  background-size: 60%;
 }
 
 /*
@@ -63,7 +62,7 @@ body::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: var(--vh, 100vh);
   background-image: url(assets/background.png);
   background-position: center;
   background-repeat: no-repeat;
