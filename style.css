@@ -218,7 +218,6 @@ h1, h2, h3 {
 
 .accordion__button {
   width: 100%;
-  background-color: var(--neutral-bg);
   border: none;
   padding: calc(var(--spacing-unit) * 1.5);
   font-family: var(--font-primary);
