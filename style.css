@@ -119,12 +119,47 @@ h1, h2, h3 {
 /* 4. Header & Footer            */
 /* ---------------------------------- */
 .header {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 1.5);
   margin-bottom: 0.5rem;
+  z-index: 1;
+}
+
+.header {
+  --header-overlay-opacity: 0;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: var(--header-overlay-opacity);
+  transition: opacity 0.1s ease-out;
+  z-index: -1;
+}
+
+.header__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.header__logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .logo--agency {

@@ -80,4 +80,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 4. Handle header fade on scroll
+  const header = document.querySelector('.header');
+  if (header) {
+    const handleScroll = () => {
+      const headerHeight = header.offsetHeight;
+      const scrollPosition = window.scrollY;
+
+      // Start fading only when user scrolls down
+      if (scrollPosition > 0) {
+        // Calculate opacity: 0 at top, 1 when header is about to scroll out of view
+        let opacity = scrollPosition / (headerHeight * 0.9); // Adjust 0.9 to control fade speed
+        opacity = Math.min(opacity, 1); // Ensure opacity doesn't exceed 1
+
+        // Use a CSS custom property to set the opacity on the ::before pseudo-element
+        header.style.setProperty('--header-overlay-opacity', opacity);
+      } else {
+        header.style.setProperty('--header-overlay-opacity', 0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
 });
