@@ -81,25 +81,35 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 4. Handle header fade on scroll
+  // This function creates a subtle effect where the header's background overlay
+  // fades in as the user scrolls down the page. This helps to visually separate
+  // the header from the content that scrolls beneath it.
   const header = document.querySelector('.header');
   if (header) {
     const handleScroll = () => {
       const headerHeight = header.offsetHeight;
       const scrollPosition = window.scrollY;
 
-      // Start fading only when user scrolls down
+      // We only apply the effect once the user has started scrolling.
       if (scrollPosition > 0) {
-        // Calculate opacity: 0 at top, 1 when header is about to scroll out of view
-        let opacity = scrollPosition / (headerHeight * 1); // Adjust 0.9 to control fade speed
-        opacity = Math.min(opacity, 0.5); // Ensure opacity doesn't exceed 1
+        // The opacity is calculated based on how far the user has scrolled relative
+        // to the height of the header. The fade is capped at 50% opacity to
+        // ensure the background remains subtly visible.
+        let opacity = scrollPosition / headerHeight;
+        opacity = Math.min(opacity, 0.5); // Cap the opacity at 0.5
 
-        // Use a CSS custom property to set the opacity on the ::before pseudo-element
+        // The calculated opacity is applied to a CSS custom property on the header.
+        // This property is used by the .header::before pseudo-element in the CSS
+        // to set its background opacity, creating the fade effect.
         header.style.setProperty('--header-overlay-opacity', opacity);
       } else {
+        // When at the top of the page, the overlay is fully transparent.
         header.style.setProperty('--header-overlay-opacity', 0);
       }
     };
 
+    // The scroll event is throttled by the browser using { passive: true } for
+    // better performance, as we are not preventing the default scroll behavior.
     window.addEventListener('scroll', handleScroll, { passive: true });
   }
 });
