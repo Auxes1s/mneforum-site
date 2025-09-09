@@ -4,21 +4,23 @@
   - Refactored to use modern CSS, BEM, and a custom property-based design system.
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap');
+
 /* ---------------------------------- */
 /*      1. Design System & Fonts      */
 /* ---------------------------------- */
 :root {
-  /* TODO: Replace with actual colors from the "Save the Date" graphic */
-  --color-primary: #007BFF;
-  --color-secondary: #1A2A45;
-  --color-accent: #FFC107;
-  --color-background-light: #F0F8FF;
-  --color-text-primary: #333333;
-  --color-text-light: #FFFFFF;
-  --color-border: #DDDDDD;
+  --brand-blue-dark: #0a57a3;  /* For 'SHAPING CHANGE' text and main headers */
+  --brand-blue-medium: #4498d3; /* For decorative shapes, accents */
+  --brand-yellow: #f1a81e;      /* Accent color for icons, highlights */
+  --brand-red: #b73e57;         /* Accent color for highlights, CTAs */
+  --neutral-bg: #f8fafd;       /* A very light off-white/blue for backgrounds */
+  --text-dark: #333333;        /* For body copy */
+  --text-light: #666666;       /* For secondary text */
+  --border-color: #e0e0e0;     /* For subtle lines and borders */
 
-  /* TODO: Replace with actual fonts from the design guide */
-  --font-primary: 'Poppins', sans-serif;
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Playfair Display', serif;
 
   --spacing-unit: 1rem;
 }
@@ -42,8 +44,8 @@ html {
 body {
   font-family: var(--font-primary);
   line-height: 1.6;
-  color: var(--color-text-primary);
-  background-color: var(--color-background-light);
+  color: var(--text-dark);
+  background-color: var(--neutral-bg);
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -57,7 +59,7 @@ img {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--brand-blue-dark);
   text-decoration: none;
 }
 
@@ -66,7 +68,8 @@ a:hover {
 }
 
 h1, h2, h3 {
-  color: var(--color-secondary);
+  font-family: var(--font-secondary);
+  color: var(--brand-blue-dark);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -82,7 +85,7 @@ h1, h2, h3 {
 
 .section {
   padding: calc(var(--spacing-unit) * 3) 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .section:last-child {
@@ -101,8 +104,8 @@ h1, h2, h3 {
 .header {
   text-align: center;
   padding: calc(var(--spacing-unit) * 2);
-  background-color: var(--color-text-light);
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--neutral-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header__logos {
@@ -125,7 +128,7 @@ h1, h2, h3 {
 
 .header__subtitle {
   font-size: 1.1rem;
-  color: var(--color-text-primary);
+  color: var(--text-dark);
 }
 
 .footer {
@@ -133,7 +136,7 @@ h1, h2, h3 {
   padding: calc(var(--spacing-unit) * 2);
   margin-top: calc(var(--spacing-unit) * 2);
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-light);
 }
 
 /* ---------------------------------- */
@@ -149,7 +152,7 @@ h1, h2, h3 {
 }
 
 .countdown__item {
-  background-color: var(--color-text-light);
+  background-color: #fff; /* White background for contrast */
   padding: var(--spacing-unit);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -160,18 +163,18 @@ h1, h2, h3 {
   display: block;
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--brand-blue-dark);
 }
 
 .countdown__label {
   font-size: 0.9rem;
   text-transform: uppercase;
-  color: var(--color-secondary);
+  color: var(--text-light);
 }
 
 /* Accordion */
 .accordion__item {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--border-color);
 }
 .accordion__item:last-child {
   border-bottom: none;
@@ -179,7 +182,7 @@ h1, h2, h3 {
 
 .accordion__button {
   width: 100%;
-  background-color: transparent;
+  background-color: var(--neutral-bg);
   border: none;
   padding: calc(var(--spacing-unit) * 1.5);
   font-family: var(--font-primary);
@@ -190,13 +193,14 @@ h1, h2, h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-secondary);
+  color: var(--brand-blue-dark);
 }
 
 .accordion__button::after {
   content: '+';
   font-size: 1.5rem;
   transition: transform 0.2s ease;
+  color: var(--brand-yellow);
 }
 
 .accordion__button[aria-expanded="true"]::after {
@@ -207,7 +211,7 @@ h1, h2, h3 {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-  background-color: var(--color-text-light);
+  background-color: #fff;
 }
 
 .schedule-list {
@@ -217,7 +221,7 @@ h1, h2, h3 {
 
 .schedule-list li {
   padding: var(--spacing-unit) 0;
-  border-bottom: 1px solid var(--color-background-light);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .schedule-list li:last-child {
@@ -240,8 +244,8 @@ h1, h2, h3 {
 .resource-list__link {
   display: block;
   padding: var(--spacing-unit);
-  background-color: var(--color-text-light);
-  border: 1px solid var(--color-border);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
