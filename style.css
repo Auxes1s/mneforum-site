@@ -124,7 +124,7 @@ h1, h2, h3 {
   align-items: center;
   gap: 0.5rem;
   padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 1.5);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .logo--agency {
@@ -173,7 +173,7 @@ h1, h2, h3 {
 .header__divider {
   border: none; /* Removes the default 3D border */
   height: 1px; /* Sets a clean, thin line */
-  width: 60%; /* Prevents the line from touching the edges */
+  width: 80%; /* Prevents the line from touching the edges */
   background-color: var(--border-color); /* Uses your theme's color */
   margin-top: 1rem; /* Adds some space above the line */
 }
