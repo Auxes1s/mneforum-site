@@ -46,7 +46,13 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--neutral-bg);
+  /* Add these background properties */
+  background-image: linear-gradient(rgba(248, 244, 235, 0.85), rgba(248, 244, 235, 1)), url('assets/background.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+
   transition: opacity 0.5s ease-in-out;
+  padding: var(--spacing-unit);
 }
 
 body.loading {
@@ -84,8 +90,13 @@ h1, h2, h3 {
 }
 
 .section {
-  padding: calc(var(--spacing-unit) * 3) 0;
-  border-bottom: 1px solid var(--border-color);
+  background-color: #ffffff; /* Gives sections a white background */
+  padding: calc(var(--spacing-unit) * 2);
+  margin: 0 auto calc(var(--spacing-unit) * 2) auto; /* Centers the card and adds space below */
+  border-radius: 12px; /* Soft rounded corners */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); /* Subtle shadow for depth */
+  max-width: 900px;
+  border-bottom: none; /* Remove the old line dividers */
 }
 
 .section:last-child {
@@ -96,6 +107,16 @@ h1, h2, h3 {
   font-size: 1.75rem;
   margin-bottom: calc(var(--spacing-unit) * 1.5);
   text-align: center;
+  color: var(--brand-yellow); /* Use the yellow accent color */
+  font-weight: 700;
+}
+
+.section--intro p {
+  font-size: 1.1rem; /* Increase font size */
+  line-height: 1.7;
+  text-align: center;
+  max-width: 700px; /* Constrain line length for readability */
+  margin: 0 auto;
 }
 
 /* ---------------------------------- */
@@ -103,11 +124,12 @@ h1, h2, h3 {
 /* ---------------------------------- */
 .header {
   display: flex;
-  flex-direction: column; /* Stacks items vertically */
-  align-items: center;    /* Centers items horizontally */
-  gap: 1rem;              /* Adds space between logos and text */
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem; /* Reduced gap for a tighter grouping */
   padding: calc(var(--spacing-unit) * 1.5);
   border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
 }
 
 .logo--agency {
