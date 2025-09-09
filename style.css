@@ -10,14 +10,14 @@
 /* 1. Design System & Fonts      */
 /* ---------------------------------- */
 :root {
-  --brand-blue-dark: #0a57a3;  /* For 'SHAPING CHANGE' text and main headers */
-  --brand-blue-medium: #4498d3; /* For decorative shapes, accents */
-  --brand-yellow: #f1a81e;     /* Accent color for icons, highlights */
-  --brand-red: #b73e57;        /* Accent color for highlights, CTAs */
-  --neutral-bg: #f8f4eb;       /* A very light off-white/blue for backgrounds */
-  --text-dark: #333333;        /* For body copy */
-  --text-light: #666666;       /* For secondary text */
-  --border-color: #e0e0e0;     /* For subtle lines and borders */
+  --brand-blue-dark: #0a57a3;
+  --brand-blue-medium: #4498d3;
+  --brand-yellow: #f1a81e;
+  --brand-red: #b73e57;
+  --neutral-bg: #f8f4eb;
+  --text-dark: #333333;
+  --text-light: #666666;
+  --border-color: #e0e0e0;
 
   --font-primary: 'Inter', sans-serif;
   --font-secondary: 'Playfair Display', serif;
@@ -45,15 +45,16 @@ body {
   font-family: var(--font-primary);
   line-height: 1.6;
   color: var(--text-dark);
-  background-color: var(--neutral-bg); /* Fallback color */
-  background-image: url('assets/background.png'); /* The new image */
-  background-attachment: fixed; /* This makes it static on scroll */
-  background-position: top right; /* Positions it in the corner */
-  background-repeat: no-repeat; /* Ensures it doesn't tile */
-  background-size: 100%; /* Controls the size of the image */
-
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
+
+  /* FINAL BACKGROUND PROPERTIES */
+  background-color: var(--neutral-bg);
+  background-image: url('assets/background.png');
+  background-attachment: fixed;
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: 75%; /* Corrected size for corner placement */
 }
 
 body.loading {
@@ -84,20 +85,14 @@ h1, h2, h3 {
 /* ---------------------------------- */
 /* 3. Layout & Structure         */
 /* ---------------------------------- */
-.main-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: calc(var(--spacing-unit) * 2);
-}
-
 .section {
-  background-color: #ffffff; /* Gives sections a white background */
+  background-color: #ffffff;
   padding: calc(var(--spacing-unit) * 2);
-  margin: 0 auto calc(var(--spacing-unit) * 2) auto; /* Centers the card and adds space below */
-  border-radius: 12px; /* Soft rounded corners */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); /* Subtle shadow for depth */
+  margin: 0 auto calc(var(--spacing-unit) * 2) auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
   max-width: 900px;
-  border-bottom: none; /* Remove the old line dividers */
+  border-bottom: none;
 }
 
 .section:last-child {
@@ -108,15 +103,15 @@ h1, h2, h3 {
   font-size: 1.75rem;
   margin-bottom: calc(var(--spacing-unit) * 1.5);
   text-align: center;
-  color: var(--brand-yellow); /* Use the yellow accent color */
+  color: var(--brand-yellow);
   font-weight: 700;
 }
 
 .section--intro p {
-  font-size: 1.1rem; /* Increase font size */
+  font-size: 1.1rem;
   line-height: 1.7;
   text-align: center;
-  max-width: 700px; /* Constrain line length for readability */
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -127,14 +122,13 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem; /* Reduced gap for a tighter grouping */
-  padding: calc(var(--spacing-unit) * 1.5);
-  border-bottom: 1px solid var(--border-color);
+  gap: 0.5rem;
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 1.5);
   margin-bottom: 2rem;
 }
 
 .logo--agency {
-  height: 60px; /* Adjust size as needed */
+  height: 60px;
   width: auto;
   filter: drop-shadow(0 8px 16px rgba(4, 23, 55, 0.15));
 }
@@ -145,15 +139,14 @@ h1, h2, h3 {
 }
 
 .header__subtitle {
-  display: flex; /* Enables flex alignment for the lines */
+  display: flex;
   align-items: center;
   text-align: center;
-  font-size: 1rem; /* Slightly smaller for balance */
-  color: var(--text-light); /* Softer color */
+  font-size: 1rem;
+  color: var(--text-light);
   margin-top: 0.5rem;
 }
 
-/* Add these pseudo-elements to draw the lines */
 .header__subtitle::before,
 .header__subtitle::after {
   content: '';
@@ -162,11 +155,11 @@ h1, h2, h3 {
 }
 
 .header__subtitle::before {
-  margin-right: 1em; /* Space between line and text */
+  margin-right: 1em;
 }
 
 .header__subtitle::after {
-  margin-left: 1em; /* Space between text and line */
+  margin-left: 1em;
 }
 
 .footer {
@@ -177,11 +170,17 @@ h1, h2, h3 {
   color: var(--text-light);
 }
 
+.header__divider {
+  border: none; /* Removes the default 3D border */
+  height: 1px; /* Sets a clean, thin line */
+  width: 60%; /* Prevents the line from touching the edges */
+  background-color: var(--border-color); /* Uses your theme's color */
+  margin-top: 1rem; /* Adds some space above the line */
+}
+
 /* ---------------------------------- */
 /* 5. Components                 */
 /* ---------------------------------- */
-
-/* Countdown Timer */
 .countdown {
   display: flex;
   justify-content: center;
@@ -190,7 +189,7 @@ h1, h2, h3 {
 }
 
 .countdown__item {
-  background-color: #fff; /* White background for contrast */
+  background-color: #fff;
   padding: var(--spacing-unit);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -210,7 +209,6 @@ h1, h2, h3 {
   color: var(--text-light);
 }
 
-/* Accordion */
 .accordion__item {
   border-bottom: 1px solid var(--border-color);
 }
@@ -220,6 +218,7 @@ h1, h2, h3 {
 
 .accordion__button {
   width: 100%;
+  background-color: var(--neutral-bg);
   border: none;
   padding: calc(var(--spacing-unit) * 1.5);
   font-family: var(--font-primary);
@@ -270,7 +269,6 @@ h1, h2, h3 {
   margin-right: 1em;
 }
 
-/* Resource List (Buttons) */
 .resource-list {
   list-style: none;
   display: grid;
@@ -297,8 +295,8 @@ h1, h2, h3 {
 /* ---------------------------------- */
 /* 6. Responsiveness             */
 /* ---------------------------------- */
-@media (max-width: 768px) {
 
+@media (max-width: 768px) {
   .countdown {
     flex-wrap: wrap;
     gap: calc(var(--spacing-unit) / 2);
@@ -315,15 +313,14 @@ h1, h2, h3 {
     font-size: 14px;
   }
 
-  .main-content {
-    padding: var(--spacing-unit);
-  }
-
   .resource-list {
     grid-template-columns: 1fr;
   }
 }
 
+/* ---------------------------------- */
+/* 7. Animations                 */
+/* ---------------------------------- */
 @keyframes fadeInScaleUp {
   from {
     opacity: 0;
