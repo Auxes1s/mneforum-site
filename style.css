@@ -421,6 +421,10 @@ h1, h2, h3 {
 }
 
 @media (max-width: 768px) {
+  body {
+    background-size: 60%; /* Corrected size for corner placement */
+  }
+
   .countdown {
     flex-wrap: wrap;
     gap: calc(var(--spacing-unit) / 2);
