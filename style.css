@@ -367,3 +367,98 @@ h1, h2, h3 {
     transform: scale(1);
   }
 }
+
+/* ---------------------------------- */
+/* 8. Background Shapes          */
+/* ---------------------------------- */
+.bg-shapes {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40vh; /* Use viewport height for responsiveness */
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-shape {
+  position: absolute;
+  opacity: 0.15; /* Make them very subtle */
+  bottom: 0; /* Start off-screen to float in */
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.bg-shape:nth-child(1) {
+  left: 10%;
+  width: 150px;
+  animation-name: float-and-rotate-1;
+  animation-duration: 25s;
+  animation-delay: 0s;
+}
+
+.bg-shape:nth-child(2) {
+  left: 35%;
+  width: 200px;
+  animation-name: float-and-rotate-2;
+  animation-duration: 35s;
+  animation-delay: 5s;
+  animation-direction: alternate;
+}
+
+.bg-shape:nth-child(3) {
+  right: 30%;
+  width: 120px;
+  animation-name: float-and-rotate-2;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.bg-shape:nth-child(4) {
+  right: 5%;
+  width: 180px;
+  animation-name: float-and-rotate-1;
+  animation-duration: 30s;
+  animation-delay: 7s;
+  animation-direction: alternate;
+}
+
+/* ---------------------------------- */
+/* 9. Keyframe Animations        */
+/* ---------------------------------- */
+@keyframes float-and-rotate-1 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) translateX(5px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(0) translateX(10px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(20px) translateX(5px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+  }
+}
+
+@keyframes float-and-rotate-2 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(15px) translateX(-8px) rotate(-90deg);
+  }
+  50% {
+    transform: translateY(0) translateX(-15px) rotate(-180deg);
+  }
+  75% {
+    transform: translateY(-15px) translateX(-8px) rotate(-270deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(-360deg);
+  }
+}
