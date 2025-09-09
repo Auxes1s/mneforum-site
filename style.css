@@ -14,7 +14,7 @@
   --brand-blue-medium: #4498d3; /* For decorative shapes, accents */
   --brand-yellow: #f1a81e;      /* Accent color for icons, highlights */
   --brand-red: #b73e57;         /* Accent color for highlights, CTAs */
-  --neutral-bg: #f8fafd;       /* A very light off-white/blue for backgrounds */
+  --neutral-bg: #f8f4eb;       /* A very light off-white/blue for backgrounds */
   --text-dark: #333333;        /* For body copy */
   --text-light: #666666;       /* For secondary text */
   --border-color: #e0e0e0;     /* For subtle lines and borders */
@@ -102,33 +102,41 @@ h1, h2, h3 {
 /*      4. Header & Footer            */
 /* ---------------------------------- */
 .header {
-  text-align: center;
-  padding: calc(var(--spacing-unit) * 2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Default to center for mobile */
+  align-items: center;
+  gap: 1rem;
+  padding: calc(var(--spacing-unit) * 1.5);
   background-color: var(--neutral-bg);
   border-bottom: 1px solid var(--border-color);
 }
 
 .header__logos {
+  flex: 1 1 auto;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center on mobile */
   align-items: center;
-  gap: calc(var(--spacing-unit) * 2);
-  margin-bottom: var(--spacing-unit);
 }
 
 .header__logos img {
-  height: 60px; /* Adjust as needed */
+  height: 45px; /* Adjust as needed */
   width: auto;
 }
 
-.header__title {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+.header__title_logo {
+    flex: 2 1 450px; /* Takes more space */
+    max-width: 450px;
+    height: auto;
+    margin: 0 auto;
 }
 
 .header__subtitle {
+  flex-basis: 100%;
+  text-align: center;
   font-size: 1.1rem;
   color: var(--text-dark);
+  margin-top: 0.5rem;
 }
 
 .footer {
@@ -260,14 +268,18 @@ h1, h2, h3 {
 /* ---------------------------------- */
 /*      6. Responsiveness             */
 /* ---------------------------------- */
-@media (max-width: 768px) {
-  .header__title {
-    font-size: 2rem;
+@media (min-width: 769px) {
+  .header {
+    justify-content: space-between;
+    text-align: left;
   }
 
   .header__logos {
-    flex-direction: column;
+    justify-content: flex-start;
   }
+}
+
+@media (max-width: 768px) {
 
   .countdown {
     flex-wrap: wrap;
