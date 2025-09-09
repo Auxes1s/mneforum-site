@@ -47,3 +47,66 @@
         padding: 2rem 1rem;
     }
 }
+
+/* --- Program Schedule Styles --- */
+#program-schedule {
+    border-top: 1px solid rgba(0,0,0,.102);
+    border-bottom: 1px solid rgba(0,0,0,.102);
+    padding: 2rem 0;
+}
+
+#program-schedule h2 {
+    color: #003399;
+    font-size: 2em;
+    margin-bottom: 1.5rem;
+}
+
+#program-schedule h3 {
+    font-size: 1.5em;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+#program-schedule .day {
+    margin-bottom: 2rem;
+}
+
+#program-schedule .schedule-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+#program-schedule .schedule-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+}
+
+#program-schedule .schedule-list li:last-child {
+    border-bottom: none;
+}
+
+#program-schedule .schedule-list span {
+    font-weight: bold;
+    margin-right: 1em;
+}
+
+/* --- Responsive Program Schedule Styles --- */
+@media (max-width: 736px) {
+    #program-schedule h2 {
+        font-size: 1.8em;
+    }
+    #program-schedule h3 {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 480px) {
+    #program-schedule .schedule-list li {
+        display: flex;
+        flex-direction: column;
+    }
+    #program-schedule .schedule-list span {
+        margin-bottom: 0.5em;
+    }
+}
