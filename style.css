@@ -46,11 +46,11 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--neutral-bg); /* Fallback color */
-  background-image: url('assets/background.svg'); /* The new image */
+  background-image: url('assets/background.png'); /* The new image */
   background-attachment: fixed; /* This makes it static on scroll */
   background-position: top right; /* Positions it in the corner */
   background-repeat: no-repeat; /* Ensures it doesn't tile */
-  background-size: 40%; /* Controls the size of the image */
+  background-size: 100%; /* Controls the size of the image */
 
   transition: opacity 0.5s ease-in-out;
   padding: var(--spacing-unit);
@@ -220,7 +220,6 @@ h1, h2, h3 {
 
 .accordion__button {
   width: 100%;
-  background-color: var(--neutral-bg);
   border: none;
   padding: calc(var(--spacing-unit) * 1.5);
   font-family: var(--font-primary);
