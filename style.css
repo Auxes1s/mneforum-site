@@ -59,9 +59,9 @@ body::before {
   height: 100%;
   background-image: url(assets/background.png);
   background-attachment: fixed;
-  background-position: top right;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 75%;
+  background-size: cover;
   z-index: -2;
 }
 
@@ -428,10 +428,6 @@ h1, h2, h3 {
 }
 
 @media (max-width: 768px) {
-  body::before {
-    background-size: 60%;
-  }
-
   .countdown {
     flex-wrap: wrap;
     gap: calc(var(--spacing-unit) / 2);
