@@ -135,13 +135,38 @@ h1, h2, h3 {
 .logo--agency {
   height: 60px; /* Adjust size as needed */
   width: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.header__title_logo {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  /* This applies the 1-second animation */
+  animation: fadeInScaleUp 1s ease-out forwards;
 }
 
 .header__subtitle {
+  display: flex; /* Enables flex alignment for the lines */
+  align-items: center;
   text-align: center;
-  font-size: 1.1rem;
-  color: var(--text-dark);
+  font-size: 1rem; /* Slightly smaller for balance */
+  color: var(--text-light); /* Softer color */
   margin-top: 0.5rem;
+}
+
+/* Add these pseudo-elements to draw the lines */
+.header__subtitle::before,
+.header__subtitle::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header__subtitle::before {
+  margin-right: 1em; /* Space between line and text */
+}
+
+.header__subtitle::after {
+  margin-left: 1em; /* Space between text and line */
 }
 
 .footer {
@@ -297,5 +322,16 @@ h1, h2, h3 {
 
   .resource-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
