@@ -132,13 +132,14 @@ h1, h2, h3 {
 /* Styling for the new highlights section */
 .section--highlights {
   text-align: center; /* Centers the h2 title */
-  padding: 1rem;
+  padding: 2rem;
 }
 
 /* Wrapper for the video to control its width and centering */
 .highlights-video-wrapper {
   width: 80%;
   margin: 0 auto;
+  padding-bottom: 2rem;
 }
 
 /* Container for the responsive embed */
