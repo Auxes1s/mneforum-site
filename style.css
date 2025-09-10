@@ -138,7 +138,7 @@ h1, h2, h3 {
 /* Styling for the new highlights section */
 .section--highlights {
   text-align: center; /* Centers the h2 title */
-  padding: 2rem 1rem;
+  padding: 1rem;
 }
 
 /* Container for the responsive embed */
