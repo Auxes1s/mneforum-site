@@ -163,6 +163,7 @@ h1, h2, h3 {
 /* Container for the responsive Facebook timeline */
 .responsive-facebook-timeline {
   margin: 0 auto;
+  width: 80%;
   max-width: 500px;
   height: 500px;
   overflow: hidden;
