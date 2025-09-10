@@ -461,15 +461,6 @@ h1, h2, h3 {
   animation-direction: alternate;
 }
 
-.bg-shape:nth-child(6) {
-  top: 60%;
-  right: 45%;
-  width: 500px;
-  animation-name: float-and-rotate-2;
-  animation-duration: 45s;
-  animation-delay: 1s;
-  animation-direction: alternate;
-}
 /* ---------------------------------- */
 /* 6. Responsiveness             */
 /* ---------------------------------- */
@@ -500,7 +491,7 @@ h1, h2, h3 {
     left: 20%;
     width: 450px;
     animation-name: float-and-rotate-1;
-    animation-duration: 25s;
+    animation-duration: 40s;
     animation-delay: 0s;
   }
 
@@ -509,7 +500,7 @@ h1, h2, h3 {
     right: 20%;
     width: 600px;
     animation-name: float-and-rotate-2;
-    animation-duration: 35s;
+    animation-duration: 50ss;
     animation-delay: 5s;
     animation-direction: alternate;
   }
@@ -519,7 +510,7 @@ h1, h2, h3 {
     left: 20%;
     width: 360px;
     animation-name: float-and-rotate-2;
-    animation-duration: 20s;
+    animation-duration: 30s;
     animation-delay: 2s;
   }
 
@@ -528,7 +519,7 @@ h1, h2, h3 {
     right: 25%;
     width: 540px;
     animation-name: float-and-rotate-1;
-    animation-duration: 30s;
+    animation-duration: 50s;
     animation-delay: 7s;
     animation-direction: alternate;
   }
@@ -538,20 +529,11 @@ h1, h2, h3 {
     left: 40%;
     width: 400px;
     animation-name: float-and-rotate-3;
-    animation-duration: 40s;
+    animation-duration: 60ss;
     animation-delay: 3s;
     animation-direction: alternate;
   }
 
-  .bg-shape:nth-child(6) {
-    bottom: 15%; /* Positioned in the lower part of the screen */
-    right: 45%;
-    width: 500px;
-    animation-name: float-and-rotate-2;
-    animation-duration: 45s;
-    animation-delay: 1s;
-    animation-direction: alternate;
-  }
 }
 
 @media (max-width: 480px) {
