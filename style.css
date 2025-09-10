@@ -141,6 +141,12 @@ h1, h2, h3 {
   padding: 1rem;
 }
 
+/* Wrapper for the video to control its width and centering */
+.highlights-video-wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
+
 /* Container for the responsive embed */
 .responsive-facebook-post {
   position: relative;
@@ -149,8 +155,6 @@ h1, h2, h3 {
   /* You may need to adjust this value if the post's natural height is different */
   padding-bottom: 50%; 
   height: 0;
-  max-width: 600px; /* Controls the maximum size of the video */
-  margin: 0 auto;   /* Centers the container */
 }
 
 /* The iframe itself */
