@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set the value on initial load
   setVh();
 
-  // Also set it on resize (e.g., orientation change)
-  window.addEventListener('resize', setVh);
+  // Also set it on orientation change
+  window.addEventListener('orientationchange', setVh);
 
   // 1. Handle the initial loading animation
   // Fades the page in by removing the 'loading' class from the body.
