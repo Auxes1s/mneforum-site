@@ -128,12 +128,6 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
-.section--social-feed iframe {
-  display: block; /* Allows for margin auto to work */
-  margin: 0 auto;  /* Centers the iframe */
-  width: 80%;      /* Set to 80% of the parent section */
-  max-width: 500px; /* Crucial: Respects Facebook's max width */
-}
 
 /* Styling for the new highlights section */
 .section--highlights {
@@ -165,6 +159,21 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
 }
+
+/*
+  Direct styling for the Facebook Page Plugin iframe.
+  - `display: block` and `margin: 0 auto` are for centering.
+  - `width` and `max-width` control the responsive sizing.
+  - `height` sets a fixed height for the timeline.
+*/
+iframe.facebook-timeline-iframe {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 500px;
+  height: 500px;
+}
+
 
 /* ---------------------------------- */
 /* 4. Header & Footer            */
