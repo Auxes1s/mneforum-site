@@ -160,19 +160,6 @@ h1, h2, h3 {
   height: 100%;
 }
 
-/*
-  Direct styling for the Facebook Page Plugin iframe.
-  - `display: block` and `margin: 0 auto` are for centering.
-  - `width` and `max-width` control the responsive sizing.
-  - `height` sets a fixed height for the timeline.
-*/
-iframe.facebook-timeline-iframe {
-  display: block;
-  margin: 0 auto;
-  width: 80%;
-  max-width: 500px;
-  height: 500px;
-}
 
 
 /* ---------------------------------- */
