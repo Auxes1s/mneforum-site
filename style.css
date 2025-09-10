@@ -128,6 +128,39 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
+.section--social-feed iframe {
+  display: block; /* Allows for margin auto to work */
+  margin: 0 auto;  /* Centers the iframe */
+  width: 80%;      /* Set to 80% of the parent section */
+  max-width: 500px; /* Crucial: Respects Facebook's max width */
+}
+
+/* Styling for the new highlights section */
+.section--highlights {
+  text-align: center; /* Centers the h2 title */
+}
+
+/* Container for the responsive embed */
+.responsive-facebook-post {
+  position: relative;
+  overflow: hidden;
+  /* Aspect ratio (height / width * 100). For 500x250, it's 50% */
+  /* You may need to adjust this value if the post's natural height is different */
+  padding-bottom: 50%; 
+  height: 0;
+  max-width: 600px; /* Controls the maximum size of the video */
+  margin: 0 auto;   /* Centers the container */
+}
+
+/* The iframe itself */
+.responsive-facebook-post iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 /* ---------------------------------- */
 /* 4. Header & Footer            */
 /* ---------------------------------- */
