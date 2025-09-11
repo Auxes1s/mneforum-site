@@ -32,10 +32,18 @@
   <!-- TODO: Replace with the actual fonts from the design guide -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://m.facebook.com">
+  <link rel="preconnect" href="https://facebook.com">
+
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"></noscript>
+
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap"></noscript>
 
   <!-- Stylesheets -->
-  <link href="style.css" rel="stylesheet"/>
+  <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="style.css"></noscript>
 
 </head>
 <body>
@@ -131,11 +139,11 @@
   <script src="main.js" defer></script>
 
   <div class="bg-shapes">
-    <img src="shapes/shape1.png" alt="" class="bg-shape">
-    <img src="shapes/shape2.png" alt="" class="bg-shape">
-    <img src="shapes/shape3.png" alt="" class="bg-shape">
-    <img src="shapes/shape4.png" alt="" class="bg-shape">
-    <img src="shapes/shape5.png" alt="" class="bg-shape">
+    <img src="shapes/shape1.png" alt="" class="bg-shape" fetchpriority="high">
+    <img src="shapes/shape2.png" alt="" class="bg-shape" fetchpriority="high">
+    <img src="shapes/shape3.png" alt="" class="bg-shape" fetchpriority="high">
+    <img src="shapes/shape4.png" alt="" class="bg-shape" fetchpriority="high">
+    <img src="shapes/shape5.png" alt="" class="bg-shape" fetchpriority="high">
   </div>
 </body>
 </html>
