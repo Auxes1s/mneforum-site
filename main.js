@@ -30,47 +30,31 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCountdown();
     };
 
-    // --- ACCORDION LOGIC (REVISED FOR NESTING) ---
     const initAccordions = () => {
-        const allAccordionItems = document.querySelectorAll('.accordion__item');
-        allAccordionItems.forEach(item => {
-            // Select only the direct child button and content to avoid conflicts
-            const button = item.querySelector(':scope > .accordion__button');
-            const content = item.querySelector(':scope > .accordion__content');
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(accordion => {
+            const items = accordion.querySelectorAll(':scope > .accordion__item');
+            items.forEach(item => {
+                const button = item.querySelector(':scope > .accordion__button');
+                const content = item.querySelector(':scope > .accordion__content');
 
-            if (button && content) {
-                button.addEventListener('click', () => {
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                if (button && content) {
+                    button.addEventListener('click', () => {
+                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-                    // Toggle the current item
-                    if (isExpanded) {
-                        button.setAttribute('aria-expanded', 'false');
-                        content.style.maxHeight = null;
-                    } else {
-                        button.setAttribute('aria-expanded', 'true');
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                    }
-
-                    // Adjust parent accordions' heights
-                    // This function walks up the DOM to find any open parent accordions
-                    // and recalculates their height to fit the new content.
-                    let parentItem = item.parentElement.closest('.accordion__item');
-                    while (parentItem) {
-                        const parentButton = parentItem.querySelector(':scope > .accordion__button');
-                        const parentContent = parentItem.querySelector(':scope > .accordion__content');
-                        if (parentButton.getAttribute('aria-expanded') === 'true') {
-                            // Recalculate height based on its new content size
-                            parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
+                        if (isExpanded) {
+                            button.setAttribute('aria-expanded', 'false');
+                            content.style.maxHeight = null;
+                        } else {
+                            button.setAttribute('aria-expanded', 'true');
+                            content.style.maxHeight = content.scrollHeight + 'px';
                         }
-                        // Move up to the next parent
-                        parentItem = parentItem.parentElement.closest('.accordion__item');
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     };
 
-    // Initialize all components
     initCountdown();
     initAccordions();
 });
