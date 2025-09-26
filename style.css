@@ -437,55 +437,53 @@ h3 {
 }
 
 
-/* Override: List layout for Breakout Sessions */
-.accordion--nested .presenter-grid {
-  grid-template-columns: 1fr; /* Single column */
-  gap: 1.5rem;
-}
-
-.accordion--nested .presenter-card {
-  flex-direction: row; /* Horizontal layout */
-  text-align: left;
-  gap: 1.5rem;
-}
-
-.accordion--nested .presenter-card__photo {
-  width: 100px; /* Smaller photo for list view */
-  height: 100px;
-  margin: 0;
-}
-
-.accordion--nested .presenter-card__title {
-  margin-top: 0; /* Remove top margin for list view */
-}
-
-
 /* ---------------------------------- */
-/* Nested Accordion Styles          */
+/* Compact Presenter List Styles    */
 /* ---------------------------------- */
-.accordion--nested {
-  margin: 1rem 1rem 1rem 1.5rem;
-  border-left: 3px solid var(--brand-yellow);
-  padding-left: 1.5rem;
+.breakout-title {
+  font-family: var(--font-secondary);
+  font-size: 1.25rem;
+  color: var(--brand-blue-dark);
+  margin: 1.5rem 1.5rem 1rem 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--brand-yellow);
 }
 
-.accordion--nested .accordion__item {
+.presenter-list--compact {
+  list-style: none;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.presenter-list--compact li {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
   border-bottom: 1px solid var(--border-color);
 }
 
-.accordion--nested .accordion__item:last-child {
+.presenter-list--compact li:last-child {
   border-bottom: none;
 }
 
-.accordion--nested .accordion__button {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--brand-blue-medium);
-  padding: 1rem;
+.presenter-list--compact img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.accordion--nested .accordion__button::after {
-  color: var(--brand-blue-medium);
+.presenter-list--compact .presenter-card__presentation {
+    font-size: 0.85rem;
+}
+.presenter-list--compact .presenter-card__name {
+    font-size: 1.05rem;
+}
+.presenter-list--compact .presenter-card__title {
+    font-size: 0.85rem;
+    margin-top: 0;
 }
 
 
