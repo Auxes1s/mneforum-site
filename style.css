@@ -429,11 +429,10 @@ h3 {
 }
 
 .presenter-card__title {
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
-  color: var(--text-light);
-  line-height: 1.4;
-  margin-top: auto; /* Pushes affiliation to the bottom */
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.4;
 }
 
 
