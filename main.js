@@ -60,14 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!slideshowContainer) return;
 
         // INSTRUCTIONS:
-        // To add your images, place them in the 'assets/slideshow' directory,
-        // and then add the file paths to the `images` array below.
-        // For example: 'assets/slideshow/my-image-1.jpg',
+        // 1. Add your image files to the `assets/slideshow` directory.
+        // 2. Run the `generate_image_list.py` script in your terminal by typing:
+        //    python generate_image_list.py
+        // 3. The script will print a list of image paths. Copy that list.
+        // 4. Paste the copied list here, replacing the existing placeholder paths.
         const images = [
             'assets/slideshow/placeholder1.svg',
             'assets/slideshow/placeholder2.svg',
             'assets/slideshow/placeholder3.svg'
-            // Add up to 100 image paths here...
         ];
 
         let currentIndex = 0;
@@ -103,7 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Show the current slide
-            slides[currentIndex].style.display = 'block';
+            if (slides[currentIndex]) {
+                slides[currentIndex].style.display = 'block';
+            }
 
             // Move to the next index
             currentIndex++;
