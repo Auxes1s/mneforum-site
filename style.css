@@ -658,3 +658,49 @@ h3 {
     transform: translateY(0) translateX(0) rotate(180deg);
   }
 }
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+  height: 500px; /* Adjust as needed */
+  overflow: hidden;
+  background-color: #000;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: fade 8s infinite;
+}
+
+/*
+  NOTE ON IMAGE PROTECTION:
+  The CSS rules below (pointer-events, user-select) are intended to make it
+  more difficult for casual users to right-click and save images.
+  However, they are not a foolproof security measure. A technically savvy
+  user can still find the image URLs by inspecting the page source and
+  download them directly. For stronger protection, server-side solutions
+  or watermarking would be required.
+*/
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none; /* Make image non-interactive */
+  -webkit-user-drag: none; /* Disable drag for webkit browsers */
+  user-select: none; /* Disable selection */
+}
+
+
+@keyframes fade {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

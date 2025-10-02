@@ -55,6 +55,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const initSlideshow = () => {
+        const slideshowContainer = document.querySelector('.slideshow-container');
+        if (!slideshowContainer) return;
+
+        // INSTRUCTIONS:
+        // To add your images, place them in the 'assets/slideshow' directory,
+        // and then add the file paths to the `images` array below.
+        // For example: 'assets/slideshow/my-image-1.jpg',
+        const images = [
+            'assets/slideshow/placeholder1.svg',
+            'assets/slideshow/placeholder2.svg',
+            'assets/slideshow/placeholder3.svg'
+            // Add up to 100 image paths here...
+        ];
+
+        let currentIndex = 0;
+
+        // Fisher-Yates (aka Knuth) Shuffle function to randomize the image order
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle the images array initially so the order is random from the start
+        shuffleArray(images);
+
+        // Create and append slide elements to the DOM based on the shuffled order
+        images.forEach(src => {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Slideshow image';
+            slide.appendChild(img);
+            slideshowContainer.appendChild(slide);
+        });
+
+        const slides = slideshowContainer.querySelectorAll('.slide');
+
+        function showNextSlide() {
+            // Hide all slides before showing the next one
+            slides.forEach(slide => {
+                slide.style.display = 'none';
+            });
+
+            // Show the current slide
+            slides[currentIndex].style.display = 'block';
+
+            // Move to the next index
+            currentIndex++;
+
+            // If we've shown all images, re-shuffle the order and start over
+            if (currentIndex >= slides.length) {
+                currentIndex = 0;
+                // Re-shuffle the image sources and update the img elements
+                shuffleArray(images);
+                slides.forEach((slide, index) => {
+                    slide.querySelector('img').src = images[index];
+                });
+            }
+        }
+
+        // Display the first slide immediately
+        if (slides.length > 0) {
+            showNextSlide();
+        }
+
+        // Change slide every 5 seconds
+        setInterval(showNextSlide, 5000);
+    };
+
     initCountdown();
     initAccordions();
+    initSlideshow();
 });
