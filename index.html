@@ -3,537 +3,517 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>12th Monitoring and Evaluation Network Forum</title>
-  <meta name="description" content="Event materials for the Monitoring and Evaluation Network Forum." />
+  <title>Something's Cooking — M&amp;E Network Forum</title>
+  <meta name="description" content="We're building something new. The M&E Network Forum returns September 09, 2026." />
 
   <link rel="icon" href="network_logo.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="network_logo.svg">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/background.png" as="image" fetchpriority="high">
+  <link rel="preload" href="network_logo.svg" as="image" type="image/svg+xml" fetchpriority="high">
 
   <meta name="theme-color" content="#0a57a3">
 
-  <meta property="og:title" content="Monitoring and Evaluation Network Forum" />
-  <meta property="og:description" content="Access event materials like presentations, code, templates, and reading lists." />
+  <meta property="og:title" content="Something's Cooking — M&E Network Forum" />
+  <meta property="og:description" content="We're building something new. Mark your calendar: September 09, 2026." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://example.com" />
   <meta property="og:image" content="assets/std.png" />
   <meta property="og:site_name" content="Monitoring and Evaluation Network Forum" />
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Monitoring and Evaluation Network Forum">
-  <meta name="twitter:description" content="Access event materials like presentations, code, templates, and reading lists.">
+  <meta name="twitter:title" content="Something's Cooking — M&E Network Forum">
+  <meta name="twitter:description" content="We're building something new. Mark your calendar: September 09, 2026.">
   <meta name="twitter:image" content="assets/std.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap"></noscript>
-  <link rel="preconnect" href="https://m.facebook.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"></noscript>
 
-  <link href="style.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --brand-blue-dark: #0a57a3;
+      --brand-blue-medium: #4498d3;
+      --brand-yellow: #f1a81e;
+      --brand-red: #b73e57;
+      --neutral-bg: #f8f4eb;
+      --text-dark: #333;
+      --text-light: #666;
+      --font-primary: 'Inter', sans-serif;
+      --font-secondary: 'Playfair Display', serif;
 
+      /* Shared UI tokens */
+      --radius-card: 16px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 6px 18px rgb(4 23 55 / .12);
+      --shadow-md: 0 10px 24px rgb(4 23 55 / .1);
+      --shadow-lg: 0 18px 40px rgb(4 23 55 / .16);
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
+      --ease-soft: cubic-bezier(.45, 0, .25, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--font-primary);
+      color: var(--text-dark);
+      background-color: var(--neutral-bg);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url(assets/background.png) center / cover no-repeat;
+      opacity: .9;
+      z-index: -3;
+    }
+
+    /* Soft wash so text stays readable over the background */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(248,244,235,.35) 0%, rgba(248,244,235,.8) 70%, rgba(248,244,235,.95) 100%);
+      z-index: -2;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    /* ---------- Caution ribbon ---------- */
+    .caution {
+      height: 15px;
+      width: 100%;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--brand-yellow) 0 22px,
+        #2b2825 22px 44px
+      );
+      z-index: 2;
+      position: relative;
+    }
+    .caution--top {
+      position: sticky;
+      top: 0;
+      box-shadow: 0 3px 12px rgb(0 0 0 / .2);
+      border-bottom: 1px solid rgb(0 0 0 / .25);
+    }
+    .caution--bottom {
+      box-shadow: 0 -3px 12px rgb(0 0 0 / .2);
+      border-top: 1px solid rgb(0 0 0 / .25);
+    }
+
+    /* ---------- Main stage ---------- */
+    .stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(1.75rem, 5vw, 4rem) 1.25rem clamp(2.25rem, 5vw, 3.5rem);
+      gap: clamp(.85rem, 2.4vw, 1.35rem);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 960px;
+      margin-inline: auto;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--brand-blue-dark);
+      background: rgba(255,255,255,.92);
+      padding: .5rem 1.1rem .5rem .95rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgb(4 23 55 / .06);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(4px);
+      animation: fadeUp .8s .1s var(--ease-out) both;
+    }
+    .kicker .dot {
+      width: .55rem; height: .55rem; border-radius: 50%;
+      background: var(--brand-red);
+      box-shadow: 0 0 0 0 rgb(183 62 87 / .5);
+      animation: pulse 1.8s var(--ease-soft) infinite;
+    }
+
+    /* ---------- Hard hat centerpiece ---------- */
+    .hat {
+      position: relative;
+      width: clamp(200px, 40vw, 380px);
+      margin: clamp(.25rem, 1.5vw, .75rem) 0;
+      animation: hatIn 1s .05s var(--ease-out) both;
+    }
+    .hat__glow {
+      position: absolute;
+      left: 50%; top: 55%;
+      width: 140%; aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(241,168,30,.45) 0%, rgba(241,168,30,0) 62%);
+      z-index: -1;
+      will-change: transform, opacity;
+      animation: breathe 5s var(--ease-soft) infinite;
+    }
+    .hat__img {
+      width: 100%;
+      filter: drop-shadow(0 18px 26px rgb(4 23 55 / .22));
+      transform-origin: 50% 88%;
+      will-change: transform;
+      animation: tip 6s var(--ease-soft) infinite;
+    }
+
+    /* Sparks / dust drifting off the build */
+    .spark {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--brand-yellow);
+      opacity: 0;
+      z-index: -1;
+      will-change: transform, opacity;
+    }
+    .spark:nth-child(3) { width: 10px; height: 10px; left: 12%; top: 30%; background: var(--brand-blue-medium); animation: drift 4.6s var(--ease-soft) .2s infinite; }
+    .spark:nth-child(4) { width: 7px;  height: 7px;  left: 84%; top: 22%; animation: drift 5.4s var(--ease-soft) 1.4s infinite; }
+    .spark:nth-child(5) { width: 12px; height: 12px; left: 78%; top: 62%; background: var(--brand-red); animation: drift 5s var(--ease-soft) .8s infinite; }
+    .spark:nth-child(6) { width: 6px;  height: 6px;  left: 20%; top: 68%; animation: drift 5.8s var(--ease-soft) 2.1s infinite; }
+
+    /* ---------- Copy ---------- */
+    .headline {
+      font-family: var(--font-secondary);
+      font-weight: 900;
+      color: var(--brand-blue-dark);
+      font-size: clamp(2.1rem, 7vw, 4rem);
+      line-height: 1.05;
+      max-width: 16ch;
+      text-wrap: balance;
+      animation: fadeUp .9s .2s var(--ease-out) both;
+    }
+    .headline em {
+      font-style: italic;
+      color: var(--brand-yellow);
+      position: relative;
+    }
+
+    .subhead {
+      font-size: clamp(1rem, 2.6vw, 1.25rem);
+      color: var(--text-light);
+      max-width: 46ch;
+      line-height: 1.6;
+      text-wrap: pretty;
+      animation: fadeUp .9s .32s var(--ease-out) both;
+    }
+    .subhead strong { color: var(--brand-blue-dark); }
+
+    /* ---------- Countdown ---------- */
+    .reveal-label {
+      margin-top: .5rem;
+      font-size: .82rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--brand-red);
+      animation: fadeUp .9s .4s var(--ease-out) both;
+    }
+
+    .countdown {
+      display: flex;
+      gap: clamp(.5rem, 2vw, 1rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp .9s .48s var(--ease-out) both;
+    }
+    .countdown__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,.96);
+      padding: .9rem clamp(.85rem, 2.5vw, 1.35rem);
+      border-radius: var(--radius-card);
+      min-width: 84px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgb(4 23 55 / .05);
+      border-top: 4px solid var(--brand-yellow);
+      transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    }
+    .countdown__item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .countdown__number {
+      display: block;
+      min-width: 2ch;
+      text-align: center;
+      font-family: var(--font-secondary);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      color: var(--brand-blue-dark);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+    .countdown__label {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text-light);
+      margin-top: .4rem;
+    }
+    .countdown--done {
+      font-family: var(--font-secondary);
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 700;
+      color: var(--brand-blue-dark);
+      background: rgba(255,255,255,.96);
+      padding: 1rem 2rem;
+      border-radius: var(--radius-card);
+      border-top: 4px solid var(--brand-yellow);
+      box-shadow: var(--shadow-md);
+      animation: fadeUp .5s var(--ease-out) both;
+    }
+
+    .date-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: .35rem;
+      font-weight: 600;
+      color: var(--brand-blue-dark);
+      background: rgba(255,255,255,.72);
+      padding: .55rem 1.15rem;
+      border-radius: var(--radius-pill);
+      border: 1px dashed var(--brand-blue-medium);
+      backdrop-filter: blur(4px);
+      animation: fadeUp .9s .56s var(--ease-out) both;
+    }
+    .date-pill svg { color: var(--brand-blue-medium); flex-shrink: 0; }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      text-align: center;
+      padding: 1.5rem 1.25rem 2rem;
+      font-size: .9rem;
+      color: var(--text-light);
+      position: relative;
+      z-index: 1;
+    }
+    .footer a {
+      color: var(--brand-blue-dark);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: color .2s var(--ease-out);
+    }
+    .footer a:hover { text-decoration: underline; color: var(--brand-blue-medium); }
+    .footer a:focus-visible {
+      outline: 2px solid var(--brand-blue-medium);
+      outline-offset: 3px;
+    }
+
+    /* ---------- Floating background shapes ---------- */
+    .bg-shapes {
+      position: fixed; inset: 0;
+      z-index: -1; pointer-events: none; overflow: hidden;
+    }
+    .bg-shape {
+      position: absolute;
+      aspect-ratio: 1 / 1; height: auto;
+      opacity: .5;
+      will-change: transform;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+    .bg-shape:nth-child(1) { top: 62%; left: -8%;  width: 380px; opacity: .5;  animation: spin1 30s; }
+    .bg-shape:nth-child(2) { top: 8%;  left: 74%;  width: 420px; opacity: .5;  animation: spin2 38s alternate; }
+    .bg-shape:nth-child(3) { bottom: 6%; left: 78%; width: 300px; opacity: .45; animation: spin2 24s; }
+    .bg-shape:nth-child(4) { bottom: 4%; right: 66%; width: 360px; opacity: .5;  animation: spin1 34s alternate; }
+    .bg-shape:nth-child(5) { top: 40%; left: 40%;  width: 240px; opacity: .28; animation: spin1 42s alternate; }
+    .bg-shape:nth-child(6) { top: -4%; left: 4%;   width: 260px; opacity: .38; animation: spin2 46s; }
+
+    /* ---------- Keyframes ---------- */
+    @keyframes hatIn {
+      from { opacity: 0; transform: translateY(22px) scale(.94); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes tip {
+      0%, 100% { transform: rotate(-2.5deg) translateY(0); }
+      50%      { transform: rotate(2.5deg) translateY(-7px); }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: translate(-50%, -50%) scale(.9); opacity: .7; }
+      50%      { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+    }
+    @keyframes drift {
+      0%   { opacity: 0; transform: translate(0, 0) scale(.5); }
+      15%  { opacity: .9; }
+      80%  { opacity: .6; }
+      100% { opacity: 0; transform: translate(var(--dx, 12px), -72px) scale(1); }
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgb(183 62 87 / .5); }
+      70%  { box-shadow: 0 0 0 10px rgb(183 62 87 / 0); }
+      100% { box-shadow: 0 0 0 0 rgb(183 62 87 / 0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin1 {
+      0%   { transform: translateY(0) rotate(0deg); }
+      50%  { transform: translateY(-18px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+    @keyframes spin2 {
+      0%   { transform: translateY(0) rotate(0deg); }
+      50%  { transform: translateY(16px) rotate(-180deg); }
+      100% { transform: translateY(0) rotate(-360deg); }
+    }
+
+    .spark:nth-child(4) { --dx: -18px; }
+    .spark:nth-child(6) { --dx: -10px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .hat__img, .hat__glow, .spark, .bg-shape { will-change: auto; }
+      .hat__img { transform: rotate(0); }
+      .spark { opacity: 0; }
+      .countdown__item:hover { transform: none; }
+    }
+
+    @media (max-width: 480px) {
+      html { font-size: 15px; }
+      .countdown { gap: .5rem; }
+      .countdown__item { min-width: 68px; padding: .8rem .7rem; }
+    }
+
+    /* Balance the hero on short/landscape viewports */
+    @media (max-height: 640px) and (min-width: 700px) {
+      .hat { width: clamp(160px, 24vh, 260px); }
+      .stage { gap: clamp(.6rem, 1.6vh, 1rem); }
+    }
+  </style>
 </head>
 <body>
-  <header class="header" role="banner">
-    <div class="header__content">
-      <div class="header__logos">
-        <img src="agency_logo.svg" alt="M&E Network Philippines Logo" class="logo--agency" width="212" height="80">
-      </div>
-      <img src="event_logo.svg" alt="Shaping Change Logo" class="header__title_logo" width="698" height="240">
+  <div class="caution caution--top" role="presentation" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <span class="kicker"><span class="dot" aria-hidden="true"></span>Under Construction</span>
+
+    <div class="hat">
+      <span class="hat__glow" aria-hidden="true"></span>
+      <img src="network_logo.svg" alt="Monitoring and Evaluation Network Philippines hard-hat logo" class="hat__img" width="400" height="257">
+      <span class="spark" aria-hidden="true"></span>
+      <span class="spark" aria-hidden="true"></span>
+      <span class="spark" aria-hidden="true"></span>
+      <span class="spark" aria-hidden="true"></span>
     </div>
-  </header>
-  <hr class="header__divider">
-  <main id="main-content" class="main-content" role="main">
-    <section class="section section--highlights">
-      <h2 class="section__title">From Last Year's Highlights</h2>
-      
-      <div class="highlights-video-wrapper">
-        <div class="responsive-facebook-post">
-          <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fposts%2Fpfbid024A7moBWttsBf5d6esPXvftKDykmD5sofn3XJjqpeWDfYviNME86aqemMvr3ffuPHl&show_text=true&width=500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
-        </div>
-      </div>
-    </section>
 
-    <section class="section section--schedule">
-      <h2 class="section__title">Program Schedule</h2>
-      <div class="accordion">
-        <div class="accordion__item">
-          <button class="accordion__button">Indicative Program</button>
-          <div class="accordion__content">
-            <ul class="schedule-list">
-              <li><span>7:30 AM</span> Registration</li>
-              <li><span>8:00 AM</span> Opening Session</li>
-              <li><span>8:10 AM</span> National Anthem</li>
-              <li><span>8:15 AM</span> Opening Message</li>
-              <li><span>8:20 AM</span> Overview of the 12th M&E Network Forum, House Rules</li>
-              <li><span>8:25 AM</span> Plenary 1: <em>To Retain, Redesign, or Retrench</em>? The Evolving Role of M&E in Planning and Budget Management</li>
-              <li><span>9:45 AM</span> Exhibit Booth and AM Snacks</li>
-              <li><span>10:05 AM</span> Breakout 1: From <em>Proof to Progress</em>: Using M&E Insights for Policy Action</li>
-                <ul class="schedule-list--nested">
-                  <li>A. Health</li>
-                  <li>B. Labor and Employment</li>
-                  <li>C. Agriculture and Livelihood</li>
-                </ul>
-              </li>
-              <li><span>11:25 AM</span> Lunch Break</li>
-              <li><span>12:45 PM</span> Breakout 2: <em>Lost in Translation</em>: Challenges in Bridging Data and Decision-Making in Government
-                <ul class="schedule-list--nested">
-                  <li>A. <em>Use, Misuse, and Non-use</em>: The Utility of Government M&E Systems</li>
-                  <li>B. <em>Getting the Message Across</em>: How Civil Society Uses M&E to Drive Reform</li>
-                  <li>C. <em>Built-in, Not Added-on</em>: Embedding M&E at the Core of Project Implementation</li>
-                </ul>
-              </li>
-              <li><span>2:05 PM</span> Plenary 2: <em>Making Headway at the Halftime</em>: Advancing SDG and PDP Goals Through Smart Prioritization</li>
-              <li><span>3:25 PM</span> Closing Remarks</li>
-              <li><span>3:35 PM</span> Photo-op, Final Reminders</li>
-              <li><span>3:45 PM</span> PM Snacks and Socials</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+    <h1 class="headline">We're <em>cooking</em> something.</h1>
+    <p class="subhead">
+      Hard hats on. The <strong>13th M&amp;E Network Forum</strong> is building its next
+      chapter&mdash;new sessions, new insights, same mission.
+    </p>
 
-    <section class="section section--presenters">
-      <h2 class="section__title">Resource Persons</h2>
-      <div class="accordion">
-        <div class="accordion__item">
-          <button class="accordion__button">Opening message</button>
-          <div class="accordion__content">
-            <div class="presenter-grid">
-              <div class="presenter-card">
-                <img src="assets/presenters/balisacan.png" alt="Photo of Undersecretary Secretary Arsenio M. Balisacan" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Arsenio M. Balisacan, PhD</h3>
-                  <p class="presenter-card__title">Department of Economy, Planning, and Development</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accordion__item">
-          <button class="accordion__button">Plenary 1: To Retain, Redesign, or Retrench? The Evolving Role of M&E in Planning and Budget Management</button>
-          <div class="accordion__content">
-            <div class="presenter-grid">
-              <div class="presenter-card">
-                <img src="assets/presenters/capuno.png" alt="Photo of Undersecretary Joseph J. Capuno, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Joseph J. Capuno, PhD</h3>
-                  <p class="presenter-card__title">Department of Economy, Planning, and Development</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/deleon.png" alt="Photo of Director Mary Joy O. De Leon" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Mary Joy O. De Leon</h3>
-                  <p class="presenter-card__title">Department of Budget and Management</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/narain.jpg" alt="Photo of Ashish Narain, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Ashish Narain, PhD</h3>
-                  <p class="presenter-card__title">Asian Development Bank</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/oplasjr.jpg" alt="Photo of Bienvenido Oplas, Jr." class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Bienvenido Oplas, Jr.</h3>
-                  <p class="presenter-card__title">Minimal Government Thinkers, Inc.</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/jandoc.jpg" alt="Photo of Karl Robert L. Jandoc, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Karl Robert L. Jandoc, PhD</h3>
-                  <p class="presenter-card__title">Moderator, University of the Philippines</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <p class="reveal-label" id="reveal-label">Breaking ground in</p>
+    <div class="countdown" id="countdown" aria-live="polite"></div>
 
-        <div class="accordion__item">
-          <button class="accordion__button">Breakout Session 1: From Proof to Progress: Using M&E Insights for Policy Action</button>
-          <div class="accordion__content">
-            <h3 class="breakout-title">Health</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/tiongco.jpg" alt="Photo of Marites M. Tiongco, PhD">
-                <div>
-                  <p class="presenter-card__presentation">Process Evaluation of the Implementation of Telemedicine</p>
-                  <h4 class="presenter-card__name">Marites M. Tiongco, PhD</h4>
-                  <p class="presenter-card__title">De La Salle University</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/cielo.png" alt="Photo of Bernardo Cielo II, MPP">
-                <div>
-                  <p class="presenter-card__presentation">Process Evaluation of the Implementation of Telemedicine</p>
-                  <h4 class="presenter-card__name">Bernardo Cielo II, MPP</h4>
-                  <p class="presenter-card__title">De La Salle University</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/romero.png" alt="Photo of Catherine C. Romero, MHA, MSPH">
-                <div>
-                  <p class="presenter-card__presentation">Evaluation of the Universal Health Care - Health Information Systems</p>
-                  <h4 class="presenter-card__name">Catherine C. Romero, MHA, MSPH</h4>
-                  <p class="presenter-card__title">University of the Philippines</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/villarante.png" alt="Photo of Lindsley Jeremiah Villarante, RN, MPH">
-                <div>
-                  <h4 class="presenter-card__name">Lindsley Jeremiah Villarante, RN, MPH</h4>
-                  <p class="presenter-card__title">Reactor, Department of Health</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/aranjuez.png" alt="Photo of Asst. Director Edgardo S. Aranjuez II">
-                <div>
-                  <h4 class="presenter-card__name">Edgardo S. Aranjuez II</h4>
-                  <p class="presenter-card__title">Moderator, Department of Economy, Planning, and Development</p>
-                </div>
-              </li>
-            </ul>
-            <h3 class="breakout-title">Labor and Employment</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/brown.png" alt="Photo of Ernesto O. Brown, PhD">
-                <div>
-                  <p class="presenter-card__presentation">Impact Evaluation of the DOLE Integrated Livelihood Program (DILP)</p>
-                  <h4 class="presenter-card__name">Ernesto O. Brown, PhD</h4>
-                  <p class="presenter-card__title">Asian Social Project Services, Inc.</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/borja.png" alt="Photo of Anthony Lawrence Borja, PhD">
-                <div>
-                  <p class="presenter-card__presentation">Quasi-Experimental Impact Evaluation of the TUPAD Program</p>
-                  <h4 class="presenter-card__name">Anthony Lawrence Borja, PhD</h4>
-                  <p class="presenter-card__title">De La Salle University</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/ellaoplas.png" alt="Photo of Ma. Ella Oplas">
-                <div>
-                  <p class="presenter-card__presentation">Quasi-Experimental Impact Evaluation of the TUPAD Program</p>
-                  <h4 class="presenter-card__name">Ma. Ella Oplas</h4>
-                  <p class="presenter-card__title">De La Salle University</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/reynoso.png" alt="Photo of Leilani M. Reynoso">
-                <div>
-                  <h4 class="presenter-card__name">Leilani M. Reynoso</h4>
-                  <p class="presenter-card__title">Reactor, Department of Labor and Employment</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/ramos.png" alt="Photo of Rachelle Angela C. Ramos">
-                <div>
-                  <h4 class="presenter-card__name">Rachelle Angela C. Ramos</h4>
-                  <p class="presenter-card__title">Moderator, Department of Economy, Planning, and Development</p>
-                </div>
-              </li>
-            </ul>
-            <h3 class="breakout-title">Agriculture and Livelihood</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/inocencio.png" alt="Photo of Arlene Inocencio, PhD">
-                <div>
-                  <p class="presenter-card__presentation">Process Evaluation of the KADIWA ni Ani at Kita Program</p>
-                  <h4 class="presenter-card__name">Arlene Inocencio, PhD</h4>
-                  <p class="presenter-card__title">De La Salle University</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/nabuab.jpg" alt="Photo of Jed Asiaii Dimaisip-Nabuab">
-                <div>
-                  <p class="presenter-card__presentation">Combining Cash Grants with an Ultra-Poor Livelihoods Training Program</p>
-                  <h4 class="presenter-card__name">Jed Asiaii Dimaisip-Nabuab</h4>
-                  <p class="presenter-card__title">Innovations for Poverty Action</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/santos.png" alt="Photo of Anne Gilica DC. Santos">
-                <div>
-                  <h4 class="presenter-card__name">Anne Gilica DC. Santos</h4>
-                  <p class="presenter-card__title">Reactor, Department of Agriculture</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/caddarao.png" alt="Photo of Ronaldo S. Caddarao">
-                <div>
-                  <h4 class="presenter-card__name">Ronaldo S. Caddarao</h4>
-                  <p class="presenter-card__title">Reactor, Department of Agriculture</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/acebedo-vargas.png" alt="Photo of Mae Acebedo-Vargas">
-                <div>
-                  <h4 class="presenter-card__name">Mae Acebedo-Vargas</h4>
-                  <p class="presenter-card__title">Reactor, International Care Ministries</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/sobrevinas.jpg" alt="Photo of Alellie B. Sobreviñas, PhD">
-                <div>
-                  <h4 class="presenter-card__name">Alellie B. Sobreviñas, PhD</h4>
-                  <p class="presenter-card__title">Moderator, De La Salle University</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="accordion__item">
-          <button class="accordion__button">Breakout Session 2: Lost in Translation: Challenges in Bridging Data and Decision-Making in Government</button>
-          <div class="accordion__content">
-            <h3 class="breakout-title">Use, Misuse, and Non-use: The Utility of Government M&E Systems</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/mapa.png" alt="Photo of Undersecretary Claire Dennis S. Mapa, PhD">
-                <div>
-                  <h4 class="presenter-card__name">Claire Dennis S. Mapa, PhD</h4>
-                  <p class="presenter-card__title">Philippine Statistics Authority</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/gaurana.png" alt="Photo of Catherine Ann L. Gaurana, EnP">
-                <div>
-                  <h4 class="presenter-card__name">Catherine Ann L. Gaurana, EnP</h4>
-                  <p class="presenter-card__title">Local Government of San Lorenzo, Guimaras</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/entredicho.png" alt="Photo of Jaypee Kein G. Entredicho">
-                <div>
-                  <h4 class="presenter-card__name">Jaypee Kein G. Entredicho</h4>
-                  <p class="presenter-card__title">Provincial Government of Guimaras</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/christiansen.png" alt="Photo of RD Stephanie F. Christiansen">
-                <div>
-                  <h4 class="presenter-card__name">Stephanie F. Christiansen</h4>
-                  <p class="presenter-card__title">Department of Economy, Planning, and Development - Region I</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/carino.png" alt="Photo of RD Mylah Faye Aurora B. Cariño">
-                <div>
-                  <h4 class="presenter-card__name">Mylah Faye Aurora B. Cariño</h4>
-                  <p class="presenter-card__title">Department of Economy, Planning, and Development - Region X</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/albano.png" alt="Photo of OIC-Dir. Dennis M. Albano">
-                <div>
-                  <h4 class="presenter-card__name">Dennis M. Albano</h4>
-                  <p class="presenter-card__title">Department of Transportation</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/quilantang.png" alt="Photo of Atty. Melanie A. Quilantang">
-                <div>
-                  <h4 class="presenter-card__name">Atty. Melanie A. Quilantang</h4>
-                  <p class="presenter-card__title">Department of Budget and Management</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/esguerra.png" alt="Photo of RD Nerrisa T. Esguerra">
-                <div>
-                  <h4 class="presenter-card__name">Nerrisa T. Esguerra</h4>
-                  <p class="presenter-card__title">Moderator, Department of Economy, Planning, and Development - Region III</p>
-                </div>
-              </li>
-            </ul>
-            <h3 class="breakout-title">Getting the Message Across: How Civil Society Uses M&E to Drive Reform</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/aceron.jpg" alt="Photo of Joy Aceron">
-                <div>
-                  <h4 class="presenter-card__name">Joy Aceron</h4>
-                  <p class="presenter-card__title">Government-Watch</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/reyes-cantos.jpg" alt="Photo of Jessica Reyes-Cantos">
-                <div>
-                  <h4 class="presenter-card__name">Jessica Reyes-Cantos</h4>
-                  <p class="presenter-card__title">Action for Economic Reforms</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/cruz.jpg" alt="Photo of Karisha Anne Cruz">
-                <div>
-                  <h4 class="presenter-card__name">Karisha Anne Cruz</h4>
-                  <p class="presenter-card__title">Innovations for Poverty Action</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/wong.png" alt="Photo of Undersecretary Wilford Will L. Wong">
-                <div>
-                  <h4 class="presenter-card__name">Wilford Will L. Wong</h4>
-                  <p class="presenter-card__title">Department of Budget and Management</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/suerte.png" alt="Photo of Vivien Suerte-Cortez">
-                <div>
-                  <h4 class="presenter-card__name">Vivien Suerte-Cortez</h4>
-                  <p class="presenter-card__title">Moderator, United Nations Development Programme</p>
-                </div>
-              </li>
-            </ul>
-            <h3 class="breakout-title">Built-in, Not Added-on: Embedding M&E at the Core of Project Implementation</h3>
-            <ul class="presenter-list--compact">
-              <li>
-                <img src="assets/presenters/matoy.png" alt="Photo of Rafael Jairah Jr. D. Matoy, RN, MPH">
-                <div>
-                  <p class="presenter-card__presentation">Philippine Multisectoral Nutrition Project</p>
-                  <h4 class="presenter-card__name">Rafael Jairah Jr. D. Matoy, RN, MPH</h4>
-                  <p class="presenter-card__title">Department of Health</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/adala.png" alt="Photo of Russell H. Adalla">
-                <div>
-                  <p class="presenter-card__presentation">Water Supply and Sanitation Projects</p>
-                  <h4 class="presenter-card__name">Russell H. Adalla</h4>
-                  <p class="presenter-card__title">Department of the Interior and Local Government</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/macaspac.png" alt="Photo of Director John Aries S. Macaspac">
-                <div>
-                  <p class="presenter-card__presentation">Executive Order No. 138, s. 2021 - Full Devolution</p>
-                  <h4 class="presenter-card__name">John Aries S. Macaspac</h4>
-                  <p class="presenter-card__title">Department of Budget and Management</p>
-                </div>
-              </li>
-              <li>
-                <img src="assets/presenters/tatlonghari.png" alt="Photo of OIC-Asst. Director Paul Andrew M. Tatlonghari">
-                <div>
-                  <h4 class="presenter-card__name">Paul Andrew M. Tatlonghari</h4>
-                  <p class="presenter-card__title">Moderator, Department of Economy, Planning, and Development</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="accordion__item">
-          <button class="accordion__button">Plenary 2: Making Headway at the Halftime: Advancing SDG and PDP Goals</button>
-          <div class="accordion__content">
-            <div class="presenter-grid">
-              <div class="presenter-card">
-                <img src="assets/presenters/razvi.jpeg" alt="Photo of Saleema Razvi, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Saleema Razvi, PhD</h3>
-                  <p class="presenter-card__title">Presenter & Panelist, Copenhagen Consensus Center</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/mathiasson.png" alt="Photo of Roland Mathiasson" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Roland Mathiasson</h3>
-                  <p class="presenter-card__title">Panelist, Copenhagen Consensus Center</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/jandoc.jpg" alt="Photo of Karl Robert L. Jandoc, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Karl Robert L. Jandoc, PhD</h3>
-                  <p class="presenter-card__title">Panelist, University of the Philippines</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/monsod.png" alt="Photo of Toby Melissa C. Monsod, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Toby Melissa C. Monsod, PhD</h3>
-                  <p class="presenter-card__title">Panelist, University of the Philippines</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/li.jpg" alt="Photo of Zhigang Li, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Zhigang Li, PhD</h3>
-                  <p class="presenter-card__title">Panelist, Asian Development Bank</p>
-                </div>
-              </div>
-              <div class="presenter-card">
-                <img src="assets/presenters/capuno.png" alt="Photo of Undersecretary Joseph J. Capuno, PhD" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Joseph J. Capuno, PhD</h3>
-                  <p class="presenter-card__title">Moderator, Department of Economy, Planning, and Development</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-        <div class="accordion">
-        <div class="accordion__item">
-          <button class="accordion__button">Closing message</button>
-          <div class="accordion__content">
-            <div class="presenter-grid">
-              <div class="presenter-card">
-                <img src="assets/presenters/planta.png" alt="Photo of Assistant Roderick M. Planta" class="presenter-card__photo">
-                <div class="presenter-card__info">
-                  <h3 class="presenter-card__name">Roderick M. Planta</h3>
-                  <p class="presenter-card__title">Department of Economy, Planning, and Development</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    </section>
-
-    <section class="section section--materials">
-      <h2 class="section__title">Event Materials</h2>
-      <ul class="resource-list">
-        <li>
-          <a href="https://drive.google.com/drive/folders/1okuWWAQQ5pTnVbO26m1uAFtmRxBYWmso?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-list__link">
-            Agenda <em>at a Glance</em>
-          </a>
-        </li>
-        <li>
-          <a href="https://drive.google.com/drive/folders/1U1WHCzctKs1GzAYG8-2x6fwBG2Dj5VM-?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-list__link">
-            General Logistics Note
-          </a>
-        </li>
-        <li>
-          <a href="https://drive.google.com/drive/folders/1pqzEfVlxmJW1VE5jz1Wym8NRCny3_NfF?usp=sharing" target="_blank" rel="noopener noreferrer" class="resource-list__link">
-            Presentations
-          </a>
-        </li>
-        <li>
-          <a href="https://drive.google.com/drive/folders/1RdAnQVeA2eaJbHulRAU9GA-9VbcA6Uvp?usp=sharing" target="_blank" rel="noopener noreferrer" class="resource-list__link">
-            Snaps and Shots
-          </a>
-        </li>
-      </ul>
-    </section>
-
+    <span class="date-pill">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      September&nbsp;09,&nbsp;2026
+    </span>
   </main>
 
   <footer class="footer" role="contentinfo">
-    <p><em> Central Evaluation Unit </em><a href="mailto:ceu@depdev.gov.ph">(ceu@depdev.gov.ph)</a></p>
+    <p><em>Strategic Outcome Evaluation Division</em> &mdash; <a href="mailto:mes-soed@depdev.gov.ph">mes-soed@depdev.gov.ph</a></p>
   </footer>
 
-  <script src="main.js" defer></script>
+  <div class="caution caution--bottom" role="presentation" aria-hidden="true"></div>
 
-  <div class="bg-shapes">
-    <img src="shapes/shape1.png" alt="" class="bg-shape" role="presentation" width="412" height="412">
-    <img src="shapes/shape2.png" alt="" class="bg-shape" role="presentation" width="412" height="412">
-    <img src="shapes/shape3.png" alt="" class="bg-shape" role="presentation" width="360" height="360">
-    <img src="shapes/shape4.png" alt="" class="bg-shape" role="presentation" width="412" height="412">
-    <img src="shapes/shape5.png" alt="" class="bg-shape" role="presentation" width="400" height="400">
+  <div class="bg-shapes" aria-hidden="true">
+    <img src="shapes/shape1.png" alt="" class="bg-shape" role="presentation" width="380" height="380" loading="lazy" decoding="async">
+    <img src="shapes/shape2.png" alt="" class="bg-shape" role="presentation" width="420" height="420" loading="lazy" decoding="async">
+    <img src="shapes/shape3.png" alt="" class="bg-shape" role="presentation" width="300" height="300" loading="lazy" decoding="async">
+    <img src="shapes/shape4.png" alt="" class="bg-shape" role="presentation" width="360" height="360" loading="lazy" decoding="async">
+    <img src="shapes/shape5.png" alt="" class="bg-shape" role="presentation" width="240" height="240" loading="lazy" decoding="async">
+    <img src="shapes/shape6.png" alt="" class="bg-shape" role="presentation" width="260" height="260" loading="lazy" decoding="async">
   </div>
+
+  <script>
+    (function () {
+      const target = new Date('2026-09-09T09:00:00+08:00').getTime();
+      const el = document.getElementById('countdown');
+      const label = document.getElementById('reveal-label');
+      if (!el) return;
+
+      const pad = n => String(n).padStart(2, '0');
+      const units = [['Days', 'd'], ['Hours', 'h'], ['Minutes', 'm'], ['Seconds', 's']];
+
+      // Build the card structure once; update only the numbers each tick.
+      const numberEls = {};
+      units.forEach(function (u) {
+        const item = document.createElement('div');
+        item.className = 'countdown__item';
+        const num = document.createElement('span');
+        num.className = 'countdown__number';
+        num.textContent = '--';
+        const lab = document.createElement('span');
+        lab.className = 'countdown__label';
+        lab.textContent = u[0];
+        item.appendChild(num);
+        item.appendChild(lab);
+        el.appendChild(item);
+        numberEls[u[1]] = num;
+      });
+
+      function set(node, value) {
+        const str = String(value);
+        if (node.textContent !== str) node.textContent = str;
+      }
+
+      let timer;
+
+      function render() {
+        const distance = target - Date.now();
+
+        if (distance <= 0) {
+          el.className = 'countdown countdown--done';
+          el.textContent = 'The wait is over — see you there!';
+          if (label) label.textContent = 'It’s here';
+          if (timer) clearInterval(timer);
+          return;
+        }
+
+        set(numberEls.d, Math.floor(distance / 86400000));
+        set(numberEls.h, pad(Math.floor((distance % 86400000) / 3600000)));
+        set(numberEls.m, pad(Math.floor((distance % 3600000) / 60000)));
+        set(numberEls.s, pad(Math.floor((distance % 60000) / 1000)));
+      }
+
+      render();
+      timer = setInterval(render, 1000);
+    })();
+  </script>
 </body>
 </html>
