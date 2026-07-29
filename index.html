@@ -1,523 +1,368 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Something's Cooking — M&amp;E Network Forum</title>
-  <meta name="description" content="We're building something new. The M&E Network Forum returns September 09, 2026." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MEtamorphosis — 13th M&amp;E Network Forum</title>
+  <meta name="description" content="MEtamorphosis: Transforming evidence into action. The 13th M&E Network Forum returns September 9, 2026.">
 
-  <link rel="icon" href="network_logo.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="network_logo.svg">
+  <link rel="icon" href="event_logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="event_logo.svg">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/background.png" as="image" fetchpriority="high">
   <link rel="preload" href="network_logo.svg" as="image" type="image/svg+xml" fetchpriority="high">
 
   <meta name="theme-color" content="#0a57a3">
-
-  <meta property="og:title" content="Something's Cooking — M&E Network Forum" />
-  <meta property="og:description" content="We're building something new. Mark your calendar: September 09, 2026." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/og-teaser.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Under construction — the 13th M&E Network Forum is cooking something." />
-  <meta property="og:site_name" content="Monitoring and Evaluation Network Forum" />
+  <meta property="og:title" content="MEtamorphosis — 13th M&E Network Forum">
+  <meta property="og:description" content="Transforming evidence into action. September 9, 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mnenetwork.forum/">
+  <meta property="og:image" content="https://mnenetwork.forum/assets/og-metamorphosis.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MEtamorphosis — 13th M&E Network Forum, September 9, 2026.">
+  <meta property="og:site_name" content="Monitoring and Evaluation Network Forum">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Something's Cooking — M&E Network Forum">
-  <meta name="twitter:description" content="We're building something new. Mark your calendar: September 09, 2026.">
-  <meta name="twitter:image" content="assets/og-teaser.png">
-  <meta name="twitter:image:alt" content="Under construction — the 13th M&E Network Forum is cooking something.">
+  <meta name="twitter:title" content="MEtamorphosis — 13th M&E Network Forum">
+  <meta name="twitter:description" content="Transforming evidence into action. September 9, 2026.">
+  <meta name="twitter:image" content="https://mnenetwork.forum/assets/og-metamorphosis.png">
+  <meta name="twitter:image:alt" content="MEtamorphosis — 13th M&E Network Forum, September 9, 2026.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"></noscript>
-
-  <style>
-    :root {
-      --brand-blue-dark: #0a57a3;
-      --brand-blue-medium: #4498d3;
-      --brand-yellow: #f1a81e;
-      --brand-red: #b73e57;
-      --neutral-bg: #f8f4eb;
-      --text-dark: #333;
-      --text-light: #666;
-      --font-primary: 'Inter', sans-serif;
-      --font-secondary: 'Playfair Display', serif;
-
-      /* Shared UI tokens */
-      --radius-card: 16px;
-      --radius-pill: 999px;
-      --shadow-sm: 0 6px 18px rgb(4 23 55 / .12);
-      --shadow-md: 0 10px 24px rgb(4 23 55 / .1);
-      --shadow-lg: 0 18px 40px rgb(4 23 55 / .16);
-      --ease-out: cubic-bezier(.22, 1, .36, 1);
-      --ease-soft: cubic-bezier(.45, 0, .25, 1);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { font-size: 16px; }
-
-    body {
-      font-family: var(--font-primary);
-      color: var(--text-dark);
-      background-color: var(--neutral-bg);
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: url(assets/background.png) center / cover no-repeat;
-      opacity: .9;
-      z-index: -3;
-    }
-
-    /* Soft wash so text stays readable over the background */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(248,244,235,.35) 0%, rgba(248,244,235,.8) 70%, rgba(248,244,235,.95) 100%);
-      z-index: -2;
-    }
-
-    img { max-width: 100%; display: block; }
-
-    /* ---------- Caution ribbon ---------- */
-    .caution {
-      height: 15px;
-      width: 100%;
-      background: repeating-linear-gradient(
-        -45deg,
-        var(--brand-yellow) 0 22px,
-        #2b2825 22px 44px
-      );
-      z-index: 2;
-      position: relative;
-    }
-    .caution--top {
-      position: sticky;
-      top: 0;
-      box-shadow: 0 3px 12px rgb(0 0 0 / .2);
-      border-bottom: 1px solid rgb(0 0 0 / .25);
-    }
-    .caution--bottom {
-      box-shadow: 0 -3px 12px rgb(0 0 0 / .2);
-      border-top: 1px solid rgb(0 0 0 / .25);
-    }
-
-    /* ---------- Main stage ---------- */
-    .stage {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: clamp(1.75rem, 5vw, 4rem) 1.25rem clamp(2.25rem, 5vw, 3.5rem);
-      gap: clamp(.85rem, 2.4vw, 1.35rem);
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 960px;
-      margin-inline: auto;
-    }
-
-    .kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      font-weight: 700;
-      font-size: .8rem;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--brand-blue-dark);
-      background: rgba(255,255,255,.92);
-      padding: .5rem 1.1rem .5rem .95rem;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgb(4 23 55 / .06);
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(4px);
-      animation: fadeUp .8s .1s var(--ease-out) both;
-    }
-    .kicker .dot {
-      width: .55rem; height: .55rem; border-radius: 50%;
-      background: var(--brand-red);
-      box-shadow: 0 0 0 0 rgb(183 62 87 / .5);
-      animation: pulse 1.8s var(--ease-soft) infinite;
-    }
-
-    /* ---------- Hard hat centerpiece ---------- */
-    .hat {
-      position: relative;
-      width: clamp(200px, 40vw, 380px);
-      margin: clamp(.25rem, 1.5vw, .75rem) 0;
-      animation: hatIn 1s .05s var(--ease-out) both;
-    }
-    .hat__glow {
-      position: absolute;
-      left: 50%; top: 55%;
-      width: 140%; aspect-ratio: 1;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(241,168,30,.45) 0%, rgba(241,168,30,0) 62%);
-      z-index: -1;
-      will-change: transform, opacity;
-      animation: breathe 5s var(--ease-soft) infinite;
-    }
-    .hat__img {
-      width: 100%;
-      filter: drop-shadow(0 18px 26px rgb(4 23 55 / .22));
-      transform-origin: 50% 88%;
-      will-change: transform;
-      animation: tip 6s var(--ease-soft) infinite;
-    }
-
-    /* Sparks / dust drifting off the build */
-    .spark {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--brand-yellow);
-      opacity: 0;
-      z-index: -1;
-      will-change: transform, opacity;
-    }
-    .spark:nth-child(3) { width: 10px; height: 10px; left: 12%; top: 30%; background: var(--brand-blue-medium); animation: drift 4.6s var(--ease-soft) .2s infinite; }
-    .spark:nth-child(4) { width: 7px;  height: 7px;  left: 84%; top: 22%; animation: drift 5.4s var(--ease-soft) 1.4s infinite; }
-    .spark:nth-child(5) { width: 12px; height: 12px; left: 78%; top: 62%; background: var(--brand-red); animation: drift 5s var(--ease-soft) .8s infinite; }
-    .spark:nth-child(6) { width: 6px;  height: 6px;  left: 20%; top: 68%; animation: drift 5.8s var(--ease-soft) 2.1s infinite; }
-
-    /* ---------- Copy ---------- */
-    .headline {
-      font-family: var(--font-secondary);
-      font-weight: 900;
-      color: var(--brand-blue-dark);
-      font-size: clamp(2.1rem, 7vw, 4rem);
-      line-height: 1.05;
-      max-width: 16ch;
-      text-wrap: balance;
-      animation: fadeUp .9s .2s var(--ease-out) both;
-    }
-    .headline em {
-      font-style: italic;
-      color: var(--brand-yellow);
-      position: relative;
-    }
-
-    .subhead {
-      font-size: clamp(1rem, 2.6vw, 1.25rem);
-      color: var(--text-light);
-      max-width: 46ch;
-      line-height: 1.6;
-      text-wrap: pretty;
-      animation: fadeUp .9s .32s var(--ease-out) both;
-    }
-    .subhead strong { color: var(--brand-blue-dark); }
-
-    /* ---------- Countdown ---------- */
-    .reveal-label {
-      margin-top: .5rem;
-      font-size: .82rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--brand-red);
-      animation: fadeUp .9s .4s var(--ease-out) both;
-    }
-
-    .countdown {
-      display: flex;
-      gap: clamp(.5rem, 2vw, 1rem);
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp .9s .48s var(--ease-out) both;
-    }
-    .countdown__item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,.96);
-      padding: .9rem clamp(.85rem, 2.5vw, 1.35rem);
-      border-radius: var(--radius-card);
-      min-width: 84px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid rgb(4 23 55 / .05);
-      border-top: 4px solid var(--brand-yellow);
-      transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
-    }
-    .countdown__item:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
-    }
-    .countdown__number {
-      display: block;
-      min-width: 2ch;
-      text-align: center;
-      font-family: var(--font-secondary);
-      font-weight: 700;
-      font-size: clamp(1.8rem, 6vw, 2.6rem);
-      color: var(--brand-blue-dark);
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      font-feature-settings: "tnum" 1;
-    }
-    .countdown__label {
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--text-light);
-      margin-top: .4rem;
-    }
-    .countdown--done {
-      font-family: var(--font-secondary);
-      font-size: clamp(1.4rem, 5vw, 2rem);
-      font-weight: 700;
-      color: var(--brand-blue-dark);
-      background: rgba(255,255,255,.96);
-      padding: 1rem 2rem;
-      border-radius: var(--radius-card);
-      border-top: 4px solid var(--brand-yellow);
-      box-shadow: var(--shadow-md);
-      animation: fadeUp .5s var(--ease-out) both;
-    }
-
-    .date-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      margin-top: .35rem;
-      font-weight: 600;
-      color: var(--brand-blue-dark);
-      background: rgba(255,255,255,.72);
-      padding: .55rem 1.15rem;
-      border-radius: var(--radius-pill);
-      border: 1px dashed var(--brand-blue-medium);
-      backdrop-filter: blur(4px);
-      animation: fadeUp .9s .56s var(--ease-out) both;
-    }
-    .date-pill svg { color: var(--brand-blue-medium); flex-shrink: 0; }
-
-    /* ---------- Footer ---------- */
-    .footer {
-      text-align: center;
-      padding: 1.5rem 1.25rem 2rem;
-      font-size: .9rem;
-      color: var(--text-light);
-      position: relative;
-      z-index: 1;
-    }
-    .footer a {
-      color: var(--brand-blue-dark);
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: color .2s var(--ease-out);
-    }
-    .footer a:hover { text-decoration: underline; color: var(--brand-blue-medium); }
-    .footer a:focus-visible {
-      outline: 2px solid var(--brand-blue-medium);
-      outline-offset: 3px;
-    }
-
-    /* ---------- Floating background shapes ---------- */
-    .bg-shapes {
-      position: fixed; inset: 0;
-      z-index: -1; pointer-events: none; overflow: hidden;
-    }
-    .bg-shape {
-      position: absolute;
-      aspect-ratio: 1 / 1; height: auto;
-      opacity: .5;
-      will-change: transform;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-    .bg-shape:nth-child(1) { top: 62%; left: -8%;  width: 380px; opacity: .5;  animation: spin1 30s; }
-    .bg-shape:nth-child(2) { top: 8%;  left: 74%;  width: 420px; opacity: .5;  animation: spin2 38s alternate; }
-    .bg-shape:nth-child(3) { bottom: 6%; left: 78%; width: 300px; opacity: .45; animation: spin2 24s; }
-    .bg-shape:nth-child(4) { bottom: 4%; right: 66%; width: 360px; opacity: .5;  animation: spin1 34s alternate; }
-    .bg-shape:nth-child(5) { top: 40%; left: 40%;  width: 240px; opacity: .28; animation: spin1 42s alternate; }
-    .bg-shape:nth-child(6) { top: -4%; left: 4%;   width: 260px; opacity: .38; animation: spin2 46s; }
-
-    /* ---------- Keyframes ---------- */
-    @keyframes hatIn {
-      from { opacity: 0; transform: translateY(22px) scale(.94); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes tip {
-      0%, 100% { transform: rotate(-2.5deg) translateY(0); }
-      50%      { transform: rotate(2.5deg) translateY(-7px); }
-    }
-    @keyframes breathe {
-      0%, 100% { transform: translate(-50%, -50%) scale(.9); opacity: .7; }
-      50%      { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
-    }
-    @keyframes drift {
-      0%   { opacity: 0; transform: translate(0, 0) scale(.5); }
-      15%  { opacity: .9; }
-      80%  { opacity: .6; }
-      100% { opacity: 0; transform: translate(var(--dx, 12px), -72px) scale(1); }
-    }
-    @keyframes pulse {
-      0%   { box-shadow: 0 0 0 0 rgb(183 62 87 / .5); }
-      70%  { box-shadow: 0 0 0 10px rgb(183 62 87 / 0); }
-      100% { box-shadow: 0 0 0 0 rgb(183 62 87 / 0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes spin1 {
-      0%   { transform: translateY(0) rotate(0deg); }
-      50%  { transform: translateY(-18px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-    @keyframes spin2 {
-      0%   { transform: translateY(0) rotate(0deg); }
-      50%  { transform: translateY(16px) rotate(-180deg); }
-      100% { transform: translateY(0) rotate(-360deg); }
-    }
-
-    .spark:nth-child(4) { --dx: -18px; }
-    .spark:nth-child(6) { --dx: -10px; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .001ms !important;
-        animation-delay: 0ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .001ms !important;
-        scroll-behavior: auto !important;
-      }
-      .hat__img, .hat__glow, .spark, .bg-shape { will-change: auto; }
-      .hat__img { transform: rotate(0); }
-      .spark { opacity: 0; }
-      .countdown__item:hover { transform: none; }
-    }
-
-    @media (max-width: 480px) {
-      html { font-size: 15px; }
-      .countdown { gap: .5rem; }
-      .countdown__item { min-width: 68px; padding: .8rem .7rem; }
-    }
-
-    /* Balance the hero on short/landscape viewports */
-    @media (max-height: 640px) and (min-width: 700px) {
-      .hat { width: clamp(160px, 24vh, 260px); }
-      .stage { gap: clamp(.6rem, 1.6vh, 1rem); }
-    }
-  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
 </head>
-<body>
-  <div class="caution caution--top" role="presentation" aria-hidden="true"></div>
+<body data-phase="before">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="caution-ribbon caution-ribbon--top" aria-hidden="true"></div>
 
-  <main class="stage" role="main">
-    <span class="kicker"><span class="dot" aria-hidden="true"></span>Under Construction</span>
+  <aside class="preview-banner" id="preview-banner" hidden aria-live="polite">
+    <strong>Preview mode</strong>
+    <span>Sample content for layout testing only. Nothing below is a confirmed announcement.</span>
+    <a href="./">Exit preview</a>
+  </aside>
 
-    <div class="hat">
-      <span class="hat__glow" aria-hidden="true"></span>
-      <img src="network_logo.svg" alt="Monitoring and Evaluation Network Philippines hard-hat logo" class="hat__img" width="400" height="257">
-      <span class="spark" aria-hidden="true"></span>
-      <span class="spark" aria-hidden="true"></span>
-      <span class="spark" aria-hidden="true"></span>
-      <span class="spark" aria-hidden="true"></span>
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#overview" aria-label="MEtamorphosis home">
+        <img src="event_logo.svg" alt="" width="55" height="55">
+        <span class="brand-copy">
+          <strong><span>M</span><em>E</em>tamorphosis</strong>
+          <small>13th M&amp;E Network Forum</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="sr-only">Open navigation</span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#program">Program</a>
+        <a href="#speakers">Crew</a>
+        <a href="#materials">Materials</a>
+        <a href="#qa">Q&amp;A</a>
+        <a href="#gallery">Gallery</a>
+      </nav>
     </div>
+  </header>
 
-    <h1 class="headline">We're <em>cooking</em> something.</h1>
-    <p class="subhead">
-      Hard hats on. The <strong>13th M&amp;E Network Forum</strong> is building its next
-      chapter&mdash;new sessions, new insights, same mission.
-    </p>
-
-    <p class="reveal-label" id="reveal-label">Breaking ground in</p>
-    <div class="countdown" id="countdown" aria-live="polite"></div>
-
-    <span class="date-pill">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-        <line x1="16" y1="2" x2="16" y2="6"></line>
-        <line x1="8" y1="2" x2="8" y2="6"></line>
-        <line x1="3" y1="10" x2="21" y2="10"></line>
-      </svg>
-      September&nbsp;09,&nbsp;2026
-    </span>
-  </main>
-
-  <footer class="footer" role="contentinfo">
-    <p><em>Strategic Outcome Evaluation Division</em> &mdash; <a href="mailto:%26mes-soed@depdev.gov.ph">&amp;mes-soed@depdev.gov.ph</a></p>
-  </footer>
-
-  <div class="caution caution--bottom" role="presentation" aria-hidden="true"></div>
-
-  <div class="bg-shapes" aria-hidden="true">
-    <img src="shapes/shape1.png" alt="" class="bg-shape" role="presentation" width="380" height="380" loading="lazy" decoding="async">
-    <img src="shapes/shape2.png" alt="" class="bg-shape" role="presentation" width="420" height="420" loading="lazy" decoding="async">
-    <img src="shapes/shape3.png" alt="" class="bg-shape" role="presentation" width="300" height="300" loading="lazy" decoding="async">
-    <img src="shapes/shape4.png" alt="" class="bg-shape" role="presentation" width="360" height="360" loading="lazy" decoding="async">
-    <img src="shapes/shape5.png" alt="" class="bg-shape" role="presentation" width="240" height="240" loading="lazy" decoding="async">
-    <img src="shapes/shape6.png" alt="" class="bg-shape" role="presentation" width="260" height="260" loading="lazy" decoding="async">
+  <div class="live-strip" id="live-strip" hidden>
+    <div class="live-strip__inner">
+      <span class="live-dot" aria-hidden="true"></span>
+      <strong>Site open</strong>
+      <span id="live-message">The Forum is underway.</span>
+      <a class="live-strip__link" id="live-qa-link" href="#qa">Go to Q&amp;A</a>
+    </div>
   </div>
 
-  <script>
-    (function () {
-      const target = new Date('2026-09-09T09:00:00+08:00').getTime();
-      const el = document.getElementById('countdown');
-      const label = document.getElementById('reveal-label');
-      if (!el) return;
+  <main id="main-content">
+    <section class="hero" id="overview" aria-labelledby="hero-title">
+      <img class="hero-shape hero-shape--one" src="shapes/shape1.png" alt="" aria-hidden="true">
+      <img class="hero-shape hero-shape--two" src="shapes/shape3.png" alt="" aria-hidden="true">
+      <img class="hero-shape hero-shape--three" src="shapes/shape5.png" alt="" aria-hidden="true">
 
-      const pad = n => String(n).padStart(2, '0');
-      const units = [['Days', 'd'], ['Hours', 'h'], ['Minutes', 'm'], ['Seconds', 's']];
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="status-pill">
+            <span class="status-pill__dot" aria-hidden="true"></span>
+            <span id="phase-label">Under construction</span>
+          </div>
 
-      // Build the card structure once; update only the numbers each tick.
-      const numberEls = {};
-      units.forEach(function (u) {
-        const item = document.createElement('div');
-        item.className = 'countdown__item';
-        const num = document.createElement('span');
-        num.className = 'countdown__number';
-        num.textContent = '--';
-        const lab = document.createElement('span');
-        lab.className = 'countdown__label';
-        lab.textContent = u[0];
-        item.appendChild(num);
-        item.appendChild(lab);
-        el.appendChild(item);
-        numberEls[u[1]] = num;
-      });
+          <p class="eyebrow">13th Monitoring &amp; Evaluation Network Forum</p>
+          <h1 id="hero-title"><span>M</span><span class="hero-title__amp">E</span>tamorphosis</h1>
+          <p class="hero-tagline">Transforming evidence into <em>action.</em></p>
+          <p class="hero-description">
+            The Forum is taking shape. On September 9, the Philippine M&amp;E community
+            returns to examine how better evidence, responsible innovation, and shared
+            practice can strengthen public decisions.
+          </p>
 
-      function set(node, value) {
-        const str = String(value);
-        if (node.textContent !== str) node.textContent = str;
-      }
+          <div class="hero-actions" aria-label="Event actions">
+            <button class="button button--primary" id="registration-action" type="button" disabled>
+              Registration — coming soon
+            </button>
+            <a class="button button--secondary" href="#program">See what we’re building</a>
+          </div>
 
-      let timer;
+          <div class="date-board" aria-label="Event date">
+            <span class="date-board__pin" aria-hidden="true"></span>
+            <span class="date-board__label">Save the date</span>
+            <strong>September 09, 2026</strong>
+            <small>Opening time and venue are for confirmation</small>
+          </div>
+        </div>
 
-      function render() {
-        const distance = target - Date.now();
+        <div class="hero-visual" aria-label="M&E Network Philippines construction identity">
+          <div class="blueprint blueprint--hero">
+            <span class="blueprint__label">Project 13 / 2026</span>
+            <div class="hard-hat">
+              <span class="hard-hat__glow" aria-hidden="true"></span>
+              <img src="network_logo.svg" alt="Monitoring and Evaluation Network Philippines hard-hat logo" width="400" height="257">
+            </div>
+            <p class="blueprint__caption">A stronger space for evidence is being built.</p>
+            <span class="blueprint__stamp" id="hero-stamp">Work in progress</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        if (distance <= 0) {
-          el.className = 'countdown countdown--done';
-          el.textContent = 'The wait is over — see you there!';
-          if (label) label.textContent = 'It’s here';
-          if (timer) clearInterval(timer);
-          return;
-        }
+    <section class="build-map section" aria-labelledby="build-map-title">
+      <div class="section-inner">
+        <div class="section-heading section-heading--split">
+          <div>
+            <p class="eyebrow">The site plan</p>
+            <h2 id="build-map-title">What we’re building</h2>
+          </div>
+          <p>
+            One event site, designed to move with the Forum—from the first announcement
+            to the live day and, finally, to the evidence archive.
+          </p>
+        </div>
 
-        set(numberEls.d, Math.floor(distance / 86400000));
-        set(numberEls.h, pad(Math.floor((distance % 86400000) / 3600000)));
-        set(numberEls.m, pad(Math.floor((distance % 3600000) / 60000)));
-        set(numberEls.s, pad(Math.floor((distance % 60000) / 1000)));
-      }
+        <div class="build-grid">
+          <article class="build-card build-card--blue">
+            <span class="build-card__number">01</span>
+            <span class="build-card__icon" aria-hidden="true">▦</span>
+            <h3>Program board</h3>
+            <p>Sessions, tracks, logistics, and live “on now” guidance in one scannable schedule.</p>
+            <span class="tape-label">Fitting out</span>
+          </article>
+          <article class="build-card build-card--yellow">
+            <span class="build-card__number">02</span>
+            <span class="build-card__icon" aria-hidden="true">●</span>
+            <h3>Meet the crew</h3>
+            <p>Resource persons organized by plenary, breakout, and role once confirmations arrive.</p>
+            <span class="tape-label">Roster pending</span>
+          </article>
+          <article class="build-card build-card--red">
+            <span class="build-card__number">03</span>
+            <span class="build-card__icon" aria-hidden="true">?</span>
+            <h3>Questions on site</h3>
+            <p>A clear hand-off to the official Q&amp;A room when the event interaction link is ready.</p>
+            <span class="tape-label">Connection pending</span>
+          </article>
+          <article class="build-card build-card--sky">
+            <span class="build-card__number">04</span>
+            <span class="build-card__icon" aria-hidden="true">↗</span>
+            <h3>Evidence depot</h3>
+            <p>Session notes, presentation files, and gallery results after they are verified.</p>
+            <span class="tape-label">Opens after forum</span>
+          </article>
+        </div>
+      </div>
+    </section>
 
-      render();
-      timer = setInterval(render, 1000);
-    })();
-  </script>
+    <section class="program section section--blueprint" id="program" aria-labelledby="program-title">
+      <div class="section-inner">
+        <div class="section-heading section-heading--split">
+          <div>
+            <p class="eyebrow">Construction schedule</p>
+            <h2 id="program-title">Program of activities</h2>
+          </div>
+          <div class="section-status" id="program-status">
+            <span class="status-light" aria-hidden="true"></span>
+            <span>Program details are for confirmation</span>
+          </div>
+        </div>
+
+        <div class="coming-soon" id="program-placeholder">
+          <div class="coming-soon__mark" aria-hidden="true">+</div>
+          <div>
+            <span class="tape-label">Program board in progress</span>
+            <h3>The day’s structure is being finalized.</h3>
+            <p>Confirmed sessions, tracks, times, and rooms will be posted here.</p>
+          </div>
+        </div>
+
+        <div class="program-toolbar" id="program-toolbar" hidden>
+          <p id="program-disclaimer">Preview schedule — not an announcement</p>
+          <div>
+            <button class="text-button" id="expand-program" type="button">Expand all</button>
+            <button class="text-button" id="collapse-program" type="button">Collapse all</button>
+          </div>
+        </div>
+        <div class="program-list" id="program-list"></div>
+      </div>
+    </section>
+
+    <section class="speakers section" id="speakers" aria-labelledby="speakers-title">
+      <img class="section-shape section-shape--right" src="shapes/shape2.png" alt="" aria-hidden="true">
+      <div class="section-inner">
+        <div class="section-heading section-heading--split">
+          <div>
+            <p class="eyebrow">People on the project</p>
+            <h2 id="speakers-title">Resource persons</h2>
+          </div>
+          <p>Names and affiliations will appear only after confirmations are complete.</p>
+        </div>
+
+        <div class="coming-soon coming-soon--crew" id="speakers-placeholder">
+          <div class="crew-silhouettes" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div>
+            <span class="tape-label">Crew list pending</span>
+            <h3>The roster is under review.</h3>
+            <p>Check back for the confirmed keynote, panelists, presenters, reactors, and moderators.</p>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="speaker-filters" hidden aria-label="Filter preview resource persons"></div>
+        <div class="speaker-grid" id="speaker-grid"></div>
+      </div>
+    </section>
+
+    <section class="materials section section--dark" id="materials" aria-labelledby="materials-title">
+      <div class="section-inner materials-grid">
+        <div>
+          <p class="eyebrow eyebrow--light">Evidence depot</p>
+          <h2 id="materials-title">Notes &amp; materials</h2>
+          <p class="section-lead">
+            This becomes the Forum’s working archive after sessions close and files pass
+            the Secretariat’s publication check.
+          </p>
+          <div class="depot-status">
+            <span class="depot-status__lamp" aria-hidden="true"></span>
+            <div>
+              <strong id="materials-status-title">Depot closed</strong>
+              <span id="materials-status-copy">Materials publish after the Forum.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="depot-board" id="materials-list">
+          <div class="depot-shelf">
+            <span class="depot-box depot-box--one">Session notes</span>
+            <span class="depot-box depot-box--two">Slide decks</span>
+            <span class="depot-box depot-box--three">Synthesis</span>
+          </div>
+          <p>Verified files will be indexed here. No sample download is presented as final.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="qa section" id="qa" aria-labelledby="qa-title">
+      <div class="section-inner">
+        <div class="qa-board">
+          <div class="qa-copy">
+            <p class="eyebrow">Question desk</p>
+            <h2 id="qa-title">Ask a question</h2>
+            <p>
+              During the Forum, this area connects delegates to the official moderated
+              Q&amp;A room. The link will be activated only after it is confirmed.
+            </p>
+            <button class="button button--primary" id="qa-action" type="button" disabled>
+              Q&amp;A link — coming soon
+            </button>
+          </div>
+          <div class="question-card" id="question-preview">
+            <span class="question-card__tape" aria-hidden="true"></span>
+            <span class="question-card__label">Question desk status</span>
+            <strong>Not yet connected</strong>
+            <p>The official interaction platform is for confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery section" id="gallery" aria-labelledby="gallery-title">
+      <img class="section-shape section-shape--left" src="shapes/shape4.png" alt="" aria-hidden="true">
+      <div class="section-inner">
+        <div class="section-heading section-heading--split">
+          <div>
+            <p class="eyebrow">Regional knowledge gallery</p>
+            <h2 id="gallery-title">Evidence on display</h2>
+          </div>
+          <p>
+            Gallery entries and any final tally will be published only from the
+            Secretariat’s verified record.
+          </p>
+        </div>
+
+        <div class="gallery-wall" id="gallery-list">
+          <article class="poster-placeholder">
+            <span class="poster-placeholder__clip" aria-hidden="true"></span>
+            <span>Poster bay A</span>
+            <strong>Awaiting confirmed entry</strong>
+          </article>
+          <article class="poster-placeholder">
+            <span class="poster-placeholder__clip" aria-hidden="true"></span>
+            <span>Poster bay B</span>
+            <strong>Awaiting confirmed entry</strong>
+          </article>
+          <article class="poster-placeholder">
+            <span class="poster-placeholder__clip" aria-hidden="true"></span>
+            <span>Poster bay C</span>
+            <strong>Awaiting confirmed entry</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="archive section" aria-labelledby="archive-title">
+      <div class="section-inner">
+        <div class="archive-card">
+          <div class="archive-card__badge" aria-hidden="true">12</div>
+          <div>
+            <p class="eyebrow">Previous build</p>
+            <h2 id="archive-title">Explore the 12th M&amp;E Network Forum</h2>
+            <p>Revisit the 2025 program, resource persons, and event materials.</p>
+          </div>
+          <a class="button button--secondary" href="archive/12th-mne-forum-2025.html">Open the 2025 archive</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="agency_logo.svg" alt="Department of Economy, Planning, and Development" width="245" height="96">
+        <p>Convened by the Department of Economy, Planning, and Development.</p>
+      </div>
+      <div class="footer-links">
+        <strong>13th M&amp;E Network Forum</strong>
+        <a href="#program">Program</a>
+        <a href="#speakers">Resource persons</a>
+        <a href="#materials">Notes &amp; materials</a>
+        <a href="mailto:%26mes-soed@depdev.gov.ph">&amp;mes-soed@depdev.gov.ph</a>
+      </div>
+      <div class="footer-status">
+        <span class="tape-label">Project status</span>
+        <strong id="footer-phase">Under construction</strong>
+        <small>September 9, 2026</small>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 DEPDev</span>
+      <span>Program and participation details remain subject to confirmation.</span>
+    </div>
+  </footer>
+
+  <div class="caution-ribbon caution-ribbon--bottom" aria-hidden="true"></div>
 </body>
 </html>
