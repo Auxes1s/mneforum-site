@@ -30,8 +30,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@500;600;700&display=swap"></noscript>
 
   <style>
     :root {
@@ -44,13 +44,14 @@
       --text-light: #666;
       --font-primary: 'Inter', sans-serif;
       --font-secondary: 'Playfair Display', serif;
+      --font-ui: 'Poppins', 'Inter', sans-serif;
 
       /* Shared UI tokens */
-      --radius-card: 16px;
+      --radius-card: 22px;
       --radius-pill: 999px;
-      --shadow-sm: 0 6px 18px rgb(4 23 55 / .12);
-      --shadow-md: 0 10px 24px rgb(4 23 55 / .1);
-      --shadow-lg: 0 18px 40px rgb(4 23 55 / .16);
+      --shadow-sm: 0 4px 14px rgb(4 23 55 / .07);
+      --shadow-md: 0 8px 25px rgb(4 23 55 / .09);
+      --shadow-lg: 0 18px 42px rgb(4 23 55 / .14);
       --ease-out: cubic-bezier(.22, 1, .36, 1);
       --ease-soft: cubic-bezier(.45, 0, .25, 1);
     }
@@ -75,16 +76,19 @@
       position: fixed;
       inset: 0;
       background: url(assets/background.png) center / cover no-repeat;
-      opacity: .9;
+      opacity: .72;
       z-index: -3;
     }
 
-    /* Soft wash so text stays readable over the background */
+    /* Warm paper wash and the halftone texture used by the 13th Forum identity. */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(248,244,235,.35) 0%, rgba(248,244,235,.8) 70%, rgba(248,244,235,.95) 100%);
+      background:
+        radial-gradient(circle at 16% 22%, rgb(68 152 211 / .13) 0 1.3px, transparent 1.5px) 0 0 / 15px 15px,
+        radial-gradient(circle at 82% 76%, rgb(241 168 30 / .13) 0 1.2px, transparent 1.45px) 0 0 / 17px 17px,
+        radial-gradient(ellipse at center, rgba(248,244,235,.58) 0%, rgba(248,244,235,.86) 68%, rgba(248,244,235,.97) 100%);
       z-index: -2;
     }
 
@@ -92,12 +96,12 @@
 
     /* ---------- Caution ribbon ---------- */
     .caution {
-      height: 15px;
+      height: 13px;
       width: 100%;
       background: repeating-linear-gradient(
         -45deg,
-        var(--brand-yellow) 0 22px,
-        #2b2825 22px 44px
+        var(--brand-yellow) 0 20px,
+        #2b2825 20px 40px
       );
       z-index: 2;
       position: relative;
@@ -126,7 +130,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 960px;
+      max-width: 980px;
       margin-inline: auto;
     }
 
@@ -136,13 +140,14 @@
       gap: .55rem;
       font-weight: 700;
       font-size: .8rem;
+      font-family: var(--font-ui);
       letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--brand-blue-dark);
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.9);
       padding: .5rem 1.1rem .5rem .95rem;
       border-radius: var(--radius-pill);
-      border: 1px solid rgb(4 23 55 / .06);
+      border: 1px solid rgb(10 87 163 / .1);
       box-shadow: var(--shadow-sm);
       backdrop-filter: blur(4px);
       animation: fadeUp .8s .1s var(--ease-out) both;
@@ -157,23 +162,57 @@
     /* ---------- Hard hat centerpiece ---------- */
     .hat {
       position: relative;
-      width: clamp(200px, 40vw, 380px);
+      width: clamp(205px, 40vw, 365px);
       margin: clamp(.25rem, 1.5vw, .75rem) 0;
       animation: hatIn 1s .05s var(--ease-out) both;
+      isolation: isolate;
+      padding: clamp(.75rem, 2vw, 1.2rem);
+    }
+    .hat::before {
+      content: '';
+      position: absolute;
+      inset: 4% -8% 0;
+      border: 1px solid rgb(10 87 163 / .12);
+      border-radius: 36px;
+      background:
+        linear-gradient(rgb(10 87 163 / .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(10 87 163 / .045) 1px, transparent 1px),
+        rgba(255,255,255,.68);
+      background-size: 22px 22px;
+      box-shadow: var(--shadow-md);
+      transform: rotate(1.25deg);
+      z-index: -1;
+    }
+    .hat::after {
+      content: 'PROJECT 13 / 2026';
+      position: absolute;
+      right: -1%;
+      bottom: 4%;
+      padding: .28rem .52rem;
+      border: 2px solid var(--brand-red);
+      color: var(--brand-red);
+      background: rgb(248 244 235 / .88);
+      font-family: var(--font-ui);
+      font-size: .48rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transform: rotate(-5deg);
+      z-index: 3;
     }
     .hat__glow {
       position: absolute;
       left: 50%; top: 55%;
       width: 140%; aspect-ratio: 1;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(241,168,30,.45) 0%, rgba(241,168,30,0) 62%);
+      background: radial-gradient(circle, rgba(241,168,30,.38) 0%, rgba(241,168,30,0) 64%);
       z-index: -1;
       will-change: transform, opacity;
       animation: breathe 5s var(--ease-soft) infinite;
     }
     .hat__img {
       width: 100%;
-      filter: drop-shadow(0 18px 26px rgb(4 23 55 / .22));
+      filter: drop-shadow(0 17px 24px rgb(4 23 55 / .19));
       transform-origin: 50% 88%;
       will-change: transform;
       animation: tip 6s var(--ease-soft) infinite;
@@ -194,11 +233,34 @@
     .spark:nth-child(6) { width: 6px;  height: 6px;  left: 20%; top: 68%; animation: drift 5.8s var(--ease-soft) 2.1s infinite; }
 
     /* ---------- Copy ---------- */
+    .project-name {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .08em;
+      margin-top: -.15rem;
+      color: var(--brand-blue-dark);
+      font-family: var(--font-ui);
+      font-size: clamp(.92rem, 2.2vw, 1.08rem);
+      font-weight: 700;
+      letter-spacing: .035em;
+      animation: fadeUp .85s .14s var(--ease-out) both;
+    }
+    .project-name__m { color: var(--brand-red); }
+    .project-name__e { color: var(--brand-yellow); }
+    .project-name__label {
+      margin-left: .45em;
+      color: var(--text-light);
+      font-size: .62em;
+      font-weight: 600;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
     .headline {
       font-family: var(--font-secondary);
       font-weight: 900;
       color: var(--brand-blue-dark);
-      font-size: clamp(2.1rem, 7vw, 4rem);
+      font-size: clamp(2.15rem, 7vw, 4.15rem);
       line-height: 1.05;
       max-width: 16ch;
       text-wrap: balance;
@@ -213,7 +275,7 @@
     .subhead {
       font-size: clamp(1rem, 2.6vw, 1.25rem);
       color: var(--text-light);
-      max-width: 46ch;
+      max-width: 48ch;
       line-height: 1.6;
       text-wrap: pretty;
       animation: fadeUp .9s .32s var(--ease-out) both;
@@ -227,6 +289,7 @@
       letter-spacing: .18em;
       text-transform: uppercase;
       font-weight: 700;
+      font-family: var(--font-ui);
       color: var(--brand-red);
       animation: fadeUp .9s .4s var(--ease-out) both;
     }
@@ -247,10 +310,14 @@
       border-radius: var(--radius-card);
       min-width: 84px;
       box-shadow: var(--shadow-md);
-      border: 1px solid rgb(4 23 55 / .05);
-      border-top: 4px solid var(--brand-yellow);
+      border: 1px solid rgb(10 87 163 / .09);
+      border-top: 4px solid var(--card-accent, var(--brand-yellow));
       transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
     }
+    .countdown__item:nth-child(1) { --card-accent: var(--brand-blue-dark); }
+    .countdown__item:nth-child(2) { --card-accent: var(--brand-yellow); }
+    .countdown__item:nth-child(3) { --card-accent: var(--brand-red); }
+    .countdown__item:nth-child(4) { --card-accent: var(--brand-blue-medium); }
     .countdown__item:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-lg);
@@ -268,6 +335,7 @@
       font-feature-settings: "tnum" 1;
     }
     .countdown__label {
+      font-family: var(--font-ui);
       font-size: .72rem;
       text-transform: uppercase;
       letter-spacing: .1em;
@@ -293,11 +361,12 @@
       gap: .6rem;
       margin-top: .35rem;
       font-weight: 600;
+      font-family: var(--font-ui);
       color: var(--brand-blue-dark);
       background: rgba(255,255,255,.72);
       padding: .55rem 1.15rem;
       border-radius: var(--radius-pill);
-      border: 1px dashed var(--brand-blue-medium);
+      border: 1px dashed rgb(10 87 163 / .55);
       backdrop-filter: blur(4px);
       animation: fadeUp .9s .56s var(--ease-out) both;
     }
@@ -309,6 +378,7 @@
       padding: 1.5rem 1.25rem 2rem;
       font-size: .9rem;
       color: var(--text-light);
+      font-family: var(--font-ui);
       position: relative;
       z-index: 1;
     }
@@ -333,17 +403,18 @@
     .bg-shape {
       position: absolute;
       aspect-ratio: 1 / 1; height: auto;
-      opacity: .5;
+      opacity: .34;
+      filter: saturate(.9);
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }
-    .bg-shape:nth-child(1) { top: 62%; left: -8%;  width: 380px; opacity: .5;  animation: spin1 30s; }
-    .bg-shape:nth-child(2) { top: 8%;  left: 74%;  width: 420px; opacity: .5;  animation: spin2 38s alternate; }
-    .bg-shape:nth-child(3) { bottom: 6%; left: 78%; width: 300px; opacity: .45; animation: spin2 24s; }
-    .bg-shape:nth-child(4) { bottom: 4%; right: 66%; width: 360px; opacity: .5;  animation: spin1 34s alternate; }
-    .bg-shape:nth-child(5) { top: 40%; left: 40%;  width: 240px; opacity: .28; animation: spin1 42s alternate; }
-    .bg-shape:nth-child(6) { top: -4%; left: 4%;   width: 260px; opacity: .38; animation: spin2 46s; }
+    .bg-shape:nth-child(1) { top: 62%; left: -8%;  width: 380px; opacity: .34; animation: spin1 44s; }
+    .bg-shape:nth-child(2) { top: 8%;  left: 74%;  width: 420px; opacity: .36; animation: spin2 52s alternate; }
+    .bg-shape:nth-child(3) { bottom: 6%; left: 78%; width: 300px; opacity: .3; animation: spin2 40s; }
+    .bg-shape:nth-child(4) { bottom: 4%; right: 66%; width: 360px; opacity: .34; animation: spin1 48s alternate; }
+    .bg-shape:nth-child(5) { top: 40%; left: 40%;  width: 240px; opacity: .19; animation: spin1 58s alternate; }
+    .bg-shape:nth-child(6) { top: -4%; left: 4%;   width: 260px; opacity: .26; animation: spin2 60s; }
 
     /* ---------- Keyframes ---------- */
     @keyframes hatIn {
@@ -403,8 +474,28 @@
 
     @media (max-width: 480px) {
       html { font-size: 15px; }
-      .countdown { gap: .5rem; }
-      .countdown__item { min-width: 68px; padding: .8rem .7rem; }
+      .stage {
+        padding-inline: 1rem;
+        gap: .8rem;
+      }
+      .hat { width: min(78vw, 310px); }
+      .project-name {
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 19rem;
+      }
+      .project-name__label {
+        flex-basis: 100%;
+        margin: .2rem 0 0;
+      }
+      .countdown {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .6rem;
+        width: min(100%, 290px);
+      }
+      .countdown__item { min-width: 0; padding: .8rem .7rem; }
+      .footer { padding-inline: 1rem; }
     }
 
     /* Balance the hero on short/landscape viewports */
@@ -428,6 +519,11 @@
       <span class="spark" aria-hidden="true"></span>
       <span class="spark" aria-hidden="true"></span>
     </div>
+
+    <p class="project-name" aria-label="MEtamorphosis, 13th M&amp;E Network Forum">
+      <span class="project-name__m">M</span><span class="project-name__e">E</span><span>tamorphosis</span>
+      <span class="project-name__label">13th M&amp;E Network Forum</span>
+    </p>
 
     <h1 class="headline">We're <em>cooking</em> something.</h1>
     <p class="subhead">
