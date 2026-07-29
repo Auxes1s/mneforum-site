@@ -75,20 +75,29 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: url(assets/background.png) center / cover no-repeat;
-      opacity: .72;
+      background:
+        linear-gradient(
+          to bottom,
+          rgb(248 244 235 / .04) 0%,
+          rgb(248 244 235 / .7) 30%,
+          rgb(248 244 235 / .94) 68%,
+          var(--neutral-bg) 100%
+        ),
+        url(assets/background.png) center top / cover no-repeat;
       z-index: -3;
     }
 
-    /* Warm paper wash and the halftone texture used by the 13th Forum identity. */
+    /* Gentle paper wash for legibility over the branch-authentic background. */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle at 16% 22%, rgb(68 152 211 / .13) 0 1.3px, transparent 1.5px) 0 0 / 15px 15px,
-        radial-gradient(circle at 82% 76%, rgb(241 168 30 / .13) 0 1.2px, transparent 1.45px) 0 0 / 17px 17px,
-        radial-gradient(ellipse at center, rgba(248,244,235,.58) 0%, rgba(248,244,235,.86) 68%, rgba(248,244,235,.97) 100%);
+      background: radial-gradient(
+        ellipse at center,
+        rgb(248 244 235 / .2) 0%,
+        rgb(248 244 235 / .08) 58%,
+        transparent 100%
+      );
       z-index: -2;
     }
 
@@ -416,34 +425,6 @@
       outline-offset: 3px;
     }
 
-    /* ---------- Floating butterflies ---------- */
-    .butterflies {
-      position: fixed; inset: 0;
-      z-index: -1; pointer-events: none; overflow: hidden;
-    }
-    .butterfly {
-      position: absolute;
-      display: block;
-      aspect-ratio: 1;
-      opacity: .38;
-      will-change: transform;
-      animation-iteration-count: infinite;
-      animation-timing-function: var(--ease-soft);
-    }
-    .butterfly img {
-      width: 100%;
-      height: auto;
-      transform-origin: center;
-      animation: wingbeat 2.6s var(--ease-soft) infinite alternate;
-      will-change: transform;
-    }
-    .butterfly:nth-child(1) { top: 10%; left: 4%; width: clamp(52px, 7vw, 78px); opacity: .2; animation: butterflyFloat1 18s infinite alternate; }
-    .butterfly:nth-child(2) { top: 16%; right: 5%; width: clamp(68px, 9vw, 102px); opacity: .24; animation: butterflyFloat2 21s infinite alternate; }
-    .butterfly:nth-child(3) { bottom: 9%; right: 8%; width: clamp(46px, 6vw, 68px); opacity: .17; animation: butterflyFloat1 20s -5s infinite alternate; }
-    .butterfly:nth-child(4) { bottom: 8%; left: 7%; width: clamp(58px, 8vw, 88px); opacity: .2; animation: butterflyFloat2 19s -8s infinite alternate; }
-    .butterfly:nth-child(2) img,
-    .butterfly:nth-child(4) img { animation-delay: -.9s; }
-
     /* ---------- Keyframes ---------- */
     @keyframes hatIn {
       from { opacity: 0; transform: translateY(22px) scale(.94); }
@@ -474,19 +455,6 @@
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes wingbeat {
-      from { transform: scaleX(.88) rotate(-1deg); }
-      to { transform: scaleX(1) rotate(1deg); }
-    }
-    @keyframes butterflyFloat1 {
-      from { transform: translate3d(-4px, 7px, 0) rotate(-5deg); }
-      to { transform: translate3d(14px, -12px, 0) rotate(5deg); }
-    }
-    @keyframes butterflyFloat2 {
-      from { transform: translate3d(9px, -6px, 0) rotate(4deg); }
-      to { transform: translate3d(-12px, 11px, 0) rotate(-6deg); }
-    }
-
     .spark:nth-child(5) { --dx: -18px; }
     .spark:nth-child(7) { --dx: -10px; }
 
@@ -498,7 +466,7 @@
         transition-duration: .001ms !important;
         scroll-behavior: auto !important;
       }
-      .hat__img, .hat__glow, .magnifier, .spark, .butterfly, .butterfly img { will-change: auto; }
+      .hat__img, .hat__glow, .magnifier, .spark { will-change: auto; }
       .hat__img { transform: rotate(0); }
       .magnifier { top: 23%; left: 60%; transform: none; }
       .spark { opacity: 0; }
@@ -584,13 +552,6 @@
   </footer>
 
   <div class="caution caution--bottom" role="presentation" aria-hidden="true"></div>
-
-  <div class="butterflies" aria-hidden="true">
-    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
-  </div>
 
   <script>
     (function () {
