@@ -433,17 +433,16 @@
     .butterfly img {
       width: 100%;
       height: auto;
-      animation: wingbeat 1.25s var(--ease-soft) infinite alternate;
+      transform-origin: center;
+      animation: wingbeat 2.6s var(--ease-soft) infinite alternate;
       will-change: transform;
     }
-    .butterfly:nth-child(1) { top: 6%; left: -5%; width: 340px; animation: butterflyFloat1 16s infinite alternate; }
-    .butterfly:nth-child(2) { top: 12%; right: -7%; width: 420px; opacity: .3; animation: butterflyFloat2 19s infinite alternate; }
-    .butterfly:nth-child(3) { bottom: -5%; right: 4%; width: 330px; opacity: .26; animation: butterflyFloat1 18s -5s infinite alternate; }
-    .butterfly:nth-child(4) { bottom: 2%; left: 2%; width: 280px; opacity: .24; animation: butterflyFloat2 17s -8s infinite alternate; }
-    .butterfly:nth-child(5) { top: 38%; left: 42%; width: 210px; opacity: .12; animation: butterflyFloat1 20s -3s infinite alternate; }
+    .butterfly:nth-child(1) { top: 10%; left: 4%; width: clamp(52px, 7vw, 78px); opacity: .2; animation: butterflyFloat1 18s infinite alternate; }
+    .butterfly:nth-child(2) { top: 16%; right: 5%; width: clamp(68px, 9vw, 102px); opacity: .24; animation: butterflyFloat2 21s infinite alternate; }
+    .butterfly:nth-child(3) { bottom: 9%; right: 8%; width: clamp(46px, 6vw, 68px); opacity: .17; animation: butterflyFloat1 20s -5s infinite alternate; }
+    .butterfly:nth-child(4) { bottom: 8%; left: 7%; width: clamp(58px, 8vw, 88px); opacity: .2; animation: butterflyFloat2 19s -8s infinite alternate; }
     .butterfly:nth-child(2) img,
-    .butterfly:nth-child(4) img { filter: hue-rotate(92deg) saturate(.78); animation-delay: -.45s; }
-    .butterfly:nth-child(3) img { filter: hue-rotate(320deg) saturate(1.1); animation-delay: -.8s; }
+    .butterfly:nth-child(4) img { animation-delay: -.9s; }
 
     /* ---------- Keyframes ---------- */
     @keyframes hatIn {
@@ -476,16 +475,16 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes wingbeat {
-      from { transform: scaleX(.76) rotate(-1deg); }
+      from { transform: scaleX(.88) rotate(-1deg); }
       to { transform: scaleX(1) rotate(1deg); }
     }
     @keyframes butterflyFloat1 {
-      from { transform: translate3d(-8px, 14px, 0) rotate(-8deg); }
-      to { transform: translate3d(28px, -24px, 0) rotate(8deg); }
+      from { transform: translate3d(-4px, 7px, 0) rotate(-5deg); }
+      to { transform: translate3d(14px, -12px, 0) rotate(5deg); }
     }
     @keyframes butterflyFloat2 {
-      from { transform: translate3d(18px, -12px, 0) rotate(7deg); }
-      to { transform: translate3d(-24px, 22px, 0) rotate(-9deg); }
+      from { transform: translate3d(9px, -6px, 0) rotate(4deg); }
+      to { transform: translate3d(-12px, 11px, 0) rotate(-6deg); }
     }
 
     .spark:nth-child(5) { --dx: -18px; }
@@ -587,11 +586,10 @@
   <div class="caution caution--bottom" role="presentation" aria-hidden="true"></div>
 
   <div class="butterflies" aria-hidden="true">
-    <span class="butterfly"><img src="shapes/shape1.png" alt="" role="presentation" width="500" height="500" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="shapes/shape1.png" alt="" role="presentation" width="500" height="500" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="shapes/shape1.png" alt="" role="presentation" width="500" height="500" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="shapes/shape1.png" alt="" role="presentation" width="500" height="500" loading="lazy" decoding="async"></span>
-    <span class="butterfly"><img src="shapes/shape1.png" alt="" role="presentation" width="500" height="500" loading="lazy" decoding="async"></span>
+    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
+    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
+    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
+    <span class="butterfly"><img src="assets/forum-butterfly.svg" alt="" role="presentation" width="432" height="432" loading="lazy" decoding="async"></span>
   </div>
 
   <script>
