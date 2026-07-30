@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
-    let initialThinkingMode = 'high';
+    let initialThinkingMode = 'instant';
     try {
       const storedMode = window.sessionStorage.getItem('forum-thinking-mode');
       if (['instant', 'high', 'ultra'].includes(storedMode)) {
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       )
       .replace(
         '<h1>Transforming evidence into <span>action</span>.</h1>',
-        '<details class="thinking-mode"><summary><span class="thinking-mode__mark" aria-hidden="true"><i></i></span><span class="thinking-mode__label">Thinking mode</span><strong class="thinking-mode__current">High</strong><span class="thinking-mode__chevron" aria-hidden="true">⌄</span></summary><fieldset class="thinking-mode__panel"><legend>Choose how the idea unfolds</legend><p>High plays once on each visit.</p><label><input type="radio" name="thinking-mode" value="instant"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>Instant</strong><small>Outcome first</small><em>~0.6 sec</em></span></label><label><input type="radio" name="thinking-mode" value="high" checked><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>High</strong><small>See the idea form</small><em>~5 sec</em></span></label><label><input type="radio" name="thinking-mode" value="ultra"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>Ultra</strong><small>Full metamorphosis</small><em>~12 sec</em></span></label></fieldset></details><div class="thinking-ambient" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h1><span class="sr-only">Evidence to Action in the Age of AI.</span><span class="hero__headline-stage" data-thinking-state="static" aria-hidden="true"><span class="thinking-intro"><span class="thinking-word">Gathering evidence...</span></span><span class="hero__headline-final">Evidence to <span class="hero__action-word">Action</span> in the <span class="hero__action-word hero__action-word--ai">Age of AI</span>.</span><span class="hero__typing-layer"><span class="hero__typing-prefix"></span><span class="hero__typing-action hero__action-word"></span><span class="hero__typing-mid"></span><span class="hero__typing-ai hero__action-word hero__action-word--ai"></span><span class="hero__typing-period"></span><span class="hero__typing-caret"></span></span><span class="mode-flow"><i></i><i></i><i></i></span></span></h1>'
+        '<details class="thinking-mode"><summary><span class="thinking-mode__mark" aria-hidden="true"><i></i></span><span class="thinking-mode__label">Thinking mode</span><strong class="thinking-mode__current">Instant</strong><span class="thinking-mode__chevron" aria-hidden="true">⌄</span></summary><fieldset class="thinking-mode__panel"><legend>Choose how the idea unfolds</legend><p>Every load replays the mode you pick.</p><label><input type="radio" name="thinking-mode" value="instant" checked><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>Instant</strong><small>Outcome first</small><em>~0.6 sec</em></span></label><label><input type="radio" name="thinking-mode" value="high"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>High</strong><small>See the idea form</small><em>~5 sec</em></span></label><label><input type="radio" name="thinking-mode" value="ultra"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><strong>Ultra</strong><small>Full metamorphosis</small><em>~12 sec</em></span></label></fieldset></details><div class="thinking-ambient" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h1><span class="sr-only">Evidence to Action in the Age of AI.</span><span class="hero__headline-stage" data-thinking-state="static" aria-hidden="true"><span class="thinking-intro"><span class="thinking-word">Gathering evidence...</span></span><span class="hero__headline-final">Evidence to <span class="hero__action-word">Action</span> in the <span class="hero__action-word hero__action-word--ai">Age of AI</span>.</span><span class="hero__typing-layer"><span class="hero__typing-prefix"></span><span class="hero__typing-action hero__action-word"></span><span class="hero__typing-mid"></span><span class="hero__typing-ai hero__action-word hero__action-word--ai"></span><span class="hero__typing-period"></span><span class="hero__typing-caret"></span></span><span class="mode-flow"><i></i><i></i><i></i></span></span></h1>'
       );
     template = template.replace(
       '<div class="thinking-ambient" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>',
@@ -2683,6 +2683,825 @@ document.addEventListener('DOMContentLoaded', async function() {
           animation: none !important;
         }
       }
+
+      /* ==================================================================
+         Down-page pass — section rhythm, program spine, card discipline,
+         motion choreography, and a footer that speaks the same language
+         as the sections above it.
+
+         Appended after the QA layer for the same reason that layer was
+         appended after the base: everything here is a deliberate override
+         of the bundled template, and keeping it in one block means the
+         next person can read the intent instead of diffing specificity.
+         ================================================================== */
+
+      /* --- Local tokens ---------------------------------------------------
+         Every new colour lands here first so Ultra only has to restate the
+         handful of values below rather than shadow each component rule. */
+      :root {
+        --rule-accent: linear-gradient(90deg, var(--brand-yellow), #c3435d);
+        --line-soft: rgba(10,87,163,.14);
+        --line-mid: rgba(10,87,163,.3);
+        --panel-surface: rgba(255,255,255,.58);
+        --panel-surface-hover: #fff;
+        --elev-1: 0 10px 28px rgba(4,23,55,.06);
+        --elev-2: 0 18px 40px rgba(4,23,55,.12);
+        --node-neutral: #b5a88f;
+        --badge-tint: linear-gradient(140deg, #eef6ff, #e0ecfa);
+        --chev-ink: var(--brand-blue-dark);
+        --chev-ink-on: #fff;
+        --chev-fill: var(--brand-blue-dark);
+        --stat-ink: #1f6fa8;
+        --label-ink: var(--brand-blue-dark);
+        --footer-surface: linear-gradient(180deg, #0d5da8 0%, #084b8c 60%, #073d75 100%);
+        --footer-label: #ffc65c;
+        --footer-text: rgba(255,255,255,.86);
+        --footer-line: rgba(255,255,255,.18);
+        --footer-bar: rgba(0,0,0,.17);
+      }
+      html[data-thinking-mode="ultra"] {
+        --line-soft: rgba(114,198,246,.18);
+        --line-mid: rgba(114,198,246,.4);
+        --panel-surface: rgba(11,30,46,.72);
+        --panel-surface-hover: rgba(17,44,66,.94);
+        --elev-1: 0 14px 34px rgba(0,0,0,.28);
+        --elev-2: 0 20px 46px rgba(0,0,0,.42);
+        --node-neutral: #5b7d94;
+        --badge-tint: linear-gradient(140deg, rgba(72,152,211,.24), rgba(7,89,163,.16));
+        --chev-ink: #cfe9f9;
+        --chev-ink-on: #06202f;
+        --chev-fill: #7fc2ea;
+        --stat-ink: #8fc9ed;
+        --label-ink: #8fc9ed;
+        --footer-surface: linear-gradient(145deg, #04101a, #071d2d);
+        --footer-label: #ffc24a;
+        --footer-line: rgba(114,198,246,.2);
+        --footer-bar: rgba(0,0,0,.3);
+      }
+
+      /* --- Motion 1: hand the reveal to JS -------------------------------
+         The bundle faded in a whole <section> at a time, and only above
+         900px with a hover-capable pointer, so a phone saw six slabs snap
+         into place and a laptop saw one 560ms fade per screenful. Both
+         states are neutralised here; initScrollChoreography() re-reveals
+         the individual cards, rows and columns instead. The mode-specific
+         selectors are restated so equal specificity lets these win. */
+      main section:not(.hero) .section-shell,
+      html.motion-enabled main section:not(.hero) .section-shell,
+      html[data-thinking-mode="instant"].motion-enabled main section:not(.hero) .section-shell,
+      html[data-thinking-mode="high"].motion-enabled main section:not(.hero) .section-shell,
+      html[data-thinking-mode="ultra"].motion-enabled main section:not(.hero) .section-shell {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      /* --- Motion 2: hover lift moves to the translate property -----------
+         The entrance animations own transform, and a filled entrance would
+         otherwise sit permanently on top of a hover translateY. Using the
+         standalone translate property lets the two compose. */
+      @media (hover: hover) {
+        .theme-card,
+        .speaker-card,
+        .track-card,
+        .gallery-grid > .brandcard,
+        .tally-method-grid > .brandcard {
+          transition:
+            translate var(--dur-3) var(--ease-emphasis),
+            box-shadow var(--dur-3) var(--ease-standard),
+            border-color var(--dur-3) var(--ease-standard);
+        }
+        .theme-card:hover,
+        .speaker-card:hover,
+        .track-card:hover,
+        .gallery-grid > .brandcard:hover,
+        .tally-method-grid > .brandcard:hover {
+          transform: none !important;
+          translate: 0 -4px;
+          box-shadow: var(--elev-2);
+          border-color: var(--line-mid) !important;
+        }
+        .filter-chip:hover:not([aria-pressed="true"]):not(.is-active) {
+          border-color: var(--brand-blue-dark) !important;
+          translate: 0 -1px;
+        }
+        .btn-primary:hover {
+          translate: 0 -1px;
+          box-shadow: 0 10px 22px rgba(10,87,163,.26);
+        }
+        .btn-secondary:hover {
+          border-color: var(--brand-blue-dark) !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .theme-card:hover,
+        .speaker-card:hover,
+        .track-card:hover,
+        .gallery-grid > .brandcard:hover,
+        .tally-method-grid > .brandcard:hover,
+        .filter-chip:hover,
+        .btn-primary:hover {
+          translate: none;
+        }
+      }
+
+      /* --- Section headers: one pattern, six sections ---------------------
+         Each heading was its own arrangement — Program at 38px with a
+         separate hairline div beneath, Themes with a flex-filler rule,
+         the rest with the template's 48px amber dash. They now share a
+         full-width hairline carrying the amber-to-red accent segment
+         already used for section boundaries and the footer seam. */
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"] {
+        position: relative;
+        flex-wrap: wrap;
+        gap: 8px 20px !important;
+        margin: 0 0 clamp(24px, 2.6vw, 34px) !important;
+        padding-bottom: 18px;
+      }
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"]::before {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 1px;
+        background: var(--line-soft);
+      }
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 64px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--rule-accent);
+      }
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"] > h2 {
+        margin: 0 !important;
+        font-size: clamp(28px, 3.2vw, 40px) !important;
+        line-height: 1.08;
+        letter-spacing: -.025em;
+      }
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"] > span {
+        padding-bottom: 3px !important;
+        font-size: 13.5px !important;
+        line-height: 1.45;
+      }
+      .program-heading__actions {
+        padding-bottom: 0 !important;
+        align-self: flex-end;
+      }
+      /* The header rule replaces both the template's dash and the two
+         standalone divider divs it used to need. */
+      main section:not(.hero) h2::after,
+      main section:not(.hero) .eyebrow-heading::after {
+        display: none !important;
+      }
+      main section:not(.hero) .section-shell > div[style*="height: 1px"],
+      main section:not(.hero) .section-shell > div[style*="align-items: flex-end"] > div[style*="height: 1px"] {
+        display: none !important;
+      }
+      /* Themes opens on an eyebrow rather than a display heading — the four
+         cards are the content, so it stays an eyebrow. Its filler rule
+         takes the amber-to-red accent instead of flat grey, which is what
+         relates it to the five headers below. */
+      .themes .section-shell > div:first-child {
+        margin-bottom: clamp(24px, 2.6vw, 34px) !important;
+      }
+      .themes .section-shell > div:first-child > div {
+        height: 3px !important;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--brand-yellow), #c3435d 26%, transparent 88%) !important;
+      }
+      .themes .eyebrow-heading {
+        letter-spacing: .18em;
+      }
+      /* Boundary rule now tracks the fluid shell instead of a fixed 1180. */
+      main section:not(.hero)::before {
+        width: min(var(--shell), calc(100% - 40px));
+      }
+
+      /* --- Program: an agenda with a spine --------------------------------
+         24 rows of time / title / tag read as an undifferentiated ledger.
+         A timeline rail down the gutter between the time and the title
+         gives the list a shape, and the node colour states each row's
+         kind so Plenary, Breakout and Logistics separate at a glance. */
+      #program .section-shell > .program-item {
+        position: relative;
+        --row-accent: var(--line-mid);
+        background: var(--panel-surface);
+        border-left: 1px solid var(--line-soft);
+        border-right: 1px solid var(--line-soft);
+        border-bottom: 1px solid var(--line-soft) !important;
+        transition: background var(--dur-2) var(--ease-standard);
+      }
+      #program .section-shell > .program-item:first-of-type {
+        border-top: 1px solid var(--line-soft);
+        border-radius: 18px 18px 0 0;
+      }
+      #program .section-shell > .program-item:last-of-type {
+        border-radius: 0 0 18px 18px;
+      }
+      #program .section-shell > .program-item:has(.tag-accent) {
+        --row-accent: var(--brand-blue-mid);
+      }
+      #program .section-shell > .program-item:has(.tag-outline) {
+        --row-accent: #c3435d;
+      }
+      #program .section-shell > .program-item:has(.tag-neutral) {
+        --row-accent: var(--node-neutral);
+      }
+      #program .section-shell .program-row {
+        position: relative;
+        grid-template-columns: 74px minmax(0, 1fr) auto !important;
+        gap: 34px !important;
+        min-height: 68px;
+        padding: 15px 18px 15px 4px !important;
+      }
+      .program-row__time {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      /* Rail: drawn on the item so it spans an expanded panel too, and
+         stopped half a row short at each end so it reads as a segment
+         rather than an overshoot. */
+      #program .section-shell > .program-item::before {
+        content: "";
+        position: absolute;
+        left: 95px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--line-soft);
+      }
+      #program .section-shell > .program-item:first-of-type::before {
+        top: 34px;
+      }
+      #program .section-shell > .program-item:last-of-type::before {
+        bottom: calc(100% - 34px);
+      }
+      #program .section-shell .program-row::after {
+        content: "";
+        position: absolute;
+        left: 95px;
+        top: 34px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        translate: -50% -50%;
+        background: var(--page-bg);
+        border: 2px solid var(--row-accent);
+        transition: scale var(--dur-2) var(--ease-emphasis);
+      }
+      #program .section-shell button.program-row::after {
+        background: var(--row-accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--row-accent) 16%, transparent);
+      }
+      #program .section-shell button.program-row:hover::after {
+        scale: 1.25;
+      }
+      /* Sessions open; the plain rows do not. Weight and colour say so
+         before the cursor gets there. */
+      #program .section-shell button.program-row .program-row__title {
+        font-weight: 600;
+        color: var(--brand-blue-dark);
+      }
+      #program .section-shell button.program-row:hover {
+        background: var(--panel-surface-hover);
+      }
+      /* One tag column: a spacer stands in for the missing chevron on
+         plain rows so every tag shares a right edge. */
+      .program-row__meta .tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 94px;
+      }
+      .program-row--plain .program-row__meta::after {
+        content: "";
+        width: 30px;
+      }
+      /* Chevron: the +/- glyph becomes a badge whose vertical bar
+         retracts along its own axis, so open/closed is a morph. */
+      .program-row__meta > span[aria-hidden="true"] {
+        position: relative;
+        flex: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--line-mid);
+        background: var(--panel-surface-hover);
+        font-size: 0;
+        transition:
+          background var(--dur-2) var(--ease-standard),
+          border-color var(--dur-2) var(--ease-standard);
+      }
+      .program-row__meta > span[aria-hidden="true"] > .sc-interp {
+        display: none;
+      }
+      .program-row__meta > span[aria-hidden="true"]::before,
+      .program-row__meta > span[aria-hidden="true"]::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 11px;
+        height: 1.6px;
+        border-radius: 2px;
+        background: var(--chev-ink);
+        translate: -50% -50%;
+        transition:
+          transform var(--dur-3) var(--ease-emphasis),
+          background var(--dur-2) var(--ease-standard);
+      }
+      .program-row__meta > span[aria-hidden="true"]::after {
+        transform: rotate(90deg);
+      }
+      .program-row[aria-expanded="true"] .program-row__meta > span[aria-hidden="true"] {
+        background: var(--chev-fill);
+        border-color: var(--chev-fill);
+      }
+      .program-row[aria-expanded="true"] .program-row__meta > span[aria-hidden="true"]::before,
+      .program-row[aria-expanded="true"] .program-row__meta > span[aria-hidden="true"]::after {
+        background: var(--chev-ink-on);
+      }
+      .program-row[aria-expanded="true"] .program-row__meta > span[aria-hidden="true"]::after {
+        transform: rotate(90deg) scaleX(0);
+      }
+      button.program-row:hover .program-row__meta > span[aria-hidden="true"] {
+        border-color: var(--chev-fill);
+      }
+      /* Panel: aligned to the title column so the disclosure reads as
+         belonging to its row, and animated on mount.
+
+         Entry transitions rather than a filled keyframe animation. Both
+         can express the same fade-and-rise, but a keyframe animation that
+         starts at opacity 0 leaves the panel invisible if it never gets to
+         run; with @starting-style the declared state is the visible one
+         and the hidden state is only ever a starting point. A disclosure
+         panel must not be able to open onto nothing. */
+      .program-panel {
+        padding: 2px 18px 30px 112px !important;
+        opacity: 1;
+        translate: none;
+        transition:
+          opacity var(--dur-3) var(--ease-entrance),
+          translate var(--dur-4) var(--ease-entrance);
+      }
+      @starting-style {
+        .program-panel {
+          opacity: 0;
+          translate: 0 -10px;
+        }
+      }
+      .program-panel .track-card {
+        opacity: 1;
+        transition:
+          opacity var(--dur-4) var(--ease-entrance) var(--card-in-delay, 0ms),
+          translate var(--dur-3) var(--ease-emphasis),
+          box-shadow var(--dur-3) var(--ease-standard),
+          border-color var(--dur-3) var(--ease-standard);
+      }
+      .program-panel .track-card:nth-child(2) {
+        --card-in-delay: 80ms;
+      }
+      .program-panel .track-card:nth-child(3) {
+        --card-in-delay: 160ms;
+      }
+      .program-panel .track-card:nth-child(n + 4) {
+        --card-in-delay: 220ms;
+      }
+      @starting-style {
+        .program-panel .track-card {
+          opacity: 0;
+          translate: 0 14px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .program-panel,
+        .program-panel .track-card {
+          transition: none !important;
+        }
+      }
+      @media (max-width: 880px) {
+        /* No gutter to draw a rail in once the grid collapses. */
+        #program .section-shell > .program-item::before,
+        #program .section-shell .program-row::after {
+          display: none;
+        }
+        #program .section-shell .program-row {
+          gap: 4px 14px !important;
+          padding: 14px !important;
+        }
+        .program-row__time {
+          text-align: left;
+        }
+        .program-panel {
+          padding-left: 14px !important;
+        }
+      }
+
+      /* --- Theme cards ----------------------------------------------------
+         The template forced all four numerals to brand blue, which threw
+         away the only per-theme signal the cards carried. Mixing each
+         theme colour toward ink keeps the hue and clears large-text
+         contrast, which is what the blanket override was avoiding. */
+      .theme-card > div:first-child {
+        color: color-mix(in srgb, var(--theme-color, var(--brand-blue-dark)) 62%, #16232e) !important;
+        font-size: 32px;
+        letter-spacing: -.02em;
+        font-variant-numeric: tabular-nums;
+      }
+      .theme-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .theme-card::before {
+        content: "";
+        position: absolute;
+        inset: -30% 55% 45% -20%;
+        pointer-events: none;
+        background: radial-gradient(closest-side, var(--theme-color, transparent), transparent);
+        opacity: .1;
+      }
+      @media (min-width: 881px) {
+        /* Two of the four titles run to a second line; reserving it keeps
+           all four body paragraphs on one baseline. */
+        .theme-card h3 {
+          min-height: 2.4em;
+        }
+      }
+
+      /* --- Speaker cards --------------------------------------------------
+         Role tags floated wherever the bio ended, so a row of cards had
+         four different tag heights. */
+      .speaker-card {
+        align-items: stretch !important;
+      }
+      .speaker-card__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .speaker-card__content > .tag {
+        margin-top: auto;
+      }
+      .speaker-card__content > p:last-of-type {
+        margin-bottom: 14px !important;
+      }
+      .speaker-card__avatar {
+        /* stretch is for the content column only — the avatar keeps its
+           square box, or the initials sit in an ellipse. */
+        align-self: flex-start;
+        flex: none;
+        background: var(--badge-tint) !important;
+        box-shadow: inset 0 0 0 1px var(--line-soft);
+      }
+
+      /* --- Notes / Q&A / Gallery detail ---------------------------------- */
+      /* A 46px arrow glyph was doing the work of an icon; give it the
+         frame it was implying. */
+      #notes [style*="var(--color-accent-300)"] {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        font-size: 30px !important;
+        line-height: 1 !important;
+        color: var(--stat-ink) !important;
+        background: var(--badge-tint);
+        box-shadow: inset 0 0 0 1px var(--line-soft);
+      }
+      /* Micro-labels across the lower sections now match .kicker instead
+         of sitting in three different accent tints. */
+      #notes [style*="var(--color-accent-700)"],
+      #qa [style*="var(--color-accent-700)"],
+      #gallery [style*="var(--color-accent-700)"] {
+        color: var(--label-ink) !important;
+        font-weight: 700;
+        letter-spacing: .14em;
+      }
+      /* Undo an over-broad contrast fix: it was meant for the pale stat
+         numerals but caught every interpolated string in a brandcard,
+         turning ordinary body copy link-blue. */
+      .brandcard .sc-interp {
+        color: inherit;
+      }
+      .brandcard [style*="var(--color-accent-400)"],
+      .brandcard [style*="var(--color-accent-300)"] {
+        color: var(--stat-ink) !important;
+      }
+      .tally-method-grid [style*="var(--color-accent-400)"] {
+        font-size: 30px !important;
+        font-variant-numeric: tabular-nums;
+      }
+      .tally-method-grid > .brandcard {
+        position: relative;
+        overflow: hidden;
+      }
+      .tally-method-grid > .brandcard::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: var(--rule-accent);
+        opacity: .8;
+      }
+      /* Status pips rendered as 7px squares. */
+      #gallery [style*="height: 7px"],
+      #qa [style*="height: 7px"],
+      .live-banner [style*="height: 7px"] {
+        border-radius: 50% !important;
+      }
+      /* Share-of-total bars: rounded, clipped, and grown from the left
+         on mount rather than appearing at full width. */
+      #gallery [style*="height: 4px"] {
+        border-radius: 999px !important;
+        overflow: hidden;
+      }
+      #gallery [style*="height: 4px"] > * {
+        border-radius: 999px;
+        transform-origin: left center;
+        scale: 1 1;
+        transition: scale var(--dur-5) var(--ease-emphasis);
+      }
+      @starting-style {
+        #gallery [style*="height: 4px"] > * {
+          scale: 0 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #gallery [style*="height: 4px"] > * {
+          transition: none !important;
+        }
+      }
+      /* Gallery cards ended at ragged heights with their counts floating. */
+      .gallery-grid > .brandcard {
+        display: flex;
+        flex-direction: column;
+      }
+      .gallery-grid > .brandcard > *:last-child {
+        margin-top: auto;
+      }
+      /* The Slido mirror header was a four-item nowrap row at every width
+         above 600px, so the title wrapped while the meta stayed pinned. */
+      .qa-layout > .brandcard > div:first-child {
+        flex-wrap: wrap;
+        row-gap: 8px;
+      }
+      .qa-layout > .brandcard > div:first-child > .tag {
+        flex: none;
+        white-space: nowrap;
+      }
+      #qa [style*="grid-template-columns: 48px 1fr"] > div:first-child {
+        border-radius: 12px !important;
+        border-color: var(--line-soft) !important;
+        background: var(--color-accent-100) !important;
+      }
+      #qa [style*="font-size: 40px"] {
+        color: var(--brand-blue-dark) !important;
+        letter-spacing: -.01em !important;
+      }
+
+      /* ==================================================================
+         Footer — it was the one region still on the pre-redesign grid:
+         a hard 1180px centre against the page's fluid shell, dimmed by
+         inline opacity, with none of the motifs the sections carry.
+         ================================================================== */
+      .site-footer {
+        background: var(--footer-surface) !important;
+        isolation: isolate;
+      }
+      /* Same seam every section boundary uses, so the footer reads as the
+         last band of the page rather than a different document. */
+      .site-footer::before {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+        width: min(var(--shell), calc(100% - 40px));
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(120,190,240,.5) 18%,
+          var(--brand-yellow) 52%,
+          #c3435d 82%,
+          transparent
+        );
+      }
+      /* Edge butterfly at the same weight as the section marks, bleeding
+         off the corner per ASSET_NOTES. */
+      .site-footer::after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        pointer-events: none;
+        right: clamp(-70px, -4vw, -30px);
+        bottom: -30px;
+        width: clamp(150px, 17vw, 250px);
+        aspect-ratio: 255/285;
+        background: url("assets/butterfly-mark.svg") center/contain no-repeat;
+        opacity: .09;
+        rotate: -12deg;
+      }
+      .site-footer > .halftone-y {
+        top: -22px !important;
+        right: clamp(24px, 6vw, 96px) !important;
+        opacity: .4 !important;
+      }
+      /* Align to the shell the header, hero and every section use. */
+      .site-footer .sec-inner,
+      .site-footer > div:last-child > div {
+        width: min(100% - 48px, var(--shell)) !important;
+        max-width: none !important;
+        margin-inline: auto !important;
+      }
+      .site-footer .sec-inner[style*="grid-template-columns"] {
+        grid-template-columns: minmax(0, 1.45fr) minmax(0, .8fr) minmax(0, 1.05fr) !important;
+        gap: clamp(28px, 4vw, 64px) !important;
+        padding: clamp(50px, 5.6vw, 72px) 24px 40px !important;
+      }
+      .site-footer .sec-inner[style*="grid-template-columns"] > div:first-child > div:first-child {
+        font-size: clamp(29px, 2.9vw, 38px) !important;
+        letter-spacing: -.02em !important;
+      }
+      /* The dateline gets the same accent rule as a section header. */
+      .site-footer .sec-inner[style*="grid-template-columns"] > div:first-child > div:nth-child(2) {
+        position: relative;
+        padding-bottom: 18px;
+        margin-bottom: 16px;
+        opacity: 1 !important;
+        color: var(--footer-text) !important;
+      }
+      .site-footer .sec-inner[style*="grid-template-columns"] > div:first-child > div:nth-child(2)::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 64px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--rule-accent);
+      }
+      /* Inline opacity dimmed text unpredictably against a gradient; state
+         the colour instead and keep contrast checkable. */
+      .site-footer p,
+      .site-footer .sec-inner div,
+      .site-footer .sec-inner span {
+        opacity: 1 !important;
+      }
+      .site-footer p {
+        color: var(--footer-text) !important;
+        max-width: 42ch;
+      }
+      .site-footer [style*="text-transform: uppercase"] {
+        color: var(--footer-label) !important;
+        font-weight: 700 !important;
+        letter-spacing: .16em !important;
+      }
+      /* Nav column: 44px targets kept, but with a marker that extends on
+         hover so the links behave like links. */
+      .site-footer .sec-inner[style*="grid-template-columns"] > div:nth-child(2) > div:last-child {
+        gap: 0 !important;
+      }
+      .site-footer a[href^="#"] {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        line-height: 1.4;
+        padding-left: 16px;
+        color: rgba(255,255,255,.9) !important;
+        text-decoration: none;
+        transition:
+          color var(--dur-2) var(--ease-standard),
+          padding-left var(--dur-2) var(--ease-standard);
+      }
+      .site-footer a[href^="#"]::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 7px;
+        height: 1.5px;
+        translate: 0 -50%;
+        background: var(--brand-yellow);
+        transition:
+          width var(--dur-2) var(--ease-standard),
+          background var(--dur-2) var(--ease-standard);
+      }
+      .site-footer a[href^="#"]:hover {
+        color: #fff !important;
+        padding-left: 23px;
+      }
+      .site-footer a[href^="#"]:hover::before {
+        width: 14px;
+        background: var(--footer-label);
+      }
+      .site-footer a[href^="mailto"] {
+        color: #fff !important;
+        font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: rgba(255,198,92,.75);
+        text-underline-offset: 4px;
+        transition: text-decoration-color var(--dur-2) var(--ease-standard);
+      }
+      .site-footer a[href^="mailto"]:hover {
+        text-decoration-color: var(--footer-label);
+      }
+      /* Partner lockup: larger marks, undimmed, with a rule separating the
+         wordmark-only partner from the two logos. */
+      .site-footer .sec-inner:not([style*="grid-template-columns"]) {
+        padding: 0 24px 34px !important;
+      }
+      .site-footer .sec-inner:not([style*="grid-template-columns"]) > div {
+        gap: clamp(18px, 2.4vw, 34px) !important;
+        padding-top: 30px !important;
+        border-top: 1px solid var(--footer-line) !important;
+        flex-wrap: wrap;
+      }
+      .site-footer .sec-inner:not([style*="grid-template-columns"]) img {
+        opacity: 1 !important;
+        height: 60px !important;
+      }
+      .site-footer .sec-inner:not([style*="grid-template-columns"]) img + img {
+        height: 48px !important;
+      }
+      .site-footer .sec-inner:not([style*="grid-template-columns"]) > div > span:last-child {
+        align-self: center;
+        padding-left: clamp(14px, 1.6vw, 24px);
+        border-left: 1px solid rgba(255,255,255,.22);
+        font-size: 17px !important;
+        letter-spacing: .1em !important;
+        color: #fff !important;
+      }
+      /* Legal strip reads as its own band. */
+      .site-footer > div:last-child {
+        position: relative;
+        z-index: 1;
+        background: var(--footer-bar);
+        border-top: 1px solid var(--footer-line) !important;
+      }
+      .site-footer > div:last-child > div {
+        flex-wrap: wrap;
+        gap: 8px 21px !important;
+        padding: 16px 24px !important;
+        font-size: 12px !important;
+        color: rgba(255,255,255,.78) !important;
+        opacity: 1 !important;
+      }
+      .site-footer > div:last-child > div > span:first-child {
+        font-weight: 600;
+        color: rgba(255,255,255,.92);
+      }
+      .site-footer > div:last-child > div > span + span {
+        position: relative;
+        padding-left: 22px;
+      }
+      .site-footer > div:last-child > div > span + span::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 1px;
+        height: 12px;
+        translate: 0 -50%;
+        background: rgba(255,255,255,.28);
+      }
+      /* Restated after the grid override above, which would otherwise
+         out-order the template's single-column mobile rule. */
+      @media (max-width: 880px) {
+        .site-footer .sec-inner[style*="grid-template-columns"] {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+          gap: 32px !important;
+        }
+        .site-footer .sec-inner[style*="grid-template-columns"] > div:first-child {
+          grid-column: 1 / -1;
+        }
+      }
+      @media (max-width: 600px) {
+        .site-footer .sec-inner[style*="grid-template-columns"] {
+          grid-template-columns: minmax(0, 1fr) !important;
+          gap: 30px !important;
+        }
+        .site-footer::after {
+          opacity: .06;
+        }
+        /* Both of these separate two items on one line. Once the rows wrap
+           they lead a line instead of dividing one, so they come off. */
+        .site-footer .sec-inner:not([style*="grid-template-columns"]) > div > span:last-child,
+        .site-footer > div:last-child > div > span + span {
+          padding-left: 0;
+          border-left: 0;
+        }
+        .site-footer > div:last-child > div > span + span::before {
+          display: none;
+        }
+      }
     </style>`;
     // Inject after <head> so the DOCTYPE stays first; prepending the script
     // would push the parser into quirks mode. DOMParser always emits a <head>
@@ -2799,7 +3618,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       // rAF is unreliable. The attribute makes the state survive a re-render,
       // and the delayed re-assertions below cover the clobber whenever it lands.
       const syncModeInputs = () => {
-        const current = document.documentElement.dataset.thinkingMode || 'high';
+        const current = document.documentElement.dataset.thinkingMode || 'instant';
         modeInputs.forEach(input => {
           const selected = input.value === current;
           input.checked = selected;
@@ -2807,11 +3626,11 @@ document.addEventListener('DOMContentLoaded', async function() {
           else input.removeAttribute('checked');
         });
       };
-      // Session persistence. Without this the panel's "plays once on each
-      // visit" promise is false — the sequence replayed on every load — and a
-      // deliberate choice of Instant was discarded on the next page view.
+      // Session persistence for the CHOICE only, not for whether the sequence
+      // has run: a deliberate pick of High or Ultra has to survive the next
+      // page view, but the sequence itself is the point of picking it, so
+      // every load replays it.
       const MODE_KEY = 'forum-thinking-mode';
-      const PLAYED_KEY = 'forum-thinking-played';
       const readStore = key => {
         try { return window.sessionStorage.getItem(key); } catch (error) { return null; }
       };
@@ -2895,7 +3714,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       let cycleTimers = [];
       let fieldExitTimer = 0;
       let cycleToken = 0;
-      let mode = 'high';
+      let mode = 'instant';
       let masterAnimation = null;
       let masterFrame = 0;
       let svgAnimations = [];
@@ -2933,7 +3752,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (modePanelIntro) {
           modePanelIntro.textContent = reduced
             ? 'Reduced motion is on. Modes change visual detail without a timed sequence.'
-            : 'High plays once on each visit.';
+            : 'Every load replays the mode you pick.';
         }
         const standard = [
           ['Outcome first', '~0.6 sec'],
@@ -3176,7 +3995,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         else runCycle();
       };
       const applyMode = nextMode => {
-        if (!modes[nextMode]) nextMode = 'high';
+        if (!modes[nextMode]) nextMode = 'instant';
         const previousMode = mode;
         clearFieldExit();
         if (previousMode === 'ultra' && nextMode !== 'ultra') {
@@ -3298,19 +4117,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       const savedMode = readStore(MODE_KEY);
-      const alreadyPlayed = readStore(PLAYED_KEY) === '1';
-      applyMode(savedMode && modes[savedMode] ? savedMode : 'high');
+      applyMode(savedMode && modes[savedMode] ? savedMode : 'instant');
       inlineTransformationLogo();
-      writeStore(PLAYED_KEY, '1');
-      // Honour the panel's own promise: the sequence auto-plays once per
-      // session. Later loads in the same session render the resolved headline
-      // immediately — re-selecting a mode still replays it on demand.
-      if (alreadyPlayed) {
-        resetTypedText();
-        setState('static');
-      } else {
-        restartSequence();
-      }
+      // Instant is the default, so the sequence a first-time visitor sees is
+      // the 0.6s resolve — cheap enough to replay on every load. High and
+      // Ultra are opt-in, and someone who opted into the metamorphosis wants
+      // to watch it again on reload, not land on a static headline.
+      restartSequence();
       // The render pass clears the `checked` property once, shortly after
       // bootstrap, and its exact timing varies with load. Re-assert on a few
       // schedules rather than racing a single frame; each call is three
@@ -3429,13 +4242,173 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
     };
 
+    /* ------------------------------------------------------------------
+       Scroll choreography.
+
+       The bundle revealed one whole <section> per intersection, and only
+       under `(min-width: 900px) and (hover: hover)`, so a phone got no
+       motion at all and a laptop got six 560ms slabs. This reveals the
+       individual cards, rows and footer columns instead, at every width.
+
+       Element animations rather than a CSS class: the app re-applies
+       className when it re-renders a section, which drops any hook we
+       add. Each element's animation is created immediately and paused —
+       `fill: 'both'` means a paused animation holds the from-keyframe, so
+       nothing flashes before its turn — then played when the element
+       intersects. On finish it is cancelled, because a filled transform
+       would otherwise sit permanently on top of the cards' hover lift.
+       ------------------------------------------------------------------ */
+    const REVEAL_SELECTOR = [
+      'main section:not(.hero) .section-shell > div[style*="align-items: flex-end"]',
+      'main section:not(.hero) .section-shell > p',
+      'main section:not(.hero) .section-shell > article',
+      'main section:not(.hero) .section-shell > .brandcard',
+      '.filter-group',
+      '.program-item',
+      '.theme-card',
+      '.speaker-card',
+      '.tally-method-grid > *',
+      '.gallery-grid > *',
+      '.qa-layout > *',
+      '.site-footer .sec-inner > div',
+      '.site-footer > div:last-child > div'
+    ].join(',');
+
+    const initScrollChoreography = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+      if (typeof Element === 'undefined' || !Element.prototype.animate) return true;
+      if (typeof IntersectionObserver === 'undefined') return true;
+
+      const holds = new WeakMap();
+      let pending = [];
+
+      const play = (el, extraDelay) => {
+        const animation = holds.get(el);
+        if (!animation) return;
+        holds.delete(el);
+        pending = pending.filter(node => node !== el);
+        if (extraDelay > 0) {
+          // Preferred over setTimeout: the delay is part of the effect, so
+          // the from-keyframe keeps holding and there is no untimed frame.
+          try {
+            animation.effect.updateTiming({ delay: extraDelay });
+          } catch (error) {
+            window.setTimeout(() => animation.play(), extraDelay);
+            return;
+          }
+        }
+        animation.play();
+      };
+
+      const hold = el => {
+        if (holds.has(el) || el.dataset.revealed === '1') return false;
+        el.dataset.revealed = '1';
+        const distance = el.closest('.site-footer') ? 14 : 20;
+        const animation = el.animate([
+          { opacity: 0, transform: 'translate3d(0,' + distance + 'px,0)' },
+          { opacity: 1, transform: 'none' }
+        ], { duration: 620, easing: 'cubic-bezier(.16,.84,.24,1)', fill: 'both' });
+        animation.pause();
+        animation.onfinish = () => {
+          try { animation.cancel(); } catch (error) { /* already gone */ }
+        };
+        holds.set(el, animation);
+        pending.push(el);
+        return true;
+      };
+
+      // Staggering by list index would punish long lists — the 20th
+      // program row would carry a 1.4s delay by the time it scrolled into
+      // view. Batching by observer callback instead means the stagger only
+      // ever separates elements that arrived on screen together.
+      let observerFired = false;
+      const observer = new IntersectionObserver(entries => {
+        const arrived = entries.filter(entry => entry.isIntersecting);
+        if (arrived.length) observerFired = true;
+        arrived.sort((a, b) =>
+          (a.boundingClientRect.top - b.boundingClientRect.top) ||
+          (a.boundingClientRect.left - b.boundingClientRect.left));
+        arrived.forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          play(entry.target, Math.min(index, 7) * 60);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: .06 });
+
+      // De-nest: a .qa-layout child can also match the section-shell
+      // brandcard rule, and animating both would double the fade.
+      const scan = root => {
+        const found = Array.from(root.querySelectorAll(REVEAL_SELECTOR));
+        const kept = [];
+        found.forEach(el => {
+          if (kept.some(other => other.contains(el))) return;
+          kept.push(el);
+        });
+        return kept;
+      };
+
+      scan(document).forEach(el => {
+        if (hold(el)) observer.observe(el);
+      });
+
+      // Filtering and expanding can mount new nodes. Those below the fold
+      // get the same entrance; anything already on screen is left alone,
+      // because hiding a visible card to re-reveal it reads as a glitch.
+      let rescanTimer = 0;
+      const rescan = () => {
+        rescanTimer = 0;
+        scan(document).forEach(el => {
+          if (holds.has(el) || el.dataset.revealed === '1') return;
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.dataset.revealed = '1';
+            return;
+          }
+          if (hold(el)) observer.observe(el);
+        });
+      };
+      const mountObserver = new MutationObserver(() => {
+        if (rescanTimer) return;
+        rescanTimer = window.setTimeout(rescan, 120);
+      });
+      const main = document.querySelector('main');
+      if (main) mountObserver.observe(main, { childList: true, subtree: true });
+
+      // Failsafe for the case where the observer never reports at all — a
+      // browser quirk, a zero-height ancestor. Gated on that, because
+      // flushing the queue after a *working* first batch would reveal the
+      // whole page off-screen and there would be nothing left to scroll to.
+      window.setTimeout(() => {
+        if (observerFired) return;
+        pending.slice().forEach(el => {
+          observer.unobserve(el);
+          play(el, 0);
+        });
+      }, 2600);
+
+      return true;
+    };
+
+    let choreographyStarted = false;
+    const startChoreographyWhenReady = () => {
+      if (choreographyStarted) return true;
+      if (!document.querySelector('main section:not(.hero) .section-shell')) return false;
+      choreographyStarted = true;
+      try {
+        initScrollChoreography();
+      } catch (error) {
+        // Cosmetic layer: a failure here must not hide the page it reveals.
+        console.warn('scroll choreography failed', error);
+      }
+      return true;
+    };
+
     let heroThinkingStarted = false;
     let heroThinkingObserver;
     const startHeroThinkingWhenReady = () => {
       if (heroThinkingStarted) return true;
       if (!initHeroThinking()) return false;
       heroThinkingStarted = true;
-      if (heroThinkingObserver) heroThinkingObserver.disconnect();
+      if (heroThinkingObserver && choreographyStarted) heroThinkingObserver.disconnect();
       try {
         applyA11yPatches();
         window.setTimeout(applyA11yPatches, 400);
@@ -3450,11 +4423,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       return true;
     };
-    heroThinkingObserver = new MutationObserver(startHeroThinkingWhenReady);
+    // Both hooks wait on the same document swap, so they share one observer;
+    // it only lets go once neither is still waiting.
+    const startPageBehaviour = () => {
+      const choreography = startChoreographyWhenReady();
+      const hero = startHeroThinkingWhenReady();
+      if (choreography && hero && heroThinkingObserver) heroThinkingObserver.disconnect();
+      return choreography && hero;
+    };
+    heroThinkingObserver = new MutationObserver(startPageBehaviour);
     heroThinkingObserver.observe(document.documentElement, { childList: true, subtree: true });
-    requestAnimationFrame(startHeroThinkingWhenReady);
+    requestAnimationFrame(startPageBehaviour);
     setTimeout(() => {
-      if (!startHeroThinkingWhenReady()) {
+      if (!startPageBehaviour()) {
         heroThinkingObserver.disconnect();
       }
     }, 8000);
