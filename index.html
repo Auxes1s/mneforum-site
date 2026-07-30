@@ -1273,13 +1273,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         padding: clamp(10px, 2vw, 22px);
         border-radius: 50%;
         background:
-          radial-gradient(ellipse, rgba(239,248,253,.94) 0 44%, rgba(180,220,241,.23) 63%, transparent 72%);
+          radial-gradient(circle at 50% 48%, rgba(114,198,246,.26) 0%, rgba(72,152,211,.14) 38%, transparent 62%),
+          radial-gradient(ellipse at 24% 20%, rgba(241,168,31,.16) 0%, transparent 44%),
+          radial-gradient(ellipse at 78% 82%, rgba(195,67,93,.13) 0%, transparent 46%),
+          radial-gradient(circle at 18px 18px, rgba(114,198,246,.16) 0 1.2px, transparent 1.6px) 0 0 / 24px 24px;
       }
       html[data-thinking-mode="ultra"] .hero__art::before {
-        border-color: rgba(114,198,246,.42);
+        border-color: rgba(114,198,246,.5);
         box-shadow:
-          0 0 32px rgba(72,152,211,.1),
-          inset 0 0 32px rgba(72,152,211,.06);
+          0 0 42px rgba(72,152,211,.16),
+          0 0 90px rgba(241,168,31,.05),
+          inset 0 0 30px rgba(72,152,211,.08);
       }
       html[data-thinking-mode="ultra"] section {
         background-color: rgba(6,21,34,.72);
@@ -2275,8 +2279,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           width: min(100%, 720px);
           max-width: none;
           display: block !important;
-          order: 2;
-          margin: 4px auto 0 !important;
+          order: -1;
+          margin: 0 auto clamp(16px, 4vw, 22px) !important;
         }
         html[data-thinking-mode="ultra"] .hero__transformation-logo {
           width: 100% !important;
@@ -3816,8 +3820,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             'http://www.w3.org/2000/svg',
             'style'
           );
+          // Scoped to the logo itself: a <style> tag applies to the whole
+          // document regardless of where in the DOM it's inserted, so an
+          // unscoped `*` selector here was pausing every animation on the
+          // page (including .hero__art's own fade/float-in), not just the
+          // particle/wing keyframes this is meant to freeze for manual
+          // (WAAPI currentTime-driven) playback.
           clockGuard.textContent =
-            '*,*::before,*::after{animation-play-state:paused!important}';
+            '.hero__transformation-logo,' +
+            '.hero__transformation-logo *,' +
+            '.hero__transformation-logo *::before,' +
+            '.hero__transformation-logo *::after{animation-play-state:paused!important}';
           inlineSvg.prepend(clockGuard);
           transformationLogo.replaceWith(inlineSvg);
           transformationLogo = inlineSvg;
@@ -3833,7 +3846,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         hero.classList.remove('is-ultra-logo-reveal');
         void hero.offsetWidth;
         hero.classList.add('is-ultra-logo-reveal');
-        syncSvgTime(0);
+        // The SVG is `display:none` whenever mode !== 'ultra', and elements
+        // outside the render tree report no animations, so the one-time
+        // collection in inlineTransformationLogo() comes back empty unless
+        // the page happens to load already in Ultra. Re-collect here, now
+        // that the class/display flip above has made it visible again, or
+        // syncSvgTime has nothing to drive and the logo just sits frozen.
+        collectSvgAnimations();
       };
       const resetTypedText = () => {
         segments.forEach(segment => {
