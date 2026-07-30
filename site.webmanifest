@@ -8,7 +8,7 @@
   "theme_color": "#0a57a3",
   "icons": [
     {
-      "src": "event_logo.svg",
+      "src": "network_logo.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }
