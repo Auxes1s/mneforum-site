@@ -1,0 +1,326 @@
+:root {
+  --redirect-bg: #f8f4eb;
+  --redirect-surface: #ffffff;
+  --redirect-ink: #333333;
+  --redirect-muted: #626d78;
+  --redirect-blue: #0a57a3;
+  --redirect-blue-mid: #4498d3;
+  --redirect-amber: #f1a81e;
+  --redirect-red: #b73e57;
+  --redirect-line: rgba(10, 87, 163, 0.16);
+  --redirect-shadow: 0 24px 70px rgba(25, 55, 83, 0.16);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--redirect-bg);
+}
+
+body.redirect-page {
+  min-height: 100svh;
+  min-height: 100dvh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: calc(1.25rem + env(safe-area-inset-top))
+    calc(1.25rem + env(safe-area-inset-right))
+    calc(1.25rem + env(safe-area-inset-bottom))
+    calc(1.25rem + env(safe-area-inset-left));
+  overflow-x: hidden;
+  color: var(--redirect-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  line-height: 1.5;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(68, 152, 211, 0.15), transparent 22rem),
+    radial-gradient(circle at 92% 86%, rgba(241, 168, 30, 0.16), transparent 24rem),
+    var(--redirect-bg);
+}
+
+.redirect-shell {
+  width: min(100%, 34rem);
+}
+
+.redirect-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: clamp(1.5rem, 6vw, 3rem);
+  text-align: center;
+  background: var(--redirect-surface);
+  border: 1px solid rgba(10, 87, 163, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: var(--redirect-shadow);
+}
+
+.redirect-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.35rem;
+  background: linear-gradient(
+    90deg,
+    var(--redirect-blue) 0 42%,
+    var(--redirect-amber) 42% 72%,
+    var(--redirect-red) 72% 100%
+  );
+}
+
+.redirect-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--redirect-blue);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.redirect-brand-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  object-fit: contain;
+}
+
+.redirect-rule {
+  width: min(100%, 15rem);
+  height: 1px;
+  margin: 1.7rem auto 2rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--redirect-line) 24%,
+    var(--redirect-line) 76%,
+    transparent
+  );
+}
+
+.redirect-spinner {
+  width: 3.25rem;
+  height: 3.25rem;
+  margin: 0 auto 1.25rem;
+  border: 0.35rem solid rgba(10, 87, 163, 0.14);
+  border-top-color: var(--redirect-blue);
+  border-right-color: var(--redirect-amber);
+  border-radius: 50%;
+  animation: redirect-spin 1.05s linear infinite;
+}
+
+.redirect-eyebrow {
+  margin: 0 0 0.6rem;
+  color: var(--redirect-red);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.redirect-title {
+  max-width: 22rem;
+  margin: 0 auto;
+  color: var(--redirect-ink);
+  font-family: Poppins, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.6rem, 6vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.redirect-copy {
+  max-width: 28rem;
+  margin: 1rem auto 0;
+  color: var(--redirect-muted);
+  font-size: 1rem;
+}
+
+.redirect-status {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin: 1.25rem 0 0;
+  color: var(--redirect-blue);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.redirect-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+}
+
+.redirect-count {
+  min-width: 1.25em;
+  color: var(--redirect-red);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.redirect-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.redirect-action {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease,
+    color 160ms ease, transform 160ms ease;
+}
+
+.redirect-action:hover {
+  transform: translateY(-1px);
+}
+
+.redirect-action:focus-visible {
+  outline: 3px solid rgba(241, 168, 30, 0.75);
+  outline-offset: 3px;
+}
+
+.redirect-primary {
+  color: #ffffff;
+  background: var(--redirect-blue);
+  box-shadow: 0 8px 18px rgba(10, 87, 163, 0.2);
+}
+
+.redirect-primary:hover {
+  background: #084782;
+}
+
+.redirect-secondary {
+  color: var(--redirect-blue);
+  background: #ffffff;
+  border-color: var(--redirect-line);
+}
+
+.redirect-secondary:hover {
+  background: #eef6fc;
+  border-color: rgba(10, 87, 163, 0.3);
+}
+
+.redirect-note {
+  margin: 1.5rem 0 0;
+  color: var(--redirect-muted);
+  font-size: 0.75rem;
+}
+
+@keyframes redirect-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 28rem) {
+  .redirect-card {
+    padding: 1.5rem 1.1rem;
+    border-radius: 1.25rem;
+  }
+
+  .redirect-brand {
+    gap: 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .redirect-brand-mark {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .redirect-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .redirect-action {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .redirect-spinner {
+    animation: none;
+  }
+
+  .redirect-action:hover {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  body.redirect-page {
+    color: CanvasText;
+    background: Canvas;
+  }
+
+  .redirect-card {
+    background: Canvas;
+    border-color: ButtonText;
+    box-shadow: none;
+  }
+
+  .redirect-card::before {
+    background: Highlight;
+  }
+
+  .redirect-brand,
+  .redirect-eyebrow,
+  .redirect-count {
+    color: LinkText;
+  }
+
+  .redirect-spinner {
+    border-color: CanvasText;
+    border-top-color: Highlight;
+  }
+
+  .redirect-primary {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .redirect-secondary {
+    color: LinkText;
+    background: Canvas;
+    border-color: ButtonText;
+  }
+}
