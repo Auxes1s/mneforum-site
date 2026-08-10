@@ -1,0 +1,9 @@
+{
+  "name": "mneforum-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check-site.mjs",
+    "check:js": "node --check assets/forum.js && node --check data/forum-content.js && node --check data/forum-config.js"
+  }
+}

@@ -1,59 +1,41 @@
-@import url("https://api.fontshare.com/v2/css?f[]=plein@900&f[]=satoshi@400,700&display=swap");
-
 @font-face {
-  font-family: "Open Sans SemiCondensed";
-  src: url("fonts/OpenSans-SemiCondensed-Bold.ttf") format("truetype");
-  font-display: swap;
+  font-family: "Forum Display";
+  src: url("/assets/fonts/OpenSans-SemiCondensed-Bold.ttf") format("truetype");
   font-style: normal;
   font-weight: 700;
-  font-stretch: semi-condensed;
+  font-display: swap;
 }
 
 :root {
-  --redirect-ground: #ebebeb;
-  --redirect-surface: #ffffff;
-  --redirect-black: #000000;
-  --redirect-midnight: #16165b;
-  --redirect-royal: #0b58a3;
-  --redirect-cerulean: #4898d3;
-  --redirect-sun: #f1a81f;
-  --redirect-berry: #c3435d;
-  --redirect-crimson: #b12820;
-  --redirect-red: #fe1c03;
-  --redirect-line: rgba(22, 22, 91, 0.26);
-  --redirect-line-soft: rgba(22, 22, 91, 0.14);
+  --ground: #ebebeb;
+  --surface: #f8f8f6;
+  --ink: #16165b;
+  --ink-soft: #34345f;
+  --blue: #0b58a3;
+  --blue-light: #4898d3;
+  --sun: #f1a81f;
+  --berry: #c3435d;
+  --red: #b12820;
+  --line: rgba(22, 22, 91, .18);
+  --body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: "Forum Display", "Arial Narrow", Arial, sans-serif;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  min-height: 100%;
-  background: var(--redirect-ground);
-}
-
+*, *::before, *::after { box-sizing: border-box; }
+html { min-height: 100%; background: var(--ground); }
 body.redirect-page {
   position: relative;
   min-height: 100svh;
-  min-height: 100dvh;
-  margin: 0;
   display: grid;
   place-items: center;
-  padding: calc(1.25rem + env(safe-area-inset-top))
-    calc(1.25rem + env(safe-area-inset-right))
-    calc(1.25rem + env(safe-area-inset-bottom))
-    calc(1.25rem + env(safe-area-inset-left));
+  margin: 0;
+  padding: clamp(20px, 5vw, 64px);
   overflow-x: hidden;
-  color: var(--redirect-black);
-  font-family: "Satoshi", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #171729;
+  background: var(--ground);
+  font-family: var(--body);
   line-height: 1.55;
-  background: var(--redirect-ground);
 }
-
 body.redirect-page::before,
 body.redirect-page::after {
   content: "";
@@ -61,336 +43,99 @@ body.redirect-page::after {
   z-index: 0;
   pointer-events: none;
 }
-
 body.redirect-page::before {
-  top: 8vh;
-  left: -6rem;
-  width: 20rem;
+  top: 11vh;
+  left: -8rem;
+  width: 28rem;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--redirect-royal));
+  background: linear-gradient(90deg, transparent, var(--blue));
+  opacity: .6;
   transform: rotate(-24deg);
-  opacity: 0.55;
 }
-
 body.redirect-page::after {
   right: -5rem;
-  bottom: 9vh;
-  width: 22rem;
-  height: 9rem;
-  border-top: 3px solid var(--redirect-sun);
-  border-left: 3px solid var(--redirect-berry);
+  bottom: 10vh;
+  width: 23rem;
+  height: 11rem;
+  border-top: 3px solid var(--sun);
+  border-left: 3px solid var(--berry);
+  opacity: .45;
   transform: skewX(-22deg) rotate(-7deg);
-  opacity: 0.45;
 }
-
-.redirect-shell {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 36rem);
-}
-
+.redirect-shell { position: relative; z-index: 1; width: min(100%, 620px); }
 .redirect-card {
   position: relative;
   overflow: hidden;
-  width: 100%;
-  padding: clamp(1.5rem, 6vw, 3.25rem);
-  text-align: center;
-  background: var(--redirect-surface);
-  border: 2px solid var(--redirect-midnight);
-  box-shadow: none;
+  padding: clamp(28px, 7vw, 62px);
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 0 24px 80px rgba(22, 22, 91, .12);
 }
-
 .redirect-card::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: 0.55rem;
-  background: linear-gradient(
-    90deg,
-    var(--redirect-royal) 0 38%,
-    var(--redirect-sun) 38% 66%,
-    var(--redirect-berry) 66% 100%
-  );
+  height: 8px;
+  background: linear-gradient(90deg, var(--blue) 0 38%, var(--sun) 38% 66%, var(--berry) 66%);
 }
-
 .redirect-card::after {
   content: "";
   position: absolute;
-  right: -3.25rem;
-  bottom: -4.5rem;
-  width: 11rem;
-  height: 8rem;
-  border: 2px solid var(--redirect-cerulean);
-  transform: rotate(-28deg);
-  opacity: 0.24;
+  right: -58px;
+  bottom: -68px;
+  width: 180px;
+  height: 140px;
+  border: 2px solid var(--blue-light);
+  opacity: .22;
   pointer-events: none;
+  transform: rotate(-28deg);
 }
-
 .redirect-brand,
 .redirect-rule,
-.redirect-spinner,
 .redirect-eyebrow,
 .redirect-title,
 .redirect-copy,
-.redirect-status,
+.redirect-status-box,
 .redirect-actions,
-.redirect-note {
-  position: relative;
-  z-index: 1;
-}
-
+.redirect-note { position: relative; z-index: 1; }
 .redirect-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.85rem;
-  color: var(--redirect-midnight);
-  font-family: "Open Sans SemiCondensed", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  line-height: 1.25;
-  text-align: left;
-  text-transform: uppercase;
-}
-
-.redirect-brand-mark {
-  width: 3.25rem;
-  height: 3.25rem;
-  flex: none;
-  padding: 0.25rem;
-  object-fit: contain;
-  background: var(--redirect-ground);
-  border: 1px solid var(--redirect-line);
-}
-
-.redirect-rule {
-  width: min(100%, 17rem);
-  height: 3px;
-  margin: 1.8rem auto 2.1rem;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--redirect-sun) 24%,
-    var(--redirect-berry) 76%,
-    transparent
-  );
-}
-
-.redirect-spinner {
-  width: 3.35rem;
-  height: 3.35rem;
-  margin: 0 auto 1.3rem;
-  border: 0.45rem solid var(--redirect-ground);
-  border-top-color: var(--redirect-royal);
-  border-right-color: var(--redirect-sun);
-  border-bottom-color: var(--redirect-berry);
-  animation: redirect-spin 1.05s linear infinite;
-}
-
-.redirect-eyebrow {
-  margin: 0 0 0.7rem;
-  color: var(--redirect-crimson);
-  font-family: "Open Sans SemiCondensed", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.redirect-title {
-  max-width: 24rem;
-  margin: 0 auto;
-  color: var(--redirect-black);
-  font-family: "Plein", ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2.2rem, 8vw, 3.7rem);
-  font-weight: 900;
-  letter-spacing: -0.045em;
-  line-height: 0.94;
-  text-wrap: balance;
-}
-
-.redirect-copy {
-  max-width: 29rem;
-  margin: 1.15rem auto 0;
-  color: var(--redirect-midnight);
-  font-size: 1rem;
-}
-
-.redirect-status {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.3rem;
-  margin: 1.25rem 0 0;
-  color: var(--redirect-royal);
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.redirect-sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  clip: rect(0, 0, 0, 0) !important;
-  clip-path: inset(50%) !important;
-  border: 0 !important;
-}
-
-.redirect-count {
-  min-width: 1.25em;
-  color: var(--redirect-red);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-.redirect-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1.8rem;
-}
-
-.redirect-action {
-  min-height: 2.85rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.72rem 1.2rem;
-  border: 1px solid var(--redirect-midnight);
-  border-radius: 0;
-  font-family: "Satoshi", ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.2;
+  gap: 13px;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: .9rem;
+  letter-spacing: .06em;
+  line-height: 1.05;
   text-decoration: none;
-  transition: background-color 160ms ease, border-color 160ms ease,
-    color 160ms ease, transform 160ms ease;
+  text-transform: uppercase;
 }
-
-.redirect-action:hover {
-  transform: translateY(-2px);
+.redirect-brand b { color: var(--berry); }
+.redirect-brand small { color: var(--ink-soft); font-family: var(--body); font-size: .6rem; font-weight: 800; letter-spacing: .12em; }
+.redirect-brand-mark { width: 54px; height: 54px; padding: 7px; border: 1px solid var(--line); background: var(--ground); }
+.redirect-rule { width: min(100%, 280px); height: 3px; margin: 32px auto 36px; background: linear-gradient(90deg, transparent, var(--sun) 24%, var(--berry) 76%, transparent); }
+.redirect-eyebrow { margin: 0 0 12px; color: var(--red); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+.redirect-title { max-width: 500px; margin: 0; color: var(--ink); font-family: var(--display); font-size: clamp(2.6rem, 8vw, 5rem); letter-spacing: -.05em; line-height: .92; text-wrap: balance; }
+.redirect-copy { max-width: 510px; margin: 24px 0 0; color: var(--ink-soft); font-size: clamp(1rem, 2vw, 1.12rem); }
+.redirect-status-box { display: grid; gap: 6px; margin-top: 24px; padding: 15px 17px; border-left: 4px solid var(--sun); color: var(--ink-soft); background: rgba(72, 152, 211, .08); font-size: .88rem; }
+.redirect-status-box strong { color: var(--ink); font-size: .77rem; letter-spacing: .08em; text-transform: uppercase; }
+.redirect-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 30px; }
+.redirect-action { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 17px; border: 1px solid var(--ink); font-size: .74rem; font-weight: 850; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; transition: background .2s ease, color .2s ease, transform .2s ease; }
+.redirect-action:hover { transform: translateY(-2px); }
+.redirect-primary { color: #fff; background: var(--ink); }
+.redirect-primary:hover { background: var(--blue); }
+.redirect-secondary { color: var(--ink); background: transparent; }
+.redirect-secondary:hover { background: #fff; }
+.redirect-note { margin: 22px 0 0; color: #5f6079; font-size: .75rem; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 4px; }
+@media (max-width: 520px) {
+  body.redirect-page { align-items: start; padding: 24px 16px; }
+  .redirect-card { padding: 30px 22px 26px; }
+  .redirect-title { font-size: clamp(2.45rem, 14vw, 4rem); }
+  .redirect-actions { display: grid; }
+  .redirect-action { width: 100%; }
 }
-
-.redirect-action:focus-visible {
-  outline: 3px solid var(--redirect-red);
-  outline-offset: 3px;
-}
-
-.redirect-primary {
-  color: #ffffff;
-  background: var(--redirect-royal);
-}
-
-.redirect-primary:hover {
-  color: #ffffff;
-  background: var(--redirect-midnight);
-  border-color: var(--redirect-midnight);
-}
-
-.redirect-secondary {
-  color: var(--redirect-midnight);
-  background: transparent;
-}
-
-.redirect-secondary:hover {
-  color: var(--redirect-black);
-  background: var(--redirect-ground);
-  border-color: var(--redirect-sun);
-}
-
-.redirect-note {
-  margin: 1.55rem 0 0;
-  color: var(--redirect-midnight);
-  font-size: 0.75rem;
-}
-
-@keyframes redirect-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 28rem) {
-  .redirect-card {
-    padding: 1.5rem 1.1rem;
-  }
-
-  .redirect-brand {
-    gap: 0.55rem;
-    font-size: 0.68rem;
-  }
-
-  .redirect-brand-mark {
-    width: 2.55rem;
-    height: 2.55rem;
-  }
-
-  .redirect-actions {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .redirect-action {
-    width: 100%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .redirect-spinner,
-  .redirect-action:hover {
-    animation: none;
-    transform: none;
-  }
-}
-
-@media (forced-colors: active) {
-  body.redirect-page {
-    color: CanvasText;
-    background: Canvas;
-  }
-
-  .redirect-card {
-    background: Canvas;
-    border-color: ButtonText;
-  }
-
-  .redirect-card::before {
-    background: Highlight;
-  }
-
-  .redirect-brand,
-  .redirect-eyebrow,
-  .redirect-count {
-    color: LinkText;
-  }
-
-  .redirect-spinner {
-    border-color: CanvasText;
-    border-top-color: Highlight;
-  }
-
-  .redirect-primary {
-    color: HighlightText;
-    background: Highlight;
-  }
-
-  .redirect-secondary {
-    color: LinkText;
-    background: Canvas;
-    border-color: ButtonText;
-  }
+  .redirect-action { transition: none; }
+  .redirect-action:hover { transform: none; }
 }
