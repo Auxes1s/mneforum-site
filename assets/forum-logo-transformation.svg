@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 855 459" role="img" aria-labelledby="animation-title animation-description" preserveAspectRatio="xMidYMid meet">
   <title id="animation-title">M&amp;E Network butterfly transformation</title>
-  <desc id="animation-description">The large amber M-shaped cocoon fades in first from the right toward the left. Its yellow butterfly form follows, then blue dots flow across, followed by the solid blue butterflies and the final red butterfly.</desc>
+  <desc id="animation-description">The large amber M-shaped cocoon materializes from right to left at a fixed scale. Dashed guide trails connect its center to the emerging butterflies as its yellow butterfly form follows, then blue dots flow across, followed by the solid blue butterflies and the final red butterfly.</desc>
   <defs>
     <linearGradient id="flight-gradient" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#4898d3" />
@@ -12,6 +12,15 @@
       <stop offset=".58" stop-color="#fff4d7" />
       <stop offset="1" stop-color="#f5d47b" />
     </linearGradient>
+    <mask id="flight-mask-first" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-160" y="-120" width="1200" height="700" mask-type="luminance">
+      <path id="flight-mask-first-path" class="flight-mask-path" pathLength="1" d="M-130 366 C75 390 230 380 365 350 C365 280 344 196 360 132" />
+    </mask>
+    <mask id="flight-mask-middle" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-160" y="-120" width="1200" height="700" mask-type="luminance">
+      <path id="flight-mask-middle-path" class="flight-mask-path" pathLength="1" d="M360 132 C430 82 520 96 600 145 C680 195 750 135 930 45" />
+    </mask>
+    <mask id="flight-mask-final" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-160" y="-120" width="1200" height="700" mask-type="luminance">
+      <path id="flight-mask-final-path" class="flight-mask-path" pathLength="1" d="M600 145 C665 190 690 268 720 310 C790 365 885 405 980 365" />
+    </mask>
     <style>.cls-2{fill:#f1a81f;}.cls-3{fill:#0759a3;}.cls-4{fill:#c3435d;}.cls-5{fill:#0b58a3;}.cls-6{fill:#4898d3;}.cls-7{fill:none;}
 
 /* ---------------------------------------------------------------------------
@@ -46,9 +55,10 @@
 
    COST MODEL
 
-   Only opacity and transform are animated on the large groups. One
-   stroke-dashoffset animation remains (the flight trace) — a single hairline
-   stroke, not filled artwork. No isolation groups: the Illustrator export
+   Only opacity and transform are animated on the large groups. The flight
+   trace and the three compact guide trails use a simple stroke mask to reveal
+   the route, then the same stroke-dashoffset travel — strokes, not filled
+   artwork. No isolation groups: the Illustrator export
    carried `isolation: isolate` on the board and on the cocoon group, which
    forced the whole 434-path artwork through an offscreen buffer every frame
    for no reason, since nothing here uses a blend mode.
@@ -65,8 +75,7 @@
 .logo-foundation,
 .logo-accent,
 .wing,
-.antennae,
-.emergent-anatomy {
+.antennae {
   transform-box: fill-box;
   will-change: opacity, transform;
 }
@@ -96,18 +105,88 @@
   animation: amber-particle-flow 12s var(--flow) 1 both;
 }
 
-/* Linear, deliberately: the trace is a constant-speed pen stroke. An eased
-   draw visibly slows as it lands, which on a hairline reads as a hesitation. */
+.flight-mask-path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+#flight-mask-first-path {
+  animation: flight-reveal-first 12s linear 1 both;
+}
+
+#flight-mask-middle-path {
+  animation: flight-reveal-middle 12s linear 1 both;
+}
+
+#flight-mask-final-path {
+  animation: flight-reveal-final 12s linear 1 both;
+}
+
+/* Linear, deliberately: the dash train travels at a constant speed while the
+   mask reveals the curve ahead of it. An eased draw visibly slows as it lands,
+   which on a hairline reads as a hesitation. */
 #flight-path {
   fill: none;
   opacity: 0;
-  stroke: url(#flight-gradient);
-  stroke-width: 1.75;
+  stroke: #4898d3;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 9 11;
+  stroke-dashoffset: 0;
+  vector-effect: non-scaling-stroke;
+  animation: flight-path-first 12s linear 1 both;
+}
+
+#guide-trails {
+  fill: none;
+  pointer-events: none;
+}
+
+#guide-trails .guide-trail {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 9 11;
+  stroke-dashoffset: 0;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+}
+
+#guide-trails .guide-trail-blue { stroke: #4898d3; }
+#guide-trails .guide-trail-deep { stroke: #0b58a3; }
+#guide-trails .guide-trail-red { stroke: #c3435d; }
+
+#guide-trails #guide-trail-middle {
+  animation: flight-path-middle 12s linear 1 both;
+}
+
+#guide-trails #guide-trail-final {
+  animation: flight-path-final 12s linear 1 both;
+}
+
+#cocoon-rays {
+  fill: none;
+  pointer-events: none;
+}
+
+#cocoon-rays path {
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-dasharray: 1;
+  stroke-dashoffset: 1;
   vector-effect: non-scaling-stroke;
-  animation: trace-flight 12s linear 1 both;
+  animation: cocoon-ray-draw 12s var(--flow) 1 both;
 }
+
+#cocoon-rays .ray-blue { stroke: #4898d3; }
+#cocoon-rays .ray-amber { stroke: #f1a81f; }
 
 #stage-first-butterfly {
   transform-origin: center;
@@ -124,11 +203,6 @@
   animation: first-right-wing 12s var(--flow) 1 both;
 }
 
-#stage-first-butterfly .emergent-anatomy {
-  transform-origin: center;
-  animation: emergent-anatomy 12s var(--flow) 1 both;
-}
-
 #stage-cocoon {
   opacity: 1;
   transform: none;
@@ -139,7 +213,9 @@
 }
 
 #stage-cocoon #m_only {
-  animation: m-foundation-reveal 12s var(--flow) 1 both;
+  clip-path: inset(0 0 0 100%);
+  animation: m-foundation-reveal 12s var(--flow) 1 both,
+             m-foundation-wipe 12s var(--flow) 1 both;
 }
 
 #stage-cocoon #yellow-left-butterfly {
@@ -208,6 +284,17 @@
   24%,100% { opacity: 1; transform: translate(0, 0) scale(1); }
 }
 
+@keyframes m-foundation-wipe {
+  0%, 8%  { clip-path: inset(0 0 0 100%); }
+  24%,100% { clip-path: inset(0); }
+}
+
+@keyframes cocoon-ray-draw {
+  0%, 12%  { opacity: 0; stroke-dashoffset: 1; }
+  26%      { opacity: .58; stroke-dashoffset: 0; }
+  42%,100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
 /* --- 15% – 40%: the yellow left butterfly settles onto the M --------------- */
 @keyframes yellow-butterfly-reveal {
   0%, 15%  { opacity: 0; transform: translate(26px, 6px) rotate(-2.4deg) scale(.9); }
@@ -232,16 +319,50 @@
   62%,100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
-/* --- 33% – 90%: the flight trace, drawn then quietly withdrawn -------------
-   Four stops rather than three, because a fade in, a draw and a fade out are
-   three genuinely different events. They do not pulse: the two interior stops
-   hold opacity flat while the stroke grows, and the stroke holds flat while
-   the opacity falls, so no property ever reverses direction. */
-@keyframes trace-flight {
-  0%, 33%  { opacity: 0; stroke-dashoffset: 1; }
-  38%      { opacity: .2; stroke-dashoffset: 1; }
-  72%      { opacity: .2; stroke-dashoffset: 0; }
-  90%,100% { opacity: 0; stroke-dashoffset: 0; }
+/* --- 22% – 100%: one flight route, handed from one butterfly to the next --
+   Each stroke is a segment of the same route. The next segment starts at the
+   previous butterfly's center while the previous one is still visible, so the
+   dashed line reads as a handoff rather than three unrelated decorations. */
+@keyframes flight-path-first {
+  0%, 22%  { opacity: 0; stroke-dashoffset: 0; }
+  32%      { opacity: .82; stroke-dashoffset: -18px; }
+  56%      { opacity: .82; stroke-dashoffset: -80px; }
+  66%,100% { opacity: 0; stroke-dashoffset: -104px; }
+}
+
+@keyframes flight-path-middle {
+  0%, 48%  { opacity: 0; stroke-dashoffset: 0; }
+  58%      { opacity: .82; stroke-dashoffset: -18px; }
+  80%      { opacity: .82; stroke-dashoffset: -80px; }
+  88%,100% { opacity: 0; stroke-dashoffset: -104px; }
+}
+
+@keyframes flight-path-final {
+  0%, 68%  { opacity: 0; stroke-dashoffset: 0; }
+  78%      { opacity: .82; stroke-dashoffset: -18px; }
+  96%      { opacity: .82; stroke-dashoffset: -90px; }
+  100%     { opacity: 0; stroke-dashoffset: -108px; }
+}
+
+@keyframes flight-reveal-first {
+  0%, 22%  { opacity: 0; stroke-dashoffset: 1; }
+  32%      { opacity: 1; stroke-dashoffset: .78; }
+  56%      { opacity: 1; stroke-dashoffset: 0; }
+  66%,100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes flight-reveal-middle {
+  0%, 48%  { opacity: 0; stroke-dashoffset: 1; }
+  58%      { opacity: 1; stroke-dashoffset: .78; }
+  80%      { opacity: 1; stroke-dashoffset: 0; }
+  88%,100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes flight-reveal-final {
+  0%, 68%  { opacity: 0; stroke-dashoffset: 1; }
+  78%      { opacity: 1; stroke-dashoffset: .78; }
+  96%      { opacity: 1; stroke-dashoffset: 0; }
+  100%     { opacity: 0; stroke-dashoffset: 0; }
 }
 
 /* --- 45% – 72%: the first butterfly rises out of the M --------------------- */
@@ -262,12 +383,6 @@
 @keyframes first-right-wing {
   0%, 46%  { transform: rotate(-56deg) scale(.26, .54); }
   74%,100% { transform: rotate(0) scale(1); }
-}
-
-@keyframes emergent-anatomy {
-  0%, 45%  { opacity: 0; transform: scale(.82, .6); }
-  58%, 74% { opacity: 1; transform: scale(1); }
-  88%,100% { opacity: 0; transform: scale(1); }
 }
 
 /* --- 60% – 88%: the middle butterfly flies in from the upper left ----------
@@ -310,39 +425,6 @@
   99%,100% { opacity: 1; transform: scaleX(1); }
 }
 
-/* On a phone the complete 855-unit board makes the opening cocoon too small to
-   read. Begin with a restrained camera close-up, then pull back to the exact
-   supplied viewBox in one continuous move.
-
-   The pull-back tops out at 1.72x, not the 2.05x of an earlier pass. Scaling
-   the board re-rasterizes all 434 vector paths on every frame that the scale
-   factor changes, and that cost grows with the factor — on a mid-range phone
-   the deeper zoom was the single most expensive thing in the sequence. */
-@keyframes mobile-camera {
-  0%, 14%  { transform: translate(7%, -15%) scale(1.72); }
-  44%,100% { transform: translate(0, 0) scale(1); }
-}
-
-/* Two layouts need the close-up, and both are defined by how small the host
-   page makes the board rather than by width alone. Portrait phones cap it at
-   250px tall; the short-landscape hero (a phone on its side, or a very shallow
-   window) caps it at 150px, which is the smallest it ever gets and therefore
-   needs this most. Matching on width alone missed the landscape case entirely,
-   because those viewports are wider than 600px.
-
-   When this file is inlined into the page — the normal path — these queries
-   evaluate against the page viewport, so they track the host breakpoints at
-   index.html directly. Keep the two in step. */
-@media (max-width: 600px) and (prefers-reduced-motion: no-preference),
-       (max-width: 880px) and (max-height: 500px) and (prefers-reduced-motion: no-preference) {
-  .transformation-board {
-    transform-box: view-box;
-    transform-origin: 42.7% 75.2%;
-    will-change: transform;
-    animation: mobile-camera 12s var(--flow) 1 both;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .stage,
   .particle-field,
@@ -350,8 +432,7 @@
   .logo-accent,
   .wing,
   .antennae,
-  .story-beat,
-  .emergent-anatomy {
+  .story-beat {
     animation: none !important;
     transform: none !important;
   }
@@ -360,14 +441,23 @@
     opacity: 1 !important;
   }
 
-  .story-beat,
-  .emergent-anatomy {
+  .story-beat {
     display: none !important;
   }
 
   .logo-foundation,
   .logo-accent {
     opacity: 1 !important;
+  }
+
+  #stage-cocoon #m_only {
+    clip-path: inset(0) !important;
+  }
+
+  #cocoon-rays path {
+    animation: none !important;
+    opacity: .58;
+    stroke-dashoffset: 0;
   }
 }
 </style>
@@ -792,20 +882,26 @@
       </g>
     </g>
     <g id="flight-story" class="story-beat" aria-hidden="true">
-      <path id="flight-path" pathLength="1" d="M365,350 C349,288 340,218 361,174 C421,101 524,94 590,158 C635,203 660,279 713,316" />
+      <g id="guide-trails">
+        <path id="guide-trail-middle" class="guide-trail guide-trail-deep" mask="url(#flight-mask-middle)" d="M360 132 C430 82 520 96 600 145 C680 195 750 135 930 45" />
+        <path id="guide-trail-final" class="guide-trail guide-trail-red" mask="url(#flight-mask-final)" d="M600 145 C665 190 690 268 720 310 C790 365 885 405 980 365" />
+      </g>
+      <path id="flight-path" mask="url(#flight-mask-first)" d="M-130 366 C75 390 230 380 365 350 C365 280 344 196 360 132" />
     </g>
     <g id="stage-first-butterfly" class="stage butterfly">
       <path class="cls-6 wing wing-left" d="M356,73.48C331.72,22.48,248.86.91,231.29,20.72c-11.5,13,.1,49.18,20.67,70.22,26.34,26.94,59.24,20.67,64.46,40.23,4.91,18.41-22.53,30.28-19.29,59.62.12,1.16,3,23.63,17.73,29,14.31,5.21,32.57-8.41,40-22.57a43.66,43.66,0,0,0,4.69-21C358.87,111.26,358.49,78.68,356,73.48Z" />
       <path class="cls-6 wing wing-right" d="M366.83,71.17c21-52.45,102.31-79.25,121.1-60.6,12.31,12.22,3,49.09-16.15,71.4-24.57,28.56-57.8,24.4-61.76,44.26-3.73,18.68,24.41,28.77,23.05,58.26-.05,1.16-1.51,23.77-15.85,30.06-14,6.11-33-6.32-41.34-20a43.59,43.59,0,0,1-6-20.64C366.39,109.06,364.69,76.52,366.83,71.17Z" />
-      <g class="emergent-anatomy" aria-hidden="true">
-        <path class="cls-3" d="M361.45,98 C356.7,115 357.7,143 361.45,171 C365.3,143 366.2,115 361.45,98Z" />
-        <ellipse class="cls-3" cx="361.45" cy="91.5" rx="5.6" ry="9.2" />
-        <circle class="cls-3" cx="361.45" cy="79.5" r="6.2" />
-        <path class="cls-7" d="M358.5,76 C352,65 346,59 338,55 M364.4,76 C371,64 377,58 385,54" stroke="#0759a3" stroke-width="2.4" stroke-linecap="round" />
-      </g>
     </g>
     <g id="stage-cocoon" data-name="4cocon" class="cls-1 stage cocoon">
       <path id="m_only" data-name="m only" class="cls-2 logo-foundation" d="M604.57,325.05c.88-.88-1.73-1.79-2.94-1.49-12.55,3.13-45.42,23-53.55,30.09-36.67,32.16-98.64,47.63-136.66,32.18-75.68-30.75-67.63-141.38-87.78-139C311.26,248.31,294,306,290.24,329c-8.15,49.47-18.11-4.17-23.12-19.65S247.62,181.73,232,195.74c-13.64,12.21-28.57,97-37.13,115.4C174,355.91,140.34,385.77,75.48,345.36a2.42,2.42,0,0,0-2.42-.14c-11.07,6.34,60.51,87.51,104.65,68.47,41.12-17.74,41.13-104.17,57.91-102.91C252.89,311.84,261,430.65,277.05,431c14.68.32,37.92-73.84,40.74-102.44s15,48.61,57,87.41a3.9,3.9,0,0,0,.4.31c23.66,15,67.66,35.4,143.45,4.63C561.43,403.53,591.12,338.45,604.57,325.05Z" />
+      <g id="cocoon-rays" aria-hidden="true">
+        <path class="ray-blue" pathLength="1" d="M365 337 L365 313" />
+        <path class="ray-amber" pathLength="1" d="M351 341 L334 326" />
+        <path class="ray-blue" pathLength="1" d="M379 341 L396 326" />
+        <path class="ray-amber" pathLength="1" d="M349 351 L325 351" />
+        <path class="ray-blue" pathLength="1" d="M381 351 L405 351" />
+        <path class="ray-amber" pathLength="1" d="M365 360 L365 383" />
+      </g>
       <path id="yellow-left-butterfly" class="cls-2 logo-foundation" d="M380.7,227c-6.05-3.88-7.58-5.36-1.82,12.75,15.65,49.3,10.61,68.92,25.56,73.32,22.63,6.65,50.23-53.13,63.14-26.27,8.19,17-39.72,48.67-34.75,58.9,10.05,20.69,127.71-10.66,144.4-52.93-30.34,11.31-43.71,7.26-50.31,1.6-13.28-11.36-4-33.3-19.43-44.4-10.67-7.69-17.5,1.12-36.27-7.85-13.82-6.6-26.17-19.06-27.47-17.65a.59.59,0,0,0-.09.52C445.22,235.09,424,254.84,380.7,227Z" />
       <g id="cocoon-glow" class="story-beat" aria-hidden="true">
         <ellipse cx="365" cy="345" rx="38" ry="55" fill="#f1a81f" opacity=".34" />

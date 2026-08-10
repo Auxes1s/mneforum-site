@@ -146,6 +146,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 24px;">',
         '<div class="tally-method-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 24px;">'
       )
+      .replace(
+        '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px;">',
+        '<div class="notes-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px;">'
+      )
       // The data marker decouples the thinking-mode mount from the headline
       // copy. The visible title can evolve without disabling the sequence.
       .replace(
@@ -194,6 +198,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace(
         '<span style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; opacity: .8;">UNDP</span>',
         '<img loading="lazy" decoding="async" src="assets/partners/undp.svg" alt="United Nations Development Programme" class="footer__partner-undp">'
+      )
+      .replace(
+        '<div style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">',
+        '<div class="site-footer__dateline" style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">'
       );
 
     // Normalize the legacy inline palette to the guide's approved asset
@@ -5889,6 +5897,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     // scripts execute. Append the responsive layer after that work so it is
     // the final author stylesheet and reliably wins the cascade.
     document.getElementById('forum-mobile-polish')?.remove();
+    document.getElementById('forum-brand-styles')?.remove();
+    document.getElementById('forum-responsive-styles')?.remove();
     const polishStyle = document.createElement('style');
     polishStyle.id = 'forum-mobile-polish';
     polishStyle.textContent = mobilePolish
@@ -5900,25 +5910,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     brandLink.rel = 'stylesheet';
     brandLink.href = 'assets/forum-brand.css';
     document.head.appendChild(brandLink);
-    // Both sheets have to sit at the end of <head>, in order: the responsive
-    // polish layer, then the brand layer last so it wins ties against it.
+    const responsiveLink = document.createElement('link');
+    responsiveLink.id = 'forum-responsive-styles';
+    responsiveLink.rel = 'stylesheet';
+    responsiveLink.href = 'assets/forum-responsive.css';
+    document.head.appendChild(responsiveLink);
+    // All three sheets have to sit at the end of <head>, in order: the
+    // responsive polish layer, the brand layer, then the final audited
+    // responsive layer.
     //
-    // Test the pair as an ordered invariant, never as "each one must be last".
-    // Two elements cannot both be lastElementChild, so a per-element check can
-    // never be satisfied — and because this runs from a MutationObserver on
-    // <head>, each corrective append retriggers the callback, which appends the
-    // other one, forever. That spins the main thread and the page never paints.
-    const keepBrandStylesLast = () => {
-      if (document.head.lastElementChild === brandLink &&
+    // Test the complete sequence as an ordered invariant, never as "each one
+    // must be last". Corrective appends retrigger this observer, so the stable
+    // sequence must be checked before appending anything.
+    const keepResponsiveStylesLast = () => {
+      if (document.head.lastElementChild === responsiveLink &&
+          responsiveLink.previousElementSibling === brandLink &&
           brandLink.previousElementSibling === polishStyle) {
         return;
       }
       document.head.appendChild(polishStyle);
       document.head.appendChild(brandLink);
+      document.head.appendChild(responsiveLink);
     };
-    const polishObserver = new MutationObserver(keepBrandStylesLast);
+    const polishObserver = new MutationObserver(keepResponsiveStylesLast);
     polishObserver.observe(document.head, { childList: true });
-    requestAnimationFrame(() => requestAnimationFrame(keepBrandStylesLast));
+    requestAnimationFrame(() => requestAnimationFrame(keepResponsiveStylesLast));
     const initHeroThinking = () => {
       const hero = document.querySelector('.hero');
       const stage = document.querySelector('.hero__headline-stage');
@@ -6321,6 +6337,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       };
       const restartUltraVisuals = () => {
         if (mode !== 'ultra') return;
+        // The synchronized SVG is held on its final frame when a cycle ends.
+        // Rewind it at the discrete restart boundary before handing it back
+        // to the compositor; otherwise a same-mode replay inherits the old
+        // finished timeline and has nothing left to animate.
+        syncSvgTime(0);
         hero.classList.remove('is-ultra-logo-reveal');
         void hero.offsetWidth;
         hero.classList.add('is-ultra-logo-reveal');
@@ -6577,6 +6598,19 @@ document.addEventListener('DOMContentLoaded', async function() {
         modeControl.querySelector('summary')?.focus({ preventScroll: true });
       };
 
+      // Clicking the visible option label can synthesize the associated input
+      // click with `detail === 0`, just like a keyboard activation. Remember
+      // the pointerdown target so a pointer can replay an already-selected
+      // mode without changing the keyboard behavior.
+      let pointerModeInput = null;
+      modeControl.addEventListener('pointerdown', event => {
+        const label = event.target?.closest?.('label');
+        pointerModeInput = label?.querySelector('input[name="thinking-mode"]') || null;
+      });
+      modeControl.addEventListener('pointercancel', () => {
+        pointerModeInput = null;
+      });
+
       modeInputs.forEach(input => {
         // Arrow-key selection in a radio group synthesizes a `click`, so the
         // event type alone cannot separate pointer from keyboard. A real
@@ -6586,9 +6620,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         // comparable.
         input.addEventListener('click', event => {
           if (!input.checked) return;
+          const pointerActivated = pointerModeInput === input;
+          pointerModeInput = null;
+          const replay = event.detail > 0 || pointerActivated;
           selectMode(input.value, {
-            close: event.detail > 0,
-            replay: event.detail > 0
+            close: replay,
+            replay
           });
         });
         input.addEventListener('change', () => {
