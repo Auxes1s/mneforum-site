@@ -1,7 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 855 459" role="img" aria-labelledby="animation-title animation-description" preserveAspectRatio="xMidYMid meet">
   <title id="animation-title">M&amp;E Network butterfly transformation</title>
-  <desc id="animation-description">The M and E cocoon appears first, then the butterfly forms assemble from left to right and hold as the complete logo.</desc>
+  <desc id="animation-description">A cocoon breathes and splits open. A blue butterfly rises, unfurls its wings, and follows a curved flight into the complete multicolored logo.</desc>
   <defs>
+    <linearGradient id="flight-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4898d3" />
+      <stop offset=".55" stop-color="#f1a81f" />
+      <stop offset="1" stop-color="#c3435d" />
+    </linearGradient>
+    <linearGradient id="cocoon-gradient" x1="340" y1="302" x2="390" y2="388" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffdf7" />
+      <stop offset=".58" stop-color="#fff4d7" />
+      <stop offset="1" stop-color="#f5d47b" />
+    </linearGradient>
     <style>.cls-1{isolation:isolate;}.cls-2{fill:#f1a81f;}.cls-3{fill:#0759a3;}.cls-4{fill:#c3435d;}.cls-5{fill:#0b58a3;}.cls-6{fill:#4898d3;}.cls-7{fill:none;}
 .transformation-board {
   isolation: isolate;
@@ -9,10 +19,18 @@
 
 .stage,
 .particle-field,
+.logo-foundation,
+.logo-accent,
 .wing,
-.antennae {
+.antennae,
+.story-beat,
+.emergent-anatomy {
   transform-box: fill-box;
   will-change: opacity, transform;
+}
+
+.story-beat {
+  pointer-events: none;
 }
 
 .stage {
@@ -21,47 +39,105 @@
 }
 
 #stage-particles {
-  animation: particle-stage 12s cubic-bezier(.45, 0, .2, 1) 1 both;
+  transform-origin: right center;
+  animation: particle-stage 12s cubic-bezier(.25, .72, .2, 1) 1 both;
 }
 
 #particles-blue {
-  animation: blue-particle-flow 12s ease-in-out 1 both;
+  transform-origin: right center;
+  animation: blue-particle-flow 12s cubic-bezier(.25, .72, .2, 1) 1 both;
 }
 
 #particles-amber {
-  animation: amber-particle-flow 12s ease-in-out 1 both;
+  transform-origin: right center;
+  animation: amber-particle-flow 12s cubic-bezier(.25, .72, .2, 1) 1 both;
+}
+
+#flight-path {
+  fill: none;
+  opacity: 0;
+  stroke: url(#flight-gradient);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  vector-effect: non-scaling-stroke;
+  animation: trace-flight 12s cubic-bezier(.35, 0, .2, 1) 1 both;
 }
 
 #stage-first-butterfly {
-  animation: first-stage 12s cubic-bezier(.4, 0, .2, 1) 1 both;
+  transform-origin: center;
+  animation: first-stage 12s cubic-bezier(.2, .72, .18, 1) 1 both;
 }
 
 #stage-first-butterfly .wing-left {
   transform-origin: right center;
-  animation: first-left-wing 12s ease-in-out 1 both;
+  animation: first-left-wing 12s cubic-bezier(.2, .72, .18, 1) 1 both;
 }
 
 #stage-first-butterfly .wing-right {
   transform-origin: left center;
-  animation: first-right-wing 12s ease-in-out 1 both;
+  animation: first-right-wing 12s cubic-bezier(.2, .72, .18, 1) 1 both;
+}
+
+#stage-first-butterfly .emergent-anatomy {
+  transform-origin: center;
+  animation: emergent-anatomy 12s cubic-bezier(.25, .65, .25, 1) 1 both;
 }
 
 #stage-cocoon {
-  animation: cocoon-stage 12s cubic-bezier(.4, 0, .2, 1) 1 both;
+  transform-origin: center bottom;
+  animation: cocoon-stage 12s cubic-bezier(.3, 0, .2, 1) 1 both;
 }
 
-#stage-cocoon &gt; path:nth-of-type(3) {
+#stage-cocoon .logo-foundation {
+  transform-origin: center bottom;
+  animation: foundation-reveal 12s cubic-bezier(.2, .72, .2, 1) 1 both;
+}
+
+#stage-cocoon .logo-accent {
+  transform-origin: center;
+  animation: accent-reveal 12s cubic-bezier(.2, .72, .2, 1) 1 both;
+}
+
+#silk-thread {
+  transform-origin: center top;
+  animation: silk-thread 12s ease-in-out 1 both;
+}
+
+#cocoon-case {
+  transform-origin: center bottom;
+  animation: cocoon-breathe 12s cubic-bezier(.38, 0, .2, 1) 1 both;
+}
+
+#cocoon-left-half {
   transform-origin: right center;
-  animation: cocoon-blue-wing 12s ease-in-out 1 both;
+  animation: cocoon-left-open 12s cubic-bezier(.35, 0, .2, 1) 1 both;
 }
 
-#stage-cocoon &gt; path:nth-of-type(4) {
+#cocoon-right-half {
   transform-origin: left center;
-  animation: cocoon-red-wing 12s ease-in-out 1 both;
+  animation: cocoon-right-open 12s cubic-bezier(.35, 0, .2, 1) 1 both;
+}
+
+#cocoon-crack {
+  fill: none;
+  stroke: #0759a3;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  vector-effect: non-scaling-stroke;
+  animation: cocoon-crack 12s cubic-bezier(.4, 0, .2, 1) 1 both;
+}
+
+#cocoon-glow {
+  transform-origin: center;
+  animation: cocoon-glow 12s ease-out 1 both;
 }
 
 #stage-middle-butterfly {
-  animation: middle-stage 12s cubic-bezier(.4, 0, .2, 1) 1 both;
+  transform-origin: center;
+  animation: middle-stage 12s cubic-bezier(.2, .72, .18, 1) 1 both;
 }
 
 #stage-middle-butterfly .wing {
@@ -77,7 +153,8 @@
 }
 
 #stage-final-butterfly {
-  animation: final-stage 12s cubic-bezier(.3, 0, .15, 1) 1 both;
+  transform-origin: center;
+  animation: final-stage 12s cubic-bezier(.2, .72, .18, 1) 1 both;
 }
 
 #stage-final-butterfly .wing {
@@ -98,118 +175,214 @@
 }
 
 @keyframes particle-stage {
-  0%, 12% { opacity: 0; transform: translateX(-24px) scale(.98); }
-  20%     { opacity: 1; transform: translateX(0) scale(1); }
-  100%    { opacity: 1; transform: translateX(0) scale(1); }
+  0%, 40% { opacity: 0; transform: translate(34px, 12px) scale(.96); }
+  50%     { opacity: .28; transform: translate(22px, 8px) scale(.975); }
+  64%     { opacity: 1; transform: translate(0, 0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) scale(1); }
 }
 
 @keyframes blue-particle-flow {
-  0%, 12% { transform: translate(-20px, -6px); }
-  20%     { transform: translate(0, 0); }
+  0%, 40% { transform: rotate(-2deg); }
+  53%     { transform: rotate(.8deg); }
+  64%     { transform: rotate(0); }
   100%    { transform: translate(0, 0); }
 }
 
 @keyframes amber-particle-flow {
-  0%, 12% { transform: translate(-12px, 8px); }
-  20%     { transform: translate(0, 0); }
+  0%, 40% { transform: rotate(2deg); }
+  53%     { transform: rotate(-.8deg); }
+  64%     { transform: rotate(0); }
   100%    { transform: translate(0, 0); }
 }
 
 @keyframes first-stage {
-  0%, 25% { opacity: 0; transform: translateX(-28px) scale(.88); }
-  33%     { opacity: 1; transform: translateX(0) scale(1); }
-  100%    { opacity: 1; transform: translateX(0) scale(1); }
+  0%, 17% { opacity: 0; transform: translate(0, 214px) scale(.18, .38); }
+  22%     { opacity: .82; transform: translate(0, 184px) scale(.28, .5); }
+  29%     { opacity: 1; transform: translate(0, 108px) scale(.58, .76); }
+  37%     { opacity: 1; transform: translate(0, 0) scale(1); }
+  43%     { opacity: 1; transform: translate(0, 0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) scale(1); }
 }
 
 @keyframes first-left-wing {
-  0%, 27% { transform: rotate(-12deg) scale(.9); }
-  32%     { transform: rotate(3deg) scale(1); }
-  36%     { transform: rotate(0) scale(1); }
+  0%, 18% { transform: rotate(56deg) scale(.26, .54); }
+  25%     { transform: rotate(38deg) scale(.43, .7); }
+  32%     { transform: rotate(11deg) scale(.8, .94); }
+  38%     { transform: rotate(-3deg) scale(1.015); }
+  44%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0) scale(1); }
 }
 
 @keyframes first-right-wing {
-  0%, 27% { transform: rotate(12deg) scale(.9); }
-  32%     { transform: rotate(-3deg) scale(1); }
-  36%     { transform: rotate(0) scale(1); }
+  0%, 18% { transform: rotate(-56deg) scale(.26, .54); }
+  25%     { transform: rotate(-38deg) scale(.43, .7); }
+  32%     { transform: rotate(-11deg) scale(.8, .94); }
+  38%     { transform: rotate(3deg) scale(1.015); }
+  44%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0) scale(1); }
 }
 
+@keyframes emergent-anatomy {
+  0%, 17% { opacity: 0; transform: scale(.82, .58); }
+  21%     { opacity: 1; transform: scale(.96, .82); }
+  29%, 45% { opacity: 1; transform: scale(1); }
+  53%, 100% { opacity: 0; transform: scale(1); }
+}
+
 @keyframes cocoon-stage {
-  0%      { opacity: 0; transform: translateY(18px) scale(.84); }
-  7%      { opacity: 1; transform: translateY(0) scale(1.02); }
-  12%     { opacity: 1; transform: translateY(0) scale(1); }
-  100%    { opacity: 1; transform: translateY(0) scale(1); }
+  0%      { opacity: 0; transform: translate(0, 10px) scale(.96); }
+  4%      { opacity: 1; transform: translate(0, 0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) scale(1); }
 }
 
-@keyframes cocoon-blue-wing {
-  0%      { transform: rotate(-8deg); }
-  7%      { transform: rotate(5deg); }
-  12%     { transform: rotate(-3deg); }
-  16%     { transform: rotate(0); }
-  100%    { transform: rotate(0); }
+@keyframes foundation-reveal {
+  0%, 29% { opacity: 0; transform: translate(0, 9px) scale(.985); }
+  39%     { opacity: .35; transform: translate(0, 5px) scale(.992); }
+  52%     { opacity: 1; transform: translate(0, 0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) scale(1); }
 }
 
-@keyframes cocoon-red-wing {
-  0%      { transform: rotate(8deg); }
-  7%      { transform: rotate(-5deg); }
-  12%     { transform: rotate(3deg); }
-  16%     { transform: rotate(0); }
-  100%    { transform: rotate(0); }
+@keyframes accent-reveal {
+  0%, 38% { opacity: 0; transform: scale(.72); }
+  48%     { opacity: .55; transform: scale(.92); }
+  56%     { opacity: 1; transform: scale(1); }
+  100%    { opacity: 1; transform: scale(1); }
+}
+
+@keyframes silk-thread {
+  0%      { opacity: 0; transform: scaleY(0); }
+  4%, 25% { opacity: .62; transform: scaleY(1); }
+  31%, 100% { opacity: 0; transform: scaleY(.55); }
+}
+
+@keyframes cocoon-breathe {
+  0%      { opacity: 0; transform: scale(.84, .72); }
+  5%      { opacity: 1; transform: scale(1.01, .99); }
+  10%     { opacity: 1; transform: scale(.985, 1.018); }
+  15%     { opacity: 1; transform: scale(1.012, .99); }
+  20%     { opacity: 1; transform: scale(1); }
+  35%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes cocoon-left-open {
+  0%, 20% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  25%     { opacity: 1; transform: translate(-5px, 1px) rotate(-7deg); }
+  30%     { opacity: .82; transform: translate(-18px, 8px) rotate(-21deg); }
+  35%, 100% { opacity: 0; transform: translate(-30px, 17px) rotate(-34deg); }
+}
+
+@keyframes cocoon-right-open {
+  0%, 20% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  25%     { opacity: 1; transform: translate(5px, 1px) rotate(7deg); }
+  30%     { opacity: .82; transform: translate(18px, 8px) rotate(21deg); }
+  35%, 100% { opacity: 0; transform: translate(30px, 17px) rotate(34deg); }
+}
+
+@keyframes cocoon-crack {
+  0%, 13% { opacity: 0; stroke-dashoffset: 1; }
+  18%     { opacity: .88; stroke-dashoffset: .42; }
+  22%     { opacity: 1; stroke-dashoffset: 0; }
+  27%, 100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes cocoon-glow {
+  0%, 11% { opacity: 0; transform: scale(.55); }
+  18%     { opacity: .22; transform: scale(1); }
+  27%     { opacity: .12; transform: scale(1.45); }
+  34%, 100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes trace-flight {
+  0%, 18% { opacity: 0; stroke-dashoffset: 1; }
+  24%     { opacity: .28; stroke-dashoffset: .82; }
+  68%     { opacity: .28; stroke-dashoffset: 0; }
+  78%     { opacity: .12; stroke-dashoffset: 0; }
+  85%, 100% { opacity: 0; stroke-dashoffset: 0; }
 }
 
 @keyframes middle-stage {
-  0%, 40% { opacity: 0; transform: translateX(-34px) scale(.88); }
-  48%     { opacity: 1; transform: translateX(0) scale(1); }
-  100%    { opacity: 1; transform: translateX(0) scale(1); }
+  0%, 44% { opacity: 0; transform: translate(-208px, -25px) rotate(-8deg) scale(.68); }
+  50%     { opacity: .22; transform: translate(-174px, -19px) rotate(-6deg) scale(.72); }
+  60%     { opacity: .82; transform: translate(-54px, -6px) rotate(-2deg) scale(.93); }
+  68%     { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes middle-upper-wing {
-  0%, 42% { transform: rotate(-8deg); }
-  47%     { transform: rotate(4deg); }
-  52%     { transform: rotate(0); }
+  0%, 45% { transform: rotate(-18deg) scale(.72); }
+  53%     { transform: rotate(5deg) scale(.9); }
+  60%     { transform: rotate(-3deg) scale(1.012); }
+  68%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0); }
 }
 
 @keyframes middle-lower-wing {
-  0%, 42% { transform: rotate(8deg); }
-  47%     { transform: rotate(-4deg); }
-  52%     { transform: rotate(0); }
+  0%, 45% { transform: rotate(18deg) scale(.72); }
+  53%     { transform: rotate(-5deg) scale(.9); }
+  60%     { transform: rotate(3deg) scale(1.012); }
+  68%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0); }
 }
 
 @keyframes final-stage {
-  0%, 55% { opacity: 0; transform: translateX(-42px) scale(.86); }
-  64%     { opacity: 1; transform: translateX(0) scale(1.02); }
-  70%     { opacity: 1; transform: translateX(0) scale(1); }
-  100%    { opacity: 1; transform: translateX(0) scale(1); }
+  0%, 63% { opacity: 0; transform: translate(-145px, -145px) rotate(-10deg) scale(.7); }
+  69%     { opacity: .2; transform: translate(-119px, -116px) rotate(-7deg) scale(.75); }
+  79%     { opacity: .88; transform: translate(-30px, -28px) rotate(-2deg) scale(.95); }
+  86%     { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  100%    { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes final-upper-wing {
-  0%, 57% { transform: rotate(-9deg); }
-  63%     { transform: rotate(5deg); }
-  68%     { transform: rotate(0); }
+  0%, 64% { transform: rotate(-18deg) scale(.72); }
+  72%     { transform: rotate(5deg) scale(.9); }
+  79%     { transform: rotate(-3deg) scale(1.012); }
+  86%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0); }
 }
 
 @keyframes final-lower-wing {
-  0%, 57% { transform: rotate(9deg); }
-  63%     { transform: rotate(-5deg); }
-  68%     { transform: rotate(0); }
+  0%, 64% { transform: rotate(18deg) scale(.72); }
+  72%     { transform: rotate(-5deg) scale(.9); }
+  79%     { transform: rotate(3deg) scale(1.012); }
+  86%     { transform: rotate(0) scale(1); }
   100%    { transform: rotate(0); }
 }
 
 @keyframes antennae-unfurl {
-  0%, 58% { opacity: 0; transform: scaleX(0); }
-  66%     { opacity: 1; transform: scaleX(1); }
+  0%, 72% { opacity: 0; transform: scaleX(.35); }
+  82%     { opacity: 1; transform: scaleX(1.02); }
+  87%     { opacity: 1; transform: scaleX(1); }
   100%    { opacity: 1; transform: scaleX(1); }
+}
+
+/* On a phone the complete 855-unit board makes the opening cocoon too small
+   to read. Begin with a restrained camera close-up, then return to the exact
+   supplied viewBox before the first butterfly finishes opening its wings. */
+@keyframes mobile-camera {
+  0%, 18% { transform: translate(7.5%, -16%) scale(2.05); }
+  24%     { transform: translate(6%, -13%) scale(1.8); }
+  30%     { transform: translate(2.2%, -5%) scale(1.22); }
+  37%, 100% { transform: translate(0, 0) scale(1); }
+}
+
+@media (max-width: 600px) and (prefers-reduced-motion: no-preference) {
+  .transformation-board {
+    transform-box: view-box;
+    transform-origin: 42.7% 75.2%;
+    will-change: transform;
+    animation: mobile-camera 12s cubic-bezier(.3, 0, .2, 1) 1 both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .stage,
   .particle-field,
+  .logo-foundation,
+  .logo-accent,
   .wing,
-  .antennae {
+  .antennae,
+  .story-beat,
+  .emergent-anatomy {
     animation: none !important;
     transform: none !important;
   }
@@ -217,7 +390,18 @@
   .stage {
     opacity: 1 !important;
   }
-}</style>
+
+  .story-beat,
+  .emergent-anatomy {
+    display: none !important;
+  }
+
+  .logo-foundation,
+  .logo-accent {
+    opacity: 1 !important;
+  }
+}
+</style>
   </defs>
   <g id="butterfly-transformation" class="transformation-board" data-name="Butterfly transformation">
     <g id="stage-particles" class="stage">
@@ -638,15 +822,42 @@
         <path class="cls-6" d="M189.93,43.88l.49-.82c.11.1.23.17.22.19-.21.36-.37.92-.66,1s-.76-.27-1.15-.44l.13-.39a2.5,2.5,0,0,1,.49.11A2.83,2.83,0,0,1,189.93,43.88Z" />
       </g>
     </g>
+    <g id="flight-story" class="story-beat" aria-hidden="true">
+      <path id="flight-path" pathLength="1" d="M365,350 C349,288 340,218 361,174 C421,101 524,94 590,158 C635,203 660,279 713,316" />
+    </g>
     <g id="stage-first-butterfly" class="stage butterfly">
       <path class="cls-6 wing wing-left" d="M356,73.48C331.72,22.48,248.86.91,231.29,20.72c-11.5,13,.1,49.18,20.67,70.22,26.34,26.94,59.24,20.67,64.46,40.23,4.91,18.41-22.53,30.28-19.29,59.62.12,1.16,3,23.63,17.73,29,14.31,5.21,32.57-8.41,40-22.57a43.66,43.66,0,0,0,4.69-21C358.87,111.26,358.49,78.68,356,73.48Z" />
       <path class="cls-6 wing wing-right" d="M366.83,71.17c21-52.45,102.31-79.25,121.1-60.6,12.31,12.22,3,49.09-16.15,71.4-24.57,28.56-57.8,24.4-61.76,44.26-3.73,18.68,24.41,28.77,23.05,58.26-.05,1.16-1.51,23.77-15.85,30.06-14,6.11-33-6.32-41.34-20a43.59,43.59,0,0,1-6-20.64C366.39,109.06,364.69,76.52,366.83,71.17Z" />
+      <g class="emergent-anatomy" aria-hidden="true">
+        <path class="cls-3" d="M361.45,98 C356.7,115 357.7,143 361.45,171 C365.3,143 366.2,115 361.45,98Z" />
+        <ellipse class="cls-3" cx="361.45" cy="91.5" rx="5.6" ry="9.2" />
+        <circle class="cls-3" cx="361.45" cy="79.5" r="6.2" />
+        <path class="cls-7" d="M358.5,76 C352,65 346,59 338,55 M364.4,76 C371,64 377,58 385,54" stroke="#0759a3" stroke-width="2.4" stroke-linecap="round" />
+      </g>
     </g>
     <g id="stage-cocoon" data-name="4cocon" class="cls-1 stage cocoon">
-      <path id="m_only" data-name="m only" class="cls-2" d="M604.57,325.05c.88-.88-1.73-1.79-2.94-1.49-12.55,3.13-45.42,23-53.55,30.09-36.67,32.16-98.64,47.63-136.66,32.18-75.68-30.75-67.63-141.38-87.78-139C311.26,248.31,294,306,290.24,329c-8.15,49.47-18.11-4.17-23.12-19.65S247.62,181.73,232,195.74c-13.64,12.21-28.57,97-37.13,115.4C174,355.91,140.34,385.77,75.48,345.36a2.42,2.42,0,0,0-2.42-.14c-11.07,6.34,60.51,87.51,104.65,68.47,41.12-17.74,41.13-104.17,57.91-102.91C252.89,311.84,261,430.65,277.05,431c14.68.32,37.92-73.84,40.74-102.44s15,48.61,57,87.41a3.9,3.9,0,0,0,.4.31c23.66,15,67.66,35.4,143.45,4.63C561.43,403.53,591.12,338.45,604.57,325.05Z" />
-      <path class="cls-2" d="M380.7,227c-6.05-3.88-7.58-5.36-1.82,12.75,15.65,49.3,10.61,68.92,25.56,73.32,22.63,6.65,50.23-53.13,63.14-26.27,8.19,17-39.72,48.67-34.75,58.9,10.05,20.69,127.71-10.66,144.4-52.93-30.34,11.31-43.71,7.26-50.31,1.6-13.28-11.36-4-33.3-19.43-44.4-10.67-7.69-17.5,1.12-36.27-7.85-13.82-6.6-26.17-19.06-27.47-17.65a.59.59,0,0,0-.09.52C445.22,235.09,424,254.84,380.7,227Z" />
-      <path class="cls-3" d="M366.08,346.77c-9.46-5.93-25.56-.73-26.38,4.43-.54,3.38,5.23,8.19,10.89,9.51,7.25,1.7,12.06-2.83,15-.13,2.77,2.55-.55,7.44,3.1,12,.15.18,3,3.61,6,2.95s4.54-4.86,4.28-8a8.57,8.57,0,0,0-1.45-4C370.56,352.76,367,347.37,366.08,346.77Z" />
-      <path class="cls-4" d="M360.5,337.69c-1.73-11,9.36-23.79,14.44-22.52,3.32.83,5.47,8,4.47,13.75-1.29,7.33-7.35,10-6,13.75,1.25,3.55,7.05,2.42,9.8,7.56.1.21,2.14,4.19.34,6.71s-6.25,2.26-9,.78a8.62,8.62,0,0,1-3.1-2.89C364.25,344.17,360.68,338.81,360.5,337.69Z" />
+      <path id="m_only" data-name="m only" class="cls-2 logo-foundation" d="M604.57,325.05c.88-.88-1.73-1.79-2.94-1.49-12.55,3.13-45.42,23-53.55,30.09-36.67,32.16-98.64,47.63-136.66,32.18-75.68-30.75-67.63-141.38-87.78-139C311.26,248.31,294,306,290.24,329c-8.15,49.47-18.11-4.17-23.12-19.65S247.62,181.73,232,195.74c-13.64,12.21-28.57,97-37.13,115.4C174,355.91,140.34,385.77,75.48,345.36a2.42,2.42,0,0,0-2.42-.14c-11.07,6.34,60.51,87.51,104.65,68.47,41.12-17.74,41.13-104.17,57.91-102.91C252.89,311.84,261,430.65,277.05,431c14.68.32,37.92-73.84,40.74-102.44s15,48.61,57,87.41a3.9,3.9,0,0,0,.4.31c23.66,15,67.66,35.4,143.45,4.63C561.43,403.53,591.12,338.45,604.57,325.05Z" />
+      <path class="cls-2 logo-foundation" d="M380.7,227c-6.05-3.88-7.58-5.36-1.82,12.75,15.65,49.3,10.61,68.92,25.56,73.32,22.63,6.65,50.23-53.13,63.14-26.27,8.19,17-39.72,48.67-34.75,58.9,10.05,20.69,127.71-10.66,144.4-52.93-30.34,11.31-43.71,7.26-50.31,1.6-13.28-11.36-4-33.3-19.43-44.4-10.67-7.69-17.5,1.12-36.27-7.85-13.82-6.6-26.17-19.06-27.47-17.65a.59.59,0,0,0-.09.52C445.22,235.09,424,254.84,380.7,227Z" />
+      <g id="cocoon-glow" class="story-beat" aria-hidden="true">
+        <ellipse cx="365" cy="345" rx="38" ry="55" fill="#f1a81f" opacity=".34" />
+      </g>
+      <g id="silk-thread" class="story-beat" aria-hidden="true">
+        <path d="M365,261 C361,274 369,287 365,302" fill="none" stroke="#0759a3" stroke-width="1.8" stroke-linecap="round" />
+        <ellipse cx="365" cy="302" rx="5" ry="2.4" fill="#f1a81f" />
+      </g>
+      <g id="cocoon-case" class="story-beat" aria-hidden="true">
+        <g id="cocoon-left-half">
+          <path d="M365,301 C338,313 336,368 365,389Z" fill="url(#cocoon-gradient)" stroke="#d89515" stroke-width="3" stroke-linejoin="round" />
+          <path d="M348,320 C353,322 359,323 365,323 M344,342 C351,345 358,346 365,346 M347,365 C353,368 359,369 365,369" fill="none" stroke="#e8b444" stroke-width="1.6" stroke-linecap="round" />
+        </g>
+        <g id="cocoon-right-half">
+          <path d="M365,301 C392,313 394,368 365,389Z" fill="url(#cocoon-gradient)" stroke="#d89515" stroke-width="3" stroke-linejoin="round" />
+          <path d="M365,323 C371,323 377,322 382,320 M365,346 C372,346 379,344 386,341 M365,369 C371,369 377,367 383,364" fill="none" stroke="#e8b444" stroke-width="1.6" stroke-linecap="round" />
+        </g>
+        <path id="cocoon-crack" pathLength="1" d="M365,304 L358,320 L369,334 L359,349 L369,365 L365,382" />
+      </g>
+      <path class="cls-3 logo-accent" d="M366.08,346.77c-9.46-5.93-25.56-.73-26.38,4.43-.54,3.38,5.23,8.19,10.89,9.51,7.25,1.7,12.06-2.83,15-.13,2.77,2.55-.55,7.44,3.1,12,.15.18,3,3.61,6,2.95s4.54-4.86,4.28-8a8.57,8.57,0,0,0-1.45-4C370.56,352.76,367,347.37,366.08,346.77Z" />
+      <path class="cls-4 logo-accent" d="M360.5,337.69c-1.73-11,9.36-23.79,14.44-22.52,3.32.83,5.47,8,4.47,13.75-1.29,7.33-7.35,10-6,13.75,1.25,3.55,7.05,2.42,9.8,7.56.1.21,2.14,4.19.34,6.71s-6.25,2.26-9,.78a8.62,8.62,0,0,1-3.1-2.89C364.25,344.17,360.68,338.81,360.5,337.69Z" />
     </g>
     <g id="stage-middle-butterfly" class="stage butterfly">
       <path class="cls-5 wing wing-upper" d="M591.75,138.66C605.86,84,556.15,14.23,530,18.16c-17.15,2.57-31.49,37.78-29.21,67.11,2.91,37.57,32.16,53.87,23.61,72.23-8,17.27-36.7,8.76-53.05,33.33-.64,1-12.84,20.07-5,33.62,7.63,13.17,30.38,14.45,45.16,8.34a43.48,43.48,0,0,0,17-13.07C569.7,169.47,590.32,144.23,591.75,138.66Z" />
