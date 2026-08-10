@@ -1,21 +1,22 @@
 import { access, readFile, readdir } from "node:fs/promises";
 import { constants, existsSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const failures = [];
 
+// The original bundled runtime is intentionally preserved. These are the
+// files that belong in the reviewed static site, not the removed alternate
+// implementation or the retired 2025 archive.
 const productionFiles = [
   "index.html",
   "register/index.html",
   "rp-register/index.html",
   "evalform/index.html",
-  "assets/forum.css",
-  "assets/forum.js",
+  "assets/forum-brand.css",
+  "assets/forum-responsive.css",
   "assets/redirect.css",
-  "data/forum-config.js",
-  "data/forum-content.js",
   "site.webmanifest"
 ];
 
@@ -29,6 +30,7 @@ const expectedFiles = [
   "assets/forum-logo-v5-static.svg",
   "assets/forum-logo-transformation.svg",
   "assets/og-teaser.png",
+  "assets/fonts/OpenSans-OFL.txt",
   "assets/fonts/OpenSans-SemiCondensed-Bold.ttf",
   "assets/partners/depdev.svg",
   "assets/partners/mne-network.svg",
@@ -36,35 +38,51 @@ const expectedFiles = [
 ];
 
 const forbiddenMarkers = [
-  "__bundler",
-  "unpkg.com/react",
-  "api.fontshare.com",
-  "app.sli.do",
-  "example.com",
-  "assets/forum-brand.css",
-  "assets/forum-responsive.css",
+  "assets/forum.css",
+  "assets/forum.js",
+  "data/forum-config.js",
+  "data/forum-content.js",
   "assets/redirect.js",
   "style_orig.css",
   "main.js",
+  "agency_logo.svg",
+  "assets/background.png",
+  "assets/std.png",
   "archive/",
-  "assets/presenters/"
+  "assets/presenters/",
+  "example.com"
 ];
 
-const routePaths = new Set(["/", "/register/", "/rp-register/", "/evalform/", "/agenda", "/logistics-note"]);
+const routePaths = new Set([
+  "/",
+  "/dev",
+  "/register/",
+  "/rp-register/",
+  "/evalform/",
+  "/agenda",
+  "/logistics-note"
+]);
+
 const assetAllowlist = new Set([
   "butterfly-mark.svg",
-  "forum.css",
-  "forum.js",
-  "forum-logo-transformation.svg",
-  "forum-logo-v5-static.svg",
   "fonts/OpenSans-OFL.txt",
   "fonts/OpenSans-SemiCondensed-Bold.ttf",
+  "forum-brand.css",
+  "forum-logo-transformation.svg",
+  "forum-logo-v5-static.svg",
+  "forum-responsive.css",
   "og-teaser.png",
   "partners/depdev.svg",
   "partners/mne-network.svg",
   "partners/undp.svg",
   "redirect.css"
 ]);
+
+const formUrls = {
+  "register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header",
+  "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSflAhrccdPL-g0J-6Cce3T28RL3v5VIdXhvPeNaWc_6VPd4GA/viewform?usp=header",
+  "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl"
+};
 
 const exists = async relativePath => {
   try {
@@ -94,6 +112,7 @@ async function walk(relativeDirectory) {
 function checkLocalReference(owner, reference) {
   const cleanReference = reference.split(/[?#]/, 1)[0];
   if (!cleanReference || cleanReference.startsWith("#") || /^(?:data:|mailto:|tel:|https?:|javascript:)/i.test(cleanReference)) return;
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(cleanReference)) return;
   if (routePaths.has(cleanReference)) return;
 
   const candidate = cleanReference.startsWith("/")
@@ -124,39 +143,55 @@ for (const [relativePath, source] of sources) {
   for (const marker of forbiddenMarkers) {
     if (source.includes(marker)) fail(`${relativePath} contains retired marker: ${marker}`);
   }
-  checkReferences(relativePath, source);
+  // The preserved page stores its decoded template and bootstrap code inside
+  // script tags. Check ordinary document markup here; the decoded template is
+  // checked separately below so UUID placeholders are not mistaken for files.
+  const structuralSource = relativePath.endsWith(".html")
+    ? source.replace(/<script\b[\s\S]*?<\/script>/gi, "")
+    : source;
+  checkReferences(relativePath, structuralSource);
 }
 
 const index = sources.get("index.html") ?? "";
-if ((index.match(/<h1\b/gi) ?? []).length !== 1) fail("index.html must contain exactly one h1");
-if (!/<script\s+type=["']module["'][^>]+src=["']\/assets\/forum\.js["']/i.test(index)) fail("index.html must load the source-first module");
+let bundledTemplate = "";
+try {
+  const templateMatch = index.match(/<script type=["']__bundler\/template["']>([\s\S]*?)<\/script>/i);
+  if (!templateMatch) throw new Error("template script is missing");
+  bundledTemplate = JSON.parse(templateMatch[1]);
+  if ((bundledTemplate.match(/<h1\b/gi) ?? []).length !== 1) fail("index.html must contain exactly one h1 in the mounted template");
+  checkReferences("index.html", bundledTemplate);
+} catch (error) {
+  fail(`index.html bundled template is not valid JSON: ${error.message}`);
+}
+for (const marker of [
+  '<script type="__bundler/manifest">',
+  '<script type="__bundler/template">',
+  '<script type="__bundler/page_order">',
+  "data-thinking-mode"
+]) {
+  if (!index.includes(marker)) fail(`index.html is missing preserved runtime marker: ${marker}`);
+}
+if (!/class="hero\b/.test(bundledTemplate) || !/class="site-header\b/.test(bundledTemplate) || !/class="thinking-mode\b/.test(index)) {
+  fail("index.html does not contain the locked original design markers");
+}
 if (/<meta[^>]+http-equiv=["']refresh/i.test(index)) fail("index.html must not use meta refresh");
 if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(index)) fail("index.html is missing the canonical URL");
+if (!/<meta[^>]+name=["']description["']/i.test(index)) fail("index.html is missing the description metadata");
 if (!/og:image/.test(index) || !/twitter:image/.test(index)) fail("index.html is missing social preview metadata");
+if (!/rel=["']preload["'][^>]+assets\/forum-logo-v5-static\.svg/i.test(index)) fail("index.html is missing the static identity preload");
+if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| template\.includes\(uuid\)\)/.test(index)) fail("index.html is missing the unreferenced-resource startup guard");
+if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
+if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
 
-for (const relativePath of ["register/index.html", "rp-register/index.html", "evalform/index.html"]) {
+for (const [relativePath, url] of Object.entries(formUrls)) {
   const source = sources.get(relativePath) ?? "";
   if (/<meta[^>]+http-equiv=["']refresh/i.test(source)) fail(`${relativePath} must not auto-redirect`);
   if (/<script\b/i.test(source)) fail(`${relativePath} should be JavaScript-free`);
   if (!/target=["']_blank["']/i.test(source)) fail(`${relativePath} must open the external form deliberately`);
-  if (!/This page never redirects automatically/i.test(source)) fail(`${relativePath} is missing the no-auto-redirect notice`);
-}
-
-try {
-  const { FORUM_CONFIG } = await import(pathToFileURL(path.join(root, "data/forum-config.js")).href);
-  const formPagePairs = [
-    ["register/index.html", FORUM_CONFIG.forms.registration.url],
-    ["rp-register/index.html", FORUM_CONFIG.forms.resourcePerson.url],
-    ["evalform/index.html", FORUM_CONFIG.forms.evaluation.url]
-  ];
-  for (const [page, url] of formPagePairs) {
-    const htmlUrl = url.replaceAll("&", "&amp;");
-    if (!sources.get(page)?.includes(url) && !sources.get(page)?.includes(htmlUrl)) {
-      fail(`${page} is out of sync with data/forum-config.js`);
-    }
+  if (!/does not redirect automatically/i.test(source)) fail(`${relativePath} is missing the no-auto-redirect notice`);
+  if (!source.includes(url) && !source.includes(url.replaceAll("&", "&amp;"))) {
+    fail(`${relativePath} does not contain its reviewed form destination`);
   }
-} catch (error) {
-  fail(`Could not load data/forum-config.js for consistency checking: ${error.message}`);
 }
 
 try {
@@ -181,14 +216,32 @@ for (const retiredPath of [
   "agency_logo.svg",
   "assets/background.png",
   "assets/std.png",
-  "assets/forum-brand.css",
-  "assets/forum-responsive.css",
+  "assets/forum.css",
+  "assets/forum.js",
   "assets/redirect.js",
   "assets/forum-logo-transformation.gif",
-  "assets/forum-logo-transformation-canva.mp4"
+  "assets/forum-logo-transformation-canva.mp4",
+  "data/forum-config.js",
+  "data/forum-content.js"
 ]) {
   if (await exists(retiredPath)) fail(`Retired path still exists: ${retiredPath}`);
 }
+
+const htaccess = await read(".htaccess");
+for (const marker of [
+  "Options -Indexes",
+  "DirectoryIndex index.html",
+  "RewriteRule ^register/?$ register/index.html",
+  "RewriteRule ^rp-register/?$ rp-register/index.html",
+  "RewriteRule ^evalform/?$ evalform/index.html",
+  "RewriteRule ^archive(?:/|$) - [G,L]",
+  "RewriteRule ^participantflow(?:/|$) - [G,L]",
+  "X-Content-Type-Options",
+  "Referrer-Policy"
+]) {
+  if (!htaccess.includes(marker)) fail(`.htaccess is missing required release rule/header: ${marker}`);
+}
+if (/assets\/redirect\.js|meta refresh/i.test(htaccess)) fail(".htaccess contains an unsafe redirect reference");
 
 if (failures.length) {
   console.error(`Site check failed with ${failures.length} issue${failures.length === 1 ? "" : "s"}:`);

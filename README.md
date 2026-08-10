@@ -1,57 +1,64 @@
 # MEtamorphosis — 13th M&E Network Forum
 
-Source-first static site for the 13th M&E Network Forum on September 9, 2026.
-The production entry point is `/`; `/dev` is a staging preview with optional
-`?phase=before`, `?phase=live`, or `?phase=after` controls.
+This repository preserves the original MEtamorphosis visual design and bundled
+runtime for the 13th M&E Network Forum on September 9, 2026. The production
+entry point is `/`; `/dev` is a staging alias for the same page.
 
-## Local development
+The locked reference is the `pre-audit-baseline-2026-08-11` tag. The current
+maintenance work keeps that design and applies only conservative improvements:
+retired 2025 material is out of the production tree, unused embedded resources
+are skipped during startup, document metadata and caching are explicit, and
+third-party form handoffs require a deliberate click.
 
-No bundler or runtime dependency is required. Serve the repository over HTTP so
-ES modules and the Ultra transformation asset work:
+## Local checks
+
+No bundler or dependency installation is required. Serve the repository over
+HTTP when checking routes and headers:
 
 ```sh
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080/`. A plain Python server does not process the
-Apache rewrite rules, so `/dev` and the pretty form routes should be checked
-through the deployed host or an Apache-compatible local server.
+Open `http://localhost:8080/`. The preserved runtime is also designed to work
+when `index.html` is opened directly, but an HTTP server is the reliable way to
+exercise relative routes and the Apache rules. A plain Python server does not
+process `.htaccess`, so `/dev`, form routes, redirects, and response headers
+must be checked through an Apache-compatible host before release.
 
-## Checks
+Run the repository checks with:
 
 ```sh
 npm run check
-npm run check:js
 git diff --check
 ```
 
-The check rejects stale generated runtime markers, third-party runtime imports,
-generic Slido destinations, missing local references, auto-redirect pages, and
-unlisted production assets.
+The check verifies the original bundled-runtime markers, local references,
+metadata, pending live-room safeguards, guarded form pages, retired paths, the
+asset allowlist, and required Apache rules.
 
 ## Release gates
 
 Before production publication, the release owner must complete all of these:
 
-1. `npm run check`, `npm run check:js`, and `git diff --check` pass.
-2. Verify `/`, `/dev`, `/register/`, `/rp-register/`, and `/evalform/` return the
-   expected HTML through the real host, including cache/security headers.
-3. Verify registration and resource-person form access with a non-organization
-   account. These handoff pages intentionally do not auto-forward while the
-   Google Forms remain login-gated.
-4. Confirm the Microsoft evaluation form still opens, and replace the manual
-   status text if its access changes.
-5. Complete visual QA at desktop, tablet, mobile, keyboard-only, and reduced-
-   motion settings. Check Instant, High, and Ultra mode transitions and confirm
-   the Ultra asset is loaded only after selection.
-6. Test the release on the actual hosting origin. `.htaccess` rules are only
-   effective when the origin supports Apache overrides; if the object-storage
-   origin ignores them, configure equivalent redirects/headers there before
-   publication.
-7. Publish only from the reviewed `audit/refactor-cleanup` commit after explicit
-   release authorization. Never move or rewrite the
+1. `npm run check` and `git diff --check` pass.
+2. Review the diff against `pre-audit-baseline-2026-08-11`; changes to the
+   page’s visual structure require explicit design approval.
+3. Verify `/`, `/dev`, `/register/`, `/rp-register/`, and `/evalform/` through
+   the real host, including cache and security headers.
+4. Verify registration and resource-person access with a non-organization
+   account. These pages intentionally do not auto-forward while the Google
+   Forms remain login-gated.
+5. Confirm the Microsoft evaluation form still opens and its reviewed URL is
+   current.
+6. Complete visual QA at desktop, tablet, mobile, keyboard-only, and
+   reduced-motion settings. Check Instant, High, and Ultra Thinking Mode and
+   confirm the original logo, partner marks, and responsive layout remain
+   intact.
+7. Confirm the hosting origin supports the `.htaccess` rules, or configure
+   equivalent redirects and headers at the origin.
+8. Publish only after explicit release authorization. Never rewrite the
    `pre-audit-baseline-2026-08-11` tag.
 
-The 2025 archive and its presenter media are deliberately outside the current
+The 2025 archive and presenter media are deliberately outside the current
 production tree. Restore them only as a separately tested, self-contained
 archive.

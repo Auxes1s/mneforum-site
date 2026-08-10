@@ -19,5 +19,3 @@ jobs:
           node-version: 22
       - name: Run static site checks
         run: npm run check
-      - name: Parse JavaScript modules
-        run: npm run check:js
