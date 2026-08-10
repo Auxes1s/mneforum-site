@@ -19,6 +19,13 @@ Redirect 301 /participantflow https://drive.usercontent.google.com/download?id=1
 
 # 13th Forum form redirect pages
 RewriteEngine On
+
+# Development host. The DNS record and hosting vhost/document root for
+# dev.mnenetwork.forum must point at this directory; this keeps the host's
+# root request on the current development landing page.
+RewriteCond %{HTTP_HOST} ^dev\.mnenetwork\.forum(?::\d+)?$ [NC]
+RewriteRule ^$ index.html [L]
+
 RewriteRule ^register/?$ register/index.html [L]
 RewriteRule ^rp-register/?$ rp-register/index.html [L]
 RewriteRule ^evalform/?$ evalform/index.html [L]

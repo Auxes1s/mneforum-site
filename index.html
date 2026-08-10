@@ -8,9 +8,9 @@
   <link rel="manifest" href="site.webmanifest">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #faf9f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
     #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
-    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #faf9f5; z-index: 9999; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #ebebeb; z-index: 9999; }
     #__bundler_placeholder { color: #999; font-size: 14px; }
   </style>
   <noscript>
@@ -69,6 +69,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
+    // Instant is the default every visitor lands on. A mode the visitor chose
+    // themselves is restored for the rest of the session, which is what the
+    // Thinking Mode panel promises in copy ("Your choice is saved for this
+    // session") — and applyMode already writes it on every change, so without
+    // this read that write went nowhere.
     let initialThinkingMode = 'instant';
     try {
       const storedMode = window.sessionStorage.getItem('forum-thinking-mode');
@@ -117,8 +122,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     // complete event mark.
     template = template.replace(
       '<img src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">',
-      '<img class="hero__identity-logo" src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">' +
+      '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
       '<img class="hero__transformation-logo" src="assets/forum-logo-transformation.svg" alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
+    );
+    // Join the left crimson route to the fourth route's start while keeping
+    // the existing red dashed treatment supplied by the brand stylesheet.
+    template = template.replace(
+      '<path d="M-10,330 C180,250 300,470 520,400" fill="none" stroke="#b73e57" stroke-width="1.6" opacity=".5"></path>',
+      '<path d="M-10,330 C180,250 300,470 520,400 C652,358 840,649 900,600" fill="none" stroke="#b73e57" stroke-width="1.6" opacity=".5"></path>'
     );
     const thinkingModeControl =
       '<details class="thinking-mode"><summary aria-label="Thinking Mode. Open display options"><span class="thinking-mode__mark" aria-hidden="true"><i></i></span><span class="thinking-mode__label">Thinking Mode</span><strong class="thinking-mode__current">Instant</strong><span class="thinking-mode__chevron" aria-hidden="true">⌄</span></summary><fieldset class="thinking-mode__panel"><legend>Choose how the idea unfolds</legend><p>Control how the Forum theme and visual identity are introduced. Your choice is saved for this session.</p><label><input type="radio" name="thinking-mode" value="instant" checked><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><span class="thinking-mode__option-copy"><strong>Instant</strong><small>Show the complete message immediately</small></span><em>Immediate</em></span></label><label><input type="radio" name="thinking-mode" value="high"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><span class="thinking-mode__option-copy"><strong>High</strong><small>Build the central idea in stages</small></span><em>About 5 sec</em></span></label><label><input type="radio" name="thinking-mode" value="ultra"><span class="thinking-mode__option"><span class="thinking-mode__preview" aria-hidden="true"><i></i><i></i><i></i></span><span class="thinking-mode__option-copy"><strong>Ultra</strong><small>Play the full logo transformation</small></span><em>About 12 sec</em></span></label></fieldset></details>';
@@ -140,7 +151,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace(
         /<h1 data-thinking-mode-hero>[\s\S]*?<\/h1>/,
         '<h1><span class="sr-only">Evidence to Action in the Age of AI.</span><span class="hero__headline-stage" data-thinking-state="static" aria-hidden="true"><span class="thinking-intro"><span class="thinking-word">Gathering evidence...</span></span><span class="hero__headline-final">Evidence to <span class="hero__action-word">Action</span> in the <span class="hero__action-word hero__action-word--ai">Age of AI</span>.</span><span class="hero__typing-layer"><span class="hero__typing-prefix"></span><span class="hero__typing-action hero__action-word"></span><span class="hero__typing-mid"></span><span class="hero__typing-ai hero__action-word hero__action-word--ai"></span><span class="hero__typing-period"></span><span class="hero__typing-caret"></span></span><span class="mode-flow"><i></i><i></i><i></i></span></span></h1>'
-      );
+    );
+    // Keep the static event wordmark attached to the transformation board.
+    // Ultra swaps the illustration, but the wordmark remains the identity's
+    // final read instead of disappearing with the old image wrapper.
+    template = template.replace(
+      '<div style="text-align: center; margin-top: 4px;">',
+      '<div class="hero__wordmark-lockup" style="text-align: center; margin-top: 4px;">'
+    );
     template = template.replace(
       '<div style="font-family: var(--font-heading); font-weight: 700; font-size: clamp(34px, 4vw, 54px); line-height: 0.95; letter-spacing: -0.025em; color: var(--brand-blue-dark);"><span style="color: var(--brand-red);">M</span><span style="color: var(--brand-yellow);">E</span>TAMORPHOSIS</div>',
       '<div class="hero__wordmark" aria-hidden="true"><span class="hero__wordmark-m">M</span><span class="hero__wordmark-e">E</span><span class="hero__wordmark-rest">tamorphosis</span></div>'
@@ -172,7 +190,22 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace(
         'src="1cdb3ddb-492a-4da8-a30c-3167de126d8a" alt="M&amp;E Network Philippines"',
         'src="assets/partners/mne-network.svg" alt="M&amp;E Network Philippines"'
+      )
+      .replace(
+        '<span style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; opacity: .8;">UNDP</span>',
+        '<img loading="lazy" decoding="async" src="assets/partners/undp.svg" alt="United Nations Development Programme" class="footer__partner-undp">'
       );
+
+    // Normalize the legacy inline palette to the guide's approved asset
+    // colors before the page is mounted. This keeps data-rendered cards and
+    // inline SVG strokes in the same system as the brand stylesheet.
+    template = template
+      .replaceAll('#0a57a3', '#0b58a3')
+      .replaceAll('#4498d3', '#4898d3')
+      .replaceAll('#f1a81e', '#f1a81f')
+      .replaceAll('#b73e57', '#c3435d')
+      .replaceAll('#f8f4eb', '#ebebeb')
+      .replaceAll('#f3eee3', '#ebebeb');
 
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker
@@ -5862,14 +5895,30 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace(/^<style[^>]*>/, '')
       .replace(/<\/style>$/, '');
     document.head.appendChild(polishStyle);
-    const keepPolishLast = () => {
-      if (document.head.lastElementChild !== polishStyle) {
-        document.head.appendChild(polishStyle);
+    const brandLink = document.createElement('link');
+    brandLink.id = 'forum-brand-styles';
+    brandLink.rel = 'stylesheet';
+    brandLink.href = 'assets/forum-brand.css';
+    document.head.appendChild(brandLink);
+    // Both sheets have to sit at the end of <head>, in order: the responsive
+    // polish layer, then the brand layer last so it wins ties against it.
+    //
+    // Test the pair as an ordered invariant, never as "each one must be last".
+    // Two elements cannot both be lastElementChild, so a per-element check can
+    // never be satisfied — and because this runs from a MutationObserver on
+    // <head>, each corrective append retriggers the callback, which appends the
+    // other one, forever. That spins the main thread and the page never paints.
+    const keepBrandStylesLast = () => {
+      if (document.head.lastElementChild === brandLink &&
+          brandLink.previousElementSibling === polishStyle) {
+        return;
       }
+      document.head.appendChild(polishStyle);
+      document.head.appendChild(brandLink);
     };
-    const polishObserver = new MutationObserver(keepPolishLast);
+    const polishObserver = new MutationObserver(keepBrandStylesLast);
     polishObserver.observe(document.head, { childList: true });
-    requestAnimationFrame(() => requestAnimationFrame(keepPolishLast));
+    requestAnimationFrame(() => requestAnimationFrame(keepBrandStylesLast));
     const initHeroThinking = () => {
       const hero = document.querySelector('.hero');
       const stage = document.querySelector('.hero__headline-stage');
@@ -5977,13 +6026,21 @@ document.addEventListener('DOMContentLoaded', async function() {
         ultra: {
           label: 'Ultra',
           sequence: lexicon,
-          // 9200 not 11200: the advertised "~12 sec" has to cover the word
-          // cycle PLUS ~2.2s of character typing, the period beat and the
-          // pre-reveal hold. At 11200 the mode actually ran 14.0s.
-          thinkingMs: 9200,
+          // thinkingMs is filled in below, not written here: it is whatever is
+          // left of the 12s board once the typing is paid for.
           typingDelay: 62
         }
       };
+      // The transformation board is authored against a 12s clock. Ultra's word
+      // cycle is sized so the whole mode lands on exactly that, which makes the
+      // logo play at its authored speed (playbackRate 1.0) instead of being
+      // stretched onto a slightly different span — the final butterfly lands on
+      // the last typed character, and "About 12 sec" in the panel is literal.
+      //
+      // Derived rather than hardcoded: the typing cost depends on the headline
+      // text and the per-character delay, so a fixed number here silently drifts
+      // the moment either changes.
+      const ULTRA_BOARD_MS = 12000;
       const typingDuration = delay => characters.reduce((total, item) => (
         total + (item.character === ' '
           ? Math.max(28, delay - 18)
@@ -5991,6 +6048,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       ), 0);
       modes.high.totalMs = modes.high.thinkingMs +
         typingDuration(modes.high.typingDelay) + 450;
+      // Work backwards from the board: 12s total, minus the typed headline and
+      // the pre-reveal hold, is what the word cycle gets. Floored at 3s so a
+      // longer headline can never drive the cycle to nothing (or negative).
+      modes.ultra.thinkingMs = Math.max(
+        3000,
+        ULTRA_BOARD_MS - typingDuration(modes.ultra.typingDelay) - 450
+      );
       modes.ultra.totalMs = modes.ultra.thinkingMs +
         typingDuration(modes.ultra.typingDelay) + 450;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -6007,7 +6071,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       let renderMasterTimeline = () => {};
       let renderedWordIndex = -1;
       let renderedCharacterCount = -1;
+      // Fallback only, for the window before any animation has been collected.
       const SVG_DURATION_MS = 12000;
+      let svgDurationMs = SVG_DURATION_MS;
 
       const setState = state => {
         stage.dataset.thinkingState = state;
@@ -6040,10 +6106,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             ? 'Reduced motion is enabled. Each option shows its final state without animation.'
             : 'Control how the Forum theme and visual identity are introduced. Your choice is saved for this session.';
         }
+        // Derived, not written down. These durations are the sum of a word
+        // cycle and a per-character typing delay, and the transformation is
+        // stretched onto the same span — so a hardcoded "About 12 sec" becomes
+        // a lie the first time anyone tunes thinkingMs or typingDelay.
+        const approxSeconds = ms => 'About ' + Math.round(ms / 1000) + ' sec';
         const standard = [
           ['Show the complete message immediately', 'Immediate'],
-          ['Build the central idea in stages', 'About 5 sec'],
-          ['Play the full logo transformation', 'About 12 sec']
+          ['Build the central idea in stages', approxSeconds(modes.high.totalMs)],
+          ['Play the full logo transformation', approxSeconds(modes.ultra.totalMs)]
         ];
         const reducedLabels = [
           ['Show the complete message without motion', 'No animation'],
@@ -6059,23 +6130,103 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         currentModeNode.textContent = modes[mode].label + (reduced ? ' · reduced' : '');
       };
+      // Seek-and-hold. Only for discrete moments — arming the sequence at zero,
+      // pinning the resolved logo at the end, and the reduced-motion/hidden
+      // paths. It must NOT be called per frame: pause() plus a currentTime
+      // write re-resolves an animation's timing on the main thread, so
+      // scrubbing all ~19 of the SVG's animations every rAF tick guaranteed
+      // that none of them could ever run on the compositor. That was the
+      // stutter. Continuous playback goes through lockSvgToMaster instead.
+      const setSvgClock = state => {
+        if (transformationLogo instanceof SVGElement) {
+          transformationLogo.setAttribute('data-clock', state);
+        }
+      };
       const syncSvgTime = milliseconds => {
+        setSvgClock('held');
         svgAnimations.forEach(animation => {
           animation.pause();
           const duration = Number(animation.effect?.getTiming().duration) || modes.ultra.totalMs;
           animation.currentTime = Math.min(duration, Math.max(0, milliseconds));
         });
       };
+      // Phase-lock the artwork to the headline clock, once, and then let the
+      // compositor run it. Both the master animation and the SVG's CSS
+      // animations live on document.timeline, so a shared startTime keeps them
+      // in step for free — including while the tab is hidden and rAF is not
+      // firing, which the old per-frame sync could not survive.
+      //
+      // The board is authored against a 12s clock but Ultra's master span is
+      // whatever the word cycle plus the typed headline adds up to (~11.9s), so
+      // playbackRate stretches the art onto the master instead of resampling
+      // it. Set the rate before startTime: the playbackRate setter preserves
+      // currentTime and recomputes startTime, which would undo the lock.
+      // Animation.startTime is null while an animation is still pending, and
+      // Number(null) is 0 — a finite number that silently reads as "the very
+      // start of the document timeline". Locking to that pins the artwork to
+      // page load instead of to the master, so it runs seconds ahead of the
+      // headline. Reject null explicitly rather than coercing.
+      const timelineMs = value => {
+        if (value === null || value === undefined) return null;
+        const n = typeof value === 'object' && 'value' in value
+          ? Number(value.value)
+          : Number(value);
+        return Number.isFinite(n) ? n : null;
+      };
+      // The artwork's own authored length, measured rather than assumed. The
+      // stretch factor below is board-length / headline-length, so hardcoding
+      // either side makes the transformation silently drift out of time with
+      // the words the moment someone retimes the SVG or changes thinkingMs.
+      // Both are now read from the things that actually define them.
+      const measureSvgDuration = () => {
+        let longest = 0;
+        svgAnimations.forEach(animation => {
+          const timing = animation.effect?.getTiming();
+          const span = (Number(timing?.duration) || 0) + (Number(timing?.delay) || 0);
+          if (span > longest) longest = span;
+        });
+        return longest > 0 ? longest : SVG_DURATION_MS;
+      };
+      const lockSvgToMaster = () => {
+        if (!svgAnimations.length || !masterAnimation) return false;
+        if (mode !== 'ultra' || reducedMotion.matches) return false;
+        const masterStart = timelineMs(masterAnimation.startTime);
+        if (masterStart === null) return false;
+        const span = Number(masterAnimation.effect?.getTiming().duration) || svgDurationMs;
+        // Play the board faster when the thinking is short, slower when it is
+        // long, so the final butterfly always lands on the last typed
+        // character regardless of how the mode is tuned.
+        const rate = span > 0 ? svgDurationMs / span : 1;
+        setSvgClock('running');
+        svgAnimations.forEach(animation => {
+          animation.playbackRate = rate;
+          animation.play();
+          animation.startTime = masterStart;
+        });
+        return true;
+      };
       const collectSvgAnimations = () => {
         svgAnimations = transformationLogo instanceof SVGElement &&
           typeof transformationLogo.getAnimations === 'function'
           ? transformationLogo.getAnimations({ subtree: true })
           : [];
-        svgAnimations.forEach(animation => animation.pause());
+        svgDurationMs = measureSvgDuration();
         if (reducedMotion.matches || document.hidden) {
-          syncSvgTime(SVG_DURATION_MS);
+          syncSvgTime(svgDurationMs);
         } else if (masterAnimation && mode === 'ultra') {
-          syncSvgTime(Number(masterAnimation.currentTime) || 0);
+          // masterAnimation.startTime is null while the animation is still
+          // pending, which is the common case here — collection runs on the rAF
+          // right after runCycle() calls play(). Hold the artwork at zero and
+          // lock the moment the clock resolves; never leave it free-running.
+          if (!lockSvgToMaster()) {
+            syncSvgTime(0);
+            const pending = masterAnimation;
+            pending.ready.then(() => {
+              // A mode flip or restart may have replaced the clock in the
+              // meantime; that newer cycle does its own collection and lock.
+              if (masterAnimation === pending) lockSvgToMaster();
+            }).catch(() => {});
+          }
         } else {
           syncSvgTime(0);
         }
@@ -6130,14 +6281,22 @@ document.addEventListener('DOMContentLoaded', async function() {
             // document regardless of where in the DOM it's inserted, so an
             // unscoped `*` selector here was pausing every animation on the
             // page (including .hero__art's own fade/float-in), not just the
-            // particle/wing keyframes this is meant to freeze for manual
-            // (WAAPI currentTime-driven) playback.
+            // particle/wing keyframes this is meant to hold.
+            //
+            // Gated on data-clock="held" rather than applied unconditionally.
+            // A permanent `animation-play-state: paused !important` makes the
+            // artwork unplayable by anything except per-frame currentTime
+            // writes, because any style recalc re-asserts the paused state over
+            // a WAAPI play(). The gate lets setSvgClock hand the animations
+            // back to the compositor once they are locked to the master.
             clockGuard.textContent =
-              '.hero__transformation-logo,' +
-              '.hero__transformation-logo *,' +
-              '.hero__transformation-logo *::before,' +
-              '.hero__transformation-logo *::after{animation-play-state:paused!important}';
+              '.hero__transformation-logo[data-clock="held"],' +
+              '.hero__transformation-logo[data-clock="held"] *,' +
+              '.hero__transformation-logo[data-clock="held"] *::before,' +
+              '.hero__transformation-logo[data-clock="held"] *::after' +
+              '{animation-play-state:paused!important}';
             inlineSvg.prepend(clockGuard);
+            inlineSvg.setAttribute('data-clock', 'held');
             const linkedSource = transformationLogo;
             linkedSource.classList.remove('hero__transformation-logo');
             linkedSource.classList.add('hero__transformation-source');
@@ -6303,12 +6462,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
             renderTypedCharacters(visibleCount);
           }
-          if (mode === 'ultra') {
-            syncSvgTime((currentTime / config.totalMs) * SVG_DURATION_MS);
-          }
+          // No SVG work in this frame loop. The transformation is phase-locked
+          // to masterAnimation once (lockSvgToMaster) and advances on the
+          // compositor from there, so it stays smooth even when this callback
+          // is late — and this callback is often late, because it also mutates
+          // typed text and writes a blur() filter on the headline word.
           if (currentTime >= config.totalMs) {
             revealFinal(token);
-            if (mode === 'ultra') syncSvgTime(SVG_DURATION_MS);
+            if (mode === 'ultra') syncSvgTime(svgDurationMs);
             return;
           }
           if (!reducedMotion.matches && !document.hidden) {
@@ -6362,7 +6523,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         updateModeCopy();
         syncModeInputs();
         if (reducedMotion.matches && mode === 'ultra') {
-          syncSvgTime(SVG_DURATION_MS);
+          syncSvgTime(svgDurationMs);
         }
         if (mode !== 'ultra' && previousMode === 'ultra') {
           cancelSvgAnimationCollection();
@@ -6475,7 +6636,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         sequenceRequestToken += 1;
         clearCycleTimers();
         revealFinal(cycleToken, false);
-        if (mode === 'ultra') syncSvgTime(SVG_DURATION_MS);
+        if (mode === 'ultra') syncSvgTime(svgDurationMs);
       };
       document.addEventListener('pointerdown', event => {
         const mobileMastheadInteraction =
@@ -6506,7 +6667,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           hero.classList.remove('is-ultra-logo-reveal');
           resetTypedText();
           setState('static');
-          if (mode === 'ultra') syncSvgTime(SVG_DURATION_MS);
+          if (mode === 'ultra') syncSvgTime(svgDurationMs);
         } else {
           restartSequence();
         }
@@ -6521,16 +6682,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         hero.classList.remove('is-ultra-logo-reveal');
         resetTypedText();
         setState('static');
-        if (mode === 'ultra') syncSvgTime(SVG_DURATION_MS);
+        if (mode === 'ultra') syncSvgTime(svgDurationMs);
       });
 
-      const savedMode = readStore(MODE_KEY);
-      applyMode(savedMode && modes[savedMode] ? savedMode : 'instant');
+      // The public page follows one guide-defined visual system. Do not
+      // restore the legacy session preference or expose its alternate themes.
+      applyMode('instant');
       inlineTransformationLogo();
-      // Instant is the default, so the sequence a first-time visitor sees is
-      // the 0.6s resolve — cheap enough to replay on every load. High and
-      // Ultra are opt-in, and someone who opted into the metamorphosis wants
-      // to watch it again on reload, not land on a static headline.
+      // The legacy sequence still resolves the headline and artwork cleanly,
+      // but its alternate presentation modes are no longer public controls.
       restartSequence();
       // The render pass clears the `checked` property once, shortly after
       // bootstrap, and its exact timing varies with load. Re-assert on a few
