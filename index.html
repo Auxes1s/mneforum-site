@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     template = template.replace(
       '<img src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">',
       '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
-      '<img class="hero__transformation-logo" src="assets/forum-logo-transformation.svg" alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
+      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
     );
     // Join the left crimson route to the fourth route's start while keeping
     // the existing red dashed treatment supplied by the brand stylesheet.
@@ -5983,7 +5983,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       const getCurrentModeNode = () => document.querySelector('.thinking-mode__current');
       const butterflyField = document.querySelector('.ultra-butterfly-field');
       let transformationLogo = document.querySelector('.hero__transformation-logo');
-      const transformationLogoSource = transformationLogo?.getAttribute('src') || '';
+      const transformationLogoSource = transformationLogo?.getAttribute('src') ||
+        transformationLogo?.getAttribute('data-src') || '';
       const modeInputs = getModeInputs();
       // The `checked` attribute authored in the template does not survive the
       // render pass, and setting the property during bootstrap is undone a
@@ -6380,6 +6381,15 @@ document.addEventListener('DOMContentLoaded', async function() {
           } catch (error) {
             console.warn('Transformation logo could not be inlined; falling back to the <img> ' +
               'copy, which plays on its own clock instead of the master timeline.', error);
+            // Keep the fallback lazy too. If its SVG resource is allowed to
+            // animate while Instant or High is showing, selecting Ultra later
+            // can reveal an image whose private SVG clock is already partway
+            // through the one-shot sequence. Starting the resource only after
+            // this Ultra request gives the fallback the same click-time origin
+            // as the synchronized inline path.
+            if (transformationLogo instanceof HTMLImageElement) {
+              transformationLogo.setAttribute('src', transformationLogoSource);
+            }
             document.documentElement.dataset.transformationReady = 'fallback';
             return false;
           }
@@ -6388,6 +6398,21 @@ document.addEventListener('DOMContentLoaded', async function() {
       };
       const restartUltraVisuals = () => {
         if (mode !== 'ultra') return;
+        if (document.documentElement.dataset.transformationReady === 'fallback' &&
+            transformationLogo instanceof HTMLImageElement) {
+          // An image-hosted SVG has no page-visible Animation object to rewind.
+          // Replace the element so every fallback replay gets a fresh private
+          // SVG document and therefore a fresh animation clock.
+          const freshLogo = transformationLogo.cloneNode(true);
+          freshLogo.removeAttribute('src');
+          transformationLogo.replaceWith(freshLogo);
+          transformationLogo = freshLogo;
+          transformationLogo.setAttribute('src', transformationLogoSource);
+          hero.classList.remove('is-ultra-logo-reveal');
+          void hero.offsetWidth;
+          hero.classList.add('is-ultra-logo-reveal');
+          return;
+        }
         // The synchronized SVG is held on its final frame when a cycle ends.
         // Rewind it at the discrete restart boundary before handing it back
         // to the compositor; otherwise a same-mode replay inherits the old
@@ -6815,7 +6840,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       // session. The server-side bootstrap puts the validated value on the
       // mounted document before this script runs.
       applyMode(document.documentElement.getAttribute('data-thinking-mode') || 'instant');
-      inlineTransformationLogo();
+      // Prepare the artwork eagerly only when the page is already entering
+      // Ultra. Instant and High keep it unloaded so a later Ultra click gets
+      // a new animation clock; reduced-motion and background-tab loads still
+      // need the final artwork available without waiting for another event.
+      if (mode === 'ultra') inlineTransformationLogo();
       restartSequence();
       // The render pass clears the `checked` property once, shortly after
       // bootstrap, and its exact timing varies with load.
