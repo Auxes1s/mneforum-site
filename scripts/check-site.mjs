@@ -183,6 +183,31 @@ if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| templa
 if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
 if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
 
+// Thinking Mode is assembled by the preserved bootstrap after the template
+// mounts. Keep its wiring under the same static guard so a future export cannot
+// silently ship the panel without its three transitions or persistence.
+for (const marker of [
+  "const thinkingModeControl",
+  'value="instant"',
+  'value="high"',
+  'value="ultra"',
+  "const modes =",
+  "const selectMode =",
+  "const restartSequence =",
+  "input.addEventListener('change'",
+  "input.addEventListener('click'",
+  "sessionStorage.getItem('forum-thinking-mode')",
+  "sessionStorage.setItem(key, value)",
+  "applyMode(document.documentElement.getAttribute('data-thinking-mode') || 'instant')",
+  "assets/forum-logo-transformation.svg"
+]) {
+  if (!index.includes(marker)) fail(`index.html is missing Thinking Mode wiring: ${marker}`);
+}
+if (/applyMode\(['"]instant['"]\)/.test(index)) fail("Thinking Mode forcibly resets to Instant at startup");
+if (!index.includes("dataset.transformationReady = 'fallback'")) {
+  fail("Thinking Mode is missing its transformation fallback state");
+}
+
 for (const [relativePath, url] of Object.entries(formUrls)) {
   const source = sources.get(relativePath) ?? "";
   if (/<meta[^>]+http-equiv=["']refresh/i.test(source)) fail(`${relativePath} must not auto-redirect`);
