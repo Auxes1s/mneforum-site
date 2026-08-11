@@ -5975,15 +5975,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       const aiNode = document.querySelector('.hero__typing-ai');
       const periodNode = document.querySelector('.hero__typing-period');
       const modeControl = document.querySelector('.thinking-mode');
-      const currentModeNode = document.querySelector('.thinking-mode__current');
-      const modePanelIntro = modeControl?.querySelector('.thinking-mode__panel > p');
-      const modeOptions = Array.from(document.querySelectorAll('.thinking-mode__option'));
+      const getModeControl = () => document.querySelector('.thinking-mode');
+      const getModeInputs = () => Array.from(document.querySelectorAll(
+        'input[name="thinking-mode"]'
+      ));
+      const getModeOptions = () => Array.from(document.querySelectorAll('.thinking-mode__option'));
+      const getCurrentModeNode = () => document.querySelector('.thinking-mode__current');
       const butterflyField = document.querySelector('.ultra-butterfly-field');
       let transformationLogo = document.querySelector('.hero__transformation-logo');
       const transformationLogoSource = transformationLogo?.getAttribute('src') || '';
-      const modeInputs = Array.from(document.querySelectorAll(
-        'input[name="thinking-mode"]'
-      ));
+      const modeInputs = getModeInputs();
       // The `checked` attribute authored in the template does not survive the
       // render pass, and setting the property during bootstrap is undone a
       // frame or two later. Without a checked radio the group reports no value
@@ -5996,11 +5997,26 @@ document.addEventListener('DOMContentLoaded', async function() {
       // and the delayed re-assertions below cover the clobber whenever it lands.
       const syncModeInputs = () => {
         const current = document.documentElement.dataset.thinkingMode || 'instant';
-        modeInputs.forEach(input => {
+        getModeInputs().forEach(input => {
           const selected = input.value === current;
           input.checked = selected;
-          if (selected) input.setAttribute('checked', '');
-          else input.removeAttribute('checked');
+          if (selected) {
+            if (!input.hasAttribute('checked')) input.setAttribute('checked', '');
+          } else if (input.hasAttribute('checked')) {
+            input.removeAttribute('checked');
+          }
+        });
+      };
+      // A mode change can trigger one more render pass after the event handler
+      // returns. Re-assert on the next paint and a few bounded checkpoints so
+      // that both property-only clears and full control remounts keep the
+      // selected state visible without a permanent polling loop.
+      const scheduleModeInputSync = () => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(syncModeInputs);
+        });
+        [120, 600, 1200, 2200].forEach(delay => {
+          window.setTimeout(syncModeInputs, delay);
         });
       };
       // Session persistence for the CHOICE only, not for whether the sequence
@@ -6016,7 +6032,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       };
       if (!hero || !stage || !wordNode || !layer || !prefixNode ||
            !actionNode || !midNode || !aiNode || !periodNode ||
-           !modeControl || !currentModeNode ||
+           !modeControl || !getCurrentModeNode() ||
            !butterflyField ||
            !transformationLogo || modeInputs.length !== 3) {
         return false;
@@ -6146,6 +6162,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       };
       const updateModeCopy = () => {
         const reduced = reducedMotion.matches;
+        const currentModeControl = getModeControl();
+        const modePanelIntro = currentModeControl?.querySelector('.thinking-mode__panel > p');
+        const modeOptions = getModeOptions();
+        const currentModeNode = getCurrentModeNode();
         if (modePanelIntro) {
           modePanelIntro.textContent = reduced
             ? 'Reduced motion is enabled. Each option shows its final state without animation.'
@@ -6173,7 +6193,9 @@ document.addEventListener('DOMContentLoaded', async function() {
           if (small) small.textContent = copy[0];
           if (duration) duration.textContent = copy[1];
         });
-        currentModeNode.textContent = modes[mode].label + (reduced ? ' · reduced' : '');
+        if (currentModeNode) {
+          currentModeNode.textContent = modes[mode].label + (reduced ? ' · reduced' : '');
+        }
       };
       // Seek-and-hold. Only for discrete moments — arming the sequence at zero,
       // pinning the resolved logo at the end, and the reduced-motion/hidden
@@ -6572,6 +6594,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }));
         updateModeCopy();
         syncModeInputs();
+        scheduleModeInputSync();
         if (reducedMotion.matches && mode === 'ultra') {
           syncSvgTime(svgDurationMs);
         }
@@ -6592,15 +6615,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         const mobileLayout = window.matchMedia('(max-width: 880px)').matches;
         const primaryNav = document.querySelector('#primary-navigation');
         const menuButton = document.querySelector('.mobile-menu-button');
+        const currentModeControl = getModeControl();
         if (!mobileLayout) return false;
-        const modeWasOpen = modeControl.open;
+        const modeWasOpen = currentModeControl?.open;
         const navigationWasOpen = primaryNav?.classList.contains('is-open');
         if (!modeWasOpen && !navigationWasOpen) return false;
 
         // Mobile uses separate navigation and Thinking Mode sheets. Dismiss
         // either one before playback and wait through the layout commit so the
         // first transformation frame is never hidden by interface chrome.
-        modeControl.open = false;
+        if (currentModeControl) currentModeControl.open = false;
         if (navigationWasOpen && menuButton) menuButton.click();
         window.requestAnimationFrame(() => {
           window.requestAnimationFrame(callback);
@@ -6622,9 +6646,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (changed || replay) {
           restartSequence(previousMode);
         }
+        scheduleModeInputSync();
         if (!close) return;
-        modeControl.open = false;
-        modeControl.querySelector('summary')?.focus({ preventScroll: true });
+        const currentModeControl = getModeControl();
+        if (currentModeControl) currentModeControl.open = false;
+        currentModeControl?.querySelector('summary')?.focus({ preventScroll: true });
       };
 
       // Clicking the visible option label can synthesize the associated input
@@ -6632,65 +6658,82 @@ document.addEventListener('DOMContentLoaded', async function() {
       // the pointerdown target so a pointer can replay an already-selected
       // mode without changing the keyboard behavior.
       let pointerModeInput = null;
-      modeControl.addEventListener('pointerdown', event => {
+      document.addEventListener('pointerdown', event => {
+        const currentModeControl = getModeControl();
+        if (!currentModeControl?.contains(event.target)) return;
         const label = event.target?.closest?.('label');
         pointerModeInput = label?.querySelector('input[name="thinking-mode"]') || null;
+        // On mobile the dimmed area is a ::before backdrop owned by <details>;
+        // pointer events on that pseudo-element target the owner itself.
+        if (event.target !== currentModeControl || !currentModeControl.open) return;
+        event.preventDefault();
+        currentModeControl.open = false;
+        currentModeControl.querySelector('summary')?.focus({ preventScroll: true });
       });
-      modeControl.addEventListener('pointercancel', () => {
+      document.addEventListener('pointercancel', event => {
+        if (getModeControl()?.contains(event.target)) pointerModeInput = null;
+      });
+      // The renderer can replace the complete control after bootstrap. Keep
+      // the behavior on document so a remounted input never loses its mode
+      // transition, persistence, or keyboard handling.
+      document.addEventListener('click', event => {
+        const input = event.target?.closest?.('input[name="thinking-mode"]');
+        const currentModeControl = getModeControl();
+        // Chrome can expose a synthetic radio click as checked during capture
+        // and unchecked by the time the delegated bubble handler runs. The
+        // activated input's value is the choice; do not discard it based on
+        // that transient property state.
+        if (!input || !currentModeControl?.contains(input)) return;
+        const pointerActivated = pointerModeInput === input;
         pointerModeInput = null;
+        // Arrow-key selection in a radio group synthesizes a `click` with
+        // detail === 0. Only a pointer should dismiss the panel — arrowing
+        // must leave it open so the options stay comparable.
+        const replay = event.detail > 0 || pointerActivated;
+        selectMode(input.value, {
+          close: replay,
+          replay
+        });
       });
-
-      modeInputs.forEach(input => {
-        // Arrow-key selection in a radio group synthesizes a `click`, so the
-        // event type alone cannot separate pointer from keyboard. A real
-        // pointer click carries a non-zero `detail` (the click count);
-        // keyboard-synthesized ones report 0. Only a pointer should dismiss
-        // the panel — arrowing must leave it open so the options stay
-        // comparable.
-        input.addEventListener('click', event => {
-          if (!input.checked) return;
-          const pointerActivated = pointerModeInput === input;
-          pointerModeInput = null;
-          const replay = event.detail > 0 || pointerActivated;
-          selectMode(input.value, {
-            close: replay,
-            replay
-          });
-        });
-        input.addEventListener('change', () => {
-          if (input.checked) selectMode(input.value, { close: false });
-        });
-        input.addEventListener('keydown', event => {
-          if (event.key !== 'Enter' && event.key !== ' ') return;
-          event.preventDefault();
-          selectMode(input.value, { close: true, replay: true });
-        });
+      document.addEventListener('change', event => {
+        const input = event.target?.closest?.('input[name="thinking-mode"]');
+        const currentModeControl = getModeControl();
+        if (!input || !currentModeControl?.contains(input) || !input.checked) return;
+        selectMode(input.value, { close: false });
       });
       // The disclosure can be reopened after the render pass has clobbered the
       // property, so re-assert on every toggle rather than only at boot.
-      const modeSummary = modeControl.querySelector('summary');
-      modeControl.addEventListener('toggle', () => {
+      const syncModeDisclosure = currentModeControl => {
         syncModeInputs();
+        const modeSummary = currentModeControl?.querySelector('summary');
         modeSummary?.setAttribute(
           'aria-label',
-          'Thinking Mode. ' + (modeControl.open ? 'Close' : 'Open') + ' display options'
+          'Thinking Mode. ' + (currentModeControl?.open ? 'Close' : 'Open') + ' display options'
         );
-        document.body.classList.toggle('thinking-mode-open', modeControl.open);
-      });
-      // On mobile the dimmed area is a ::before backdrop owned by <details>;
-      // pointer events on that pseudo-element target the owner itself.
-      modeControl.addEventListener('pointerdown', event => {
-        if (event.target !== modeControl || !modeControl.open) return;
-        event.preventDefault();
-        modeControl.open = false;
-        modeSummary?.focus({ preventScroll: true });
-      });
-      modeControl.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && modeControl.open) {
-          event.preventDefault();
-          modeControl.open = false;
-          modeSummary?.focus();
+        document.body.classList.toggle('thinking-mode-open', Boolean(currentModeControl?.open));
+      };
+      document.addEventListener('toggle', event => {
+        const currentModeControl = event.target?.closest?.('.thinking-mode');
+        if (currentModeControl) syncModeDisclosure(currentModeControl);
+      }, true);
+      let observedModeControl = modeControl;
+      const modeDomObserver = new MutationObserver(() => {
+        const currentModeControl = getModeControl();
+        if (currentModeControl === observedModeControl) {
+          syncModeInputs();
+          return;
         }
+        observedModeControl = currentModeControl;
+        if (currentModeControl) {
+          syncModeDisclosure(currentModeControl);
+          updateModeCopy();
+        }
+      });
+      modeDomObserver.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['checked']
       });
       // Short-circuit to the finished headline. The sequence gates the page's
       // single most important sentence for ~5s in High and ~14s in Ultra, and
@@ -6708,19 +6751,36 @@ document.addEventListener('DOMContentLoaded', async function() {
         const mobileMastheadInteraction =
           window.matchMedia('(max-width: 880px)').matches &&
           event.target.closest('.site-header');
+        const currentModeControl = getModeControl();
         // Opening or closing the mobile navigation is interface management,
         // not intent to skip the hero sequence. In particular, never let the
         // close-menu tap collapse High or Ultra to their final frames.
-        if (modeControl.contains(event.target) || mobileMastheadInteraction) return;
-        if (modeControl.open) modeControl.open = false;
+        if (currentModeControl?.contains(event.target) || mobileMastheadInteraction) return;
+        if (currentModeControl?.open) currentModeControl.open = false;
         finishNow();
       });
       window.addEventListener('scroll', finishNow, { passive: true, once: true });
       document.addEventListener('keydown', event => {
-        if (modeControl.contains(event.target)) return;
+        const currentModeControl = getModeControl();
+        if (currentModeControl?.contains(event.target)) {
+          const input = event.target?.closest?.('input[name="thinking-mode"]');
+          if (input && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            selectMode(input.value, { close: true, replay: true });
+          } else if (event.key === 'Escape' && currentModeControl.open) {
+            event.preventDefault();
+            currentModeControl.open = false;
+            currentModeControl.querySelector('summary')?.focus();
+          }
+          return;
+        }
         if (['Escape', ' ', 'Enter', 'Tab', 'PageDown', 'ArrowDown'].includes(event.key)) {
           finishNow();
         }
+      });
+      document.addEventListener('focusin', event => {
+        const currentModeControl = getModeControl();
+        if (currentModeControl?.contains(event.target)) syncModeInputs();
       });
       reducedMotion.addEventListener('change', () => {
         sequenceRequestToken += 1;
@@ -6758,15 +6818,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       inlineTransformationLogo();
       restartSequence();
       // The render pass clears the `checked` property once, shortly after
-      // bootstrap, and its exact timing varies with load. Re-assert on a few
-      // schedules rather than racing a single frame; each call is three
-      // property writes, so the redundancy is free.
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(syncModeInputs);
-      });
-      window.setTimeout(syncModeInputs, 120);
-      window.setTimeout(syncModeInputs, 600);
-      modeControl.addEventListener('focusin', syncModeInputs);
+      // bootstrap, and its exact timing varies with load.
+      scheduleModeInputSync();
       return true;
     };
 
