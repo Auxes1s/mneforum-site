@@ -79,8 +79,8 @@ const assetAllowlist = new Set([
 ]);
 
 const formUrls = {
-  "register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header",
-  "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSflAhrccdPL-g0J-6Cce3T28RL3v5VIdXhvPeNaWc_6VPd4GA/viewform?usp=header",
+  "register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSflRPmjDZdfkosUalMoos0jNzD66ZRaeH9Qm_gnUuk0GbJrkw/viewform?usp=header",
+  "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTlLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform?usp=publish-editor",
   "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl"
 };
 
@@ -182,6 +182,63 @@ if (!/rel=["']preload["'][^>]+assets\/forum-logo-v5-static\.svg/i.test(index)) f
 if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| template\.includes\(uuid\)\)/.test(index)) fail("index.html is missing the unreferenced-resource startup guard");
 if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
 if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
+
+// The page's source markup is serialized, then the preserved bootstrap applies
+// the small release-specific additions before mounting it. Check both layers:
+// decoded anchors protect the source template, while these runtime markers
+// protect the markup visitors actually receive after the replacements run.
+if (bundledTemplate) {
+  if (!/<section\b[^>]*\bid=["']gallery["']/i.test(bundledTemplate)) {
+    fail("decoded bundled template is missing the Evaluation Gallery section anchor");
+  }
+  if (!/<a\b[^>]*\bhref=["']#gallery["'][^>]*>Gallery<\/a>/i.test(bundledTemplate)) {
+    fail("decoded bundled template is missing the Gallery navigation anchor");
+  }
+  for (const marker of [
+    "Regional M&amp;E Knowledge Gallery",
+    "Strategic Outcome Evaluation Division<br><a href=\"mailto:mes-soed@depdev.gov.ph\"",
+    ">mes-soed@depdev.gov.ph</a>"
+  ]) {
+    if (!bundledTemplate.includes(marker)) fail(`decoded bundled template is missing the preserved replacement anchor: ${marker}`);
+  }
+}
+
+if (!index.includes('href="#past-forums"') || !index.includes(">Past Forums</a>")) {
+  fail("index.html is missing the Past Forums navigation item");
+}
+if (!index.includes('const pastForumsSection = `<section id="past-forums" class="past-forums-section">')) {
+  fail("index.html is missing the Past Forums section markup");
+}
+if (!index.includes("https://www.facebook.com/plugins/video.php?href=")) {
+  fail("index.html is missing the Facebook video plugin endpoint");
+}
+if (!index.includes("https://www.facebook.com/share/v/1BgZTCeDcA/")) {
+  fail("index.html is missing the supplied SDE Facebook fallback URL");
+}
+if (!index.includes(".replace('Regional M&amp;E Knowledge Gallery', 'Evaluation Gallery')")) {
+  fail("index.html is missing the Evaluation Gallery title replacement");
+}
+if (!index.includes(".replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')")) {
+  fail("index.html is missing the Evaluation Gallery footer-link replacement");
+}
+
+const mastheadNetwork = index.indexOf('<span class="site-brand__network"><img class="site-brand__logo" src="network_logo.svg"');
+const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadNetwork);
+const mastheadEvent = index.indexOf('<img class="site-brand__event-logo" src="assets/forum-logo-v5-static.svg"', mastheadDivider);
+if (mastheadNetwork < 0 || mastheadDivider < 0 || mastheadEvent < 0 || !(mastheadNetwork < mastheadDivider && mastheadDivider < mastheadEvent)) {
+  fail("index.html is missing the ordered masthead logo pair: network_logo.svg, divider, forum-logo-v5-static.svg");
+}
+
+for (const marker of [
+  "M&amp;E Forum Secretariat",
+  "m&amp;eforumsecretariat@depdev.gov.ph",
+  "mailto:m%26eforumsecretariat@depdev.gov.ph",
+  "MES-Strategic Outcome Evaluation Division",
+  "&amp;mes-soed@depdev.gov.ph",
+  "mailto:%26mes-soed@depdev.gov.ph"
+]) {
+  if (!index.includes(marker)) fail(`index.html is missing the reviewed Secretariat contact marker: ${marker}`);
+}
 
 // Thinking Mode is assembled by the preserved bootstrap after the template
 // mounts. Keep its wiring under the same static guard so a future export cannot
