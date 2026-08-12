@@ -203,9 +203,9 @@
 }
 
 .site-brand__partner-logo--mne {
-  width: clamp(84px, 7.5vw, 110px) !important;
+  width: clamp(72px, 6.5vw, 96px) !important;
   max-width: 100% !important;
-  max-height: 72px !important;
+  max-height: 64px !important;
 }
 
 .site-brand__partner-logo--depdev {
@@ -267,8 +267,8 @@
   }
 
   .site-brand__partner-logo--mne {
-    width: clamp(64px, 16vw, 86px) !important;
-    max-height: 56px !important;
+    width: clamp(56px, 14vw, 74px) !important;
+    max-height: 48px !important;
   }
 
   .site-brand__partner-logo--depdev {
