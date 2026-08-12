@@ -238,7 +238,7 @@ html[data-thinking-mode="high"] .site-footer {
   display: flex !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  flex: 1 1 auto !important;
+  flex: 1 1 0 !important;
   align-items: center !important;
   overflow: hidden !important;
 }
@@ -287,13 +287,15 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__partner-strip {
-  display: inline-flex !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
   align-items: center !important;
   gap: clamp(5px, 0.75vw, 10px) !important;
   flex: 0 1 auto !important;
+  width: min(100%, 236px) !important;
   max-width: 55% !important;
   min-width: 0 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   padding: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -302,7 +304,8 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand__partner-logo {
   display: block !important;
-  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
   object-fit: contain !important;
   object-position: center !important;
   background: transparent !important;
@@ -316,15 +319,23 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__partner-logo--mne {
-  width: clamp(104px, 10vw, 146px) !important;
+  width: 100% !important;
+  max-width: clamp(104px, 10vw, 146px) !important;
   height: auto !important;
   max-height: 76px !important;
+  justify-self: start !important;
 }
 
 .site-brand__partner-logo--undp {
   width: auto !important;
-  height: clamp(36px, 4vw, 50px) !important;
-  max-width: 26px !important;
+  height: clamp(36px, 4.5vw, 56px) !important;
+  max-width: 30px !important;
+}
+
+@media (min-width: 1181px) {
+  .site-brand__wordmark {
+    font-size: clamp(1.05rem, 1.2vw, 1.3rem) !important;
+  }
 }
 
 .primary-nav {
@@ -1069,6 +1080,10 @@ html[data-thinking-mode="high"] .hero__art {
 }
 
 @media (max-width: 600px) {
+  .site-header__inner {
+    gap: 8px !important;
+  }
+
   .site-header__inner,
   .hero__inner,
   .section-shell,
@@ -1081,36 +1096,48 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__divider {
+    display: block !important;
+    flex: 0 0 2px !important;
     height: 42px !important;
   }
 
+  .site-brand__copy {
+    display: flex !important;
+  }
+
   .site-brand__wordmark {
-    font-size: clamp(0.88rem, 4.3vw, 1.15rem) !important;
+    font-size: clamp(0.72rem, 4.3vw, 1.15rem) !important;
   }
 
   .site-brand__forum {
     display: none !important;
   }
 
+  .site-header__mode .thinking-mode__current {
+    display: none !important;
+  }
+
   .site-brand__partner-strip {
     gap: 4px !important;
     flex: 0 1 auto !important;
-    max-width: 55% !important;
+    width: min(100%, 236px) !important;
+    max-width: 52% !important;
   }
 
   .site-brand__partner-logo--depdev {
-    width: 22px !important;
-    height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .site-brand__partner-logo--mne {
-    width: clamp(78px, 24vw, 104px) !important;
+    width: 100% !important;
+    max-width: clamp(88px, 27vw, 124px) !important;
     max-height: 66px !important;
   }
 
   .site-brand__partner-logo--undp {
-    height: 32px !important;
-    max-width: 18px !important;
+    height: clamp(32px, 10vw, 42px) !important;
+    max-width: 22px !important;
   }
 
   .hero h1 {
@@ -1148,6 +1175,18 @@ html[data-thinking-mode="high"] .hero__art {
 
   .site-footer .sec-inner[style*="grid-template-columns"] {
     grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 414px) {
+  .site-brand__wordmark {
+    font-size: clamp(0.52rem, 2.55vw, 0.75rem) !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .site-brand__wordmark {
+    letter-spacing: -0.07em !important;
   }
 }
 
