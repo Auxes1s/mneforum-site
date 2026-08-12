@@ -363,12 +363,20 @@
 /* Give the wordmark a deliberate cushion after the gold divider. Keep this
    separate from the shared partner gap so the logo spacing remains stable. */
 .site-brand__copy {
+  flex: 0 0 auto !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  overflow: visible !important;
   justify-content: flex-start !important;
   padding-left: clamp(6px, 0.75vw, 10px) !important;
 }
 
 @media (max-width: 600px) {
   .site-brand__copy {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
     padding-left: 0 !important;
   }
 }
