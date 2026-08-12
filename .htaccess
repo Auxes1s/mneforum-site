@@ -21,6 +21,6 @@
     # 13th Forum form redirect pages
     RewriteEngine On
     # Keep the staging preview available as an alias for the master homepage.
-    RewriteRule ^dev/?$ index.html [L]
+    RewriteRule ^dev/?$ dev/index.html [L]
     RewriteRule ^register/?$ register/index.html [L]
     RewriteRule ^rp-register/?$ rp-register/index.html [L]
