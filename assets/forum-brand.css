@@ -225,26 +225,49 @@ html[data-thinking-mode="high"] .site-footer {
   object-fit: contain !important;
 }
 
-/* Keep the supplied M&E/UNDP partner mark on its clean official navy panel;
-   the surrounding masthead remains on the page's white background. */
-.site-brand__network-logo {
+/* Use the colored logo artwork from the VisGuide, with transparent spacing
+   around the M&E mark and the official blue UNDP mark beside it. */
+.site-brand__partner-logos {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: clamp(8px, 1vw, 14px) !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  height: clamp(72px, 7vw, 104px) !important;
+}
+
+.site-brand__mne-logo {
   display: block !important;
   flex: 0 1 auto !important;
   min-width: 0 !important;
+  width: clamp(150px, 16vw, 230px) !important;
+  height: auto !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.site-brand__undp-logo {
+  display: block !important;
+  flex: 0 0 auto !important;
   width: auto !important;
-  height: clamp(36px, 4vw, 50px) !important;
-  max-width: min(27vw, 240px) !important;
+  height: clamp(42px, 5vw, 68px) !important;
+  max-width: min(7vw, 72px) !important;
   object-fit: contain !important;
   object-position: center !important;
-  background: #17195f !important;
-  border: 1px solid #17195f !important;
-  border-radius: 6px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
 }
 
 .site-brand__divider {
   width: 2px !important;
-  height: 42px !important;
+  height: clamp(48px, 6vw, 82px) !important;
   background: var(--brand-sun-gold) !important;
 }
 
@@ -1042,13 +1065,22 @@ html[data-thinking-mode="high"] .hero__art {
     height: 42px !important;
   }
 
-  .site-brand__network-logo {
-    height: 38px !important;
-    max-width: min(38vw, 150px) !important;
+  .site-brand__partner-logos {
+    gap: 6px !important;
+    height: clamp(58px, 18vw, 82px) !important;
+  }
+
+  .site-brand__mne-logo {
+    width: clamp(118px, 42vw, 168px) !important;
+  }
+
+  .site-brand__undp-logo {
+    height: clamp(34px, 11vw, 50px) !important;
+    max-width: 42px !important;
   }
 
   .site-brand__divider {
-    height: 34px !important;
+    height: 48px !important;
   }
 
   .site-brand__wordmark {

@@ -18,6 +18,8 @@
   <link rel="icon" href="../network_logo.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="../assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="../assets/mne-network-colored.png" as="image" type="image/png">
+  <link rel="preload" href="../assets/undp-logo-color.png" as="image" type="image/png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -109,12 +111,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
     );
-    // Rebuild the masthead with the supplied M&E/UNDP partner mark while
-    // retaining only the MEtamorphosis wordmark in the banner.
+    // Keep the 13th Forum identity throughout the home page, while using the
+    // colored partner logos and only the MEtamorphosis wordmark in the banner.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
       '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home">' +
-        '<img class="site-brand__network-logo" src="../assets/mne-network-undp.png" alt="M&amp;E Monitoring and Evaluation Network Philippines with UNDP">' +
+        '<span class="site-brand__partner-logos">' +
+          '<img class="site-brand__mne-logo" src="../assets/mne-network-colored.png" alt="M&amp;E Monitoring and Evaluation Network Philippines">' +
+          '<img class="site-brand__undp-logo" src="../assets/undp-logo-color.png" alt="United Nations Development Programme">' +
+        '</span>' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
         '<div class="site-brand__copy">' +
           '<span class="site-brand__wordmark"><span class="site-brand__letter--m">M</span><span class="site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
