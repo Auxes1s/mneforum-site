@@ -339,3 +339,23 @@
     max-width: 100% !important;
   }
 }
+
+/* Match the header partner marks to the footer lockup. Keep the logo
+   dimensions fixed across breakpoints so the three institutional marks retain
+   the same visual weight in both locations. */
+.site-brand__partner-logo--mne {
+  width: auto !important;
+  height: 38px !important;
+  max-height: 38px !important;
+}
+
+.site-brand__partner-logo--depdev {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.site-brand__partner-logo--undp {
+  width: auto !important;
+  height: 46px !important;
+  max-width: 30px !important;
+}
