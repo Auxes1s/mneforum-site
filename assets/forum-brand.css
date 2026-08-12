@@ -625,6 +625,13 @@ html[data-thinking-mode="ultra"] .hero__art > img.hero__transformation-logo {
   filter: drop-shadow(0 18px 32px rgba(10, 87, 163, .16)) !important;
 }
 
+/* The lazy fallback image has no src until Ultra has requested the artwork.
+   Keep that placeholder from painting a broken-image icon or alt text while
+   the synchronized inline SVG is being prepared. */
+html[data-thinking-mode="ultra"] img.hero__transformation-logo:not([src]) {
+  display: none !important;
+}
+
 .hero__art > div[style*="text-align"] {
   margin-top: 18px !important;
 }
@@ -1392,8 +1399,13 @@ html[data-thinking-mode="ultra"] .countdown__note {
   border-top-color: rgba(174, 208, 238, 0.18) !important;
 }
 
-/* Masthead brand: the M&E square keeps its white plate because the supplied
-   mark is drawn for a light backing, but the wordmark beside it must invert. */
+/* Masthead brand: Ultra uses a dark header, so the existing M&E and DEPDev
+   assets invert to solid white while UNDP keeps its supplied color. */
+html[data-thinking-mode="ultra"] .site-brand__partner-logo--mne,
+html[data-thinking-mode="ultra"] .site-brand__partner-logo--depdev {
+  filter: brightness(0) invert(1) !important;
+}
+
 html[data-thinking-mode="ultra"] .site-brand__rest,
 html[data-thinking-mode="ultra"] .site-brand {
   color: #f2f7fc !important;

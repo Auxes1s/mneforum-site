@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p style="font-size: 15px; line-height: 1.6; max-width: 80ch; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 75%, transparent);">Last year's SDE (Same-Day Edit) captures the people, ideas, and momentum from the 12th M&amp;E Network Forum.</p>
       <div class="brandcard" style="padding: 18px; background: #ffffff;">
         <div style="position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; margin: 0 auto; overflow: hidden; background: #0b1724;">
-          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
         </div>
         <p style="margin: 16px 0 0; font-size: 13.5px; line-height: 1.6;">If the video does not load, <a href="https://www.facebook.com/share/v/1BgZTCeDcA/" target="_blank" rel="noopener noreferrer">open last year's SDE on Facebook</a>.</p>
       </div>
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     template = template.replace(
       '<img src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">',
       '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
-      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
+      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" hidden alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
     );
     // Join the left crimson route to the fourth route's start while keeping
     // the existing red dashed treatment supplied by the brand stylesheet.
@@ -6000,7 +6000,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const brandLink = document.createElement('link');
     brandLink.id = 'forum-brand-styles';
     brandLink.rel = 'stylesheet';
-    brandLink.href = 'assets/forum-brand.css?v=20260812-masthead-gap';
+    brandLink.href = 'assets/forum-brand.css?v=20260812-ultra-header-logos';
     document.head.appendChild(brandLink);
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
@@ -6101,6 +6101,28 @@ document.addEventListener('DOMContentLoaded', async function() {
            !transformationLogo || modeInputs.length !== 3) {
         return false;
       }
+
+      // The mobile masthead wraps into two rows at narrow widths. Keep the
+      // viewport-bound Thinking Mode sheet below the measured header rather
+      // than relying on the compact one-row fallback value.
+      const siteHeader = document.querySelector('.site-header');
+      const syncMobileMasthead = () => {
+        if (!siteHeader) return;
+        if (!window.matchMedia('(max-width: 880px)').matches) {
+          document.documentElement.style.removeProperty('--mobile-masthead');
+          return;
+        }
+        const height = Math.ceil(siteHeader.getBoundingClientRect().height);
+        if (height > 0) {
+          document.documentElement.style.setProperty('--mobile-masthead', height + 'px');
+        }
+      };
+      syncMobileMasthead();
+      if (siteHeader && 'ResizeObserver' in window) {
+        const mastheadObserver = new ResizeObserver(syncMobileMasthead);
+        mastheadObserver.observe(siteHeader);
+      }
+      window.addEventListener('resize', syncMobileMasthead, { passive: true });
 
       // The headline types out segment by segment so that accent words land
       // in their own nodes. This is the single source of truth for the typed
@@ -6452,6 +6474,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             // as the synchronized inline path.
             if (transformationLogo instanceof HTMLImageElement) {
               transformationLogo.setAttribute('src', transformationLogoSource);
+              transformationLogo.hidden = false;
             }
             document.documentElement.dataset.transformationReady = 'fallback';
             return false;
@@ -6468,9 +6491,11 @@ document.addEventListener('DOMContentLoaded', async function() {
           // SVG document and therefore a fresh animation clock.
           const freshLogo = transformationLogo.cloneNode(true);
           freshLogo.removeAttribute('src');
+          freshLogo.hidden = true;
           transformationLogo.replaceWith(freshLogo);
           transformationLogo = freshLogo;
           transformationLogo.setAttribute('src', transformationLogoSource);
+          transformationLogo.hidden = false;
           hero.classList.remove('is-ultra-logo-reveal');
           void hero.offsetWidth;
           hero.classList.add('is-ultra-logo-reveal');
@@ -6559,28 +6584,11 @@ document.addEventListener('DOMContentLoaded', async function() {
           setState('static');
           return;
         }
-        const config = modes[mode];
-        const wordDuration = config.thinkingMs / config.sequence.length;
-        stage.style.setProperty('--thinking-word-duration', wordDuration + 'ms');
-        setState('thinking');
-        const showWord = index => {
-          if (token !== cycleToken) return;
-          const word = config.sequence[index];
-          wordNode.textContent = word.text;
-          stage.style.setProperty('--thinking-word-color', word.color);
-          wordNode.style.opacity = '1';
-          wordNode.style.transform = 'none';
-          wordNode.style.filter = 'none';
-        };
-        showWord(0);
-        config.sequence.slice(1).forEach((_, index) => {
-          schedule(() => showWord(index + 1), (index + 1) * wordDuration);
-        });
-        schedule(() => {
-          if (token !== cycleToken) return;
-          revealFinal(token, false);
-          if (mode === 'ultra') syncSvgTime(svgDurationMs);
-        }, config.thinkingMs);
+        // Reduced motion promises the finished state without a delayed
+        // substitute animation. The asset may still load for Ultra, but the
+        // headline and final visual state resolve as soon as it is available.
+        revealFinal(token, false);
+        if (mode === 'ultra') syncSvgTime(svgDurationMs);
       };
       const runCycle = () => {
         if (reducedMotion.matches && mode !== 'instant' && !document.hidden) {

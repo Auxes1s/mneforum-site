@@ -22,6 +22,7 @@ const productionFiles = [
 
 const expectedFiles = [
   ...productionFiles,
+  "dev/index.html",
   ".htaccess",
   "network_logo.svg",
   "robots.txt",
@@ -157,6 +158,7 @@ for (const [relativePath, source] of sources) {
 }
 
 const index = sources.get("index.html") ?? "";
+const devIndex = await exists("dev/index.html") ? await read("dev/index.html") : "";
 let bundledTemplate = "";
 try {
   const templateMatch = index.match(/<script type=["']__bundler\/template["']>([\s\S]*?)<\/script>/i);
@@ -177,6 +179,17 @@ for (const marker of [
 }
 if (!/class="hero\b/.test(bundledTemplate) || !/class="site-header\b/.test(bundledTemplate) || !/class="thinking-mode\b/.test(index)) {
   fail("index.html does not contain the locked original design markers");
+}
+for (const [label, source] of [["index.html", index], ["dev/index.html", devIndex]]) {
+  for (const marker of [
+    "site-brand__partner-strip",
+    'value="ultra"',
+    "runReducedCycle",
+    "syncMobileMasthead",
+    "assets/forum-brand.css?v=20260812-ultra-header-logos"
+  ]) {
+    if (!source.includes(marker)) fail(`${label} is missing the reviewed runtime marker: ${marker}`);
+  }
 }
 if (/<meta[^>]+http-equiv=["']refresh/i.test(index)) fail("index.html must not use meta refresh");
 if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(index)) fail("index.html is missing the canonical URL");
@@ -231,6 +244,15 @@ const mastheadDivider = index.indexOf('<span class="site-brand__divider"', masth
 const mastheadWordmark = index.indexOf('<span class="site-brand__wordmark"', mastheadDivider);
 if (mastheadMne < 0 || mastheadDepdev < 0 || mastheadUndp < 0 || mastheadDivider < 0 || mastheadWordmark < 0 || !(mastheadMne < mastheadDepdev && mastheadDepdev < mastheadUndp && mastheadUndp < mastheadDivider && mastheadDivider < mastheadWordmark)) {
   fail("index.html is missing the ordered masthead marks: M&E, DEPDev, UNDP, divider, wordmark");
+}
+
+const brandStyles = await read("assets/forum-brand.css");
+for (const marker of [
+  'html[data-thinking-mode="ultra"] .site-brand__partner-logo--mne',
+  'html[data-thinking-mode="ultra"] .site-brand__partner-logo--depdev',
+  "filter: brightness(0) invert(1) !important;"
+]) {
+  if (!brandStyles.includes(marker)) fail(`forum-brand.css is missing the Ultra white-header-logo marker: ${marker}`);
 }
 
 for (const marker of [
