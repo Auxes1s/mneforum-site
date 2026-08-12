@@ -978,17 +978,17 @@ section h2::after {
   flex: 0 0 auto !important;
 }
 
-.footer__partner-strip > img[alt*="M&E"] {
+.site-footer .footer__partner-strip > img[alt*="M&E"] {
   order: 1 !important;
   height: 38px !important;
 }
 
-.footer__partner-strip > img[alt*="Department"] {
+.site-footer .footer__partner-strip > img[alt*="Department"] {
   order: 2 !important;
   height: 42px !important;
 }
 
-.footer__partner-strip > img[alt*="United Nations"] {
+.site-footer .footer__partner-strip > img[alt*="United Nations"] {
   order: 3 !important;
   height: 46px !important;
 }
