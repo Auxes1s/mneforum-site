@@ -206,6 +206,9 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand {
   gap: 12px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
   color: var(--brand-black) !important;
 }
 
@@ -232,16 +235,34 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__copy {
-  gap: 1px !important;
+  display: flex !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: 1 1 auto !important;
+  align-items: center !important;
+  overflow: hidden !important;
 }
 
 .site-brand__wordmark {
-  display: block !important;
-  width: clamp(176px, 14vw, 240px) !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
   height: auto !important;
   max-width: 100% !important;
-  object-fit: contain !important;
-  object-position: left center !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  font-size: clamp(1.05rem, 1.5vw, 1.45rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -0.045em !important;
+  white-space: nowrap !important;
+}
+
+.site-brand__wordmark > span {
+  font: inherit !important;
+  font-size: 1em !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
 }
 
 .site-brand__letter--m {
@@ -268,9 +289,11 @@ html[data-thinking-mode="high"] .site-footer {
 .site-brand__partner-strip {
   display: inline-flex !important;
   align-items: center !important;
-  gap: clamp(8px, 1vw, 14px) !important;
+  gap: clamp(5px, 0.75vw, 10px) !important;
   flex: 0 1 auto !important;
+  max-width: 55% !important;
   min-width: 0 !important;
+  overflow: hidden !important;
   padding: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -288,20 +311,20 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__partner-logo--depdev {
-  width: clamp(32px, 3.4vw, 48px) !important;
-  height: clamp(32px, 3.4vw, 48px) !important;
+  width: clamp(28px, 3vw, 42px) !important;
+  height: clamp(28px, 3vw, 42px) !important;
 }
 
 .site-brand__partner-logo--mne {
-  width: clamp(116px, 11vw, 158px) !important;
+  width: clamp(104px, 10vw, 146px) !important;
   height: auto !important;
-  max-height: 88px !important;
+  max-height: 76px !important;
 }
 
 .site-brand__partner-logo--undp {
   width: auto !important;
-  height: clamp(38px, 4.5vw, 58px) !important;
-  max-width: 30px !important;
+  height: clamp(36px, 4vw, 50px) !important;
+  max-width: 26px !important;
 }
 
 .primary-nav {
@@ -1058,11 +1081,11 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__divider {
-    height: 48px !important;
+    height: 42px !important;
   }
 
   .site-brand__wordmark {
-    width: clamp(108px, 30vw, 150px) !important;
+    font-size: clamp(0.88rem, 4.3vw, 1.15rem) !important;
   }
 
   .site-brand__forum {
@@ -1070,23 +1093,24 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__partner-strip {
-    gap: 6px !important;
+    gap: 4px !important;
     flex: 0 1 auto !important;
+    max-width: 55% !important;
   }
 
   .site-brand__partner-logo--depdev {
-    width: 28px !important;
-    height: 28px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   .site-brand__partner-logo--mne {
-    width: clamp(92px, 29vw, 126px) !important;
-    max-height: 80px !important;
+    width: clamp(78px, 24vw, 104px) !important;
+    max-height: 66px !important;
   }
 
   .site-brand__partner-logo--undp {
-    height: 38px !important;
-    max-width: 20px !important;
+    height: 32px !important;
+    max-width: 18px !important;
   }
 
   .hero h1 {

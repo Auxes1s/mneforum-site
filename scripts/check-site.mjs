@@ -31,7 +31,6 @@ const expectedFiles = [
   "assets/forum-logo-transformation.svg",
   "assets/og-teaser.png",
   "assets/depdev-logo-color.png",
-  "assets/metamorphosis-wordmark.png",
   "assets/undp-logo-color.svg",
   "assets/fonts/OpenSans-OFL.txt",
   "assets/fonts/OpenSans-SemiCondensed-Bold.ttf",
@@ -76,7 +75,6 @@ const assetAllowlist = new Set([
   "forum-responsive.css",
   "og-teaser.png",
   "depdev-logo-color.png",
-  "metamorphosis-wordmark.png",
   "undp-logo-color.svg",
   "partners/depdev.svg",
   "partners/mne-network.svg",
@@ -230,7 +228,7 @@ const mastheadMne = index.indexOf('<img class="site-brand__partner-logo site-bra
 const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png"', mastheadMne);
 const mastheadUndp = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg"', mastheadDepdev);
 const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadUndp);
-const mastheadWordmark = index.indexOf('<img class="site-brand__wordmark" src="assets/metamorphosis-wordmark.png"', mastheadDivider);
+const mastheadWordmark = index.indexOf('<span class="site-brand__wordmark"', mastheadDivider);
 if (mastheadMne < 0 || mastheadDepdev < 0 || mastheadUndp < 0 || mastheadDivider < 0 || mastheadWordmark < 0 || !(mastheadMne < mastheadDepdev && mastheadDepdev < mastheadUndp && mastheadUndp < mastheadDivider && mastheadDivider < mastheadWordmark)) {
   fail("index.html is missing the ordered masthead marks: M&E, DEPDev, UNDP, divider, wordmark");
 }

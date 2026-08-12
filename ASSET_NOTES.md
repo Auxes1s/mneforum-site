@@ -18,7 +18,6 @@ mounted page.
 | `assets/partners/mne-network.svg` | M&E Network footer partner mark |
 | `assets/partners/undp.svg` | UNDP footer partner mark |
 | `assets/depdev-logo-color.png` | Colored DEPDev masthead mark from the supplied logo resources |
-| `assets/metamorphosis-wordmark.png` | High-resolution MEtamorphosis wordmark derived from the supplied logo resources |
 | `assets/undp-logo-color.svg` | Colored, scalable UNDP masthead mark from the supplied logo resources |
 | `assets/og-teaser.png` | Social preview image referenced by page metadata |
 | `assets/fonts/OpenSans-SemiCondensed-Bold.ttf` | Local display font used by the form pages |
