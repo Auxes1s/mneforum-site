@@ -192,3 +192,32 @@
     letter-spacing: 0.08em !important;
   }
 }
+
+/* The enlarged masthead lockup uses the full first row on phones; the mode
+   launcher and menu remain visible on a compact second row. */
+@media (max-width: 600px) {
+  .site-header__inner {
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+  }
+
+  .site-brand {
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    order: 1 !important;
+  }
+
+  .site-header__mode {
+    order: 2 !important;
+  }
+
+  .mobile-menu-button {
+    order: 3 !important;
+    flex: 0 0 44px !important;
+  }
+
+  .primary-nav {
+    order: 4 !important;
+  }
+}

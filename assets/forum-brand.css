@@ -252,7 +252,7 @@ html[data-thinking-mode="high"] .site-footer {
   max-width: 100% !important;
   min-width: 0 !important;
   overflow: hidden !important;
-  font-size: clamp(1.3rem, 2.1vw, 1.8rem) !important;
+  font-size: clamp(1.95rem, 3.15vw, 2.7rem) !important;
   line-height: 0.95 !important;
   letter-spacing: -0.045em !important;
   white-space: nowrap !important;
@@ -334,7 +334,7 @@ html[data-thinking-mode="high"] .site-footer {
 
 @media (min-width: 1181px) {
   .site-brand__wordmark {
-    font-size: clamp(1.3rem, 1.55vw, 1.7rem) !important;
+    font-size: clamp(1.95rem, 2.325vw, 2.55rem) !important;
   }
 }
 
@@ -1082,10 +1082,16 @@ html[data-thinking-mode="high"] .hero__art {
 @media (max-width: 600px) {
   .site-brand {
     gap: clamp(7px, 1.8vw, 9px) !important;
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    order: 1 !important;
   }
 
   .site-header__inner {
-    gap: 8px !important;
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+    min-height: auto !important;
   }
 
   .site-header__inner,
@@ -1110,7 +1116,7 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__wordmark {
-    font-size: clamp(0.92rem, 5.6vw, 1.8rem) !important;
+    font-size: clamp(1.38rem, 8.4vw, 2.7rem) !important;
   }
 
   .site-brand__forum {
@@ -1184,14 +1190,14 @@ html[data-thinking-mode="high"] .hero__art {
 
 @media (max-width: 414px) {
   .site-brand__wordmark {
-    font-size: clamp(0.7rem, 3.6vw, 0.95rem) !important;
+    font-size: clamp(1.05rem, 5.4vw, 1.425rem) !important;
     letter-spacing: -0.06em !important;
   }
 }
 
 @media (max-width: 340px) {
   .site-brand__wordmark {
-    font-size: clamp(0.6rem, 3.15vw, 0.72rem) !important;
+    font-size: clamp(0.9rem, 4.725vw, 1.08rem) !important;
     letter-spacing: -0.07em !important;
   }
 }
@@ -1204,6 +1210,13 @@ html[data-thinking-mode="high"] .hero__art {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Preserve room for the 1.5× masthead wordmark on wide desktop screens. */
+@media (min-width: 1181px) {
+  .primary-nav a {
+    padding-inline: 9px !important;
   }
 }
 
