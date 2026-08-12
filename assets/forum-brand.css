@@ -262,6 +262,35 @@ html[data-thinking-mode="high"] .site-footer {
   text-transform: uppercase !important;
 }
 
+.site-brand__partner-strip {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 10px;
+  background: var(--brand-midnight);
+  box-shadow: 0 7px 16px rgba(10, 55, 95, .14);
+}
+
+.site-brand__partner-logo {
+  display: block !important;
+  width: 22px !important;
+  height: 22px !important;
+  object-fit: contain;
+}
+
+.site-brand__partner-logo--mne {
+  width: 29px !important;
+}
+
+.site-brand__partner-logo--undp {
+  width: 28px !important;
+  padding: 2px;
+  border-radius: 3px;
+  background: #ffffff;
+}
+
 .primary-nav {
   gap: 4px !important;
 }
@@ -975,6 +1004,10 @@ html[data-thinking-mode="high"] .hero__art {
   .site-brand__forum {
     max-width: 175px !important;
     font-size: 0.58rem !important;
+  }
+
+  .site-brand__partner-strip {
+    display: none !important;
   }
 
   .hero h1 {

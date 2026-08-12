@@ -194,6 +194,7 @@ for (const marker of [
   "const modes =",
   "const selectMode =",
   "const restartSequence =",
+  "const runReducedCycle =",
   "const getModeControl =",
   "document.addEventListener('change'",
   "document.addEventListener('click'",
@@ -202,7 +203,9 @@ for (const marker of [
   "sessionStorage.getItem('forum-thinking-mode')",
   "sessionStorage.setItem(key, value)",
   "applyMode(document.documentElement.getAttribute('data-thinking-mode') || 'instant')",
-  "assets/forum-logo-transformation.svg"
+  "assets/forum-logo-transformation.svg",
+  "site-brand__partner-strip",
+  "m&amp;enetworksecretariat@depdev.gov.ph"
 ]) {
   if (!index.includes(marker)) fail(`index.html is missing Thinking Mode wiring: ${marker}`);
 }

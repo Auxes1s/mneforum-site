@@ -128,6 +128,11 @@ document.addEventListener('DOMContentLoaded', async function() {
           '<span class="site-brand__wordmark"><span class="site-brand__letter site-brand__letter--m">M</span><span class="site-brand__letter site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
           '<span class="site-brand__forum">13th M&amp;E Network Forum</span>' +
         '</span>' +
+        '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/partners/depdev.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="assets/partners/mne-network.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/partners/undp.svg" alt="" aria-hidden="true">' +
+        '</span>' +
       '</a>'
     );
     // Keep the completed identity in Instant and High. Ultra swaps it for the
@@ -216,6 +221,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         '<div style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">',
         '<div class="site-footer__dateline" style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">'
       );
+    // Keep the public contact point aligned with the Secretariat's current
+    // mailbox wherever the footer template is rendered.
+    template = template.replaceAll(
+      'mes-soed@depdev.gov.ph',
+      'm&amp;enetworksecretariat@depdev.gov.ph'
+    );
 
     // Normalize the legacy inline palette to the guide's approved asset
     // colors before the page is mounted. This keeps data-rendered cards and
@@ -1567,11 +1578,22 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
       }
       @media (prefers-reduced-motion: reduce) {
-        .hero__headline-stage .thinking-intro,
         .hero__headline-stage .hero__typing-layer,
         .hero__headline-stage .mode-flow,
         .thinking-ambient {
           display: none !important;
+        }
+        /* Reduced motion removes movement, not the mode's useful progress
+           signal. High and Ultra still show a steady thinking verb while the
+           JavaScript sequence advances without transforms or fades. */
+        .hero__headline-stage[data-thinking-state="thinking"] .thinking-intro,
+        .hero__headline-stage[data-thinking-state="thinking"] .thinking-word {
+          display: inline-block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          animation: none !important;
+          filter: none !important;
+          transform: none !important;
         }
         .hero__headline-stage .hero__headline-final {
           visibility: visible !important;
@@ -2801,6 +2823,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         html[data-thinking-mode="ultra"] .hero__identity-logo {
           display: none !important;
+        }
+        html[data-thinking-mode="ultra"][data-transformation-ready="fallback"] .hero__identity-logo {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
         }
         html[data-thinking-mode="ultra"] .hero__art,
         html[data-thinking-mode="ultra"] .hero__art > img,
@@ -6451,7 +6478,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         hero.classList.remove('is-revealing');
         resetTypedText();
         if (reducedMotion.matches || document.hidden) {
-          runCycle();
+          runReducedCycle();
           return;
         }
         setState('high-expanding');
@@ -6487,7 +6514,43 @@ document.addEventListener('DOMContentLoaded', async function() {
           remaining -= visible;
         });
       };
+      const runReducedCycle = () => {
+        clearCycleTimers();
+        const token = ++cycleToken;
+        hero.classList.remove('is-revealing');
+        resetTypedText();
+        if (mode === 'instant' || document.hidden) {
+          setState('static');
+          return;
+        }
+        const config = modes[mode];
+        const wordDuration = config.thinkingMs / config.sequence.length;
+        stage.style.setProperty('--thinking-word-duration', wordDuration + 'ms');
+        setState('thinking');
+        const showWord = index => {
+          if (token !== cycleToken) return;
+          const word = config.sequence[index];
+          wordNode.textContent = word.text;
+          stage.style.setProperty('--thinking-word-color', word.color);
+          wordNode.style.opacity = '1';
+          wordNode.style.transform = 'none';
+          wordNode.style.filter = 'none';
+        };
+        showWord(0);
+        config.sequence.slice(1).forEach((_, index) => {
+          schedule(() => showWord(index + 1), (index + 1) * wordDuration);
+        });
+        schedule(() => {
+          if (token !== cycleToken) return;
+          revealFinal(token, false);
+          if (mode === 'ultra') syncSvgTime(svgDurationMs);
+        }, config.thinkingMs);
+      };
       const runCycle = () => {
+        if (reducedMotion.matches && mode !== 'instant' && !document.hidden) {
+          runReducedCycle();
+          return;
+        }
         clearCycleTimers();
         const token = ++cycleToken;
         hero.classList.remove('is-revealing');
@@ -6580,6 +6643,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       const restartSequence = (previousMode = mode) => {
         clearCycleTimers();
         const requestToken = ++sequenceRequestToken;
+        if (mode === 'ultra' && reducedMotion.matches && !document.hidden) {
+          resetTypedText();
+          setState('thinking');
+          wordNode.textContent = 'Preparing visual identity...';
+          inlineTransformationLogo().then(() => {
+            if (requestToken !== sequenceRequestToken || mode !== 'ultra' || document.hidden) return;
+            syncSvgTime(svgDurationMs);
+            runReducedCycle();
+          });
+          return;
+        }
         if (mode === 'ultra' && !reducedMotion.matches && !document.hidden) {
           resetTypedText();
           setState('thinking');
