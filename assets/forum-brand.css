@@ -252,7 +252,7 @@ html[data-thinking-mode="high"] .site-footer {
   max-width: 100% !important;
   min-width: 0 !important;
   overflow: hidden !important;
-  font-size: clamp(1.1rem, 1.7vw, 1.55rem) !important;
+  font-size: clamp(1.25rem, 2vw, 1.75rem) !important;
   line-height: 0.95 !important;
   letter-spacing: -0.045em !important;
   white-space: nowrap !important;
@@ -292,7 +292,7 @@ html[data-thinking-mode="high"] .site-footer {
   align-items: center !important;
   gap: clamp(5px, 0.75vw, 10px) !important;
   flex: 0 1 auto !important;
-  width: min(100%, 210px) !important;
+  width: fit-content !important;
   max-width: 50% !important;
   min-width: 0 !important;
   overflow: visible !important;
@@ -319,10 +319,10 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__partner-logo--mne {
-  width: 100% !important;
-  max-width: clamp(92px, 9vw, 132px) !important;
+  width: clamp(64px, 5.2vw, 82px) !important;
+  max-width: 100% !important;
   height: auto !important;
-  max-height: 68px !important;
+  max-height: 52px !important;
   justify-self: start !important;
 }
 
@@ -334,7 +334,7 @@ html[data-thinking-mode="high"] .site-footer {
 
 @media (min-width: 1181px) {
   .site-brand__wordmark {
-    font-size: clamp(1.12rem, 1.3vw, 1.35rem) !important;
+    font-size: clamp(1.28rem, 1.45vw, 1.6rem) !important;
   }
 }
 
@@ -1080,6 +1080,10 @@ html[data-thinking-mode="high"] .hero__art {
 }
 
 @media (max-width: 600px) {
+  .site-brand {
+    gap: clamp(8px, 2.1vw, 10px) !important;
+  }
+
   .site-header__inner {
     gap: 8px !important;
   }
@@ -1106,7 +1110,7 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__wordmark {
-    font-size: clamp(0.72rem, 4.3vw, 1.3rem) !important;
+    font-size: clamp(0.9rem, 5.4vw, 1.7rem) !important;
   }
 
   .site-brand__forum {
@@ -1120,7 +1124,7 @@ html[data-thinking-mode="high"] .hero__art {
   .site-brand__partner-strip {
     gap: 4px !important;
     flex: 0 1 auto !important;
-    width: min(100%, 210px) !important;
+    width: fit-content !important;
     max-width: 48% !important;
   }
 
@@ -1130,9 +1134,9 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__partner-logo--mne {
-    width: 100% !important;
-    max-width: clamp(76px, 24vw, 112px) !important;
-    max-height: 62px !important;
+    width: clamp(56px, 14vw, 72px) !important;
+    max-width: 100% !important;
+    max-height: 46px !important;
   }
 
   .site-brand__partner-logo--undp {
@@ -1180,12 +1184,14 @@ html[data-thinking-mode="high"] .hero__art {
 
 @media (max-width: 414px) {
   .site-brand__wordmark {
-    font-size: clamp(0.52rem, 2.55vw, 0.75rem) !important;
+    font-size: clamp(0.68rem, 3.4vw, 0.9rem) !important;
+    letter-spacing: -0.06em !important;
   }
 }
 
 @media (max-width: 340px) {
   .site-brand__wordmark {
+    font-size: clamp(0.6rem, 3.15vw, 0.72rem) !important;
     letter-spacing: -0.07em !important;
   }
 }
