@@ -294,3 +294,48 @@
     order: 4 !important;
   }
 }
+
+/* Keep the three supplied partner marks in one horizontal lockup. The
+   bundled page has several legacy `.site-brand` rules; these final, explicit
+   flex rules prevent those layers from collapsing the marks into a vertical
+   column when the page is served from `/dev` or at the root. */
+.site-brand {
+  display: inline-flex !important;
+  flex: 1 1 auto !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.site-brand__partner-strip {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+.site-brand__partner-logo {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 600px) {
+  .site-brand {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .site-brand__partner-strip {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
