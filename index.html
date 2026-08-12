@@ -133,6 +133,43 @@ document.addEventListener('DOMContentLoaded', async function() {
         '</span>' +
       '</a>'
     );
+    // Add last year's SDE as a first-class Past Forums section. Facebook owns
+    // playback, while the supplied share URL remains available as a visible
+    // fallback if the embed is unavailable.
+    template = template.replace(
+      '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>',
+      '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>' +
+      '<a href="#past-forums" aria-current="{{ navPastForumsCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Past Forums</a>'
+    );
+    const pastForumsSection = `<section id="past-forums" class="past-forums-section">
+    <div class="section-shell">
+      <div style="display: flex; align-items: flex-end; gap: 20px; margin-bottom: 8px;">
+        <h2 style="margin: 0; font-size: 38px;">Past Forums</h2>
+      </div>
+      <p style="font-size: 15px; line-height: 1.6; max-width: 80ch; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 75%, transparent);">Last year's SDE (Same-Day Edit) captures the people, ideas, and momentum from the 12th M&amp;E Network Forum.</p>
+      <div class="brandcard" style="padding: 18px; background: #ffffff;">
+        <div style="position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; margin: 0 auto; overflow: hidden; background: #0b1724;">
+          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <p style="margin: 16px 0 0; font-size: 13.5px; line-height: 1.6;">If the video does not load, <a href="https://www.facebook.com/share/v/1BgZTCeDcA/" target="_blank" rel="noopener noreferrer">open last year's SDE on Facebook</a>.</p>
+      </div>
+    </div>
+  </section>`;
+    template = template.replace('\n  </main>', '\n  ' + pastForumsSection + '\n  </main>');
+
+    // Keep the renamed gallery label and Secretariat contacts consistent in
+    // the rendered section, footer navigation, and accessible mail links.
+    template = template
+      .replace('Regional M&amp;E Knowledge Gallery', 'Evaluation Gallery')
+      .replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')
+      .replace(
+        'Strategic Outcome Evaluation Division<br><a href="mailto:mes-soed@depdev.gov.ph" style="color: inherit;">mes-soed@depdev.gov.ph</a>',
+        'M&amp;E Forum Secretariat<br><a href="mailto:m%26eforumsecretariat@depdev.gov.ph" style="color: inherit;">m&amp;eforumsecretariat@depdev.gov.ph</a><br>MES-Strategic Outcome Evaluation Division<br><a href="mailto:%26mes-soed@depdev.gov.ph" style="color: inherit;">&amp;mes-soed@depdev.gov.ph</a>'
+      )
+      .replace(
+        'navGalleryCurrent: st.activeSection === "gallery" ? "page" : "false",',
+        'navGalleryCurrent: st.activeSection === "gallery" ? "page" : "false",\n      navPastForumsCurrent: st.activeSection === "past-forums" ? "page" : "false",'
+      );
     // Keep the completed identity in Instant and High. Ultra swaps it for the
     // one-shot cocoon-to-butterfly transformation, which resolves to the same
     // complete event mark.
@@ -219,13 +256,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         '<div style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">',
         '<div class="site-footer__dateline" style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">'
       );
-    // Keep the public contact point aligned with the Secretariat's current
-    // mailbox wherever the footer template is rendered.
-    template = template.replaceAll(
-      'mes-soed@depdev.gov.ph',
-      'm&amp;enetworksecretariat@depdev.gov.ph'
-    );
-
     // Normalize the legacy inline palette to the guide's approved asset
     // colors before the page is mounted. This keeps data-rendered cards and
     // inline SVG strokes in the same system as the brand stylesheet.

@@ -646,7 +646,9 @@ main section:not(.hero) {
 }
 
 .notes-section,
-.gallery-section {
+.gallery-section,
+.past-forums-section,
+#past-forums {
   background: var(--brand-page) !important;
 }
 
@@ -820,6 +822,56 @@ section h2::after {
   border-radius: 0 !important;
   color: var(--brand-midnight) !important;
   background: #ffffff !important;
+}
+
+/* Past Forums / SDE media card. Keep the external video fluid and prevent
+   the embedded player from widening the page at narrow breakpoints. */
+.past-forums-section,
+#past-forums {
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.past-forums-section .brandcard,
+#past-forums .brandcard,
+.sde-video-card {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  border-left: 5px solid var(--brand-blush) !important;
+}
+
+.past-forums-section .brandcard > div[style*="aspect-ratio"],
+#past-forums .sde-embed,
+.sde-embed {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  background: #0b1724 !important;
+}
+
+.past-forums-section .brandcard > div[style*="aspect-ratio"] iframe,
+#past-forums .sde-embed iframe,
+.sde-embed iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  border: 0 !important;
+}
+
+.past-forums-section .brandcard a,
+#past-forums .brandcard a,
+.sde-video-card a {
+  overflow-wrap: anywhere;
 }
 
 /* The guide's co-branding bar is a dark, spacious institutional lockup. */

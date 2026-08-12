@@ -189,6 +189,63 @@ if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| templa
 if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
 if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
 
+// The preserved bundle receives the Past Forums section and contact labels in
+// the bootstrap immediately before mounting. Check both the source template
+// and the runtime replacement markers so those additions cannot silently drop.
+if (bundledTemplate) {
+  if (!/<section\b[^>]*\bid=["']gallery["']/i.test(bundledTemplate)) {
+    fail("decoded bundled template is missing the Evaluation Gallery section anchor");
+  }
+  if (!/<a\b[^>]*\bhref=["']#gallery["'][^>]*>Gallery<\/a>/i.test(bundledTemplate)) {
+    fail("decoded bundled template is missing the Gallery navigation anchor");
+  }
+  for (const marker of [
+    "Regional M&amp;E Knowledge Gallery",
+    "Strategic Outcome Evaluation Division<br><a href=\"mailto:mes-soed@depdev.gov.ph\"",
+    ">mes-soed@depdev.gov.ph</a>"
+  ]) {
+    if (!bundledTemplate.includes(marker)) fail(`decoded bundled template is missing the preserved replacement anchor: ${marker}`);
+  }
+}
+if (!index.includes('href="#past-forums"') || !index.includes(">Past Forums</a>")) {
+  fail("index.html is missing the Past Forums navigation item");
+}
+if (!index.includes('const pastForumsSection = `<section id="past-forums" class="past-forums-section">')) {
+  fail("index.html is missing the Past Forums section markup");
+}
+if (!index.includes("https://www.facebook.com/plugins/video.php?href=")) {
+  fail("index.html is missing the Facebook video plugin endpoint");
+}
+if (!index.includes("https://www.facebook.com/share/v/1BgZTCeDcA/")) {
+  fail("index.html is missing the supplied SDE Facebook fallback URL");
+}
+if (!index.includes(".replace('Regional M&amp;E Knowledge Gallery', 'Evaluation Gallery')")) {
+  fail("index.html is missing the Evaluation Gallery title replacement");
+}
+if (!index.includes(".replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')")) {
+  fail("index.html is missing the Evaluation Gallery footer-link replacement");
+}
+
+const mastheadMne = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg"');
+const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png"', mastheadMne);
+const mastheadUndp = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg"', mastheadDepdev);
+const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadUndp);
+const mastheadWordmark = index.indexOf('<img class="site-brand__wordmark" src="assets/metamorphosis-wordmark.png"', mastheadDivider);
+if (mastheadMne < 0 || mastheadDepdev < 0 || mastheadUndp < 0 || mastheadDivider < 0 || mastheadWordmark < 0 || !(mastheadMne < mastheadDepdev && mastheadDepdev < mastheadUndp && mastheadUndp < mastheadDivider && mastheadDivider < mastheadWordmark)) {
+  fail("index.html is missing the ordered masthead marks: M&E, DEPDev, UNDP, divider, wordmark");
+}
+
+for (const marker of [
+  "M&amp;E Forum Secretariat",
+  "m&amp;eforumsecretariat@depdev.gov.ph",
+  "mailto:m%26eforumsecretariat@depdev.gov.ph",
+  "MES-Strategic Outcome Evaluation Division",
+  "&amp;mes-soed@depdev.gov.ph",
+  "mailto:%26mes-soed@depdev.gov.ph"
+]) {
+  if (!index.includes(marker)) fail(`index.html is missing the reviewed Secretariat contact marker: ${marker}`);
+}
+
 // Thinking Mode is assembled by the preserved bootstrap after the template
 // mounts. Keep its wiring under the same static guard so a future export cannot
 // silently ship the panel without its three transitions or persistence.
@@ -211,7 +268,7 @@ for (const marker of [
   "applyMode(document.documentElement.getAttribute('data-thinking-mode') || 'instant')",
   "assets/forum-logo-transformation.svg",
   "site-brand__partner-strip",
-  "m&amp;enetworksecretariat@depdev.gov.ph"
+  "m&amp;eforumsecretariat@depdev.gov.ph"
 ]) {
   if (!index.includes(marker)) fail(`index.html is missing Thinking Mode wiring: ${marker}`);
 }
