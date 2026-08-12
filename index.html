@@ -259,6 +259,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace(
         '<div style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">',
         '<div class="site-footer__dateline" style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">'
+      )
+      .replace(
+        '<div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap; padding-top: 26px; border-top: 1px solid color-mix(in srgb, #ffffff 16%, transparent);">',
+        '<div class="footer__partner-strip" style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap; padding-top: 26px; border-top: 1px solid color-mix(in srgb, #ffffff 16%, transparent);">'
       );
     // Normalize the legacy inline palette to the guide's approved asset
     // colors before the page is mounted. This keeps data-rendered cards and
