@@ -1,26 +1,65 @@
-    <IfModule mod_expires.c>
-      ExpiresActive On
-      ExpiresByType image/jpg "access plus 1 year"
-      ExpiresByType image/jpeg "access plus 1 year"
-      ExpiresByType image/gif "access plus 1 year"
-      ExpiresByType image/png "access plus 1 year"
-      ExpiresByType image/svg+xml "access plus 1 year"
-      ExpiresByType text/css "access plus 1 month"
-      ExpiresByType text/javascript "access plus 1 month"
-      ExpiresByType application/javascript "access plus 1 month"
-      ExpiresByType application/x-javascript "access plus 1 month"
-      ExpiresByType image/x-icon "access plus 1 year"
-    </IfModule>
+Options -Indexes
+DirectoryIndex index.html
 
-    # Custom Redirects
-    Redirect 301 /logistics-note https://drive.google.com/drive/folders/1U1WHCzctKs1GzAYG8-2x6fwBG2Dj5VM-?usp=drive_link
-    Redirect 301 /agenda https://drive.google.com/drive/folders/1okuWWAQQ5pTnVbO26m1uAFtmRxBYWmso?usp=drive_link
-    Redirect 301 /evalform https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl
-    Redirect 301 /participantflow https://drive.usercontent.google.com/download?id=16II_NiD1F_yc2Xi2G92YBAj1ZQVjjDrn&export=download&authuser=0&confirm=t&uuid=b699aebd-300c-44e7-b9c8-f946b56cf5aa&at=ALWLOp65was5skEUfX3wK1fJNMOw:1764029394339
+# HTML and route metadata must update immediately after a release. Named static
+# assets are not content-hashed, so keep their cache lifetime short enough for
+# a normal release cadence.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/manifest+json "access plus 0 seconds"
+    ExpiresByType text/css "access plus 1 day"
+    ExpiresByType application/javascript "access plus 1 day"
+    ExpiresByType text/javascript "access plus 1 day"
+    ExpiresByType image/svg+xml "access plus 7 days"
+    ExpiresByType image/png "access plus 7 days"
+    ExpiresByType image/jpeg "access plus 7 days"
+    ExpiresByType font/ttf "access plus 30 days"
+</IfModule>
 
-    # 13th Forum form redirect pages
-    RewriteEngine On
-    # Keep the staging preview available as an alias for the master homepage.
-    RewriteRule ^dev/?$ dev/index.html [L]
-    RewriteRule ^register/?$ register/index.html [L]
-    RewriteRule ^rp-register/?$ rp-register/index.html [L]
+<IfModule mod_headers.c>
+    <FilesMatch "\.(?:html?|webmanifest)$">
+        Header always set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.(?:css|js)$">
+        Header always set Cache-Control "public, max-age=86400, must-revalidate"
+    </FilesMatch>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # The preserved original page mounts an inline, blob-backed runtime and
+    # loads its approved external runtime/font resources. Keep the safer
+    # response headers above; a strict CSP belongs in a future bundle rewrite.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+RewriteEngine On
+
+# The development preview resolves to the same preserved bundled page while
+# keeping /dev available as a staging-only route.
+RewriteRule ^dev/$ /dev [R=301,END]
+RewriteRule ^dev$ index.html [END]
+
+# Explicit handoff pages. They never auto-forward to third-party providers.
+RewriteRule ^register/?$ register/index.html [END]
+RewriteRule ^rp-register/?$ rp-register/index.html [END]
+RewriteRule ^evalform/?$ evalform/index.html [END]
+
+# These 2025 routes are retired from the production tree. The signed participant
+# flow URL was time-bound and must not be kept as a stale redirect.
+RewriteRule ^archive(?:/|$) - [G,L]
+RewriteRule ^participantflow(?:/|$) - [G,L]
+
+# Stable working documents remain external until they are replaced by verified
+# first-party pages.
+RewriteRule ^logistics-note/?$ https://drive.google.com/drive/folders/1U1WHCzctKs1GzAYG8-2x6fwBG2Dj5VM-?usp=drive_link [R=301,END,NE]
+RewriteRule ^agenda/?$ https://drive.google.com/drive/folders/1okuWWAQQ5pTnVbO26m1uAFtmRxBYWmso?usp=drive_link [R=301,END,NE]
+
+# Development subdomain support when the host is configured with this directory
+# as its document root.
+RewriteCond %{HTTP_HOST} ^dev\.mnenetwork\.forum(?::\d+)?$ [NC]
+RewriteRule ^$ index.html [END]

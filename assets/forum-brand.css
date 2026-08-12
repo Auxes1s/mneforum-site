@@ -199,13 +199,16 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-header__inner {
   width: min(100% - 48px, 1240px) !important;
-  min-height: 78px !important;
+  min-height: clamp(92px, 8vw, 118px) !important;
   padding-block: 12px !important;
   gap: 24px !important;
 }
 
 .site-brand {
-  gap: 12px !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
   color: var(--brand-black) !important;
 }
 
@@ -225,60 +228,41 @@ html[data-thinking-mode="high"] .site-footer {
   object-fit: contain !important;
 }
 
-/* Use the colored logo artwork from the VisGuide, with transparent spacing
-   around the M&E mark and the official blue UNDP mark beside it. */
-.site-brand__partner-logos {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: clamp(8px, 1vw, 14px) !important;
-  flex: 0 1 auto !important;
-  min-width: 0 !important;
-  height: clamp(72px, 7vw, 104px) !important;
-}
-
-.site-brand__mne-logo {
-  display: block !important;
-  flex: 0 1 auto !important;
-  min-width: 0 !important;
-  width: clamp(150px, 16vw, 230px) !important;
-  height: auto !important;
-  max-height: 100% !important;
-  object-fit: contain !important;
-  object-position: left center !important;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-.site-brand__undp-logo {
-  display: block !important;
-  flex: 0 0 auto !important;
-  width: auto !important;
-  height: clamp(42px, 5vw, 68px) !important;
-  max-width: min(7vw, 72px) !important;
-  object-fit: contain !important;
-  object-position: center !important;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
 .site-brand__divider {
   width: 2px !important;
-  height: clamp(48px, 6vw, 82px) !important;
+  height: clamp(42px, 4vw, 58px) !important;
   background: var(--brand-sun-gold) !important;
 }
 
 .site-brand__copy {
-  gap: 1px !important;
+  display: flex !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: 1 1 0 !important;
+  align-items: center !important;
+  overflow: hidden !important;
 }
 
 .site-brand__wordmark {
-  font-size: clamp(1.25rem, 2.3vw, 1.75rem) !important;
-  line-height: 0.9 !important;
-  letter-spacing: -0.04em !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  font-size: clamp(1.35rem, 1.75vw, 1.75rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -0.045em !important;
+  white-space: nowrap !important;
+}
+
+.site-brand__wordmark > span {
+  font: inherit !important;
+  font-size: 1em !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
 }
 
 .site-brand__letter--m {
@@ -300,6 +284,52 @@ html[data-thinking-mode="high"] .site-footer {
   letter-spacing: 0.08em !important;
   line-height: 1.15 !important;
   text-transform: uppercase !important;
+}
+
+.site-brand__partner-strip {
+  display: grid !important;
+  grid-template-columns: auto auto auto !important;
+  align-items: center !important;
+  gap: clamp(5px, 0.75vw, 10px) !important;
+  flex: 0 1 auto !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.site-brand__partner-logo {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.site-brand__partner-logo--depdev {
+  width: clamp(26px, 2.9vw, 40px) !important;
+  height: clamp(26px, 2.9vw, 40px) !important;
+}
+
+.site-brand__partner-logo--mne {
+  width: clamp(84px, 7.5vw, 110px) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 72px !important;
+  justify-self: start !important;
+}
+
+.site-brand__partner-logo--undp {
+  width: auto !important;
+  height: clamp(34px, 4.4vw, 52px) !important;
+  max-width: 30px !important;
 }
 
 .primary-nav {
@@ -822,9 +852,8 @@ section h2::after {
   background: #ffffff !important;
 }
 
-/* Past Forums / SDE media card. The attribute selector covers the current
-   bundled section's inline aspect-ratio wrapper; the named hooks keep this
-   contract usable if the section is later refactored into dedicated classes. */
+/* Past Forums / SDE media card. Keep the external video fluid and prevent
+   the embedded player from widening the page at narrow breakpoints. */
 .past-forums-section,
 #past-forums {
   min-width: 0 !important;
@@ -871,14 +900,6 @@ section h2::after {
 #past-forums .brandcard a,
 .sde-video-card a {
   overflow-wrap: anywhere;
-}
-
-.past-forums-grid,
-.past-forums-section .sde-grid,
-#past-forums .sde-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  min-width: 0 !important;
 }
 
 /* The guide's co-branding bar is a dark, spacious institutional lockup. */
@@ -1053,6 +1074,24 @@ html[data-thinking-mode="high"] .hero__art {
 }
 
 @media (max-width: 600px) {
+  .site-brand {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "copy" "partners" !important;
+    gap: 8px !important;
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    order: 1 !important;
+    overflow: visible !important;
+  }
+
+  .site-header__inner {
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+    min-height: auto !important;
+  }
+
   .site-header__inner,
   .hero__inner,
   .section-shell,
@@ -1061,35 +1100,57 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__network {
-    width: 42px !important;
-    height: 42px !important;
-  }
-
-  .site-brand__partner-logos {
-    gap: 6px !important;
-    height: clamp(58px, 18vw, 82px) !important;
-  }
-
-  .site-brand__mne-logo {
-    width: clamp(118px, 42vw, 168px) !important;
-  }
-
-  .site-brand__undp-logo {
-    height: clamp(34px, 11vw, 50px) !important;
-    max-width: 42px !important;
+    display: none !important;
   }
 
   .site-brand__divider {
-    height: 48px !important;
+    display: none !important;
+  }
+
+  .site-brand__copy {
+    display: flex !important;
+    grid-area: copy !important;
+    justify-content: center !important;
+    width: 100% !important;
+    overflow: visible !important;
   }
 
   .site-brand__wordmark {
-    font-size: 1.18rem !important;
+    font-size: clamp(1.2rem, 6vw, 1.65rem) !important;
+    letter-spacing: -0.05em !important;
   }
 
   .site-brand__forum {
-    max-width: 175px !important;
-    font-size: 0.58rem !important;
+    display: none !important;
+  }
+
+  .site-header__mode .thinking-mode__current {
+    display: none !important;
+  }
+
+  .site-brand__partner-strip {
+    grid-area: partners !important;
+    justify-self: center !important;
+    gap: 4px !important;
+    flex: 0 1 auto !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: clamp(24px, 6vw, 30px) !important;
+    height: clamp(24px, 6vw, 30px) !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    width: clamp(64px, 16vw, 86px) !important;
+    max-width: 100% !important;
+    max-height: 56px !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    height: clamp(32px, 8vw, 40px) !important;
+    max-width: 24px !important;
   }
 
   .hero h1 {
@@ -1138,6 +1199,13 @@ html[data-thinking-mode="high"] .hero__art {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Preserve room for the 1.5× masthead wordmark on wide desktop screens. */
+@media (min-width: 1181px) {
+  .primary-nav a {
+    padding-inline: 9px !important;
   }
 }
 

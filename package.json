@@ -1,0 +1,8 @@
+{
+  "name": "mneforum-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check-site.mjs"
+  }
+}

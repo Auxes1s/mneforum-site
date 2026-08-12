@@ -1,26 +1,19 @@
 {
-  "name": "Monitoring and Evaluation Network Forum",
+  "id": "/",
+  "name": "MEtamorphosis — 13th M&E Network Forum",
   "short_name": "M&E Forum",
-  "description": "Event materials for the Monitoring and Evaluation Network Forum.",
-  "start_url": "index.html",
+  "description": "Evidence to action in the age of AI — September 9, 2026.",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f8f4eb",
-  "theme_color": "#0a57a3",
+  "background_color": "#ebebeb",
+  "theme_color": "#ebebeb",
   "icons": [
     {
-      "src": "event_logo.svg",
+      "src": "/network_logo.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }
