@@ -225,9 +225,8 @@ html[data-thinking-mode="high"] .site-footer {
   object-fit: contain !important;
 }
 
-/* The supplied M&E/UNDP partner mark is wide, so size it by height beside the
-   retained MEtamorphosis wordmark instead of letting its intrinsic width crowd
-   the navigation. */
+/* Keep the supplied M&E/UNDP partner mark on its clean official navy panel;
+   the surrounding masthead remains on the page's white background. */
 .site-brand__network-logo {
   display: block !important;
   flex: 0 1 auto !important;
@@ -237,8 +236,10 @@ html[data-thinking-mode="high"] .site-footer {
   max-width: min(27vw, 240px) !important;
   object-fit: contain !important;
   object-position: center !important;
-  border-radius: 5px !important;
-  box-shadow: 0 2px 7px rgb(10 31 92 / 16%) !important;
+  background: #17195f !important;
+  border: 1px solid #17195f !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
 }
 
 .site-brand__divider {

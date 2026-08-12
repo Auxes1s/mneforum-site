@@ -110,15 +110,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       'visibility:hidden!important;opacity:0!important}</style>'
     );
     // Rebuild the masthead with the supplied M&E/UNDP partner mark while
-    // retaining the MEtamorphosis wordmark and forum label.
+    // retaining only the MEtamorphosis wordmark in the banner.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
-      '<a class="site-brand" href="#overview" aria-label="MEtamorphosis — 13th M&amp;E Network Forum home">' +
+      '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home">' +
         '<img class="site-brand__network-logo" src="../assets/mne-network-undp.png" alt="M&amp;E Monitoring and Evaluation Network Philippines with UNDP">' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
         '<div class="site-brand__copy">' +
           '<span class="site-brand__wordmark"><span class="site-brand__letter--m">M</span><span class="site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
-          '<span class="site-brand__forum">13th M&amp;E Network Forum</span>' +
         '</div>' +
       '</a>'
     );
