@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "check": "node scripts/check-site.mjs"
+    "check": "node scripts/check-site.mjs",
+    "heroku-postbuild": "npm run build"
   }
 }
