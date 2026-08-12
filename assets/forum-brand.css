@@ -199,7 +199,7 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-header__inner {
   width: min(100% - 48px, 1240px) !important;
-  min-height: 78px !important;
+  min-height: clamp(92px, 8vw, 118px) !important;
   padding-block: 12px !important;
   gap: 24px !important;
 }
@@ -227,7 +227,7 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand__divider {
   width: 2px !important;
-  height: 42px !important;
+  height: clamp(52px, 6vw, 84px) !important;
   background: var(--brand-sun-gold) !important;
 }
 
@@ -236,9 +236,12 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__wordmark {
-  font-size: clamp(1.25rem, 2.3vw, 1.75rem) !important;
-  line-height: 0.9 !important;
-  letter-spacing: -0.04em !important;
+  display: block !important;
+  width: clamp(176px, 14vw, 240px) !important;
+  height: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: left center !important;
 }
 
 .site-brand__letter--m {
@@ -264,31 +267,41 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand__partner-strip {
   display: inline-flex !important;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 auto;
-  padding: 5px 8px;
-  border-radius: 10px;
-  background: var(--brand-midnight);
-  box-shadow: 0 7px 16px rgba(10, 55, 95, .14);
+  align-items: center !important;
+  gap: clamp(8px, 1vw, 14px) !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .site-brand__partner-logo {
   display: block !important;
-  width: 22px !important;
-  height: 22px !important;
-  object-fit: contain;
+  flex: 0 0 auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.site-brand__partner-logo--depdev {
+  width: clamp(32px, 3.4vw, 48px) !important;
+  height: clamp(32px, 3.4vw, 48px) !important;
 }
 
 .site-brand__partner-logo--mne {
-  width: 29px !important;
+  width: clamp(116px, 11vw, 158px) !important;
+  height: auto !important;
+  max-height: 88px !important;
 }
 
 .site-brand__partner-logo--undp {
-  width: 28px !important;
-  padding: 2px;
-  border-radius: 3px;
-  background: #ffffff;
+  width: auto !important;
+  height: clamp(38px, 4.5vw, 58px) !important;
+  max-width: 30px !important;
 }
 
 .primary-nav {
@@ -989,25 +1002,39 @@ html[data-thinking-mode="high"] .hero__art {
   }
 
   .site-brand__network {
-    width: 42px !important;
-    height: 42px !important;
+    display: none !important;
   }
 
   .site-brand__divider {
-    height: 34px !important;
+    height: 48px !important;
   }
 
   .site-brand__wordmark {
-    font-size: 1.18rem !important;
+    width: clamp(108px, 30vw, 150px) !important;
   }
 
   .site-brand__forum {
-    max-width: 175px !important;
-    font-size: 0.58rem !important;
+    display: none !important;
   }
 
   .site-brand__partner-strip {
-    display: none !important;
+    gap: 6px !important;
+    flex: 0 1 auto !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    width: clamp(92px, 29vw, 126px) !important;
+    max-height: 80px !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    height: 38px !important;
+    max-width: 20px !important;
   }
 
   .hero h1 {

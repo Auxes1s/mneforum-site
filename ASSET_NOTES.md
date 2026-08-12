@@ -10,13 +10,16 @@ mounted page.
 
 | Asset | Role |
 | --- | --- |
-| `network_logo.svg` | Favicon, manifest icon, and network mark in the header |
+| `network_logo.svg` | Favicon, manifest icon, and colored, scalable M&E Network masthead mark |
 | `assets/forum-logo-v5-static.svg` | Static event identity and fallback artwork |
 | `assets/forum-logo-transformation.svg` | Original Thinking Mode transformation artwork |
 | `assets/butterfly-mark.svg` | Compact mark used on form handoff pages |
 | `assets/partners/depdev.svg` | DEPDev footer partner mark |
 | `assets/partners/mne-network.svg` | M&E Network footer partner mark |
 | `assets/partners/undp.svg` | UNDP footer partner mark |
+| `assets/depdev-logo-color.png` | Colored DEPDev masthead mark from the supplied logo resources |
+| `assets/metamorphosis-wordmark.png` | High-resolution MEtamorphosis wordmark derived from the supplied logo resources |
+| `assets/undp-logo-color.svg` | Colored, scalable UNDP masthead mark from the supplied logo resources |
 | `assets/og-teaser.png` | Social preview image referenced by page metadata |
 | `assets/fonts/OpenSans-SemiCondensed-Bold.ttf` | Local display font used by the form pages |
 | `assets/forum-brand.css` | Original brand and component layer |

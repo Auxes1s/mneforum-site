@@ -116,22 +116,20 @@ document.addEventListener('DOMContentLoaded', async function() {
       'src="15de7b0c-efd1-4166-86f1-88ac5beb93ef" alt="M&amp;E Network Philippines"',
       'src="network_logo.svg" alt="M&amp;E Network Philippines"'
     );
-    // Rebuild the masthead lockup with explicit class hooks. The original
-    // positional selectors matched the nested E as the final child and
-    // accidentally reduced it to the subtitle's 10px size.
+    // Keep the 13th Forum identity throughout the home page, while using the
+    // colored partner marks from the supplied resources and the repository's
+    // scalable network mark, with only the MEtamorphosis wordmark in the masthead.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
-      '<a class="site-brand" href="#overview" aria-label="MEtamorphosis — 13th M&amp;E Network Forum home">' +
-        '<span class="site-brand__network"><img class="site-brand__logo" src="network_logo.svg" alt="" aria-hidden="true"></span>' +
+        '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home">' +
+        '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg" alt="" aria-hidden="true">' +
+        '</span>' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
         '<span class="site-brand__copy" aria-hidden="true">' +
-          '<span class="site-brand__wordmark"><span class="site-brand__letter site-brand__letter--m">M</span><span class="site-brand__letter site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
-          '<span class="site-brand__forum">13th M&amp;E Network Forum</span>' +
-        '</span>' +
-        '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/partners/depdev.svg" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="assets/partners/mne-network.svg" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/partners/undp.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__wordmark" src="assets/metamorphosis-wordmark.png" alt="" aria-hidden="true">' +
         '</span>' +
       '</a>'
     );
