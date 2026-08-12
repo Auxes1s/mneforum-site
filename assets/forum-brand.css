@@ -225,26 +225,20 @@ html[data-thinking-mode="high"] .site-footer {
   object-fit: contain !important;
 }
 
-/* The masthead event mark is a second supplied image, not a text lockup. Keep
-   it compact beside the network mark without allowing its wide viewBox to set
-   an intrinsic-width floor on the header. */
-.site-brand__event-logo {
+/* The supplied M&E/UNDP partner mark is wide, so size it by height beside the
+   retained MEtamorphosis wordmark instead of letting its intrinsic width crowd
+   the navigation. */
+.site-brand__network-logo {
   display: block !important;
   flex: 0 1 auto !important;
   min-width: 0 !important;
   width: auto !important;
-  height: clamp(34px, 4vw, 50px) !important;
-  max-width: min(42vw, 320px) !important;
+  height: clamp(36px, 4vw, 50px) !important;
+  max-width: min(27vw, 240px) !important;
   object-fit: contain !important;
   object-position: center !important;
-}
-
-.site-brand__event-logo img {
-  display: block !important;
-  width: auto !important;
-  max-width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
+  border-radius: 5px !important;
+  box-shadow: 0 2px 7px rgb(10 31 92 / 16%) !important;
 }
 
 .site-brand__divider {
@@ -1047,9 +1041,9 @@ html[data-thinking-mode="high"] .hero__art {
     height: 42px !important;
   }
 
-  .site-brand__event-logo {
-    height: 42px !important;
-    max-width: min(38vw, 220px) !important;
+  .site-brand__network-logo {
+    height: 38px !important;
+    max-width: min(38vw, 150px) !important;
   }
 
   .site-brand__divider {

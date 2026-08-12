@@ -109,22 +109,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
     );
-    // Keep the header mark faithful to the supplied source artwork. The
-    // bundled fallback is a monochrome reduction; the repository SVG retains
-    // the original blue, amber, red, grey, and white logo colors.
-    template = template.replace(
-      'src="15de7b0c-efd1-4166-86f1-88ac5beb93ef" alt="M&amp;E Network Philippines"',
-      'src="../network_logo.svg" alt="M&amp;E Network Philippines"'
-    );
-    // Rebuild the masthead lockup with the two supplied logo images. The
-    // divider remains between the network mark and the complete event mark;
-    // no duplicate text-only event lockup is rendered in the header.
+    // Rebuild the masthead with the supplied M&E/UNDP partner mark while
+    // retaining the MEtamorphosis wordmark and forum label.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
       '<a class="site-brand" href="#overview" aria-label="MEtamorphosis — 13th M&amp;E Network Forum home">' +
-        '<span class="site-brand__network"><img class="site-brand__logo" src="../network_logo.svg" alt="M&amp;E Network Philippines"></span>' +
+        '<img class="site-brand__network-logo" src="../assets/mne-network-undp.png" alt="M&amp;E Monitoring and Evaluation Network Philippines with UNDP">' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
-        '<img class="site-brand__event-logo" src="../assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum" style="width: auto; max-width: min(42vw, 320px); height: clamp(32px, 4vw, 50px); object-fit: contain;">' +
+        '<div class="site-brand__copy">' +
+          '<span class="site-brand__wordmark"><span class="site-brand__letter--m">M</span><span class="site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
+          '<span class="site-brand__forum">13th M&amp;E Network Forum</span>' +
+        '</div>' +
       '</a>'
     );
 
