@@ -116,20 +116,55 @@ document.addEventListener('DOMContentLoaded', async function() {
       'src="15de7b0c-efd1-4166-86f1-88ac5beb93ef" alt="M&amp;E Network Philippines"',
       'src="../network_logo.svg" alt="M&amp;E Network Philippines"'
     );
-    // Rebuild the masthead lockup with explicit class hooks. The original
-    // positional selectors matched the nested E as the final child and
-    // accidentally reduced it to the subtitle's 10px size.
+    // Rebuild the masthead lockup with the two supplied logo images. The
+    // divider remains between the network mark and the complete event mark;
+    // no duplicate text-only event lockup is rendered in the header.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
       '<a class="site-brand" href="#overview" aria-label="MEtamorphosis — 13th M&amp;E Network Forum home">' +
-        '<span class="site-brand__network"><img class="site-brand__logo" src="../network_logo.svg" alt="" aria-hidden="true"></span>' +
+        '<span class="site-brand__network"><img class="site-brand__logo" src="../network_logo.svg" alt="M&amp;E Network Philippines"></span>' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
-        '<span class="site-brand__copy" aria-hidden="true">' +
-          '<span class="site-brand__wordmark"><span class="site-brand__letter site-brand__letter--m">M</span><span class="site-brand__letter site-brand__letter--e">E</span><span class="site-brand__rest">tamorphosis</span></span>' +
-          '<span class="site-brand__forum">13th M&amp;E Network Forum</span>' +
-        '</span>' +
+        '<img class="site-brand__event-logo" src="../assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum" style="width: auto; max-width: min(42vw, 320px); height: clamp(32px, 4vw, 50px); object-fit: contain;">' +
       '</a>'
     );
+
+    // Add the previous Forum's SDE as a first-class section. The Facebook
+    // plugin keeps playback hosted by Facebook, while the share URL remains
+    // available as a visible fallback if embedding is unavailable.
+    template = template.replace(
+      '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>',
+      '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>' +
+      '<a href="#past-forums" aria-current="{{ navPastForumsCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Past Forums</a>'
+    );
+    const pastForumsSection = `<section id="past-forums" class="past-forums-section">
+    <div class="section-shell">
+      <div style="display: flex; align-items: flex-end; gap: 20px; margin-bottom: 8px;">
+        <h2 style="margin: 0; font-size: 38px;">Past Forums</h2>
+      </div>
+      <p style="font-size: 15px; line-height: 1.6; max-width: 80ch; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 75%, transparent);">Last year's SDE (Same-Day Edit) captures the people, ideas, and momentum from the 12th M&amp;E Network Forum.</p>
+      <div class="brandcard" style="padding: 18px; background: #ffffff;">
+        <div style="position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; margin: 0 auto; overflow: hidden; background: #0b1724;">
+          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <p style="margin: 16px 0 0; font-size: 13.5px; line-height: 1.6;">If the video does not load, <a href="https://www.facebook.com/share/v/1BgZTCeDcA/" target="_blank" rel="noopener noreferrer">open last year's SDE on Facebook</a>.</p>
+      </div>
+    </div>
+  </section>`;
+    template = template.replace('\n  </main>', '\n  ' + pastForumsSection + '\n  </main>');
+
+    // Keep the renamed gallery label and the Secretariat contacts consistent
+    // across the rendered section and footer navigation.
+    template = template
+      .replace('Regional M&amp;E Knowledge Gallery', 'Evaluation Gallery')
+      .replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')
+      .replace(
+        'Strategic Outcome Evaluation Division<br><a href="mailto:mes-soed@depdev.gov.ph" style="color: inherit;">mes-soed@depdev.gov.ph</a>',
+        'M&amp;E Forum Secretariat<br><a href="mailto:m%26eforumsecretariat@depdev.gov.ph" style="color: inherit;">m&amp;eforumsecretariat@depdev.gov.ph</a><br>MES-Strategic Outcome Evaluation Division<br><a href="mailto:%26mes-soed@depdev.gov.ph" style="color: inherit;">&amp;mes-soed@depdev.gov.ph</a>'
+      )
+      .replace(
+        'navGalleryCurrent: st.activeSection === "gallery" ? "page" : "false",',
+        'navGalleryCurrent: st.activeSection === "gallery" ? "page" : "false",\n      navPastForumsCurrent: st.activeSection === "past-forums" ? "page" : "false",'
+      );
     // Keep the completed identity in Instant and High. Ultra swaps it for the
     // one-shot cocoon-to-butterfly transformation, which resolves to the same
     // complete event mark.

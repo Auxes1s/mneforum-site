@@ -225,6 +225,28 @@ html[data-thinking-mode="high"] .site-footer {
   object-fit: contain !important;
 }
 
+/* The masthead event mark is a second supplied image, not a text lockup. Keep
+   it compact beside the network mark without allowing its wide viewBox to set
+   an intrinsic-width floor on the header. */
+.site-brand__event-logo {
+  display: block !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  height: clamp(34px, 4vw, 50px) !important;
+  max-width: min(42vw, 320px) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.site-brand__event-logo img {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
 .site-brand__divider {
   width: 2px !important;
   height: 42px !important;
@@ -604,7 +626,9 @@ main section:not(.hero) {
 }
 
 .notes-section,
-.gallery-section {
+.gallery-section,
+.past-forums-section,
+#past-forums {
   background: var(--brand-page) !important;
 }
 
@@ -778,6 +802,65 @@ section h2::after {
   border-radius: 0 !important;
   color: var(--brand-midnight) !important;
   background: #ffffff !important;
+}
+
+/* Past Forums / SDE media card. The attribute selector covers the current
+   bundled section's inline aspect-ratio wrapper; the named hooks keep this
+   contract usable if the section is later refactored into dedicated classes. */
+.past-forums-section,
+#past-forums {
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.past-forums-section .brandcard,
+#past-forums .brandcard,
+.sde-video-card {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  border-left: 5px solid var(--brand-blush) !important;
+}
+
+.past-forums-section .brandcard > div[style*="aspect-ratio"],
+#past-forums .sde-embed,
+.sde-embed {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  background: #0b1724 !important;
+}
+
+.past-forums-section .brandcard > div[style*="aspect-ratio"] iframe,
+#past-forums .sde-embed iframe,
+.sde-embed iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  border: 0 !important;
+}
+
+.past-forums-section .brandcard a,
+#past-forums .brandcard a,
+.sde-video-card a {
+  overflow-wrap: anywhere;
+}
+
+.past-forums-grid,
+.past-forums-section .sde-grid,
+#past-forums .sde-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  min-width: 0 !important;
 }
 
 /* The guide's co-branding bar is a dark, spacious institutional lockup. */
@@ -962,6 +1045,11 @@ html[data-thinking-mode="high"] .hero__art {
   .site-brand__network {
     width: 42px !important;
     height: 42px !important;
+  }
+
+  .site-brand__event-logo {
+    height: 42px !important;
+    max-width: min(38vw, 220px) !important;
   }
 
   .site-brand__divider {
