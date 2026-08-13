@@ -199,7 +199,17 @@ if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(i
 if (!/<meta[^>]+name=["']description["']/i.test(index)) fail("index.html is missing the description metadata");
 if (!/og:image/.test(index) || !/twitter:image/.test(index)) fail("index.html is missing social preview metadata");
 if (!/rel=["']preload["'][^>]+assets\/forum-logo-v5-static\.svg/i.test(index)) fail("index.html is missing the static identity preload");
-if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| template\.includes\(uuid\)\)/.test(index)) fail("index.html is missing the unreferenced-resource startup guard");
+// The startup guard still skips manifest entries the mounted template no longer
+// references, but it must keep the ext_resources uuids (React, ReactDOM). Those
+// are reached through window.__resources keyed by CDN URL, never substituted
+// into the template, so a template-text-only filter dropped them and sent the
+// page to unpkg.com for bytes already embedded here. Assert both halves.
+if (!/Object\.keys\(manifest\)\.filter\(\s*uuid => pageSet\.has\(uuid\) \|\| extUuids\.has\(uuid\) \|\| template\.includes\(uuid\)\s*\)/.test(index)) {
+  fail("index.html is missing the unreferenced-resource startup guard");
+}
+if (!/extUuids = new Set\(JSON\.parse\(extManifestEl\.textContent\)\.map\(entry => entry\.uuid\)\)/.test(index)) {
+  fail("index.html is missing the ext_resources exemption that keeps React bundled");
+}
 if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
 if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
 

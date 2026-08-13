@@ -20,6 +20,18 @@
   <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
+  <!-- Fontshare stays the typography source (see ASSET_NOTES.md), but its
+       @import sits inside forum-brand.css, so the browser only discovers it
+       after that sheet downloads and parses: four serial hops before the first
+       Plein/Satoshi glyph. Warming both origins and starting the font CSS here
+       collapses the chain without moving where the fonts come from. The font
+       files themselves are CORS requests, so cdn.fontshare.com is warmed with
+       crossorigin; the CSS request is not, so api.fontshare.com is warmed
+       without it. These live in the shell head on purpose — the loader strips
+       crossorigin from the swapped-in template. -->
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=plein@900&amp;f[]=satoshi@400,700&amp;display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -267,7 +279,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       )
       .replace(
         '<span style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; opacity: .8;">UNDP</span>',
-        '<img loading="lazy" decoding="async" src="assets/partners/undp.svg" alt="United Nations Development Programme" class="footer__partner-undp">'
+        '<img loading="lazy" decoding="async" src="assets/partners/undp.svg" width="238" height="482" alt="United Nations Development Programme" class="footer__partner-undp">'
       )
       .replace(
         '<div style="font-family: var(--font-heading); font-weight: 600; font-size: 12px; letter-spacing: 0.11em; margin-top: 9px; opacity: .9; white-space: nowrap;">',
@@ -447,7 +459,25 @@ document.addEventListener('DOMContentLoaded', async function() {
     // above. The original export carried duplicate footer/logo blobs that are
     // no longer referenced by the mounted template; skipping them preserves
     // the visual design while reducing startup work and decoded memory.
-    const uuids = Object.keys(manifest).filter(uuid => pageSet.has(uuid) || template.includes(uuid));
+    //
+    // External runtime resources (React, ReactDOM) are the exception: the page
+    // reaches them through window.__resources keyed by CDN URL, never by a uuid
+    // substituted into the template. Filtering on template text alone dropped
+    // them, so cdnScriptFor() fell back to unpkg.com and fetched ~47 KB that
+    // was already embedded here — and made rendering depend on a third party.
+    // Keep every uuid the ext_resources map claims.
+    const extManifestEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    let extUuids = new Set();
+    try {
+      if (extManifestEl) {
+        extUuids = new Set(JSON.parse(extManifestEl.textContent).map(entry => entry.uuid));
+      }
+    } catch (error) {
+      console.warn('[bundle] ext_resources unreadable; CDN fallback stays active', error);
+    }
+    const uuids = Object.keys(manifest).filter(
+      uuid => pageSet.has(uuid) || extUuids.has(uuid) || template.includes(uuid)
+    );
     setStatus('Unpacking ' + uuids.length + ' assets...');
 
     await Promise.all(uuids.map(async (uuid) => {
