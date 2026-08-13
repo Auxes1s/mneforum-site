@@ -6261,6 +6261,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       let cycleToken = 0;
       let mode = 'instant';
       let masterAnimation = null;
+      let masterStartedAt = 0;
       let masterFrame = 0;
       let svgAnimations = [];
       let svgCollectionFrame = 0;
@@ -6284,6 +6285,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         masterFrame = 0;
         if (masterAnimation) masterAnimation.cancel();
         masterAnimation = null;
+        masterStartedAt = 0;
         renderedWordIndex = -1;
         renderedCharacterCount = -1;
       };
@@ -6484,6 +6486,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         // phones. Use a fresh image-hosted SVG there so a remount restores a
         // playable visual instead of leaving only the tiny text wordmark.
         if (ensureMobileUltraArtwork()) return Promise.resolve(false);
+        // Some deployed browser contexts do not expose Element.animate(). In
+        // that environment the headline uses the Date-based clock below and
+        // the SVG must run as a fresh image document on its own CSS clock.
+        if (typeof hero.animate !== 'function' &&
+            transformationLogo instanceof HTMLImageElement) {
+          transformationLogo.setAttribute('src', transformationLogoSource);
+          transformationLogo.hidden = false;
+          document.documentElement.dataset.transformationReady = 'fallback';
+          return Promise.resolve(false);
+        }
         if (transformationLogo instanceof SVGElement) return Promise.resolve(true);
         if (transformationReadyPromise) return transformationReadyPromise;
         transformationReadyPromise = (async () => {
@@ -6702,15 +6714,25 @@ document.addEventListener('DOMContentLoaded', async function() {
             : (item.character === '.' ? 190 : config.typingDelay);
           characterEnds.push(typedElapsed);
         });
-        masterAnimation = hero.animate(
-          [{ opacity: 1 }, { opacity: 1 }],
-          { duration: config.totalMs, fill: 'both' }
-        );
-        masterAnimation.pause();
-        masterAnimation.currentTime = 0;
+        if (typeof hero.animate === 'function') {
+          masterAnimation = hero.animate(
+            [{ opacity: 1 }, { opacity: 1 }],
+            { duration: config.totalMs, fill: 'both' }
+          );
+          masterAnimation.pause();
+          masterAnimation.currentTime = 0;
+        } else {
+          // Date.now() remains available in older/restricted browser contexts
+          // where Web Animations is missing. It keeps the verbs and typed
+          // headline moving instead of freezing on "Gathering evidence".
+          masterAnimation = null;
+          masterStartedAt = Date.now();
+        }
         renderMasterTimeline = () => {
-          if (!masterAnimation || token !== cycleToken) return;
-          const currentTime = Math.max(0, Number(masterAnimation.currentTime) || 0);
+          if (token !== cycleToken) return;
+          const currentTime = masterAnimation
+            ? Math.max(0, Number(masterAnimation.currentTime) || 0)
+            : Math.max(0, Date.now() - masterStartedAt);
           if (currentTime < config.thinkingMs) {
             if (stage.dataset.thinkingState !== 'thinking') setState('thinking');
             const wordIndex = Math.min(
@@ -6768,7 +6790,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
         };
         renderMasterTimeline();
-        masterAnimation.play();
+        if (masterAnimation) masterAnimation.play();
       };
 
       const restartSequence = (previousMode = mode) => {

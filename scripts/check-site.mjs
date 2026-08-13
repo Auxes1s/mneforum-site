@@ -185,6 +185,7 @@ for (const [label, source] of [["index.html", index]]) {
     "site-brand__partner-strip",
     'value="ultra"',
     "runReducedCycle",
+    "masterStartedAt",
     "syncMobileMasthead",
     "assets/forum-brand.css?v=20260813-daymode-depdev"
   ]) {
