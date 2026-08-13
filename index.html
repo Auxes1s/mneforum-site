@@ -19,7 +19,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
-  <link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">
+  <link rel="preload" href="assets/forum-responsive.css?v=20260813-compact-header" as="style">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title><meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-compact-header" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -6018,7 +6018,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
     responsiveLink.rel = 'stylesheet';
-    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-mobile-header';
+    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-compact-header';
     document.head.appendChild(responsiveLink);
     // All three sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, then the final audited
@@ -6149,9 +6149,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         return false;
       }
 
-      // The mobile masthead wraps into two rows at narrow widths. Keep the
-      // viewport-bound Thinking Mode sheet below the measured header rather
-      // than relying on the compact one-row fallback value.
+      // Keep viewport-bound mobile sheets below the measured header instead
+      // of relying only on the compact one-row fallback value.
       const siteHeader = document.querySelector('.site-header');
       let mastheadSyncFrame = 0;
       const syncMobileMasthead = () => {
