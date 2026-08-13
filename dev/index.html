@@ -18,7 +18,9 @@
   <title>13th M&amp;E Network Forum</title>
   <link rel="icon" href="network_logo.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
+  <link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -106,6 +108,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title>',
       '</title><meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
+      '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -124,9 +128,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
         '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home — M&amp;E Network Philippines, DEPDev, and UNDP">' +
         '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" width="1270" height="816" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color-192.png" width="192" height="192" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg" width="238" height="482" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
         '</span>' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
         '<span class="site-brand__copy" aria-hidden="true">' +
@@ -180,8 +184,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     // complete event mark.
     template = template.replace(
       '<img src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">',
-      '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
-      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" hidden alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
+      '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" width="855" height="459" loading="eager" decoding="async" fetchpriority="high" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
+      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" width="855" height="459" decoding="async" hidden alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
     );
     // Join the left crimson route to the fourth route's start while keeping
     // the existing red dashed treatment supplied by the brand stylesheet.
@@ -6001,12 +6005,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     const brandLink = document.createElement('link');
     brandLink.id = 'forum-brand-styles';
     brandLink.rel = 'stylesheet';
-    brandLink.href = 'assets/forum-brand.css?v=20260812-ultra-header-logos';
+    brandLink.href = 'assets/forum-brand.css?v=20260813-daymode-depdev';
     document.head.appendChild(brandLink);
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
     responsiveLink.rel = 'stylesheet';
-    responsiveLink.href = 'assets/forum-responsive.css?v=20260812-masthead-gap';
+    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-mobile-header';
     document.head.appendChild(responsiveLink);
     // All three sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, then the final audited

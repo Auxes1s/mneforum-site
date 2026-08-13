@@ -316,6 +316,7 @@ html[data-thinking-mode="high"] .site-footer {
 .site-brand__partner-logo--depdev {
   width: clamp(26px, 2.9vw, 40px) !important;
   height: clamp(26px, 2.9vw, 40px) !important;
+  filter: none !important;
 }
 
 .site-brand__partner-logo--mne {

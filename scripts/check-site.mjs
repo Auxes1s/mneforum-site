@@ -31,6 +31,7 @@ const expectedFiles = [
   "assets/forum-logo-v5-static.svg",
   "assets/forum-logo-transformation.svg",
   "assets/og-teaser.png",
+  "assets/depdev-logo-color-192.png",
   "assets/depdev-logo-color.png",
   "assets/undp-logo-color.svg",
   "assets/fonts/OpenSans-OFL.txt",
@@ -75,6 +76,7 @@ const assetAllowlist = new Set([
   "forum-logo-v5-static.svg",
   "forum-responsive.css",
   "og-teaser.png",
+  "depdev-logo-color-192.png",
   "depdev-logo-color.png",
   "undp-logo-color.svg",
   "partners/depdev.svg",
@@ -186,7 +188,7 @@ for (const [label, source] of [["index.html", index], ["dev/index.html", devInde
     'value="ultra"',
     "runReducedCycle",
     "syncMobileMasthead",
-    "assets/forum-brand.css?v=20260812-ultra-header-logos"
+    "assets/forum-brand.css?v=20260813-daymode-depdev"
   ]) {
     if (!source.includes(marker)) fail(`${label} is missing the reviewed runtime marker: ${marker}`);
   }
@@ -238,7 +240,7 @@ if (!index.includes(".replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>
 }
 
 const mastheadMne = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg"');
-const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png"', mastheadMne);
+const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color-192.png"', mastheadMne);
 const mastheadUndp = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg"', mastheadDepdev);
 const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadUndp);
 const mastheadWordmark = index.indexOf('<span class="site-brand__wordmark"', mastheadDivider);
