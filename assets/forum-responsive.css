@@ -631,6 +631,34 @@
     aspect-ratio: 855 / 459;
   }
 
+  /* Ultra's synchronized inline SVG can be replaced by the page renderer
+     after a mode change. Never leave phones with only the small text lockup:
+     the live animated image wins when available, otherwise the complete
+     static identity remains visible as a resilient fallback. */
+  html[data-thinking-mode="ultra"] .hero__art > .hero__wordmark-lockup {
+    display: none !important;
+  }
+
+  html[data-thinking-mode="ultra"] .hero__art > img.hero__identity-logo {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  html[data-thinking-mode="ultra"][data-transformation-ready="fallback"]
+    .hero__art > img.hero__identity-logo,
+  html[data-thinking-mode="ultra"][data-transformation-ready="true"]
+    .hero__art:has(> svg.hero__transformation-logo) > img.hero__identity-logo {
+    display: none !important;
+  }
+
+  html[data-thinking-mode="ultra"][data-transformation-ready="fallback"]
+    .hero__art > img.hero__transformation-logo[src] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
   .countdown {
     overflow: hidden;
   }
