@@ -38,9 +38,20 @@ const expectedFiles = [
   "assets/fonts/OpenSans-SemiCondensed-Bold.ttf",
   "assets/partners/depdev.svg",
   "assets/partners/mne-network.svg",
-  "assets/partners/undp.svg"
+  "assets/partners/undp.svg",
+  // Pre-launch teaser artwork.
+  "assets/background.png",
+  "shapes/shape1.png",
+  "shapes/shape2.png",
+  "shapes/shape3.png",
+  "shapes/shape4.png",
+  "shapes/shape5.png",
+  "shapes/shape6.png"
 ];
 
+// assets/background.png is deliberately absent here: it is the pre-launch
+// teaser's backdrop and is live again while the root serves the construction
+// page. See the pre-launch posture note below.
 const forbiddenMarkers = [
   "assets/forum.css",
   "assets/forum.js",
@@ -50,7 +61,6 @@ const forbiddenMarkers = [
   "style_orig.css",
   "main.js",
   "agency_logo.svg",
-  "assets/background.png",
   "assets/std.png",
   "archive/",
   "assets/presenters/",
@@ -82,7 +92,8 @@ const assetAllowlist = new Set([
   "partners/depdev.svg",
   "partners/mne-network.svg",
   "partners/undp.svg",
-  "redirect.css"
+  "redirect.css",
+  "background.png"
 ]);
 
 const formUrls = {
@@ -159,17 +170,29 @@ for (const [relativePath, source] of sources) {
   checkReferences(relativePath, structuralSource);
 }
 
-const index = sources.get("index.html") ?? "";
-const devIndex = await exists("dev/index.html") ? await read("dev/index.html") : "";
+// PRE-LAUNCH POSTURE
+//
+// The 13th Forum has not launched publicly yet. The root serves the
+// "Something's Cooking" construction teaser, and the full bundled forum page
+// lives at /dev, which robots.txt disallows, so it can be shared for review
+// without being indexed. Every preserved-runtime assertion below therefore
+// targets dev/index.html; the root is checked as a teaser instead.
+//
+// AT LAUNCH: promote dev/index.html back to the root, point these assertions
+// at index.html again, and retire the teaser assets from expectedFiles.
+const teaser = sources.get("index.html") ?? "";
+const index = await exists("dev/index.html") ? await read("dev/index.html") : "";
 let bundledTemplate = "";
 try {
   const templateMatch = index.match(/<script type=["']__bundler\/template["']>([\s\S]*?)<\/script>/i);
   if (!templateMatch) throw new Error("template script is missing");
   bundledTemplate = JSON.parse(templateMatch[1]);
-  if ((bundledTemplate.match(/<h1\b/gi) ?? []).length !== 1) fail("index.html must contain exactly one h1 in the mounted template");
-  checkReferences("index.html", bundledTemplate);
+  if ((bundledTemplate.match(/<h1\b/gi) ?? []).length !== 1) fail("dev/index.html must contain exactly one h1 in the mounted template");
+  // Reference checking is skipped here: dev/index.html carries <base href="/">
+  // so its relative paths resolve against the site root, which the resolver in
+  // checkLocalReference does not model.
 } catch (error) {
-  fail(`index.html bundled template is not valid JSON: ${error.message}`);
+  fail(`dev/index.html bundled template is not valid JSON: ${error.message}`);
 }
 for (const marker of [
   '<script type="__bundler/manifest">',
@@ -177,12 +200,15 @@ for (const marker of [
   '<script type="__bundler/page_order">',
   "data-thinking-mode"
 ]) {
-  if (!index.includes(marker)) fail(`index.html is missing preserved runtime marker: ${marker}`);
+  if (!index.includes(marker)) fail(`dev/index.html is missing preserved runtime marker: ${marker}`);
 }
 if (!/class="hero\b/.test(bundledTemplate) || !/class="site-header\b/.test(bundledTemplate) || !/class="thinking-mode\b/.test(index)) {
-  fail("index.html does not contain the locked original design markers");
+  fail("dev/index.html does not contain the locked original design markers");
 }
-for (const [label, source] of [["index.html", index], ["dev/index.html", devIndex]]) {
+if (!index.includes('<base href="/">')) {
+  fail("dev/index.html is missing the <base href=\"/\"> that resolves its assets from the site root");
+}
+for (const [label, source] of [["dev/index.html", index]]) {
   for (const marker of [
     "site-brand__partner-strip",
     'value="ultra"',
@@ -194,14 +220,35 @@ for (const [label, source] of [["index.html", index], ["dev/index.html", devInde
     if (!source.includes(marker)) fail(`${label} is missing the reviewed runtime marker: ${marker}`);
   }
 }
-if (/<meta[^>]+http-equiv=["']refresh/i.test(index)) fail("index.html must not use meta refresh");
-if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(index)) fail("index.html is missing the canonical URL");
-if (!/<meta[^>]+name=["']description["']/i.test(index)) fail("index.html is missing the description metadata");
-if (!/og:image/.test(index) || !/twitter:image/.test(index)) fail("index.html is missing social preview metadata");
-if (!/rel=["']preload["'][^>]+assets\/forum-logo-v5-static\.svg/i.test(index)) fail("index.html is missing the static identity preload");
-if (!/Object\.keys\(manifest\)\.filter\(uuid => pageSet\.has\(uuid\) \|\| template\.includes\(uuid\)\)/.test(index)) fail("index.html is missing the unreferenced-resource startup guard");
-if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("index.html is missing the preserved stylesheet mounts");
-if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("index.html still has unguarded live-room placeholders");
+
+// The pre-launch root must stay a teaser: no forum content, no bundled runtime.
+if (!/Something's Cooking/.test(teaser)) fail("index.html is not the pre-launch construction teaser");
+for (const leak of [
+  '<script type="__bundler/manifest">',
+  "site-brand__partner-strip",
+  "Resource persons",
+  "past-forums"
+]) {
+  if (teaser.includes(leak)) fail(`index.html leaks unlaunched forum content: ${leak}`);
+}
+if (/<meta[^>]+http-equiv=["']refresh/i.test(index)) fail("dev/index.html must not use meta refresh");
+if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(index)) fail("dev/index.html is missing the canonical URL");
+if (!/<meta[^>]+name=["']description["']/i.test(index)) fail("dev/index.html is missing the description metadata");
+if (!/og:image/.test(index) || !/twitter:image/.test(index)) fail("dev/index.html is missing social preview metadata");
+if (!/rel=["']preload["'][^>]+assets\/forum-logo-v5-static\.svg/i.test(index)) fail("dev/index.html is missing the static identity preload");
+// The startup guard still skips manifest entries the mounted template no longer
+// references, but it must keep the ext_resources uuids (React, ReactDOM). Those
+// are reached through window.__resources keyed by CDN URL, never substituted
+// into the template, so a template-text-only filter dropped them and sent the
+// page to unpkg.com for bytes already embedded there. Assert both halves.
+if (!/Object\.keys\(manifest\)\.filter\(\s*uuid => pageSet\.has\(uuid\) \|\| extUuids\.has\(uuid\) \|\| template\.includes\(uuid\)\s*\)/.test(index)) {
+  fail("dev/index.html is missing the unreferenced-resource startup guard");
+}
+if (!/extUuids = new Set\(JSON\.parse\(extManifestEl\.textContent\)\.map\(entry => entry\.uuid\)\)/.test(index)) {
+  fail("dev/index.html is missing the ext_resources exemption that keeps React bundled");
+}
+if (!index.includes("assets/forum-brand.css") || !index.includes("assets/forum-responsive.css")) fail("dev/index.html is missing the preserved stylesheet mounts");
+if (!index.includes("Slido room pending") || !index.includes("Poll results pending")) fail("dev/index.html still has unguarded live-room placeholders");
 
 // The preserved bundle receives the Past Forums section and contact labels in
 // the bootstrap immediately before mounting. Check both the source template
@@ -222,22 +269,22 @@ if (bundledTemplate) {
   }
 }
 if (!index.includes('href="#past-forums"') || !index.includes(">Past Forums</a>")) {
-  fail("index.html is missing the Past Forums navigation item");
+  fail("dev/index.html is missing the Past Forums navigation item");
 }
 if (!index.includes('const pastForumsSection = `<section id="past-forums" class="past-forums-section">')) {
-  fail("index.html is missing the Past Forums section markup");
+  fail("dev/index.html is missing the Past Forums section markup");
 }
 if (!index.includes("https://www.facebook.com/plugins/video.php?href=")) {
-  fail("index.html is missing the Facebook video plugin endpoint");
+  fail("dev/index.html is missing the Facebook video plugin endpoint");
 }
 if (!index.includes("https://www.facebook.com/share/v/1BgZTCeDcA/")) {
-  fail("index.html is missing the supplied SDE Facebook fallback URL");
+  fail("dev/index.html is missing the supplied SDE Facebook fallback URL");
 }
 if (!index.includes(".replace('Regional M&amp;E Knowledge Gallery', 'Evaluation Gallery')")) {
-  fail("index.html is missing the Evaluation Gallery title replacement");
+  fail("dev/index.html is missing the Evaluation Gallery title replacement");
 }
 if (!index.includes(".replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')")) {
-  fail("index.html is missing the Evaluation Gallery footer-link replacement");
+  fail("dev/index.html is missing the Evaluation Gallery footer-link replacement");
 }
 
 const mastheadMne = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg"');
@@ -246,7 +293,7 @@ const mastheadUndp = index.indexOf('<img class="site-brand__partner-logo site-br
 const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadUndp);
 const mastheadWordmark = index.indexOf('<span class="site-brand__wordmark"', mastheadDivider);
 if (mastheadMne < 0 || mastheadDepdev < 0 || mastheadUndp < 0 || mastheadDivider < 0 || mastheadWordmark < 0 || !(mastheadMne < mastheadDepdev && mastheadDepdev < mastheadUndp && mastheadUndp < mastheadDivider && mastheadDivider < mastheadWordmark)) {
-  fail("index.html is missing the ordered masthead marks: M&E, DEPDev, UNDP, divider, wordmark");
+  fail("dev/index.html is missing the ordered masthead marks: M&E, DEPDev, UNDP, divider, wordmark");
 }
 
 const brandStyles = await read("assets/forum-brand.css");
@@ -266,7 +313,7 @@ for (const marker of [
   "&amp;mes-soed@depdev.gov.ph",
   "mailto:%26mes-soed@depdev.gov.ph"
 ]) {
-  if (!index.includes(marker)) fail(`index.html is missing the reviewed Secretariat contact marker: ${marker}`);
+  if (!index.includes(marker)) fail(`dev/index.html is missing the reviewed Secretariat contact marker: ${marker}`);
 }
 
 // Thinking Mode is assembled by the preserved bootstrap after the template
@@ -293,7 +340,7 @@ for (const marker of [
   "site-brand__partner-strip",
   "m&amp;eforumsecretariat@depdev.gov.ph"
 ]) {
-  if (!index.includes(marker)) fail(`index.html is missing Thinking Mode wiring: ${marker}`);
+  if (!index.includes(marker)) fail(`dev/index.html is missing Thinking Mode wiring: ${marker}`);
 }
 if (/applyMode\(['"]instant['"]\)/.test(index)) fail("Thinking Mode forcibly resets to Instant at startup");
 if (!index.includes("dataset.transformationReady = 'fallback'")) {
@@ -331,7 +378,6 @@ for (const retiredPath of [
   "style.css",
   "style_orig.css",
   "agency_logo.svg",
-  "assets/background.png",
   "assets/std.png",
   "assets/forum.css",
   "assets/forum.js",
