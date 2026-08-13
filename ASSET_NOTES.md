@@ -30,6 +30,18 @@ The brand and redirect styles retain their Fontshare import for visual fidelity.
 That external font request is a known performance trade-off and should be
 revisited only as a separately reviewed typography change.
 
+Because that `@import` lives inside `forum-brand.css`, the browser only learns
+about it after that sheet downloads and parses — four serial hops before the
+first Plein or Satoshi glyph. `index.html` now warms both Fontshare origins and
+starts the font CSS from the shell head. This shortens the chain without moving
+where the fonts come from, so it is not a typography change. The `crossorigin`
+hint for `cdn.fontshare.com` must stay in the shell head: the loader strips
+`crossorigin` from the swapped-in template.
+
+`assets/depdev-logo-color-192.png` was re-encoded losslessly (20.9 KB → 12.3 KB,
+pixel-identical at 192×192). Palette quantization was rejected because it shifted
+antialiased edge pixels on a partner's official mark.
+
 ## Motion and embedded runtime
 
 `index.html` contains the original self-unpacking runtime and template. Its

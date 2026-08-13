@@ -54,8 +54,10 @@ Before production publication, the release owner must complete all of these:
    reduced-motion settings. Check Instant, High, and Ultra Thinking Mode and
    confirm the original logo, partner marks, and responsive layout remain
    intact.
-7. Confirm the hosting origin supports the `.htaccess` rules, or configure
-   equivalent redirects and headers at the origin.
+7. Read `DEPLOYMENT.md`. The current origin (DigitalOcean App Platform static
+   site) does not read `.htaccess`, so its caching, redirect, and security
+   rules are inert. That document records what was measured and the options;
+   treat this gate as answered there, not by inspecting `.htaccess`.
 8. Publish only after explicit release authorization. Never rewrite the
    `pre-audit-baseline-2026-08-11` tag.
 
