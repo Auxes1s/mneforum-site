@@ -30,6 +30,7 @@ const expectedFiles = [
   "assets/forum-logo-v5-static.svg",
   "assets/forum-logo-transformation.svg",
   "assets/og-teaser.png",
+  "assets/depdev-logo-color-192.png",
   "assets/depdev-logo-color.png",
   "assets/undp-logo-color.svg",
   "assets/fonts/OpenSans-OFL.txt",
@@ -74,6 +75,7 @@ const assetAllowlist = new Set([
   "forum-logo-v5-static.svg",
   "forum-responsive.css",
   "og-teaser.png",
+  "depdev-logo-color-192.png",
   "depdev-logo-color.png",
   "undp-logo-color.svg",
   "partners/depdev.svg",
@@ -178,6 +180,17 @@ for (const marker of [
 if (!/class="hero\b/.test(bundledTemplate) || !/class="site-header\b/.test(bundledTemplate) || !/class="thinking-mode\b/.test(index)) {
   fail("index.html does not contain the locked original design markers");
 }
+for (const [label, source] of [["index.html", index]]) {
+  for (const marker of [
+    "site-brand__partner-strip",
+    'value="ultra"',
+    "runReducedCycle",
+    "syncMobileMasthead",
+    "assets/forum-brand.css?v=20260813-daymode-depdev"
+  ]) {
+    if (!source.includes(marker)) fail(`${label} is missing the reviewed runtime marker: ${marker}`);
+  }
+}
 if (/<meta[^>]+http-equiv=["']refresh/i.test(index)) fail("index.html must not use meta refresh");
 if (!/<link[^>]+rel=["']canonical["'][^>]+https:\/\/mnenetwork\.forum\//i.test(index)) fail("index.html is missing the canonical URL");
 if (!/<meta[^>]+name=["']description["']/i.test(index)) fail("index.html is missing the description metadata");
@@ -225,7 +238,7 @@ if (!index.includes(".replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>
 }
 
 const mastheadMne = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg"');
-const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png"', mastheadMne);
+const mastheadDepdev = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color-192.png"', mastheadMne);
 const mastheadUndp = index.indexOf('<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg"', mastheadDepdev);
 const mastheadDivider = index.indexOf('<span class="site-brand__divider"', mastheadUndp);
 const mastheadWordmark = index.indexOf('<span class="site-brand__wordmark"', mastheadDivider);

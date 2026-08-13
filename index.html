@@ -17,7 +17,9 @@
   <title>13th M&amp;E Network Forum</title>
   <link rel="icon" href="network_logo.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
+  <link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -105,10 +107,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title>',
       '</title><meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
+      '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-mobile-header" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
     );
+    // The exported template carried a Google Fonts preconnect, but its font
+    // files are bundled locally below. Avoid an unused third-party connection.
+    template = template.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">', '');
     // Keep the header mark faithful to the supplied source artwork. The
     // bundled fallback is a monochrome reduction; the repository SVG retains
     // the original blue, amber, red, grey, and white logo colors.
@@ -123,9 +130,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
         '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home — M&amp;E Network Philippines, DEPDev, and UNDP">' +
         '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color.png" alt="" aria-hidden="true">' +
-          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" width="1270" height="816" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color-192.png" width="192" height="192" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
+          '<img class="site-brand__partner-logo site-brand__partner-logo--undp" src="assets/undp-logo-color.svg" width="238" height="482" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
         '</span>' +
         '<span class="site-brand__divider" aria-hidden="true"></span>' +
         '<span class="site-brand__copy" aria-hidden="true">' +
@@ -153,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p style="font-size: 15px; line-height: 1.6; max-width: 80ch; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 75%, transparent);">Last year's SDE (Same-Day Edit) captures the people, ideas, and momentum from the 12th M&amp;E Network Forum.</p>
       <div class="brandcard" style="padding: 18px; background: #ffffff;">
         <div style="position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; margin: 0 auto; overflow: hidden; background: #0b1724;">
-          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+          <iframe data-src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FStrategicMandE%2Fvideos%2Fevery-transformation-begins-with-what-came-before-at-the-12th-me-network-forum-t%2F1034595015993335%2F&amp;show_text=false&amp;width=560" width="560" height="315" title="SDE from the 12th M&amp;E Network Forum" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
         </div>
         <p style="margin: 16px 0 0; font-size: 13.5px; line-height: 1.6;">If the video does not load, <a href="https://www.facebook.com/share/v/1BgZTCeDcA/" target="_blank" rel="noopener noreferrer">open last year's SDE on Facebook</a>.</p>
       </div>
@@ -179,9 +186,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     // complete event mark.
     template = template.replace(
       '<img src="34dc1f0e-ea27-49d2-ba3d-f333f5e1c794" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="width: 88%; display: block; margin: 0 auto;">',
-      '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
-      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
+      '<img class="hero__identity-logo" src="assets/forum-logo-v5-static.svg" width="855" height="459" loading="eager" decoding="async" fetchpriority="high" alt="MEtamorphosis — 13th M&amp;E Network Forum identity" style="display: block; margin: 0 auto;">' +
+      '<img class="hero__transformation-logo" data-src="assets/forum-logo-transformation.svg" width="855" height="459" decoding="async" hidden alt="A cocoon opens and a butterfly unfurls into the complete M&amp;E Forum logo">'
     );
+    // Reserve the decorative SVG boxes too; they are not part of the first
+    // paint and can wait until the browser is idle/near the viewport.
+    template = template
+      .replace('src="8ae97d2e-c9ef-4181-8dab-319f27ef3f85"', 'src="8ae97d2e-c9ef-4181-8dab-319f27ef3f85" width="296" height="249" loading="lazy" decoding="async"')
+      .replace('src="8ca2d895-11bb-4657-b08c-7b4ec7bb3b48"', 'src="8ca2d895-11bb-4657-b08c-7b4ec7bb3b48" width="288" height="296" loading="lazy" decoding="async"')
+      .replace('src="df5eb30d-f11c-4a77-8c46-8f77eefce9b4"', 'src="df5eb30d-f11c-4a77-8c46-8f77eefce9b4" width="249" height="303" loading="lazy" decoding="async"');
     // Join the left crimson route to the fourth route's start while keeping
     // the existing red dashed treatment supplied by the brand stylesheet.
     template = template.replace(
@@ -230,7 +243,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     );
     template = template.replace(
       '<header class="site-header">',
-      '<div class="ultra-butterfly-field" aria-hidden="true"><img src="assets/butterfly-mark.svg" alt=""><img src="assets/butterfly-mark.svg" alt=""></div>' +
+      '<div class="ultra-butterfly-field" aria-hidden="true"><img src="assets/butterfly-mark.svg" width="255" height="285" loading="lazy" decoding="async" alt=""><img src="assets/butterfly-mark.svg" width="255" height="285" loading="lazy" decoding="async" alt=""></div>' +
       '<header class="site-header">'
     );
     // Keep one display-mode control for every breakpoint. As a masthead
@@ -246,11 +259,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     template = template
       .replace(
         'src="33b97d14-65ec-4339-a719-bb6c8b0b7166" alt="Department of Economy, Planning, and Development"',
-        'src="assets/partners/depdev.svg" alt="Department of Economy, Planning, and Development"'
+        'src="assets/partners/depdev.svg" width="915" height="890" alt="Department of Economy, Planning, and Development"'
       )
       .replace(
         'src="1cdb3ddb-492a-4da8-a30c-3167de126d8a" alt="M&amp;E Network Philippines"',
-        'src="assets/partners/mne-network.svg" alt="M&amp;E Network Philippines"'
+        'src="assets/partners/mne-network.svg" width="1270" height="816" alt="M&amp;E Network Philippines"'
       )
       .replace(
         '<span style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; opacity: .8;">UNDP</span>',
@@ -6000,12 +6013,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     const brandLink = document.createElement('link');
     brandLink.id = 'forum-brand-styles';
     brandLink.rel = 'stylesheet';
-    brandLink.href = 'assets/forum-brand.css?v=20260812-masthead-gap';
+    brandLink.href = 'assets/forum-brand.css?v=20260813-daymode-depdev';
     document.head.appendChild(brandLink);
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
     responsiveLink.rel = 'stylesheet';
-    responsiveLink.href = 'assets/forum-responsive.css?v=20260812-masthead-gap';
+    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-mobile-header';
     document.head.appendChild(responsiveLink);
     // All three sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, then the final audited
@@ -6027,6 +6040,40 @@ document.addEventListener('DOMContentLoaded', async function() {
     const polishObserver = new MutationObserver(keepResponsiveStylesLast);
     polishObserver.observe(document.head, { childList: true });
     requestAnimationFrame(() => requestAnimationFrame(keepResponsiveStylesLast));
+
+    // Keep the Facebook player out of the initial dependency tree. The
+    // iframe is still hydrated automatically as it approaches the viewport;
+    // its visible fallback link remains unchanged if it cannot load.
+    const hydrateDeferredEmbeds = () => {
+      const embeds = Array.from(document.querySelectorAll('iframe[data-src]'));
+      if (!embeds.length) return;
+      const load = iframe => {
+        const src = iframe.getAttribute('data-src');
+        if (!src) return;
+        iframe.setAttribute('src', src);
+        iframe.removeAttribute('data-src');
+      };
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            load(entry.target);
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: '320px 0px' });
+        embeds.forEach(embed => observer.observe(embed));
+        return;
+      }
+      const runWhenIdle = callback => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(callback, { timeout: 4000 });
+        } else {
+          window.setTimeout(callback, 4000);
+        }
+      };
+      runWhenIdle(() => embeds.forEach(load));
+    };
+    hydrateDeferredEmbeds();
     const initHeroThinking = () => {
       const hero = document.querySelector('.hero');
       const stage = document.querySelector('.hero__headline-stage');
@@ -6101,6 +6148,33 @@ document.addEventListener('DOMContentLoaded', async function() {
            !transformationLogo || modeInputs.length !== 3) {
         return false;
       }
+
+      // The mobile masthead wraps into two rows at narrow widths. Keep the
+      // viewport-bound Thinking Mode sheet below the measured header rather
+      // than relying on the compact one-row fallback value.
+      const siteHeader = document.querySelector('.site-header');
+      let mastheadSyncFrame = 0;
+      const syncMobileMasthead = () => {
+        if (mastheadSyncFrame) return;
+        mastheadSyncFrame = window.requestAnimationFrame(() => {
+          mastheadSyncFrame = 0;
+          if (!siteHeader) return;
+          if (!window.matchMedia('(max-width: 880px)').matches) {
+            document.documentElement.style.removeProperty('--mobile-masthead');
+            return;
+          }
+          const height = Math.ceil(siteHeader.getBoundingClientRect().height);
+          if (height > 0) {
+            document.documentElement.style.setProperty('--mobile-masthead', height + 'px');
+          }
+        });
+      };
+      syncMobileMasthead();
+      if (siteHeader && 'ResizeObserver' in window) {
+        const mastheadObserver = new ResizeObserver(syncMobileMasthead);
+        mastheadObserver.observe(siteHeader);
+      }
+      window.addEventListener('resize', syncMobileMasthead, { passive: true });
 
       // The headline types out segment by segment so that accent words land
       // in their own nodes. This is the single source of truth for the typed
@@ -6382,6 +6456,13 @@ document.addEventListener('DOMContentLoaded', async function() {
           else console.warn('Transformation logo animations were not available after reveal.');
         });
       };
+      const restartAnimation = (element, className, after) => {
+        element.classList.remove(className);
+        window.requestAnimationFrame(() => {
+          element.classList.add(className);
+          if (after) after();
+        });
+      };
       const inlineTransformationLogo = () => {
         if (!transformationLogoSource) return Promise.resolve(false);
         if (transformationLogo instanceof SVGElement) return Promise.resolve(true);
@@ -6471,9 +6552,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           transformationLogo.replaceWith(freshLogo);
           transformationLogo = freshLogo;
           transformationLogo.setAttribute('src', transformationLogoSource);
-          hero.classList.remove('is-ultra-logo-reveal');
-          void hero.offsetWidth;
-          hero.classList.add('is-ultra-logo-reveal');
+          transformationLogo.hidden = false;
+          restartAnimation(hero, 'is-ultra-logo-reveal');
           return;
         }
         // The synchronized SVG is held on its final frame when a cycle ends.
@@ -6481,12 +6561,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         // to the compositor; otherwise a same-mode replay inherits the old
         // finished timeline and has nothing left to animate.
         syncSvgTime(0);
-        hero.classList.remove('is-ultra-logo-reveal');
-        void hero.offsetWidth;
-        hero.classList.add('is-ultra-logo-reveal');
         // Collection happens after the display/class flip and retries across
         // style frames; an empty first getAnimations() result is normal here.
-        scheduleSvgAnimationCollection();
+        restartAnimation(hero, 'is-ultra-logo-reveal', scheduleSvgAnimationCollection);
       };
       const resetTypedText = () => {
         segments.forEach(segment => {
@@ -6533,10 +6610,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         wordNode.style.filter = '';
         setState('complete');
         if (animateReveal && mode === 'ultra') {
-          hero.classList.remove('is-revealing');
-          void hero.offsetWidth;
-          hero.classList.add('is-revealing');
-          schedule(() => hero.classList.remove('is-revealing'), 950);
+          restartAnimation(hero, 'is-revealing', () => {
+            schedule(() => hero.classList.remove('is-revealing'), 950);
+          });
         }
       };
       const renderTypedCharacters = count => {

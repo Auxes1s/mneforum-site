@@ -380,3 +380,271 @@
     padding-left: 0 !important;
   }
 }
+
+/* Final phone masthead contract. Keep the identity as a compact centered
+   two-line lockup, then place Thinking Mode and Menu in a dedicated control
+   row with independent 44px tap targets. The explicit grid removes the
+   competing flex/grid overrides that made the earlier lockup unpredictable. */
+@media (max-width: 600px) {
+  :root {
+    --mobile-masthead: calc(112px + env(safe-area-inset-top));
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .site-header__inner {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 44px 44px !important;
+    grid-template-rows: auto auto !important;
+    grid-template-areas: "brand brand brand" ". mode menu" !important;
+    width: min(calc(100% - (2 * var(--mobile-gutter, 20px))), 1240px) !important;
+    min-height: 0 !important;
+    column-gap: 8px !important;
+    row-gap: 5px !important;
+    padding-block: 6px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .site-brand {
+    grid-area: brand !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    grid-template-areas: "copy" "partners" !important;
+    align-content: center !important;
+    justify-items: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__copy {
+    grid-area: copy !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__wordmark {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    font-size: clamp(1rem, 5.4vw, 1.3rem) !important;
+    letter-spacing: -0.05em !important;
+    white-space: nowrap !important;
+  }
+
+  .site-brand__forum,
+  .site-brand__divider {
+    display: none !important;
+  }
+
+  .site-brand__partner-strip {
+    grid-area: partners !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    justify-self: center !important;
+    gap: clamp(4px, 1.2vw, 7px) !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    width: auto !important;
+    height: clamp(27px, 7vw, 34px) !important;
+    max-width: 56px !important;
+    max-height: 34px !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: clamp(24px, 6vw, 32px) !important;
+    height: clamp(24px, 6vw, 32px) !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    width: auto !important;
+    height: clamp(28px, 8vw, 36px) !important;
+    max-width: 22px !important;
+  }
+
+  .site-header__mode {
+    grid-area: mode !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header__mode .thinking-mode {
+    width: 44px !important;
+    max-width: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header__mode .thinking-mode summary {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 6px !important;
+    gap: 0 !important;
+    touch-action: manipulation;
+  }
+
+  .site-header__mode .thinking-mode__label,
+  .site-header__mode .thinking-mode__current,
+  .site-header__mode .thinking-mode__chevron {
+    display: none !important;
+  }
+
+  .site-header__mode .thinking-mode__mark {
+    width: 30px !important;
+    height: 30px !important;
+    flex: 0 0 30px !important;
+  }
+
+  .mobile-menu-button {
+    grid-area: menu !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    touch-action: manipulation;
+  }
+
+  .mobile-menu-button__icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .primary-nav,
+  .primary-nav.is-open {
+    top: calc(var(--mobile-masthead) + 10px) !important;
+    max-width: calc(100vw - (2 * var(--mobile-gutter, 20px))) !important;
+    min-width: 0 !important;
+  }
+
+  /* The hero keeps its art first, but its content and controls now have a
+     bounded width and no intrinsic-width floor on 320px phones. */
+  .hero__inner {
+    width: min(calc(100% - (2 * var(--mobile-gutter, 20px))), 1240px) !important;
+    min-width: 0 !important;
+    gap: clamp(24px, 6vw, 36px) !important;
+    padding-block: clamp(28px, 7vw, 42px) clamp(48px, 10vw, 68px) !important;
+  }
+
+  .hero__content,
+  .hero__meta,
+  .hero__lede,
+  .hero__actions,
+  .countdown {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .hero__meta {
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .hero__meta .tag {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .hero h1 {
+    max-width: 14ch !important;
+    font-size: clamp(2.125rem, 9.8vw, 2.8rem) !important;
+    line-height: 1.08 !important;
+    overflow-wrap: normal;
+  }
+
+  .hero__lede {
+    font-size: clamp(.92rem, 3.7vw, 1rem) !important;
+    line-height: 1.58 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .hero__actions .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+  }
+
+  .hero__actions .text-link {
+    justify-self: center !important;
+    max-width: 100% !important;
+    min-height: 44px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__art,
+  html[data-thinking-mode="instant"] .hero__art,
+  html[data-thinking-mode="high"] .hero__art,
+  html[data-thinking-mode="ultra"] .hero__art {
+    width: min(100%, 330px) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+  }
+
+  .hero__art > img.hero__identity-logo,
+  html[data-thinking-mode="ultra"] .hero__art > svg.hero__transformation-logo,
+  html[data-thinking-mode="ultra"] .hero__art > img.hero__transformation-logo {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 855 / 459;
+  }
+
+  .countdown {
+    overflow: hidden;
+  }
+
+  .countdown__cell,
+  .countdown__value,
+  .countdown__label {
+    min-width: 0;
+  }
+}
+
+/* At the narrowest supported phone width, give the partner lockup its own
+   row so it cannot compete with either 44px control. */
+@media (max-width: 340px) {
+  .site-header__inner {
+    grid-template-columns: minmax(0, 1fr) 44px 44px !important;
+    grid-template-rows: auto auto !important;
+    grid-template-areas: "brand brand brand" ". mode menu" !important;
+  }
+}
