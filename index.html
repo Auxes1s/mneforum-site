@@ -19,7 +19,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
-  <link rel="preload" href="assets/forum-responsive.css?v=20260813-compact-header" as="style">
+  <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title><meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-compact-header" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -6018,7 +6018,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
     responsiveLink.rel = 'stylesheet';
-    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-compact-header';
+    responsiveLink.href = 'assets/forum-responsive.css?v=20260813-ultra-mobile';
     document.head.appendChild(responsiveLink);
     // All three sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, then the final audited
@@ -6462,8 +6462,28 @@ document.addEventListener('DOMContentLoaded', async function() {
           if (after) after();
         });
       };
+      const ensureMobileUltraArtwork = () => {
+        if (mode !== 'ultra' || !window.matchMedia('(max-width: 600px)').matches) {
+          return false;
+        }
+        const liveLogo = document.querySelector('.hero__art > img.hero__transformation-logo');
+        if (!(liveLogo instanceof HTMLImageElement) || !transformationLogoSource) {
+          return false;
+        }
+        transformationLogo = liveLogo;
+        if (!liveLogo.getAttribute('src')) {
+          liveLogo.setAttribute('src', transformationLogoSource);
+        }
+        liveLogo.hidden = false;
+        document.documentElement.dataset.transformationReady = 'fallback';
+        return true;
+      };
       const inlineTransformationLogo = () => {
         if (!transformationLogoSource) return Promise.resolve(false);
+        // The reactive renderer can replace manually inserted SVG nodes on
+        // phones. Use a fresh image-hosted SVG there so a remount restores a
+        // playable visual instead of leaving only the tiny text wordmark.
+        if (ensureMobileUltraArtwork()) return Promise.resolve(false);
         if (transformationLogo instanceof SVGElement) return Promise.resolve(true);
         if (transformationReadyPromise) return transformationReadyPromise;
         transformationReadyPromise = (async () => {
@@ -6913,6 +6933,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }, true);
       let observedModeControl = modeControl;
       const modeDomObserver = new MutationObserver(() => {
+        ensureMobileUltraArtwork();
         const currentModeControl = getModeControl();
         if (currentModeControl === observedModeControl) {
           syncModeInputs();
