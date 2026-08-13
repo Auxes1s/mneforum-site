@@ -381,13 +381,13 @@
   }
 }
 
-/* Final phone masthead contract. Keep the identity as a compact centered
-   two-line lockup, then place Thinking Mode and Menu in a dedicated control
-   row with independent 44px tap targets. The explicit grid removes the
-   competing flex/grid overrides that made the earlier lockup unpredictable. */
+/* Final phone masthead contract. Keep the institutional marks, event
+   wordmark, Thinking Mode, and Menu in one balanced row. This preserves the
+   complete identity while avoiding the detached control row and excess blank
+   space produced by the earlier stacked treatment. */
 @media (max-width: 600px) {
   :root {
-    --mobile-masthead: calc(112px + env(safe-area-inset-top));
+    --mobile-masthead: calc(62px + env(safe-area-inset-top));
   }
 
   html,
@@ -398,25 +398,22 @@
   .site-header__inner {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) 44px 44px !important;
-    grid-template-rows: auto auto !important;
-    grid-template-areas: "brand brand brand" ". mode menu" !important;
+    grid-template-rows: 44px !important;
+    grid-template-areas: "brand mode menu" !important;
     width: min(calc(100% - (2 * var(--mobile-gutter, 20px))), 1240px) !important;
     min-height: 0 !important;
     column-gap: 8px !important;
-    row-gap: 5px !important;
-    padding-block: 6px !important;
+    row-gap: 0 !important;
+    padding-block: 8px !important;
     flex-wrap: nowrap !important;
   }
 
   .site-brand {
     grid-area: brand !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: auto auto !important;
-    grid-template-areas: "copy" "partners" !important;
-    align-content: center !important;
-    justify-items: center !important;
-    gap: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -425,11 +422,11 @@
   }
 
   .site-brand__copy {
-    grid-area: copy !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
+    justify-content: flex-start !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
     min-width: 0 !important;
     max-width: 100% !important;
     padding-left: 0 !important;
@@ -440,45 +437,51 @@
     max-width: 100% !important;
     min-width: 0 !important;
     overflow: visible !important;
-    font-size: clamp(1rem, 5.4vw, 1.3rem) !important;
+    font-size: clamp(.85rem, 3.8vw, 1.05rem) !important;
     letter-spacing: -0.05em !important;
     white-space: nowrap !important;
   }
 
-  .site-brand__forum,
-  .site-brand__divider {
+  .site-brand__forum {
     display: none !important;
   }
 
+  .site-brand__divider {
+    display: block !important;
+    flex: 0 0 1px !important;
+    width: 1px !important;
+    height: 30px !important;
+    margin-inline: clamp(4px, 1.4vw, 7px) !important;
+  }
+
   .site-brand__partner-strip {
-    grid-area: partners !important;
     display: flex !important;
+    flex: 0 1 auto !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    justify-self: center !important;
-    gap: clamp(4px, 1.2vw, 7px) !important;
+    gap: clamp(3px, .9vw, 5px) !important;
     width: max-content !important;
-    max-width: 100% !important;
+    max-width: 42% !important;
     min-width: 0 !important;
     overflow: visible !important;
   }
 
   .site-brand__partner-logo--mne {
     width: auto !important;
-    height: clamp(27px, 7vw, 34px) !important;
-    max-width: 56px !important;
-    max-height: 34px !important;
+    height: clamp(24px, 6vw, 29px) !important;
+    max-width: 46px !important;
+    max-height: 29px !important;
   }
 
   .site-brand__partner-logo--depdev {
-    width: clamp(24px, 6vw, 32px) !important;
-    height: clamp(24px, 6vw, 32px) !important;
+    width: clamp(22px, 5.6vw, 27px) !important;
+    height: clamp(22px, 5.6vw, 27px) !important;
   }
 
   .site-brand__partner-logo--undp {
     width: auto !important;
-    height: clamp(28px, 8vw, 36px) !important;
-    max-width: 22px !important;
+    height: clamp(25px, 6.5vw, 31px) !important;
+    max-width: 18px !important;
   }
 
   .site-header__mode {
@@ -639,12 +642,40 @@
   }
 }
 
-/* At the narrowest supported phone width, give the partner lockup its own
-   row so it cannot compete with either 44px control. */
-@media (max-width: 340px) {
+/* Preserve the one-row composition on 320px devices by tightening the brand
+   rather than reintroducing a tall, detached second row. */
+@media (max-width: 360px) {
   .site-header__inner {
-    grid-template-columns: minmax(0, 1fr) 44px 44px !important;
-    grid-template-rows: auto auto !important;
-    grid-template-areas: "brand brand brand" ". mode menu" !important;
+    width: calc(100% - 24px) !important;
+    column-gap: 6px !important;
+  }
+
+  .site-brand__wordmark {
+    font-size: .78rem !important;
+  }
+
+  .site-brand__divider {
+    height: 26px !important;
+    margin-inline: 3px !important;
+  }
+
+  .site-brand__partner-strip {
+    gap: 2px !important;
+    max-width: 40% !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    height: 23px !important;
+    max-width: 36px !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    height: 24px !important;
+    max-width: 14px !important;
   }
 }
