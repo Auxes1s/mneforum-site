@@ -43,11 +43,12 @@ Before production publication, the release owner must complete all of these:
 1. `npm run check` and `git diff --check` pass.
 2. Review the diff against `pre-audit-baseline-2026-08-11`; changes to the
    page’s visual structure require explicit design approval.
-3. Verify `/`, `/dev`, `/register/`, `/rp-register/`, and `/evalform/` through
-   the real host, including cache and security headers.
-4. Verify registration and resource-person access with a non-organization
-   account. These pages intentionally do not auto-forward while the Google
-   Forms remain login-gated.
+3. Verify `/`, `/dev`, `/register/`, `/dro-register/`, `/rp-register/`,
+   `/evalform/`, and `/eg-submission/` through the real host, including cache
+   and security headers.
+4. Verify registration, resource-person, and Evaluation Gallery access with a
+   non-organization account. These pages intentionally do not auto-forward
+   while the Google Forms and Drive folder may remain login-gated.
 5. Confirm the Microsoft evaluation form still opens and its reviewed URL is
    current.
 6. Complete visual QA at desktop, tablet, mobile, keyboard-only, and

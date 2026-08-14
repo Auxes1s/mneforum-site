@@ -11,6 +11,8 @@ const failures = [];
 // implementation or the retired 2025 archive.
 const productionFiles = [
   "index.html",
+  "dro-register/index.html",
+  "eg-submission/index.html",
   "register/index.html",
   "rp-register/index.html",
   "evalform/index.html",
@@ -71,8 +73,10 @@ const routePaths = new Set([
   "/",
   "/dev",
   "/register/",
+  "/dro-register/",
   "/rp-register/",
   "/evalform/",
+  "/eg-submission/",
   "/agenda",
   "/logistics-note"
 ]);
@@ -98,8 +102,10 @@ const assetAllowlist = new Set([
 
 const formUrls = {
   "register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header",
-  "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSflAhrccdPL-g0J-6Cce3T28RL3v5VIdXhvPeNaWc_6VPd4GA/viewform?usp=header",
-  "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl"
+  "dro-register/index.html": "https://forms.gle/dwqog8oEkqnNUXqU8",
+  "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform",
+  "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl",
+  "eg-submission/index.html": "https://drive.google.com/drive/folders/1EJFDxDgp_Q5tlzz6im742qdg_6zduvkt?usp=sharing"
 };
 
 const exists = async relativePath => {
@@ -395,8 +401,10 @@ for (const marker of [
   "Options -Indexes",
   "DirectoryIndex index.html",
   "RewriteRule ^register/?$ register/index.html",
+  "RewriteRule ^dro-register/?$ dro-register/index.html",
   "RewriteRule ^rp-register/?$ rp-register/index.html",
   "RewriteRule ^evalform/?$ evalform/index.html",
+  "RewriteRule ^eg-submission/?$ eg-submission/index.html",
   "RewriteRule ^archive(?:/|$) - [G,L]",
   "RewriteRule ^participantflow(?:/|$) - [G,L]",
   "X-Content-Type-Options",

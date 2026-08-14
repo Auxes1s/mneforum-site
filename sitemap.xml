@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://mnenetwork.forum/</loc></url>
   <url><loc>https://mnenetwork.forum/register/</loc></url>
+  <url><loc>https://mnenetwork.forum/dro-register/</loc></url>
   <url><loc>https://mnenetwork.forum/rp-register/</loc></url>
   <url><loc>https://mnenetwork.forum/evalform/</loc></url>
+  <url><loc>https://mnenetwork.forum/eg-submission/</loc></url>
 </urlset>

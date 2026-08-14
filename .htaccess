@@ -49,8 +49,10 @@ RewriteRule ^dev$ index.html [END]
 
 # Explicit handoff pages. They never auto-forward to third-party providers.
 RewriteRule ^register/?$ register/index.html [END]
+RewriteRule ^dro-register/?$ dro-register/index.html [END]
 RewriteRule ^rp-register/?$ rp-register/index.html [END]
 RewriteRule ^evalform/?$ evalform/index.html [END]
+RewriteRule ^eg-submission/?$ eg-submission/index.html [END]
 
 # These 2025 routes are retired from the production tree. The signed participant
 # flow URL was time-bound and must not be kept as a stale redirect.

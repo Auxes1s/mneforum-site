@@ -12,6 +12,8 @@ const output = path.join(root, "dist");
 const publishEntries = [
   ".htaccess",
   "assets",
+  "dro-register",
+  "eg-submission",
   "dev",
   "evalform",
   "index.html",
