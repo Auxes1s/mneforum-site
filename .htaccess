@@ -47,12 +47,14 @@ RewriteEngine On
 RewriteRule ^dev/$ /dev [R=301,END]
 RewriteRule ^dev$ index.html [END]
 
-# Explicit handoff pages. They never auto-forward to third-party providers.
-RewriteRule ^register/?$ register/index.html [END]
-RewriteRule ^dro-register/?$ dro-register/index.html [END]
-RewriteRule ^rp-register/?$ rp-register/index.html [END]
-RewriteRule ^evalform/?$ evalform/index.html [END]
-RewriteRule ^eg-submission/?$ eg-submission/index.html [END]
+# Registration and form shortlinks go straight to their current providers.
+# Keep these temporary so a changed form URL can be corrected without a
+# permanently cached redirect.
+RewriteRule ^register/?$ https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header [R=302,END,NE]
+RewriteRule ^dro-register/?$ https://forms.gle/dwqog8oEkqnNUXqU8 [R=302,END,NE]
+RewriteRule ^rp-register/?$ https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform [R=302,END,NE]
+RewriteRule ^evalform/?$ https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl [R=302,END,NE]
+RewriteRule ^eg-submission/?$ https://drive.google.com/drive/folders/1EJFDxDgp_Q5tlzz6im742qdg_6zduvkt?usp=sharing [R=302,END,NE]
 
 # These 2025 routes are retired from the production tree. The signed participant
 # flow URL was time-bound and must not be kept as a stale redirect.

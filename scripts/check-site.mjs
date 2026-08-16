@@ -355,10 +355,9 @@ if (!index.includes("dataset.transformationReady = 'fallback'")) {
 
 for (const [relativePath, url] of Object.entries(formUrls)) {
   const source = sources.get(relativePath) ?? "";
-  if (/<meta[^>]+http-equiv=["']refresh/i.test(source)) fail(`${relativePath} must not auto-redirect`);
-  if (/<script\b/i.test(source)) fail(`${relativePath} should be JavaScript-free`);
-  if (!/target=["']_blank["']/i.test(source)) fail(`${relativePath} must open the external form deliberately`);
-  if (!/does not redirect automatically/i.test(source)) fail(`${relativePath} is missing the no-auto-redirect notice`);
+  if (!/<meta[^>]+http-equiv=["']refresh["']/i.test(source)) fail(`${relativePath} is missing its automatic redirect`);
+  if (!/window\.location\.replace\(/i.test(source)) fail(`${relativePath} is missing its JavaScript redirect fallback`);
+  if (!/redirect does not start/i.test(source)) fail(`${relativePath} is missing its manual redirect fallback notice`);
   if (!source.includes(url) && !source.includes(url.replaceAll("&", "&amp;"))) {
     fail(`${relativePath} does not contain its reviewed form destination`);
   }
@@ -400,11 +399,11 @@ const htaccess = await read(".htaccess");
 for (const marker of [
   "Options -Indexes",
   "DirectoryIndex index.html",
-  "RewriteRule ^register/?$ register/index.html",
-  "RewriteRule ^dro-register/?$ dro-register/index.html",
-  "RewriteRule ^rp-register/?$ rp-register/index.html",
-  "RewriteRule ^evalform/?$ evalform/index.html",
-  "RewriteRule ^eg-submission/?$ eg-submission/index.html",
+  "RewriteRule ^register/?$ https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header [R=302,END,NE]",
+  "RewriteRule ^dro-register/?$ https://forms.gle/dwqog8oEkqnNUXqU8 [R=302,END,NE]",
+  "RewriteRule ^rp-register/?$ https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform [R=302,END,NE]",
+  "RewriteRule ^evalform/?$ https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl [R=302,END,NE]",
+  "RewriteRule ^eg-submission/?$ https://drive.google.com/drive/folders/1EJFDxDgp_Q5tlzz6im742qdg_6zduvkt?usp=sharing [R=302,END,NE]",
   "RewriteRule ^archive(?:/|$) - [G,L]",
   "RewriteRule ^participantflow(?:/|$) - [G,L]",
   "X-Content-Type-Options",
@@ -412,7 +411,7 @@ for (const marker of [
 ]) {
   if (!htaccess.includes(marker)) fail(`.htaccess is missing required release rule/header: ${marker}`);
 }
-if (/assets\/redirect\.js|meta refresh/i.test(htaccess)) fail(".htaccess contains an unsafe redirect reference");
+if (/assets\/redirect\.js/i.test(htaccess)) fail(".htaccess contains an obsolete redirect script reference");
 
 if (failures.length) {
   console.error(`Site check failed with ${failures.length} issue${failures.length === 1 ? "" : "s"}:`);
