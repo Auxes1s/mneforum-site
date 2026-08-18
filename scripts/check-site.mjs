@@ -101,7 +101,7 @@ const assetAllowlist = new Set([
 ]);
 
 const formUrls = {
-  "register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header",
+  "register/index.html": "https://forms.gle/vTPDTZkByMbfVTt6A",
   "dro-register/index.html": "https://forms.gle/dwqog8oEkqnNUXqU8",
   "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform",
   "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl",
@@ -399,7 +399,7 @@ const htaccess = await read(".htaccess");
 for (const marker of [
   "Options -Indexes",
   "DirectoryIndex index.html",
-  "RewriteRule ^register/?$ https://docs.google.com/forms/d/e/1FAIpQLSfPj5AaCY1EGU6OsxfZWNB6E6AsYeuNix9hmrrvBJfhyuQbSw/viewform?usp=header [R=302,END,NE]",
+  "RewriteRule ^register/?$ https://forms.gle/vTPDTZkByMbfVTt6A [R=302,END,NE]",
   "RewriteRule ^dro-register/?$ https://forms.gle/dwqog8oEkqnNUXqU8 [R=302,END,NE]",
   "RewriteRule ^rp-register/?$ https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform [R=302,END,NE]",
   "RewriteRule ^evalform/?$ https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl [R=302,END,NE]",
