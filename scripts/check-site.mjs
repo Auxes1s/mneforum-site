@@ -15,6 +15,7 @@ const productionFiles = [
   "eg-submission/index.html",
   "register/index.html",
   "rp-register/index.html",
+  "sec-reg/index.html",
   "evalform/index.html",
   "assets/forum-brand.css",
   "assets/forum-responsive.css",
@@ -75,6 +76,7 @@ const routePaths = new Set([
   "/register/",
   "/dro-register/",
   "/rp-register/",
+  "/sec-reg/",
   "/evalform/",
   "/eg-submission/",
   "/agenda",
@@ -104,6 +106,7 @@ const formUrls = {
   "register/index.html": "https://forms.gle/vTPDTZkByMbfVTt6A",
   "dro-register/index.html": "https://forms.gle/dwqog8oEkqnNUXqU8",
   "rp-register/index.html": "https://docs.google.com/forms/d/e/1FAIpQLScULCsJGfhJyCg14w9g34CTtLkbp9Kvhx-8S0DoJ0pgo2_TyA/viewform",
+  "sec-reg/index.html": "https://forms.gle/4hGEt4nkJygYAD1e8",
   "evalform/index.html": "https://forms.office.com/pages/responsepage.aspx?id=zITAUhXNcUaKV8GVZbzfwhLmvB3coLdNjeQZqbXaWg5UQ09PR0lTMURMQzQ2N1FVT0tOMVYwMkNFSi4u&route=shorturl",
   "eg-submission/index.html": "https://drive.google.com/drive/folders/1EJFDxDgp_Q5tlzz6im742qdg_6zduvkt?usp=sharing"
 };

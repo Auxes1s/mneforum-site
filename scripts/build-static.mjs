@@ -21,6 +21,7 @@ const publishEntries = [
   "register",
   "robots.txt",
   "rp-register",
+  "sec-reg",
   // Backdrop artwork for the pre-launch construction teaser at the root.
   // Retire this with the teaser at launch.
   "shapes",
