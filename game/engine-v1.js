@@ -5,8 +5,8 @@
   const THEME_IDS = ['shared-mandate', 'technological-innovations', 'local-partners', 'collaborative-action'];
   const TAGS = ['official-and-community', 'ai-assisted', 'human-led'];
   const MODES = {
-    classic: { interval: 30000, tierCap: 10, arrivalBase: 4200, arrivalStep: 280, arrivalMin: 1700, decisionBase: 10000, decisionStep: 500, decisionMin: 5500, queueCap: 6, wrong: 16, timeout: 22, correct: 1, bloom: 6 },
-    relaxed: { interval: 45000, tierCap: 6, arrivalBase: 5600, arrivalStep: 420, arrivalMin: 3500, decisionBase: 16000, decisionStep: 1000, decisionMin: 11000, queueCap: 8, wrong: 10, timeout: 12, correct: 2, bloom: 10 }
+    classic: { interval: 30000, tierCap: 10, arrivalBase: 4200, arrivalStep: 280, arrivalMin: 1700, decisionBase: 10000, decisionStep: 500, decisionMin: 5500, queueCap: 6, wrong: 34, timeout: 34, correct: 15, bloom: 15 },
+    relaxed: { interval: 45000, tierCap: 6, arrivalBase: 5600, arrivalStep: 420, arrivalMin: 3500, decisionBase: 16000, decisionStep: 1000, decisionMin: 11000, queueCap: 8, wrong: 34, timeout: 34, correct: 15, bloom: 15 }
   };
 
   function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
@@ -335,4 +335,3 @@
   root.BuzzGame = { ACTIONS: ACTIONS, THEME_IDS: THEME_IDS, MODES: MODES, GameEngine: GameEngine, mulberry32: mulberry32, validateContent: validateContent };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.BuzzGame;
 }(typeof window !== 'undefined' ? window : globalThis));
-

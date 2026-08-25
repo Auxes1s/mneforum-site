@@ -43,9 +43,13 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /id="case-title" tabindex="-1"/);
   assert.match(html, /id="results-title" tabindex="-1"/);
   assert.match(html, /id="leaderboard-form" novalidate/);
+  assert.match(html, /id="start-button"[^>]*type="button"/);
+  assert.doesNotMatch(html, /id="start-button"[^>]*type="submit"/);
   assert.match(html, /id="leaderboard-consent"[^>]*required/);
   assert.match(html, /id="leaderboard-board"/);
   assert.match(html, /id="leaderboard-rows"/);
+  assert.match(html, /Three misses can empty Trust; every correct decision restores it\./);
+  assert.match(html, /data-action="check"[\s\S]*?<strong>Verify<\/strong>/);
 });
 
 test('construction homepage deliberately composes the guarded iframe integration', () => {
@@ -55,6 +59,8 @@ test('construction homepage deliberately composes the guarded iframe integration
   assert.match(homepage, /sandbox="allow-scripts"/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-same-origin/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-forms/);
+  assert.match(homepage, /Verify the evidence/);
+  assert.doesNotMatch(homepage, /Check the signal/);
   assert.match(homepage, /title="Buzz to Bloom evidence-to-action challenge"/);
   assert.match(homepage, /<script defer src="game\/embed-v1\.js"><\/script>/);
   assert.match(homepage, /data-game-phase-copy/);
@@ -94,6 +100,8 @@ test('message and storage boundaries are deny-by-default', () => {
   assert.match(embed, /type === 'leaderboard-submit'/);
   assert.match(embed, /type === 'leaderboard-refresh'/);
   assert.match(ui, /data\.type === 'leaderboard-data'/);
+  assert.match(ui, /el\['start-button'\]\.addEventListener\('click', requestStart\)/);
+  assert.doesNotMatch(ui, /requestSubmit\(/);
 });
 
 test('leaderboard submission stays opt-in and the static reader exposes only sanitized score fields', () => {

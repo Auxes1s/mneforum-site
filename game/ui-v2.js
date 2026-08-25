@@ -11,15 +11,15 @@
   const qaSeed = qaMode && Number.isSafeInteger(seedNumber) && seedNumber >= 0 && seedNumber <= 0xffffffff ? seedNumber >>> 0 : (qaMode ? 1 : null);
   const embedded = params.get('embed') === '1' || window.parent !== window;
   const defaultRecord = { schemaVersion: 1, bests: { classic: { score: 0, blooms: 0 }, relaxed: { score: 0, blooms: 0 } }, settings: { mode: 'relaxed', reduceMotion: false, tutorialSeen: false } };
-  const actionNames = { check: 'Check', connect: 'Connect', commit: 'Commit', track: 'Track' };
+  const actionNames = { check: 'Verify', connect: 'Connect', commit: 'Commit', track: 'Track' };
   const actionNeeds = {
-    check: 'Check fits when the source, definition, coverage, or data quality is still uncertain.',
+    check: 'Verify fits when the source, definition, coverage, or data quality is still uncertain.',
     connect: 'Connect fits after verification, when who is affected, why, or how people interpret the pattern is still unclear.',
     commit: 'Commit fits when the issue is understood but a feasible action, owner, measure, or review point is still missing.',
     track: 'Track fits when an action is already underway and its results, uneven effects, or needed adaptation are still unknown.'
   };
   const tutorialSteps = [
-    { action: 'check', signal: 'A community report suggests a health clinic\'s waiting time has doubled.', need: 'What is missing: confidence that the signal is reliable.', cue: 'The report has not yet been verified.', success: 'Check the source, definitions, and coverage before treating it as a finding.' },
+    { action: 'check', signal: 'A community report suggests a health clinic\'s waiting time has doubled.', need: 'What is missing: confidence that the signal is reliable.', cue: 'The report has not yet been verified.', success: 'Verify the source, definitions, and coverage before treating it as a finding.' },
     { action: 'connect', signal: 'The wait-time increase is verified, but no one knows why it differs by shift and patient group.', need: 'What is missing: context about who is affected and why.', cue: 'The pattern is already verified; its meaning is still unclear.', success: 'Connect the pattern with staff and patients to interpret it together.' },
     { action: 'commit', signal: 'Staff and patients understand the bottleneck, but no response, owner, or review date has been agreed.', need: 'What is missing: an accountable response.', cue: 'The issue is understood; ownership and action are still absent.', success: 'Commit to a feasible action with an owner, measure, and review point.' },
     { action: 'track', signal: 'A new intake step is running, but no one has checked its results across shifts and patient groups.', need: 'What is missing: follow-through on an action already underway.', cue: 'Implementation has begun; its results and uneven effects are still unknown.', success: 'Track outcomes, look for uneven effects, and adapt the response.' }
@@ -494,7 +494,7 @@
     setText(el['final-accuracy'], Math.round(snapshot.accuracy * 100) + '%');
     setText(el['final-best'], previous.score);
     BuzzGame.ACTIONS.forEach(action => setText(el['accuracy-' + action], actionAccuracy(snapshot, action)));
-    setText(el.takeaway, snapshot.blooms ? 'Takeaway: action is not the finish line. Track results, notice uneven effects, and adapt.' : 'Takeaway: credible action starts by checking the signal, then connecting it to context and people.');
+    setText(el.takeaway, snapshot.blooms ? 'Takeaway: action is not the finish line. Track results, notice uneven effects, and adapt.' : 'Takeaway: credible action starts by verifying the evidence, then connecting it to context and people.');
     setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent loop match.');
     el['results-panel'].dataset.outcome = snapshot.blooms ? 'bloom' : 'seed';
     el['leaderboard-card'].hidden = qaMode || !embedded;
@@ -584,10 +584,14 @@
       el['qa-seed'].hidden = false;
       setText(el['qa-seed'], 'QA mode · seed ' + qaSeed + ' · persistence disabled');
     }
+    function requestStart() {
+      pendingMode = new FormData(el['start-form']).get('mode') === 'classic' ? 'classic' : 'relaxed';
+      if (!record.settings.tutorialSeen) openTutorial(); else startCountdown(beginRun);
+    }
+    el['start-button'].addEventListener('click', requestStart);
     el['start-form'].addEventListener('submit', function (event) {
       event.preventDefault();
-      pendingMode = new FormData(event.currentTarget).get('mode') || 'relaxed';
-      if (!record.settings.tutorialSeen) openTutorial(); else startCountdown(beginRun);
+      requestStart();
     });
     document.querySelectorAll('input[name="mode"]').forEach(input => input.addEventListener('change', function () { pendingMode = input.value; updateBestLine(); }));
     el['how-button'].addEventListener('click', openTutorial);
@@ -636,7 +640,7 @@
     el['resume-button'].addEventListener('click', resume);
     el['quit-button'].addEventListener('click', function () { engine.finish('quit', now()); showResults(engine.snapshot(now())); });
     el['again-button'].addEventListener('click', function () { startCountdown(beginRun); });
-    el['menu-button'].addEventListener('click', function () { showPanel('menu-panel'); updateBestLine(); el['start-form'].querySelector('button[type="submit"]').focus(); });
+    el['menu-button'].addEventListener('click', function () { showPanel('menu-panel'); updateBestLine(); el['start-button'].focus(); });
     el['leaderboard-form'].addEventListener('submit', function (event) { event.preventDefault(); submitLeaderboard(); });
     el['leaderboard-name'].addEventListener('input', function () { el['leaderboard-name'].setAttribute('aria-invalid', 'false'); if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
     el['leaderboard-consent'].addEventListener('change', function () { if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
@@ -645,7 +649,7 @@
     if (typeof reduceMedia.addEventListener === 'function') reduceMedia.addEventListener('change', function () { if (engine) render(engine.snapshot(now())); });
     window.addEventListener('keydown', function (event) {
       if (event.repeat) return;
-      if (event.key === 'Enter' && currentPanel === 'menu-panel' && event.target.tagName !== 'BUTTON') { event.preventDefault(); el['start-form'].requestSubmit(); return; }
+      if (event.key === 'Enter' && currentPanel === 'menu-panel' && event.target.tagName !== 'BUTTON') { event.preventDefault(); requestStart(); return; }
       if (/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
       if (reviewing && event.key === 'Enter') { event.preventDefault(); continueAfterReview(); }
       else if (!reviewing && engine && engine.state === 'playing' && ['1','2','3','4'].includes(event.key)) { event.preventDefault(); choose(BuzzGame.ACTIONS[Number(event.key) - 1]); }
