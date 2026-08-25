@@ -179,6 +179,26 @@
           </dl>
         </div>
         <p id="takeaway" class="takeaway"></p>
+        <section id="leaderboard-card" class="leaderboard-card" aria-labelledby="leaderboard-title">
+          <div>
+            <p class="eyebrow">Optional leaderboard</p>
+            <h3 id="leaderboard-title">Add this run</h3>
+            <p>Use a nickname—not your full name. Your score is sent to the Forum’s Google Form only when you submit.</p>
+          </div>
+          <form id="leaderboard-form" novalidate>
+            <label for="leaderboard-name">Leaderboard name</label>
+            <div class="leaderboard-entry">
+              <input id="leaderboard-name" name="leaderboard-name" type="text" minlength="2" maxlength="20" autocomplete="nickname" spellcheck="false" aria-describedby="leaderboard-name-help" required>
+              <button id="leaderboard-submit" class="primary-button" type="submit">Submit score</button>
+            </div>
+            <small id="leaderboard-name-help">2–20 letters, numbers, spaces, periods, underscores, or hyphens.</small>
+            <label class="leaderboard-consent">
+              <input id="leaderboard-consent" type="checkbox" required>
+              <span>Yes, publish this nickname and run on the public leaderboard.</span>
+            </label>
+            <p id="leaderboard-status" class="leaderboard-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
         <div class="results-actions">
           <button id="again-button" class="primary-button" type="button">Play again</button>
           <button id="menu-button" class="text-button" type="button">Change pace</button>
@@ -195,7 +215,7 @@
     </section>
 
     <p id="qa-seed" class="qa-seed" hidden></p>
-    <p class="privacy-note">Fictional practice cases · no account, analytics, or personal data</p>
+    <p class="privacy-note">Fictional practice cases · no account or analytics · optional nickname sent only with your consent</p>
   </main>
 </body>
 </html>

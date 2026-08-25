@@ -42,6 +42,8 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /id="game-status"[^>]*role="status"[^>]*aria-atomic="true"/);
   assert.match(html, /id="case-title" tabindex="-1"/);
   assert.match(html, /id="results-title" tabindex="-1"/);
+  assert.match(html, /id="leaderboard-form" novalidate/);
+  assert.match(html, /id="leaderboard-consent"[^>]*required/);
 });
 
 test('homepage uses the guarded sandboxed iframe integration', () => {
@@ -78,6 +80,21 @@ test('message and storage boundaries are deny-by-default', () => {
   assert.match(embed, /new MutationObserver/);
   assert.match(embed, /Math\.max\(current\.bests\[mode\]\.score/);
   assert.match(embed, /dataset\.forumPhase/);
+  assert.match(embed, /normalizeLeaderboard\(value\)/);
+  assert.match(embed, /submittedRuns\.has\(normalized\.runId\)/);
+  assert.match(embed, /type === 'leaderboard-submit'/);
+});
+
+test('leaderboard submission stays opt-in and maps only to the supplied Google Form', () => {
+  assert.match(ui, /normalizeLeaderboardName/);
+  assert.match(html, /leaderboard-consent/);
+  assert.match(ui, /post\('leaderboard-submit'/);
+  assert.match(ui, /qaMode \|\| !embedded/);
+  assert.match(embed, /1FAIpQLSdy6j1jY3j9V9GWVu6tBGgiLcywYRh7usE_ARgmbUt0wZU-nA\/formResponse/);
+  ['859026358','2020774595','1283027792','763328471','500050364','1871953852','92678991','182554224','968740099','979688023','1908868056'].forEach(id => assert.match(embed, new RegExp('entry\\.' + id)));
+  assert.match(homepage, /sandbox="allow-scripts"/);
+  assert.doesNotMatch(homepage, /sandbox="[^"]*allow-forms/);
+  assert.doesNotMatch(html, /docs\.google\.com|formResponse/);
 });
 
 test('the interface teaches the decision rule and pauses for accessible review', () => {

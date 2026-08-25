@@ -12,6 +12,7 @@ const highRecord = { schemaVersion: 1, bests: { classic: { score: 900, blooms: 4
 stored.set('mneforum:buzz-to-bloom:v1', JSON.stringify(highRecord));
 let selectedPhase = 'before';
 let mutationCallback = null;
+const submittedForms = [];
 const copyNode = { textContent: '' };
 const frameWindow = { messages: [], postMessage(message, target) { this.messages.push({ message, target }); } };
 const frame = {
@@ -22,10 +23,22 @@ const frame = {
   removeEventListener() {}
 };
 const phaseInput = { closest() { return { textContent: selectedPhase }; } };
+function createNode(tagName) {
+  return {
+    tagName,
+    children: [],
+    hidden: false,
+    appendChild(child) { this.children.push(child); return child; },
+    setAttribute(name, value) { this[name] = value; },
+    submit() { submittedForms.push(this); },
+    remove() { this.removed = true; }
+  };
+}
 const document = {
   readyState: 'complete',
-  body: {},
+  body: { children: [], appendChild(child) { this.children.push(child); return child; } },
   documentElement: { dataset: {} },
+  createElement: createNode,
   querySelector(selector) {
     if (selector === 'iframe[data-buzz-to-bloom]') return frame;
     if (selector === '.phase-switch input[name="phase"]:checked') return phaseInput;
@@ -88,6 +101,29 @@ const cyclic = { schemaVersion: 1, bests: stale.bests, settings: stale.settings 
 cyclic.self = cyclic;
 assert.doesNotThrow(() => send(frameWindow, 'persist', { record: cyclic }));
 
+const leaderboardRun = {
+  leaderboardName: 'ME Player 7', score: 12345, blooms: 3, loopMatch: 88, bestStreak: 7,
+  pace: 'Guided pace', casePack: 'philippines-v1', runId: 'RUN-TEST-123',
+  gameVersion: 'buzz-to-bloom-v2', endReason: 'Trust depleted', consent: true
+};
+send({}, 'leaderboard-submit', leaderboardRun);
+assert.equal(submittedForms.length, 0, 'wrong source cannot submit');
+send(frameWindow, 'leaderboard-submit', leaderboardRun);
+assert.equal(submittedForms.length, 1);
+assert.equal(submittedForms[0].action, 'https://docs.google.com/forms/d/e/1FAIpQLSdy6j1jY3j9V9GWVu6tBGgiLcywYRh7usE_ARgmbUt0wZU-nA/formResponse');
+const submittedFields = Object.fromEntries(submittedForms[0].children.map(input => [input.name, input.value]));
+assert.equal(submittedFields['entry.859026358'], 'ME Player 7');
+assert.equal(submittedFields['entry.2020774595'], '12345');
+assert.equal(submittedFields['entry.1908868056'], 'Yes, publish this run');
+assert.equal(frameWindow.messages.at(-1).message.payload.status, 'accepted');
+send(frameWindow, 'leaderboard-submit', leaderboardRun);
+assert.equal(submittedForms.length, 1, 'duplicate run cannot submit twice');
+assert.equal(frameWindow.messages.at(-1).message.payload.status, 'duplicate');
+send(frameWindow, 'leaderboard-submit', Object.assign({}, leaderboardRun, { runId: 'RUN-BAD-123', score: '12345' }));
+assert.equal(submittedForms.length, 1, 'invalid score type cannot submit');
+assert.equal(frameWindow.messages.at(-1).message.payload.status, 'rejected');
+
 console.log('ok - embed bridge rejects wrong sources and clamps resize');
 console.log('ok - embed bridge reconfigures live phase changes');
 console.log('ok - embed persistence is monotonic and reset-aware');
+console.log('ok - leaderboard bridge validates, maps, and deduplicates Google Form submissions');

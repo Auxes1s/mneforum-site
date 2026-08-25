@@ -3,6 +3,7 @@
 
   const CHANNEL = 'mneforum.game';
   const STORAGE_KEY = 'mneforum:buzz-to-bloom:v1';
+  const GAME_VERSION = 'buzz-to-bloom-v2';
   const params = new URLSearchParams(location.search);
   const qaMode = params.get('qa') === '1';
   const seedText = params.get('seed');
@@ -36,11 +37,15 @@
   let inputLocked = false;
   let reviewing = false;
   let reviewSnapshot = null;
+  let resultsSnapshot = null;
+  let currentRunId = '';
+  let leaderboardSubmitted = false;
+  let leaderboardTimer = 0;
   let lastTimerSecond = -1;
   const reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const el = {};
-  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','start-button','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','answer-review','review-kicker','review-title','game-feedback','next-case-button','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','again-button','menu-button','error-message','qa-seed'];
+  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','start-button','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','answer-review','review-kicker','review-title','game-feedback','next-case-button','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','leaderboard-card','leaderboard-form','leaderboard-name','leaderboard-consent','leaderboard-submit','leaderboard-status','again-button','menu-button','error-message','qa-seed'];
 
   function copyRecord(value) {
     return {
@@ -74,6 +79,15 @@
       return values[0];
     }
     return (Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+  }
+  function makeRunId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+    return 'run-' + Date.now().toString(36) + '-' + randomSeed().toString(36);
+  }
+  function normalizeLeaderboardName(value) {
+    const cleaned = String(value || '').trim().replace(/\s+/g, ' ');
+    if (cleaned.length < 2 || cleaned.length > 20) return '';
+    return /^[\p{L}\p{N} ._-]+$/u.test(cleaned) ? cleaned : '';
   }
   function getPhase() {
     const override = params.get('phase');
@@ -120,6 +134,46 @@
   function post(type, payload) {
     if (!embedded) return;
     window.parent.postMessage({ channel: CHANNEL, version: 1, game: 'buzz-to-bloom', type: type, payload: payload || {} }, '*');
+  }
+  function setLeaderboardStatus(message, state) {
+    clearTimeout(leaderboardTimer);
+    setText(el['leaderboard-status'], message);
+    el['leaderboard-status'].className = 'leaderboard-status' + (state ? ' ' + state : '');
+  }
+  function submitLeaderboard() {
+    if (!embedded || qaMode || !resultsSnapshot || leaderboardSubmitted) return;
+    const name = normalizeLeaderboardName(el['leaderboard-name'].value);
+    el['leaderboard-name'].setAttribute('aria-invalid', String(!name));
+    if (!name) {
+      setLeaderboardStatus('Use a 2–20 character nickname with letters, numbers, spaces, periods, underscores, or hyphens.', 'is-error');
+      el['leaderboard-name'].focus();
+      return;
+    }
+    if (!el['leaderboard-consent'].checked) {
+      setLeaderboardStatus('Please confirm that this nickname and run may appear on the public leaderboard.', 'is-error');
+      el['leaderboard-consent'].focus();
+      return;
+    }
+    el['leaderboard-submit'].disabled = true;
+    setLeaderboardStatus('Sending this run…', '');
+    const endReasons = { trust: 'Trust depleted', overload: 'Queue full', quit: 'Player ended run' };
+    post('leaderboard-submit', {
+      leaderboardName: name,
+      score: resultsSnapshot.score,
+      blooms: resultsSnapshot.blooms,
+      loopMatch: Math.round(resultsSnapshot.accuracy * 100),
+      bestStreak: resultsSnapshot.bestStreak,
+      pace: resultsSnapshot.mode === 'relaxed' ? 'Guided pace' : 'Quick challenge',
+      casePack: BuzzContent.packId,
+      runId: currentRunId,
+      gameVersion: GAME_VERSION,
+      endReason: endReasons[resultsSnapshot.endReason] || 'Player ended run',
+      consent: true
+    });
+    leaderboardTimer = window.setTimeout(function () {
+      el['leaderboard-submit'].disabled = false;
+      setLeaderboardStatus('The leaderboard did not respond. Check your connection and try again.', 'is-error');
+    }, 8000);
   }
   function announceHeight() {
     const height = Math.ceil(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
@@ -194,6 +248,10 @@
       return;
     }
     engine.start(pendingMode, now());
+    currentRunId = makeRunId();
+    resultsSnapshot = null;
+    leaderboardSubmitted = false;
+    clearTimeout(leaderboardTimer);
     record.settings.mode = pendingMode;
     persist(false);
     clearReview();
@@ -379,6 +437,7 @@
   function showResults(snapshot) {
     cancelAnimationFrame(raf);
     clearReview();
+    resultsSnapshot = snapshot;
     const reasonCopy = { trust: 'Trust reached zero. Slow down, verify, and bring people into the next decision.', overload: 'The evidence queue filled up. Prioritize the next accountable step before adding more.', quit: 'You ended this run. The evidence-to-action loop is ready when you are.' };
     const previous = record.bests[snapshot.mode];
     previous.score = Math.max(previous.score, snapshot.score);
@@ -395,6 +454,17 @@
     setText(el.takeaway, snapshot.blooms ? 'Takeaway: action is not the finish line. Track results, notice uneven effects, and adapt.' : 'Takeaway: credible action starts by checking the signal, then connecting it to context and people.');
     setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent loop match.');
     el['results-panel'].dataset.outcome = snapshot.blooms ? 'bloom' : 'seed';
+    el['leaderboard-card'].hidden = qaMode || !embedded;
+    if (!el['leaderboard-card'].hidden) {
+      leaderboardSubmitted = false;
+      el['leaderboard-card'].classList.remove('is-sent');
+      el['leaderboard-name'].setAttribute('aria-invalid', 'false');
+      el['leaderboard-name'].readOnly = false;
+      el['leaderboard-consent'].checked = false;
+      el['leaderboard-consent'].disabled = false;
+      el['leaderboard-submit'].disabled = false;
+      setLeaderboardStatus('', '');
+    }
     showPanel('results-panel');
     el['results-title'].focus();
   }
@@ -428,10 +498,26 @@
   function handleMessage(event) {
     if (event.source !== window.parent) return;
     const data = event.data;
-    if (!data || data.channel !== CHANNEL || data.version !== 1 || data.game !== 'buzz-to-bloom' || data.type !== 'configure' || !data.payload || typeof data.payload !== 'object') return;
-    const normalized = normalizeRecord(data.payload.record);
-    if (normalized) mergeRecord(normalized);
-    if (['before','live','after'].includes(data.payload.phase)) { phase = data.payload.phase; updatePhaseCopy(); }
+    if (!data || data.channel !== CHANNEL || data.version !== 1 || data.game !== 'buzz-to-bloom' || !['configure','leaderboard-result'].includes(data.type) || !data.payload || typeof data.payload !== 'object') return;
+    if (data.type === 'configure') {
+      const normalized = normalizeRecord(data.payload.record);
+      if (normalized) mergeRecord(normalized);
+      if (['before','live','after'].includes(data.payload.phase)) { phase = data.payload.phase; updatePhaseCopy(); }
+      return;
+    }
+    if (data.payload.runId !== currentRunId || !['accepted','duplicate','rejected','failed'].includes(data.payload.status)) return;
+    clearTimeout(leaderboardTimer);
+    if (data.payload.status === 'accepted' || data.payload.status === 'duplicate') {
+      leaderboardSubmitted = true;
+      el['leaderboard-card'].classList.add('is-sent');
+      el['leaderboard-name'].readOnly = true;
+      el['leaderboard-consent'].disabled = true;
+      el['leaderboard-submit'].disabled = true;
+      setLeaderboardStatus(data.payload.status === 'duplicate' ? 'This run was already submitted.' : 'Score sent. It will appear after the leaderboard refreshes.', 'is-sent');
+    } else {
+      el['leaderboard-submit'].disabled = false;
+      setLeaderboardStatus(data.payload.status === 'rejected' ? 'This run did not pass the leaderboard safety check.' : 'The score could not be sent. Check your connection and try again.', 'is-error');
+    }
   }
 
   function init() {
@@ -505,6 +591,9 @@
     el['quit-button'].addEventListener('click', function () { engine.finish('quit', now()); showResults(engine.snapshot(now())); });
     el['again-button'].addEventListener('click', function () { startCountdown(beginRun); });
     el['menu-button'].addEventListener('click', function () { showPanel('menu-panel'); updateBestLine(); el['start-form'].querySelector('button[type="submit"]').focus(); });
+    el['leaderboard-form'].addEventListener('submit', function (event) { event.preventDefault(); submitLeaderboard(); });
+    el['leaderboard-name'].addEventListener('input', function () { el['leaderboard-name'].setAttribute('aria-invalid', 'false'); if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
+    el['leaderboard-consent'].addEventListener('change', function () { if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
     el['motion-toggle'].addEventListener('click', function () { record.settings.reduceMotion = !record.settings.reduceMotion; syncSettings(); persist(false); if (engine) render(engine.snapshot(now())); });
     if (typeof reduceMedia.addEventListener === 'function') reduceMedia.addEventListener('change', function () { if (engine) render(engine.snapshot(now())); });
     window.addEventListener('keydown', function (event) {
@@ -520,7 +609,7 @@
     window.addEventListener('blur', function () { if (engine && engine.state === 'playing') pause(true); });
     window.addEventListener('message', handleMessage);
     if ('ResizeObserver' in window) new ResizeObserver(announceHeight).observe(document.body);
-    post('ready', { capabilities: ['configure','resize','persist'] });
+    post('ready', { capabilities: ['configure','resize','persist','leaderboard-submit'] });
     announceHeight();
   }
 

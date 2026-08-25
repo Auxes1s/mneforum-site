@@ -21,7 +21,7 @@ direction: copy the finalized `13th-forum:index.html` to
 and add `game` to master's static build/check lists. Do not replace master's
 public root teaser until the separate Forum launch decision.
 
-The game uses classic scripts and a same-origin, versioned case-pack loader so it remains usable inside a sandboxed iframe with an opaque origin. It makes no API requests and has no account, analytics, cookies, service worker, leaderboard, audio, or third-party runtime. Its visual layer reuses the Forum site's existing identity logo, butterfly mark, textured geometric shapes, and background motif.
+The game uses classic scripts and a same-origin, versioned case-pack loader so it remains usable inside a sandboxed iframe with an opaque origin. It has no account, analytics, cookies, service worker, audio, or third-party runtime. Its visual layer reuses the Forum site's existing identity logo, butterfly mark, textured geometric shapes, and background motif. An optional results-screen form can send a consented nickname and run summary to the Forum's Google Form through the trusted parent-page bridge.
 
 ## Generic iframe embed
 
@@ -45,12 +45,22 @@ The production security policy intentionally permits **same-origin embedding onl
   channel: "mneforum.game",
   version: 1,
   game: "buzz-to-bloom",
-  type: "ready" | "configure" | "resize" | "persist",
+  type: "ready" | "configure" | "resize" | "persist" | "leaderboard-submit" | "leaderboard-result",
   payload: {}
 }
 ```
 
 The host accepts messages only from the iframe's own `contentWindow`, validates the envelope, clamps height to 480–1200 pixels, and bounds persisted payloads. Embedded runs use the host's local storage because `sandbox="allow-scripts"` intentionally omits `allow-same-origin`.
+
+## Optional Google Form leaderboard
+
+Leaderboard submission is opt-in and available only in the embedded Forum-page game. The player enters a 2–20 character nickname and checks an explicit public-leaderboard consent box. The game sends the completed run to the parent bridge; the parent validates every field and posts it to this Google Form endpoint:
+
+`https://docs.google.com/forms/d/e/1FAIpQLSdy6j1jY3j9V9GWVu6tBGgiLcywYRh7usE_ARgmbUt0wZU-nA/formResponse`
+
+The integration submits only nickname, score, blooms, loop-match percentage, best streak, pace, case pack, random run ID, game version, end reason, and consent. It does not collect an email address. QA-mode submissions are disabled, and the parent keeps the latest 200 submitted run IDs locally to prevent accidental duplicate posts. The game iframe retains `sandbox="allow-scripts"`; Google communication happens only in the parent page.
+
+Submission acknowledgement is necessarily optimistic because the Google response is cross-origin. Do not use this client-generated leaderboard for prizes or formal competition. Keep the raw response sheet private and publish only a separate sanitized leaderboard tab. The public leaderboard reader is intentionally not enabled until its published sheet URL is configured.
 
 ## Content and controls
 
