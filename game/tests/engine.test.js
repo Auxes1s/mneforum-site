@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-require('../cases/forum-v1.js');
+require('../cases/philippines-v1.js');
 const game = require('../engine-v1.js');
 const content = global.BuzzContent;
 
@@ -51,18 +51,32 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-test('content pack uses the cleared themes and at least 64 valid cards', () => {
+test('default Philippine pack uses the cleared themes and broad randomization', () => {
   const validation = game.validateContent(content);
   assert.equal(validation.valid, true, validation.errors.join('\n'));
-  assert.equal(content.packId, 'forum-v1');
-  assert.equal(content.name, '13th Forum practice cases');
-  assert.equal(content.cases.length, 8);
-  assert.ok(content.cases.reduce((sum,item) => sum + Object.values(item.stages).flat().length, 0) >= 64);
+  assert.equal(content.packId, 'philippines-v1');
+  assert.equal(content.name, 'Philippine public-service scenarios');
+  assert.equal(content.cases.length, 32);
+  assert.equal(content.cases.reduce((sum,item) => sum + Object.values(item.stages).flat().length, 0), 256);
   assert.deepEqual(content.themeIds, ['shared-mandate','technological-innovations','local-partners','collaborative-action']);
   content.cases.forEach(item => game.ACTIONS.forEach(action => {
     assert.ok(item.stages[action].some(card => card.difficulty === 1));
     assert.ok(item.stages[action].some(card => card.difficulty === 2));
+    item.stages[action].forEach(card => assert.ok(card.cue, card.id + ' needs a diagnostic cue'));
   }));
+});
+
+test('a resolution retains the answered card and its teaching cue', () => {
+  let time = 0;
+  const engine = new game.GameEngine({ content, seed: 6, clock: () => time });
+  engine.start('relaxed', time);
+  const answered = Object.assign({}, engine.currentCard);
+  const result = engine.answer(answered.action, time = 100);
+  assert.equal(result.accepted, true);
+  assert.equal(result.resolvedCard.id, answered.id);
+  assert.equal(result.resolvedCard.signal, answered.signal);
+  assert.equal(result.cue, answered.cue);
+  assert.notEqual(result.snapshot.currentCard.id, answered.id);
 });
 
 test('same seed and decisions are independent of render frame rate', () => {

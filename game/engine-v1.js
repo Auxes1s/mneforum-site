@@ -51,6 +51,7 @@
           if (![1, 2, 3].includes(card.difficulty)) errors.push(card.id + ' has invalid difficulty.');
           if (typeof card.signal !== 'string' || !card.signal.trim() || card.signal.length > 120 || words(card.signal) > 18) errors.push(card.id + ' signal is invalid or too long.');
           if (typeof card.rationale !== 'string' || !card.rationale.trim() || card.rationale.length > 150 || words(card.rationale) > 24) errors.push(card.id + ' rationale is invalid or too long.');
+          if (card.cue !== undefined && (typeof card.cue !== 'string' || !card.cue.trim() || card.cue.length > 140 || words(card.cue) > 24)) errors.push(card.id + ' cue is invalid or too long.');
           if (!Array.isArray(card.themeIds) || !card.themeIds.length || card.themeIds.some(id => !THEME_IDS.includes(id))) errors.push(card.id + ' theme metadata is invalid.');
           if (!Array.isArray(card.tags) || !card.tags.length || card.tags.some(tag => !TAGS.includes(tag))) errors.push(card.id + ' tag metadata is invalid.');
           (card.themeIds || []).forEach(id => { if (id in themeCounts) themeCounts[id] += 1; });
@@ -244,7 +245,7 @@
       this.currentCard = null;
       if (this.trust <= 0) this.finish('trust', now);
       else this.activateCurrent(now);
-      return { accepted: true, correct: wasCorrect, timeout: !!timeout, expected: expected, points: points, bloomBonus: bloomBonus, bloomed: bloomed, rationale: resolved.rationale, resolvedCaseId: resolved.caseId, snapshot: this.snapshot(now) };
+      return { accepted: true, correct: wasCorrect, timeout: !!timeout, chosen: action, expected: expected, points: points, bloomBonus: bloomBonus, bloomed: bloomed, rationale: resolved.rationale, cue: resolved.cue || '', resolvedCard: Object.assign({}, resolved), resolvedCaseId: resolved.caseId, snapshot: this.snapshot(now) };
     }
 
     advanceTo(value) {
@@ -279,7 +280,7 @@
       const now = this.at(value);
       const resolutions = this.advanceTo(now);
       const snapshot = this.snapshot(now);
-      if (resolutions.length) snapshot.resolutions = resolutions.map(result => ({ correct: result.correct, timeout: result.timeout, expected: result.expected, rationale: result.rationale }));
+      if (resolutions.length) snapshot.resolutions = resolutions.map(result => ({ accepted: true, correct: result.correct, timeout: result.timeout, chosen: result.chosen, expected: result.expected, points: result.points, bloomBonus: result.bloomBonus, bloomed: result.bloomed, rationale: result.rationale, cue: result.cue, resolvedCard: result.resolvedCard, resolvedCaseId: result.resolvedCaseId }));
       return snapshot;
     }
 

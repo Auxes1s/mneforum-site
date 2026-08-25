@@ -88,6 +88,10 @@ p { line-height: 1.55; }
 
 .menu-panel { display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(290px, .72fr); gap: clamp(28px, 5vw, 62px); align-items: center; }
 .menu-copy > p:not(.phase-copy) { max-width: 61ch; color: var(--muted); }
+.game-rule { display: grid; gap: 3px; max-width: 64ch; margin: 14px 0; padding: 13px 15px; color: var(--blue-deep); background: #fff8e6; border-left: 5px solid var(--amber); }
+.game-rule > strong { color: var(--coral); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.game-rule > span { font-weight: 720; line-height: 1.35; }
+.game-rule small { color: var(--muted); line-height: 1.4; }
 .journey-art { height: 175px; margin: 10px 0 12px; overflow: hidden; background: linear-gradient(90deg, rgba(72,152,211,.08), rgba(241,168,31,.1)); border-block: 1px solid var(--line); }
 .journey-art img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .action-loop { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 15px 0 0; padding: 0; list-style: none; }
@@ -122,6 +126,7 @@ legend { margin-bottom: 12px; color: var(--blue-deep); font-weight: 850; }
 .start-card .reset-button { min-height: 40px; margin-top: 7px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; }
 
 .tutorial-panel { max-width: 790px; margin: 0 auto; }
+.tutorial-rule { margin: -3px 0 16px; padding: 10px 13px; color: var(--blue-deep); background: rgba(72,152,211,.09); border: 1px solid var(--line); }
 .clinic-signal { padding: 23px; background: linear-gradient(90deg, rgba(72,152,211,.12), rgba(241,168,31,.1)); border-left: 6px solid var(--blue); font-size: 19px; font-weight: 650; }
 .tutorial-actions, .action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .tutorial-actions button { --action-color: var(--blue); padding: 12px; color: var(--action-color); background: white; border: 2px solid rgba(11,88,163,.22); }
@@ -129,6 +134,8 @@ legend { margin-bottom: 12px; color: var(--blue-deep); font-weight: 850; }
 [data-tutorial-action="commit"], [data-action="commit"] { --action-color: var(--coral); }
 [data-tutorial-action="track"], [data-action="track"] { --action-color: #b87300; }
 .tutorial-actions button:hover { border-color: var(--action-color); }
+.tutorial-actions button.is-answer { color: #185b3e; background: #e6f5ec; border-color: #28785c; }
+.tutorial-actions button.is-selected:not(.is-answer) { color: #8c263b; background: #fbe9ed; border-color: var(--coral); }
 .feedback { min-height: 42px; padding: 11px 15px; color: var(--muted); border-left: 4px solid transparent; }
 .feedback.is-correct { color: #185b3e; background: #e6f5ec; border-left-color: #28785c; }
 .feedback.is-wrong { color: #8c263b; background: #fbe9ed; border-left-color: var(--coral); }
@@ -145,6 +152,8 @@ legend { margin-bottom: 12px; color: var(--blue-deep); font-weight: 850; }
 kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: rgba(11,88,163,.09); border: 1px solid var(--line); box-shadow: 0 1px 0 var(--line); }
 .trust-meter { height: 10px; margin: 10px 0 22px; overflow: hidden; background: rgba(29,45,58,.12); border: 1px solid rgba(11,88,163,.15); }
 .trust-meter span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--coral), var(--amber) 45%, #28785c); transform-origin: left center; transition: transform .2s linear; }
+.round-rule { margin: -10px 0 18px; padding: 9px 12px; color: var(--muted); background: rgba(255,255,255,.68); border: 1px solid var(--line); font-size: 13px; }
+.round-rule strong { color: var(--blue-deep); }
 .case-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: clamp(20px, 4vw, 40px); align-items: center; }
 .case-card { min-height: 340px; overflow: hidden; background: white; border: 1px solid var(--line); box-shadow: 9px 9px 0 rgba(72,152,211,.1); }
 .case-art {
@@ -173,7 +182,10 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
 .timer-track { height: 9px; margin: 24px clamp(20px, 3vw, 31px); overflow: hidden; background: rgba(11,88,163,.12); }
 .timer-track span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--amber), var(--coral)); transform-origin: left center; }
 .timer-text { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.action-prompt { margin-top: 0; color: var(--muted); font-weight: 760; }
+.action-prompt { margin-top: 0; color: var(--muted); }
+.action-prompt strong, .action-prompt span { display: block; }
+.action-prompt strong { color: var(--blue-deep); font-size: 18px; }
+.action-prompt span { margin-top: 2px; font-size: 13px; }
 .action-grid { grid-template-columns: 1fr; }
 .action-grid button { --action-color: var(--blue); display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 14px; text-align: left; color: var(--ink); background: white; border: 2px solid rgba(11,88,163,.2); box-shadow: 4px 4px 0 rgba(11,88,163,.07); }
 .action-grid button:hover { border-color: var(--action-color); transform: translateX(3px); }
@@ -181,12 +193,23 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
 .action-grid span, .action-grid strong, .action-grid small { display: block; }
 .action-grid strong { color: var(--blue-deep); }
 .action-grid small { margin-top: 1px; color: var(--muted); font-weight: 500; }
-.action-grid button:disabled { cursor: wait; opacity: .58; transform: none; }
+.action-grid button:disabled { cursor: default; opacity: .68; transform: none; }
+.action-grid button.is-answer { opacity: 1; background: #e6f5ec; border-color: #28785c; box-shadow: 4px 4px 0 rgba(40,120,92,.13); }
+.action-grid button.is-answer strong { color: #185b3e; }
+.action-grid button.is-selected:not(.is-answer) { opacity: 1; background: #fbe9ed; border-color: var(--coral); box-shadow: 4px 4px 0 rgba(195,67,93,.12); }
 .bloom-garden { display: flex; align-items: center; justify-content: center; gap: 29px; width: min(460px, 72%); height: 38px; margin: 17px auto 0; }
 .bloom-garden::before { content: ""; position: absolute; left: 9%; right: 9%; top: 50%; height: 2px; background: repeating-linear-gradient(90deg, rgba(11,88,163,.28) 0 8px, transparent 8px 14px); }
 .bloom-garden span { position: relative; width: 14px; height: 14px; background: #dbe6ea; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 2px rgba(11,88,163,.14); transition: transform .35s ease, background .35s ease; }
 .bloom-garden span.earned { background: var(--amber); transform: scale(1.3); box-shadow: -5px 0 0 rgba(195,67,93,.78), 5px 0 0 rgba(72,152,211,.82); }
-.game-feedback { margin-top: 7px; }
+.answer-review { display: grid; grid-template-columns: 1fr; gap: 5px; align-items: center; margin-top: 13px; padding: 17px 18px; background: white; border: 2px solid var(--line); box-shadow: 7px 7px 0 rgba(72,152,211,.1); }
+.answer-review .eyebrow { margin: 0; }
+.answer-review h3 { margin: 0; color: var(--blue-deep); font-size: 22px; }
+.game-feedback { margin: 3px 0 0; padding: 0; background: transparent !important; border: 0 !important; }
+.answer-review .primary-button { width: 100%; margin-top: 8px; }
+.answer-review.is-correct { border-color: rgba(40,120,92,.5); }
+.answer-review.is-wrong { border-color: rgba(195,67,93,.48); }
+.play-panel.is-reviewing .timer-track { visibility: hidden; }
+.play-panel.is-reviewing #case-stage { color: var(--coral); }
 
 .modal-panel { display: grid; place-items: center; }
 .modal-card { position: relative; z-index: 1; width: min(580px, 100%); padding: 34px; text-align: center; background: rgba(255,255,255,.88); border: 1px solid var(--line); box-shadow: 9px 9px 0 rgba(72,152,211,.1); }
@@ -274,6 +297,7 @@ html.reduce-motion .timer-text { position: static; width: auto; height: auto; ma
   .journey-art { height: 145px; margin-inline: -8px; }
   .tutorial-actions, .action-grid { grid-template-columns: 1fr; }
   .action-grid button { min-height: 58px; }
+  .round-rule { font-size: 12px; }
   .bloom-garden { width: 88%; }
   .results-actions { flex-direction: column; }
   .results-actions .primary-button { width: 100%; }

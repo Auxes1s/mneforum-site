@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const requestedGamePack = new URLSearchParams(window.location.search).get('gamePack');
     const gamePack = requestedGamePack && /^[a-z0-9](?:[a-z0-9-]{0,47}[a-z0-9])?$/.test(requestedGamePack)
       ? requestedGamePack
-      : 'forum-v1';
+      : 'philippines-v1';
     const gameSectionAnchor = '<section id="program" class="program-section">';
     const gameSectionCount = template.split(gameSectionAnchor).length - 1;
     if (gameSectionCount !== 1) console.warn('Buzz to Bloom insertion skipped; anchor count was ' + gameSectionCount + '.');

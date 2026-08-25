@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-PH" data-case-pack="forum-v1">
+<html lang="en-PH" data-case-pack="philippines-v1">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -27,39 +27,45 @@
       <div class="menu-copy">
         <p id="phase-copy" class="phase-copy">Practice the evidence-to-action loop before Forum day.</p>
         <h2 id="menu-title">Turn signals into accountable action.</h2>
-        <p>Four decisions. Eight public-service cases. Keep Trust high while evidence moves from a first signal to tracked results.</p>
+        <p>Each card shows a case with one important need still unmet. Find that gap, choose the best next step, and keep Trust high as the case moves toward results.</p>
+        <aside class="game-rule" aria-labelledby="game-rule-title">
+          <strong id="game-rule-title">The rule</strong>
+          <span>Choose the <b>first missing step</b>—not the step that usually comes first.</span>
+          <small>Cases can enter anywhere in the loop. Real situations may allow several responses; the game asks for the best fit in this four-step model.</small>
+        </aside>
         <figure class="journey-art journey-art-menu" aria-hidden="true">
           <img src="../assets/forum-logo-v5-static.svg" width="855" height="459" decoding="async" alt="">
         </figure>
         <ol class="action-loop" aria-label="The evidence-to-action loop">
-          <li><b>1</b><span><strong>Check</strong><small>Verify the signal</small></span></li>
-          <li><b>2</b><span><strong>Connect</strong><small>Read it with people</small></span></li>
-          <li><b>3</b><span><strong>Commit</strong><small>Name an action and owner</small></span></li>
-          <li><b>4</b><span><strong>Track</strong><small>Follow results and adapt</small></span></li>
+          <li><b>1</b><span><strong>Check</strong><small>Source or quality is uncertain</small></span></li>
+          <li><b>2</b><span><strong>Connect</strong><small>Who or why is unclear</small></span></li>
+          <li><b>3</b><span><strong>Commit</strong><small>Action or ownership is missing</small></span></li>
+          <li><b>4</b><span><strong>Track</strong><small>An action needs follow-through</small></span></li>
         </ol>
       </div>
       <form id="start-form" class="start-card">
         <fieldset>
           <legend>Choose your pace</legend>
           <label class="mode-choice">
-            <input type="radio" name="mode" value="classic" checked>
-            <span><strong>Classic</strong><small>A quick, lively challenge</small></span>
+            <input type="radio" name="mode" value="classic">
+            <span><strong>Quick challenge</strong><small>10 seconds to read and decide</small></span>
           </label>
           <label class="mode-choice">
-            <input type="radio" name="mode" value="relaxed">
-            <span><strong>Relaxed</strong><small>More time, gentler pressure</small></span>
+            <input type="radio" name="mode" value="relaxed" checked>
+            <span><strong>Guided pace · Recommended</strong><small>16 seconds to read and decide</small></span>
           </label>
         </fieldset>
         <p class="best-line">Best: <strong id="menu-best">0</strong> points · <strong id="menu-blooms">0</strong> blooms</p>
-        <button class="primary-button" type="submit">Start the challenge</button>
-        <button id="how-button" class="text-button" type="button">How to play</button>
+        <button id="start-button" class="primary-button" type="submit">Learn, then play</button>
+        <button id="how-button" class="text-button" type="button">Practice the four decisions</button>
         <button id="reset-button" class="text-button reset-button" type="button">Reset local game data</button>
       </form>
     </section>
 
     <section id="tutorial-panel" class="panel tutorial-panel" aria-labelledby="tutorial-title" hidden>
       <p id="tutorial-step-label" class="eyebrow">Practice clinic · step 1 of 4 · no timer or penalties</p>
-      <h2 id="tutorial-title" tabindex="-1">What should happen next?</h2>
+      <h2 id="tutorial-title" tabindex="-1">Find what is still missing.</h2>
+      <p class="tutorial-rule"><strong>Decision rule:</strong> choose the first unmet need. The situation may already contain earlier steps.</p>
       <p id="clinic-signal" class="clinic-signal">A community report suggests a health clinic's waiting time has doubled.</p>
       <div class="tutorial-actions">
         <button type="button" data-tutorial-action="check">1 · Check</button>
@@ -67,10 +73,10 @@
         <button type="button" data-tutorial-action="commit">3 · Commit</button>
         <button type="button" data-tutorial-action="track">4 · Track</button>
       </div>
-      <p id="tutorial-feedback" class="feedback" aria-live="polite">Choose the step that verifies the first signal.</p>
+      <p id="tutorial-feedback" class="feedback" aria-live="polite">What is missing: confidence that the signal is reliable.</p>
       <div class="tutorial-footer">
-        <button id="tutorial-skip" class="text-button" type="button">Skip clinic</button>
-        <button id="tutorial-continue" class="primary-button" type="button" hidden>Continue</button>
+        <button id="tutorial-skip" class="text-button" type="button">Skip practice</button>
+        <button id="tutorial-continue" class="primary-button" type="button" hidden>Next example</button>
       </div>
     </section>
 
@@ -85,6 +91,7 @@
       <div class="trust-meter" role="meter" aria-label="Trust" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
         <span id="trust-bar"></span>
       </div>
+      <p class="round-rule"><strong>Find the gap:</strong> which important need is still unmet? A correct choice advances this case by one step; four advances earn a Bloom.</p>
       <div class="case-layout">
         <article class="case-card">
           <div id="case-art" class="case-art" aria-hidden="true">
@@ -95,7 +102,7 @@
           </div>
           <div class="case-meta">
             <span id="case-domain">Health</span>
-            <span id="case-stage">Evidence signal</span>
+            <span id="case-stage">Find the missing step</span>
           </div>
           <h2 id="case-title" tabindex="-1">A new signal is arriving…</h2>
           <p id="case-signal">Get ready to choose the next responsible step.</p>
@@ -104,19 +111,24 @@
           <p id="timer-status" class="sr-only" role="status" aria-live="polite"></p>
         </article>
         <div>
-          <p class="action-prompt">What moves this case forward?</p>
+          <p class="action-prompt"><strong>Which need is still unmet?</strong><span>Choose the best fit in this loop.</span></p>
           <div id="action-buttons" class="action-grid">
-            <button type="button" data-action="check"><kbd>1</kbd><span><strong>Check</strong><small>Verify the signal</small></span></button>
-            <button type="button" data-action="connect"><kbd>2</kbd><span><strong>Connect</strong><small>Read it with people</small></span></button>
-            <button type="button" data-action="commit"><kbd>3</kbd><span><strong>Commit</strong><small>Name action and owner</small></span></button>
-            <button type="button" data-action="track"><kbd>4</kbd><span><strong>Track</strong><small>Follow results and adapt</small></span></button>
+            <button type="button" data-action="check"><kbd>1</kbd><span><strong>Check</strong><small>Source or quality is uncertain</small></span></button>
+            <button type="button" data-action="connect"><kbd>2</kbd><span><strong>Connect</strong><small>Who or why is unclear</small></span></button>
+            <button type="button" data-action="commit"><kbd>3</kbd><span><strong>Commit</strong><small>Action or ownership is missing</small></span></button>
+            <button type="button" data-action="track"><kbd>4</kbd><span><strong>Track</strong><small>An action needs follow-through</small></span></button>
           </div>
+          <section id="answer-review" class="answer-review" aria-labelledby="review-title" hidden>
+            <p id="review-kicker" class="eyebrow">Decision review</p>
+            <h3 id="review-title" tabindex="-1">Best fit: Check</h3>
+            <p id="game-feedback" class="feedback game-feedback" aria-live="polite"></p>
+            <button id="next-case-button" class="primary-button" type="button">Next case</button>
+          </section>
         </div>
       </div>
       <div id="bloom-garden" class="bloom-garden" aria-hidden="true">
         <span></span><span></span><span></span><span></span>
       </div>
-      <div id="game-feedback" class="feedback game-feedback" aria-live="polite"></div>
       <p id="game-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </section>
 
@@ -154,11 +166,11 @@
         <dl class="results-grid">
           <div><dt>Blooms</dt><dd id="final-blooms">0</dd></div>
           <div><dt>Best streak</dt><dd id="final-streak">0</dd></div>
-          <div><dt>Accuracy</dt><dd id="final-accuracy">0%</dd></div>
+          <div><dt>Loop match</dt><dd id="final-accuracy">0%</dd></div>
           <div><dt>Best score</dt><dd id="final-best">0</dd></div>
         </dl>
         <div class="action-accuracy" aria-labelledby="action-accuracy-title">
-          <h3 id="action-accuracy-title">Decision accuracy</h3>
+          <h3 id="action-accuracy-title">Loop-match rate</h3>
           <dl>
             <div><dt>Check</dt><dd id="accuracy-check">0%</dd></div>
             <div><dt>Connect</dt><dd id="accuracy-connect">0%</dd></div>

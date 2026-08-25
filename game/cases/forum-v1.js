@@ -17,9 +17,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['Residents report longer clinic waits, but the logbook has gaps.', 'A weekly dashboard shows delays after several records were back-entered.'],
-        connect: ['Validated wait data differ sharply by shift and patient group.', 'Interviews explain why the same queue measure feels different to older patients.'],
-        commit: ['Staff and patients agree on one feasible change to the intake flow.', 'The team has options, but no named owner or review date yet.'],
-        track: ['The new intake step is running; early averages hide peak-hour delays.', 'Waiting time improved overall, while one patient group still reports barriers.']
+        connect: ['Wait data are verified, but differences by shift and patient group remain unexplained.', 'Records confirm unequal waits; staff and patients have not interpreted the pattern together.'],
+        commit: ['Staff and patients understand the bottleneck, but no intake change or owner is agreed.', 'The delay is understood, but options still lack an owner and success measure.'],
+        track: ['A new intake step is running, but results have not been compared across shifts.', 'Waiting times improved overall; persistent barriers for one patient group have not been reviewed.']
       }
     },
     {
@@ -27,9 +27,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['A class summary suggests reading scores fell after tutoring began.', 'Teachers flag a sudden score jump in one grade-level report.'],
-        connect: ['Verified scores improve, while learner interviews describe uneven access.', 'Attendance and reading data point in different directions across classrooms.'],
-        commit: ['Teachers propose a targeted schedule and a clear person to coordinate it.', 'Families and staff agree on a small trial, but its success measure is vague.'],
-        track: ['The trial raised attendance; progress checks show mixed reading gains.', 'Early gains faded after two weeks when tutor coverage changed.']
+        connect: ['Scores are verified, but differences in tutoring access and learner experience remain unexplained.', 'Attendance and reading measures are reliable, but classrooms interpret their mismatch differently.'],
+        commit: ['Teachers understand the access gap, but no targeted schedule, owner, or review date is agreed.', 'Families and staff share the diagnosis, but the proposed trial lacks a success measure.'],
+        track: ['A tutoring trial is running; attendance rose, but reading gains have not been compared.', 'Early gains faded after tutor coverage changed, and the response has not been adjusted.']
       }
     },
     {
@@ -37,9 +37,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['Several residents say a flood alert arrived after water entered homes.', 'A response log shows fast alerts, but its timestamps share one unusual pattern.'],
-        connect: ['Validated alert times differ by location and phone access.', 'Community accounts reveal why a technically timely warning was not understood.'],
-        commit: ['Responders identify an accessible backup alert and a responsible unit.', 'A new alert protocol is drafted without a test date or accountable lead.'],
-        track: ['A drill improved receipt rates, but one riverside area remains unreached.', 'The backup channel worked in daylight and failed during a night drill.']
+        connect: ['Alert times are verified, but differences by location and phone access remain unexplained.', 'The warning was technically timely, but responders do not know why residents misunderstood it.'],
+        commit: ['Responders understand the access gap, but no backup alert, responsible unit, or test date is agreed.', 'Partners share the diagnosis, but the draft protocol has no accountable lead or success measure.'],
+        track: ['A new alert protocol is being tested, but receipt rates are not reviewed by area.', 'The backup channel failed during a night drill, and no adaptation has been assessed.']
       }
     },
     {
@@ -47,9 +47,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['A model flags crop stress where field reports describe healthy plots.', 'Satellite estimates show a yield dip after several cloudy observations.'],
-        connect: ['Ground checks confirm stress only in farms with limited irrigation.', 'Farmers explain a local planting shift missing from the official calendar.'],
-        commit: ['Extension workers select a targeted visit plan and a named coordinator.', 'The team agrees to issue advice, but not how uncertainty will be disclosed.'],
-        track: ['Advice reached most farms; follow-up shows lower use among tenant farmers.', 'Field checks show recovery, while the model still reports widespread stress.']
+        connect: ['Crop stress is verified, but differences by irrigation access and tenure remain unexplained.', 'A planting-calendar shift is confirmed, but its local causes have not been interpreted with farmers.'],
+        commit: ['Extension workers understand the risk, but no targeted visit plan or owner is agreed.', 'The advice is drafted, but no one owns how uncertainty and safeguards will be communicated.'],
+        track: ['New advice is circulating, but use and outcomes have not been compared by farm tenure.', 'Field recovery differs from the model, and the advisory response has not been reassessed.']
       }
     },
     {
@@ -57,9 +57,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['Commuters report missed trips that do not appear in the route summary.', 'A dashboard marks all trips complete despite identical arrival times.'],
-        connect: ['Verified trip logs and rider diaries locate delays at two transfer points.', 'Average travel time improves, but accessibility feedback tells another story.'],
-        commit: ['Operators choose a transfer-point trial with an owner and end date.', 'A timetable change is approved before anyone defines the result to monitor.'],
-        track: ['On-time trips increase; missed connections persist on the evening route.', 'The trial reduces delay but creates crowding at one transfer point.']
+        connect: ['Trip delays are verified, but rider experiences at transfer points remain unexplained.', 'Travel time improved overall, but the team has not interpreted conflicting accessibility feedback.'],
+        commit: ['Operators understand the transfer problem, but no trial, owner, or review date is agreed.', 'Partners support a timetable change, but its success measure and accountable lead are missing.'],
+        track: ['A timetable trial is running; missed evening connections have not been reviewed.', 'The trial reduced delay but created crowding, and no adjustment has been tested.']
       }
     },
     {
@@ -67,9 +67,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['A registry shows full coverage while help desks report many exclusions.', 'Applications appear to fall just after a form was moved online.'],
-        connect: ['Validated records show exclusions concentrated among remote households.', 'Applicants explain a document barrier hidden by the completion rate.'],
-        commit: ['Program staff select an assisted channel and name its accountable owner.', 'Partners support outreach, but the referral path is still undefined.'],
-        track: ['Completed applications rise; repeat visits remain high for one document.', 'Outreach reaches more households but processing time begins to increase.']
+        connect: ['Exclusions are verified, but barriers facing remote households remain unexplained.', 'Completion rates are reliable, but applicants and staff have not interpreted the document barrier together.'],
+        commit: ['Staff understand the access barrier, but no assisted channel, owner, or review point is agreed.', 'Partners share the diagnosis, but the outreach and referral path remain undefined.'],
+        track: ['An assisted channel is operating, but repeat visits by document type are not reviewed.', 'Outreach expanded while processing slowed, and the trade-off has not been assessed.']
       }
     },
     {
@@ -77,9 +77,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['Residents report a river odor after sensors show normal readings.', 'One station shows a sudden improvement during a known maintenance gap.'],
-        connect: ['Lab samples and community observations locate a short pollution window.', 'Official averages mask a downstream pattern reported by fishing households.'],
-        commit: ['Partners agree on targeted sampling, a lead unit, and a response trigger.', 'A monitoring expansion is proposed without a decision rule for acting.'],
-        track: ['New samples detect fewer events, but downstream complaints continue.', 'Water indicators improve while fishers report no change in catch conditions.']
+        connect: ['Pollution readings are verified, but the short downstream pattern remains unexplained.', 'Official averages are reliable, but fishing households interpret downstream conditions differently.'],
+        commit: ['Partners understand the sampling gap, but no lead unit or response trigger is agreed.', 'A monitoring expansion is proposed without an owner, decision rule, or review date.'],
+        track: ['Targeted sampling is underway, but downstream complaints are not reviewed with new results.', 'Water indicators improved while catches did not, and the response has not been adapted.']
       }
     },
     {
@@ -87,9 +87,9 @@
       evidence: 'official-and-community',
       lines: {
         check: ['A portal reports faster permits while applicants describe repeat visits.', 'Completion time drops after unresolved applications disappear from the total.'],
-        connect: ['Verified files and applicant journeys reveal a hidden document loop.', 'Service data improve overall, but small businesses face a different bottleneck.'],
-        commit: ['The office chooses a checklist trial with an owner and review date.', 'A digital fix is funded before the team agrees on its success measure.'],
-        track: ['Repeat visits fall; applicants still struggle with one unclear requirement.', 'The checklist speeds simple cases and slows permits needing technical review.']
+        connect: ['Repeat visits are verified, but the hidden document loop remains unexplained.', 'Service times improved overall, but staff have not interpreted the small-business bottleneck with applicants.'],
+        commit: ['The office understands the document loop, but no checklist trial, owner, or review date is agreed.', 'Partners support a digital fix, but its success measure and safeguards remain undefined.'],
+        track: ['A checklist trial is running, but repeat visits by permit type are not reviewed.', 'The checklist slowed technical permits, and no adjustment has been assessed.']
       }
     }
   ];
@@ -119,9 +119,15 @@
 
   const advancedSignals = {
     check: title => 'An automated summary of ' + title.toLowerCase() + ' conflicts with source records and omits uncertainty.',
-    connect: title => 'Groups interpret the verified ' + title.toLowerCase() + ' pattern differently where access and exposure are uneven.',
+    connect: title => 'The verified ' + title.toLowerCase() + ' pattern differs across groups, but the reasons remain unclear.',
     commit: title => 'A proposed ' + title.toLowerCase() + ' response lacks clear ownership, safeguards, success measures, and review criteria.',
-    track: title => 'Early ' + title.toLowerCase() + ' results improve overall while one subgroup shows an unexpected trade-off.'
+    track: title => 'A ' + title.toLowerCase() + ' response is underway, but one subgroup shows an unreviewed trade-off.'
+  };
+  const stageCues = {
+    check: 'The signal conflicts with another source or still has a data-quality gap.',
+    connect: 'The pattern is verified, but who is affected, why, or how people understand it is still unclear.',
+    commit: 'The issue is understood, but the action, owner, measure, or review point is still missing.',
+    track: 'An action is already underway, so its results, uneven effects, and need for adaptation must be reviewed.'
   };
   const stageThemes = {
     check: ['shared-mandate', 'technological-innovations'],
@@ -140,6 +146,7 @@
           difficulty: variantIndex + 1,
           signal: signal,
           rationale: rationales[stage][variantIndex],
+          cue: stageCues[stage],
           themeIds: stageThemes[stage].slice(),
           tags: [spec.evidence, stage === 'check' && variantIndex === 2 ? 'ai-assisted' : 'human-led']
         };

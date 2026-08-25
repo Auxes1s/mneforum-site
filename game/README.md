@@ -5,9 +5,9 @@ Buzz to Bloom is a dependency-free evidence-to-action mini-game for the 13th M&E
 ## Routes
 
 - Standalone: `/game/`
-- Embedded: `/game/?embed=1&pack=forum-v1`
-- Deterministic QA: `/game/?qa=1&seed=12345&pack=forum-v1`
-- Forum-page pack preview: `/?gamePack=forum-v1`
+- Embedded: `/game/?embed=1&pack=philippines-v1`
+- Deterministic QA: `/game/?qa=1&seed=12345&pack=philippines-v1`
+- Forum-page pack preview: `/?gamePack=philippines-v1`
 
 ## Branch and promotion flow
 
@@ -30,7 +30,7 @@ The production security policy intentionally permits **same-origin embedding onl
 ```html
 <iframe
   data-buzz-to-bloom
-  src="/game/?embed=1&amp;pack=forum-v1"
+  src="/game/?embed=1&amp;pack=philippines-v1"
   title="Buzz to Bloom evidence-to-action challenge"
   sandbox="allow-scripts"
   style="width:100%;height:760px;border:0"
@@ -54,14 +54,14 @@ The host accepts messages only from the iframe's own `contentWindow`, validates 
 
 ## Content and controls
 
-The default content pack contains 96 short cards: three difficulty variants at each of four stages for eight evolving cases. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**.
+The default `philippines-v1` content pack contains 256 short cards: two difficulty variants at each of four stages for 32 evolving fictional cases across Philippine public services. The smaller `forum-v1` pack remains available for focused previews. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**. Each card describes a case with one unmet need; the player chooses the first missing step, not necessarily `Check`. Because real situations can support more than one defensible response, the interface describes answers as the **best fit in this loop** and explains the diagnostic clue after every choice.
 
 Case content is hot-swappable without changing the engine or interface. Add a versioned file under `cases/`, then select it with `?pack=<pack-id>` on the game route or `?gamePack=<pack-id>` on the Forum page. See `cases/README.md` for the pack contract and release workflow.
 
-- Keyboard: `1`–`4` choose actions, `P` or `Escape` pauses, `Enter` resumes.
+- Keyboard: `1`–`4` choose actions, `P` or `Escape` pauses, and `Enter` continues after a decision review or resumes.
 - Touch: every action is a native button at least 48 pixels high.
 - Motion: operating-system reduced motion is respected; a manual toggle is also provided.
-- Timing: Classic and Relaxed modes keep separate local bests.
+- Timing: Quick Challenge and Guided Pace modes keep separate local bests. The timer pauses after every answer so the player can read the rationale before continuing.
 
 ## Local checks
 
@@ -74,6 +74,6 @@ node game/tests/integration.test.js
 node game/tests/case-packs.test.js
 ```
 
-Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/`, `/?gamePack=forum-v1`, and `/game/?qa=1&seed=12345&pack=forum-v1`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
+Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/`, `/?gamePack=forum-v1`, `/?gamePack=philippines-v1`, and `/game/?qa=1&seed=12345&pack=philippines-v1`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
 
 Versioned JavaScript, CSS, and case-pack filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update its reference.

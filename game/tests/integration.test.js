@@ -80,11 +80,19 @@ test('message and storage boundaries are deny-by-default', () => {
   assert.match(embed, /dataset\.forumPhase/);
 });
 
-test('the interface does not disclose answers and enforces accessible resolution states', () => {
+test('the interface teaches the decision rule and pauses for accessible review', () => {
   assert.doesNotMatch(ui, /'Step ' \+ \(card\.stageIndex/);
   assert.doesNotMatch(html, /Signal 1 of 4/);
+  assert.match(html, /first missing step/);
+  assert.match(html, /id="answer-review"[^>]*hidden/);
+  assert.match(html, /id="next-case-button"/);
+  assert.match(html, /best fit in this four-step model/i);
   assert.match(ui, /inputLocked/);
   assert.match(ui, /tutorialSteps = \[/);
+  assert.match(ui, /function enterReview/);
+  assert.match(ui, /engine\.pause\(now\(\)\)/);
+  assert.match(ui, /function continueAfterReview/);
+  assert.match(ui, /Best fit in this loop:/);
   assert.match(ui, /window\.setInterval\([\s\S]*?, 1000\)/);
   assert.match(ui, /effectiveReducedMotion\(\)/);
   assert.match(ui, /accuracy-' \+ action/);
@@ -92,7 +100,7 @@ test('the interface does not disclose answers and enforces accessible resolution
 });
 
 test('case packs are selected by a safe same-origin versioned loader', () => {
-  assert.match(html, /data-case-pack="forum-v1"/);
+  assert.match(html, /data-case-pack="philippines-v1"/);
   assert.match(loader, /BuzzContentReady/);
   assert.match(loader, /PACK_PATTERN/);
   assert.match(loader, /script\.src = 'cases\/' \+ requestedId \+ '\.js'/);

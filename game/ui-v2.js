@@ -9,30 +9,38 @@
   const seedNumber = seedText !== null && /^\d+$/.test(seedText) ? Number(seedText) : NaN;
   const qaSeed = qaMode && Number.isSafeInteger(seedNumber) && seedNumber >= 0 && seedNumber <= 0xffffffff ? seedNumber >>> 0 : (qaMode ? 1 : null);
   const embedded = params.get('embed') === '1' || window.parent !== window;
-  const defaultRecord = { schemaVersion: 1, bests: { classic: { score: 0, blooms: 0 }, relaxed: { score: 0, blooms: 0 } }, settings: { mode: 'classic', reduceMotion: false, tutorialSeen: false } };
+  const defaultRecord = { schemaVersion: 1, bests: { classic: { score: 0, blooms: 0 }, relaxed: { score: 0, blooms: 0 } }, settings: { mode: 'relaxed', reduceMotion: false, tutorialSeen: false } };
+  const actionNames = { check: 'Check', connect: 'Connect', commit: 'Commit', track: 'Track' };
+  const actionNeeds = {
+    check: 'Check fits when the source, definition, coverage, or data quality is still uncertain.',
+    connect: 'Connect fits after verification, when who is affected, why, or how people interpret the pattern is still unclear.',
+    commit: 'Commit fits when the issue is understood but a feasible action, owner, measure, or review point is still missing.',
+    track: 'Track fits when an action is already underway and its results, uneven effects, or needed adaptation are still unknown.'
+  };
   const tutorialSteps = [
-    { action: 'check', signal: 'A community report suggests a health clinic\'s waiting time has doubled.', prompt: 'Choose the step that verifies the first signal.', success: 'Check the source, definitions, and coverage before treating the signal as a finding.' },
-    { action: 'connect', signal: 'The wait-time increase is verified, but it differs by shift and patient group.', prompt: 'Choose the step that adds context and lived experience.', success: 'Connect the verified pattern with staff and patients to understand who is affected and why.' },
-    { action: 'commit', signal: 'Staff and patients agree on one feasible intake-flow change.', prompt: 'Choose the step that turns shared understanding into accountability.', success: 'Commit to a specific action with an owner, measure, and review point.' },
-    { action: 'track', signal: 'The new intake step is running, and early averages hide peak-hour delays.', prompt: 'Choose the step that tests results and supports adaptation.', success: 'Track outcomes and uneven effects, then adjust the response.' }
+    { action: 'check', signal: 'A community report suggests a health clinic\'s waiting time has doubled.', need: 'What is missing: confidence that the signal is reliable.', cue: 'The report has not yet been verified.', success: 'Check the source, definitions, and coverage before treating it as a finding.' },
+    { action: 'connect', signal: 'The wait-time increase is verified, but no one knows why it differs by shift and patient group.', need: 'What is missing: context about who is affected and why.', cue: 'The pattern is already verified; its meaning is still unclear.', success: 'Connect the pattern with staff and patients to interpret it together.' },
+    { action: 'commit', signal: 'Staff and patients understand the bottleneck, but no response, owner, or review date has been agreed.', need: 'What is missing: an accountable response.', cue: 'The issue is understood; ownership and action are still absent.', success: 'Commit to a feasible action with an owner, measure, and review point.' },
+    { action: 'track', signal: 'A new intake step is running, but no one has checked its results across shifts and patient groups.', need: 'What is missing: follow-through on an action already underway.', cue: 'Implementation has begun; its results and uneven effects are still unknown.', success: 'Track outcomes, look for uneven effects, and adapt the response.' }
   ];
   let record = copyRecord(defaultRecord);
   let storageEnabled = !embedded;
   let phase = getPhase();
   let engine;
   let raf = 0;
-  let unlockTimer = 0;
   let countdownTimer = 0;
-  let pendingMode = 'classic';
+  let pendingMode = 'relaxed';
   let currentPanel = 'menu-panel';
   let tutorialIndex = 0;
   let tutorialLocked = false;
   let inputLocked = false;
+  let reviewing = false;
+  let reviewSnapshot = null;
   let lastTimerSecond = -1;
   const reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const el = {};
-  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','game-feedback','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','again-button','menu-button','error-message','qa-seed'];
+  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','start-button','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','answer-review','review-kicker','review-title','game-feedback','next-case-button','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','again-button','menu-button','error-message','qa-seed'];
 
   function copyRecord(value) {
     return {
@@ -133,6 +141,7 @@
     document.documentElement.classList.toggle('reduce-motion', record.settings.reduceMotion);
     el['motion-toggle'].setAttribute('aria-pressed', String(record.settings.reduceMotion));
     el['motion-toggle'].textContent = record.settings.reduceMotion ? 'Use standard motion' : 'Reduce motion';
+    setText(el['start-button'], record.settings.tutorialSeen ? 'Start the challenge' : 'Learn, then play');
   }
   function updateBestLine() {
     const mode = document.querySelector('input[name="mode"]:checked');
@@ -149,9 +158,20 @@
   function setButtonsDisabled(disabled) {
     document.querySelectorAll('#action-buttons button').forEach(button => { button.disabled = disabled; });
   }
-  function releaseInput() {
-    inputLocked = false;
-    setButtonsDisabled(false);
+  function clearActionStates() {
+    document.querySelectorAll('#action-buttons button').forEach(function (button) {
+      button.classList.remove('is-selected', 'is-answer');
+      button.removeAttribute('aria-current');
+    });
+  }
+  function clearReview() {
+    reviewing = false;
+    reviewSnapshot = null;
+    el['play-panel'].classList.remove('is-reviewing');
+    el['answer-review'].hidden = true;
+    el['answer-review'].className = 'answer-review';
+    el['pause-button'].disabled = false;
+    clearActionStates();
   }
   function startCountdown(callback) {
     clearInterval(countdownTimer);
@@ -176,7 +196,9 @@
     engine.start(pendingMode, now());
     record.settings.mode = pendingMode;
     persist(false);
+    clearReview();
     inputLocked = false;
+    setButtonsDisabled(false);
     lastTimerSecond = -1;
     render(engine.snapshot(now()));
     if (qaMode) setText(el['qa-seed'], 'QA mode · seed ' + activeSeed + ' · persistence disabled');
@@ -189,7 +211,10 @@
   function frame(timestamp) {
     const snapshot = engine.tick(timestamp);
     render(snapshot);
-    if (snapshot.resolutions && snapshot.resolutions.length) handleResolution(snapshot.resolutions[snapshot.resolutions.length - 1], snapshot);
+    if (snapshot.resolutions && snapshot.resolutions.length) {
+      enterReview(snapshot.resolutions[snapshot.resolutions.length - 1], snapshot);
+      return;
+    }
     if (snapshot.state === 'playing') raf = requestAnimationFrame(frame);
     else if (snapshot.state === 'results') showResults(snapshot);
   }
@@ -204,7 +229,7 @@
     const card = snapshot.currentCard;
     if (card) {
       setText(el['case-domain'], card.domain);
-      setText(el['case-stage'], 'Evidence signal');
+      setText(el['case-stage'], 'Find the missing step');
       setText(el['case-title'], card.title);
       setText(el['case-signal'], card.signal);
       const caseIndex = BuzzContent.cases.findIndex(function (item) { return item.id === card.caseId; });
@@ -225,25 +250,86 @@
       if ((effectiveReducedMotion() || snapshot.mode === 'relaxed') && [10,5,3].includes(second)) setText(el['timer-status'], second + ' seconds remaining.');
     }
   }
-  function handleResolution(result, snapshot) {
-    const name = result.expected.charAt(0).toUpperCase() + result.expected.slice(1);
+  function renderResolvedCard(card) {
+    if (!card) return;
+    setText(el['case-domain'], card.domain);
+    setText(el['case-stage'], 'Decision review');
+    setText(el['case-title'], card.title);
+    setText(el['case-signal'], card.signal);
+    const caseIndex = BuzzContent.cases.findIndex(function (item) { return item.id === card.caseId; });
+    el['case-art'].dataset.caseVisual = String(Math.max(0, caseIndex) % 4);
+  }
+  function enterReview(result, snapshot) {
+    if (!result || !result.resolvedCard) return;
+    cancelAnimationFrame(raf);
+    if (snapshot.state === 'playing') engine.pause(now());
+    reviewing = true;
+    inputLocked = true;
+    reviewSnapshot = snapshot;
+    render(snapshot);
+    renderResolvedCard(result.resolvedCard);
+    el['play-panel'].classList.add('is-reviewing');
+    el['answer-review'].hidden = false;
+    el['pause-button'].disabled = true;
+    setButtonsDisabled(true);
+    clearActionStates();
+    const expectedButton = document.querySelector('[data-action="' + result.expected + '"]');
+    const chosenButton = result.chosen ? document.querySelector('[data-action="' + result.chosen + '"]') : null;
+    if (expectedButton) {
+      expectedButton.classList.add('is-answer');
+      expectedButton.setAttribute('aria-current', 'true');
+    }
+    if (chosenButton) chosenButton.classList.add('is-selected');
+    const expectedName = actionNames[result.expected];
+    const chosenName = result.chosen ? actionNames[result.chosen] : '';
+    const clue = result.cue ? 'The clue: ' + result.cue + ' ' : '';
+    const score = result.correct ? ' You earned ' + result.points + ' points.' : '';
+    const bloom = result.bloomBonus ? ' This completed the four-step loop and earned a Bloom plus ' + result.bloomBonus + ' bonus points.' : '';
     let message;
     let className;
     if (result.timeout) {
-      message = 'Time. The next step was ' + name + '. ' + result.rationale;
+      message = 'No choice was recorded. ' + clue + result.rationale;
       className = 'is-wrong';
+      setText(el['review-kicker'], 'Time is up · review the gap');
     } else if (result.correct) {
-      const bonus = result.bloomBonus ? ' +' + result.bloomBonus + ' bloom bonus.' : '';
-      message = 'Right: ' + name + '. +' + result.points + ' points.' + bonus + ' ' + result.rationale;
+      message = clue + result.rationale + score + bloom;
       className = 'is-correct';
+      setText(el['review-kicker'], 'You found the gap');
     } else {
-      message = 'Try ' + name + ' next time. ' + result.rationale;
+      message = 'You chose ' + chosenName + '. ' + actionNeeds[result.chosen] + ' ' + clue + result.rationale;
       className = 'is-wrong';
+      setText(el['review-kicker'], 'Compare your choice with the loop');
     }
+    setText(el['review-title'], 'Best fit in this loop: ' + expectedName);
+    el['answer-review'].className = 'answer-review ' + className;
     el['game-feedback'].className = 'feedback game-feedback ' + className;
     setText(el['game-feedback'], message);
-    const next = snapshot.currentCard ? ' Next case: ' + snapshot.currentCard.title + '. ' + snapshot.currentCard.signal : '';
-    setText(el['game-status'], message + ' Trust ' + snapshot.trust + '. Queue ' + snapshot.queueLength + ' of ' + snapshot.queueCap + '.' + next);
+    setText(el['next-case-button'], snapshot.state === 'results' ? 'See results' : 'Next case');
+    setText(el['game-status'], message + ' Best fit: ' + expectedName + '. Trust ' + snapshot.trust + '. Queue ' + snapshot.queueLength + ' of ' + snapshot.queueCap + '.');
+    el['review-title'].focus();
+    requestAnimationFrame(announceHeight);
+  }
+  function continueAfterReview() {
+    if (!reviewing) return;
+    const completedSnapshot = reviewSnapshot;
+    clearReview();
+    if (completedSnapshot && completedSnapshot.state === 'results') {
+      showResults(completedSnapshot);
+      return;
+    }
+    if (!engine || engine.state !== 'paused' || document.hidden) {
+      showPanel('pause-panel');
+      return;
+    }
+    engine.resume(now());
+    inputLocked = false;
+    setButtonsDisabled(false);
+    lastTimerSecond = -1;
+    const snapshot = engine.snapshot(now());
+    render(snapshot);
+    showPanel('play-panel');
+    raf = requestAnimationFrame(frame);
+    el['case-title'].focus();
   }
   function choose(action) {
     if (inputLocked || !engine || engine.state !== 'playing') return;
@@ -251,17 +337,21 @@
     setButtonsDisabled(true);
     const result = engine.answer(action, now());
     render(result.snapshot);
-    if (result.accepted) handleResolution(result, result.snapshot);
-    else if (result.resolutions && result.resolutions.length) handleResolution(result.resolutions[result.resolutions.length - 1], result.snapshot);
-    clearTimeout(unlockTimer);
-    unlockTimer = window.setTimeout(releaseInput, 250);
-    if (result.snapshot.state === 'results') showResults(result.snapshot);
+    if (result.accepted) enterReview(result, result.snapshot);
+    else if (result.resolutions && result.resolutions.length) enterReview(result.resolutions[result.resolutions.length - 1], result.snapshot);
+    else {
+      inputLocked = false;
+      setButtonsDisabled(false);
+    }
   }
   function pause(auto) {
-    if (!engine || engine.state !== 'playing') return;
+    if (reviewing || !engine || engine.state !== 'playing') return;
     const snapshot = engine.tick(now());
     render(snapshot);
-    if (snapshot.resolutions && snapshot.resolutions.length) handleResolution(snapshot.resolutions[snapshot.resolutions.length - 1], snapshot);
+    if (snapshot.resolutions && snapshot.resolutions.length) {
+      enterReview(snapshot.resolutions[snapshot.resolutions.length - 1], snapshot);
+      return;
+    }
     if (snapshot.state === 'results') { showResults(snapshot); return; }
     if (!engine.pause(now())) return;
     cancelAnimationFrame(raf);
@@ -288,11 +378,13 @@
   }
   function showResults(snapshot) {
     cancelAnimationFrame(raf);
+    clearReview();
     const reasonCopy = { trust: 'Trust reached zero. Slow down, verify, and bring people into the next decision.', overload: 'The evidence queue filled up. Prioritize the next accountable step before adding more.', quit: 'You ended this run. The evidence-to-action loop is ready when you are.' };
     const previous = record.bests[snapshot.mode];
     previous.score = Math.max(previous.score, snapshot.score);
     previous.blooms = Math.max(previous.blooms, snapshot.blooms);
     persist(false);
+    setText(el['results-title'], snapshot.blooms ? 'You moved evidence into action.' : (snapshot.accuracy >= .5 ? 'You found part of the loop.' : 'Use the gaps to guide your next run.'));
     setText(el['end-reason'], reasonCopy[snapshot.endReason] || 'Every completed loop turns a signal into learning for the next decision.');
     setText(el['final-score'], snapshot.score);
     setText(el['final-blooms'], snapshot.blooms);
@@ -301,7 +393,7 @@
     setText(el['final-best'], previous.score);
     BuzzGame.ACTIONS.forEach(action => setText(el['accuracy-' + action], actionAccuracy(snapshot, action)));
     setText(el.takeaway, snapshot.blooms ? 'Takeaway: action is not the finish line. Track results, notice uneven effects, and adapt.' : 'Takeaway: credible action starts by checking the signal, then connecting it to context and people.');
-    setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent accuracy.');
+    setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent loop match.');
     el['results-panel'].dataset.outcome = snapshot.blooms ? 'bloom' : 'seed';
     showPanel('results-panel');
     el['results-title'].focus();
@@ -311,10 +403,15 @@
     setText(el['tutorial-step-label'], 'Practice clinic · step ' + (tutorialIndex + 1) + ' of 4 · no timer or penalties');
     setText(el['clinic-signal'], step.signal);
     el['tutorial-feedback'].className = 'feedback';
-    setText(el['tutorial-feedback'], step.prompt);
+    setText(el['tutorial-feedback'], step.need);
     el['tutorial-continue'].hidden = true;
+    setText(el['tutorial-continue'], tutorialIndex === tutorialSteps.length - 1 ? 'Start the game' : 'Next example');
     tutorialLocked = false;
-    document.querySelectorAll('[data-tutorial-action]').forEach(button => { button.disabled = false; });
+    document.querySelectorAll('[data-tutorial-action]').forEach(function (button) {
+      button.disabled = false;
+      button.classList.remove('is-selected', 'is-answer');
+      button.removeAttribute('aria-current');
+    });
   }
   function openTutorial() {
     tutorialIndex = 0;
@@ -325,6 +422,7 @@
   function finishTutorial() {
     record.settings.tutorialSeen = true;
     persist(false);
+    setText(el['start-button'], 'Start the challenge');
     startCountdown(beginRun);
   }
   function handleMessage(event) {
@@ -356,7 +454,7 @@
     }
     el['start-form'].addEventListener('submit', function (event) {
       event.preventDefault();
-      pendingMode = new FormData(event.currentTarget).get('mode') || 'classic';
+      pendingMode = new FormData(event.currentTarget).get('mode') || 'relaxed';
       if (!record.settings.tutorialSeen) openTutorial(); else startCountdown(beginRun);
     });
     document.querySelectorAll('input[name="mode"]').forEach(input => input.addEventListener('change', function () { pendingMode = input.value; updateBestLine(); }));
@@ -370,27 +468,38 @@
       window.setTimeout(() => setText(el['reset-button'], 'Reset local game data'), 1600);
     });
     el['tutorial-skip'].addEventListener('click', finishTutorial);
-    el['tutorial-continue'].addEventListener('click', finishTutorial);
+    el['tutorial-continue'].addEventListener('click', function () {
+      if (!tutorialLocked) return;
+      if (tutorialIndex === tutorialSteps.length - 1) {
+        finishTutorial();
+        return;
+      }
+      tutorialIndex += 1;
+      renderTutorialStep();
+      el['tutorial-title'].focus();
+    });
     document.querySelectorAll('[data-tutorial-action]').forEach(function (button) {
       button.addEventListener('click', function () {
         if (tutorialLocked) return;
         const step = tutorialSteps[tutorialIndex];
-        const correct = button.dataset.tutorialAction === step.action;
+        const chosen = button.dataset.tutorialAction;
+        const correct = chosen === step.action;
+        const expectedButton = document.querySelector('[data-tutorial-action="' + step.action + '"]');
+        button.classList.add('is-selected');
+        if (expectedButton) {
+          expectedButton.classList.add('is-answer');
+          expectedButton.setAttribute('aria-current', 'true');
+        }
         el['tutorial-feedback'].className = 'feedback ' + (correct ? 'is-correct' : 'is-wrong');
-        setText(el['tutorial-feedback'], correct ? step.success : 'That step belongs elsewhere in the loop. Try again; there is no penalty.');
-        if (!correct) return;
+        setText(el['tutorial-feedback'], correct ? 'Yes. ' + step.cue + ' ' + step.success : 'You chose ' + actionNames[chosen] + '. ' + actionNeeds[chosen] + ' In this case, ' + step.cue + ' Best fit: ' + actionNames[step.action] + '. ' + step.success);
         tutorialLocked = true;
         document.querySelectorAll('[data-tutorial-action]').forEach(actionButton => { actionButton.disabled = true; });
-        if (tutorialIndex < tutorialSteps.length - 1) {
-          tutorialIndex += 1;
-          window.setTimeout(function () { renderTutorialStep(); el['tutorial-title'].focus(); }, effectiveReducedMotion() ? 100 : 350);
-        } else {
-          el['tutorial-continue'].hidden = false;
-          el['tutorial-continue'].focus();
-        }
+        el['tutorial-continue'].hidden = false;
+        el['tutorial-continue'].focus();
       });
     });
     document.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', function () { choose(button.dataset.action); }));
+    el['next-case-button'].addEventListener('click', continueAfterReview);
     el['pause-button'].addEventListener('click', function () { pause(false); });
     el['resume-button'].addEventListener('click', resume);
     el['quit-button'].addEventListener('click', function () { engine.finish('quit', now()); showResults(engine.snapshot(now())); });
@@ -402,9 +511,10 @@
       if (event.repeat) return;
       if (event.key === 'Enter' && currentPanel === 'menu-panel' && event.target.tagName !== 'BUTTON') { event.preventDefault(); el['start-form'].requestSubmit(); return; }
       if (/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
-      if (engine && engine.state === 'playing' && ['1','2','3','4'].includes(event.key)) { event.preventDefault(); choose(BuzzGame.ACTIONS[Number(event.key) - 1]); }
+      if (reviewing && event.key === 'Enter') { event.preventDefault(); continueAfterReview(); }
+      else if (!reviewing && engine && engine.state === 'playing' && ['1','2','3','4'].includes(event.key)) { event.preventDefault(); choose(BuzzGame.ACTIONS[Number(event.key) - 1]); }
       else if ((event.key === 'p' || event.key === 'P' || event.key === 'Escape') && engine && engine.state === 'playing') { event.preventDefault(); pause(false); }
-      else if ((event.key === 'p' || event.key === 'P' || event.key === 'Enter') && engine && engine.state === 'paused') { event.preventDefault(); resume(); }
+      else if (!reviewing && (event.key === 'p' || event.key === 'P' || event.key === 'Enter') && engine && engine.state === 'paused') { event.preventDefault(); resume(); }
     });
     document.addEventListener('visibilitychange', function () { if (document.hidden && engine && engine.state === 'playing') pause(true); });
     window.addEventListener('blur', function () { if (engine && engine.state === 'playing') pause(true); });
