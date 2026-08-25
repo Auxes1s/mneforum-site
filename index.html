@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title><link rel="icon" href="event_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
-      'visibility:hidden!important;opacity:0!important}</style>'
+      'visibility:hidden!important;opacity:0!important}</style><script defer src="game/embed-v1.js"><\u002Fscript>'
     );
     // Keep the header mark faithful to the supplied source artwork. The
     // bundled fallback is a monochrome reduction; the repository SVG retains
@@ -143,6 +143,30 @@ document.addEventListener('DOMContentLoaded', async function() {
         'src="1cdb3ddb-492a-4da8-a30c-3167de126d8a" alt="M&amp;E Network Philippines"',
         'src="assets/partners/mne-network.svg" alt="M&amp;E Network Philippines"'
       );
+
+    // This section is a conventional same-site iframe rather than a bundled
+    // nested page. Keep the anchor assertion strict so a template refresh
+    // cannot silently move or duplicate the game.
+    const gameSectionAnchor = '<section id="program" class="program-section">';
+    const gameSectionCount = template.split(gameSectionAnchor).length - 1;
+    if (gameSectionCount !== 1) {
+      throw new Error('Buzz to Bloom insertion anchor expected once; found ' + gameSectionCount + '.');
+    }
+    const gameSection = `<section id="evidence-game" class="evidence-game-section" aria-labelledby="evidence-game-title">
+      <div class="sec-inner evidence-game-intro">
+        <div>
+          <p class="evidence-game-kicker">A quick evidence-to-action challenge</p>
+          <h2 id="evidence-game-title">Can you move the signal from buzz to bloom?</h2>
+          <p data-game-phase-copy>Practice the evidence-to-action loop before Forum day.</p>
+        </div>
+        <p class="evidence-game-explainer">Choose the responsible next step across fictional public-service cases. Verify signals, connect evidence with people, commit to accountable action, and track what changes.</p>
+      </div>
+      <div class="sec-inner evidence-game-frame-shell">
+        <iframe data-buzz-to-bloom src="game/?embed=1" title="Buzz to Bloom evidence-to-action challenge" sandbox="allow-scripts" loading="lazy"></iframe>
+        <p class="evidence-game-fallback"><a href="game/" target="_blank" rel="noopener">Open Buzz to Bloom in a new page</a><span>Fictional practice cases · no account or personal data</span></p>
+      </div>
+    </section>`;
+    template = template.replace(gameSectionAnchor, gameSection + gameSectionAnchor);
 
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker
@@ -3501,6 +3525,79 @@ document.addEventListener('DOMContentLoaded', async function() {
         .site-footer > div:last-child > div > span + span::before {
           display: none;
         }
+      }
+
+      /* Buzz to Bloom is isolated in an iframe; these rules only shape the
+         host section and preserve the site's existing visual hierarchy. */
+      .evidence-game-section {
+        position: relative;
+        overflow: hidden;
+        padding: 88px 0 94px;
+        background:
+          radial-gradient(circle at 92% 8%, rgba(241,168,30,.19), transparent 25rem),
+          linear-gradient(180deg, #fff 0%, #f8f4eb 100%);
+        border-top: 1px solid rgba(10,87,163,.09);
+        border-bottom: 1px solid rgba(10,87,163,.09);
+      }
+      .evidence-game-section::before {
+        content: "";
+        position: absolute;
+        left: -70px;
+        bottom: -120px;
+        width: 300px;
+        height: 300px;
+        border: 48px solid rgba(68,152,211,.08);
+        border-radius: 49% 51% 45% 55%;
+        rotate: 16deg;
+      }
+      .evidence-game-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+        gap: clamp(28px, 6vw, 84px);
+        align-items: end;
+        margin-bottom: 30px;
+      }
+      .evidence-game-intro h2 { max-width: 720px; margin-bottom: 14px; }
+      .evidence-game-intro h2::after { margin-top: 18px; }
+      .evidence-game-intro p { margin-bottom: 0; }
+      .evidence-game-kicker {
+        color: var(--brand-red);
+        font: 700 12px/1.4 var(--font-heading);
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+      .evidence-game-explainer { color: #5d6770; line-height: 1.7; }
+      .evidence-game-frame-shell {
+        position: relative;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid rgba(10,87,163,.14);
+        border-radius: 30px;
+        box-shadow: 0 24px 54px rgba(4,23,55,.13);
+      }
+      .evidence-game-frame-shell iframe {
+        display: block;
+        width: 100%;
+        height: 760px;
+        border: 0;
+        border-radius: 22px;
+        background: #f8f4eb;
+      }
+      .evidence-game-fallback {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 10px 8px 3px;
+        color: #6b7076;
+        font-size: 12px;
+      }
+      .evidence-game-fallback a { color: var(--brand-blue-dark); font-weight: 700; }
+      @media (max-width: 760px) {
+        .evidence-game-section { padding: 64px 0 70px; }
+        .evidence-game-intro { grid-template-columns: 1fr; gap: 14px; }
+        .evidence-game-frame-shell { padding: 5px; border-radius: 20px; }
+        .evidence-game-frame-shell iframe { height: 820px; border-radius: 16px; }
+        .evidence-game-fallback { align-items: flex-start; flex-direction: column; }
       }
     </style>`;
     // Inject after <head> so the DOCTYPE stays first; prepending the script
