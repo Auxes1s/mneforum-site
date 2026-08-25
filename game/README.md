@@ -8,6 +8,18 @@ Buzz to Bloom is a dependency-free evidence-to-action mini-game for the 13th M&E
 - Embedded: `/game/?embed=1`
 - Deterministic QA: `/game/?qa=1&seed=12345`
 
+## Branch and promotion flow
+
+The `13th-forum` line is the development source of truth. Its root `index.html`
+is the working Forum page. The current `master:/dev/index.html` snapshot was
+copied into that root before the game was integrated.
+
+After the Forum page and game are finalized, promotion goes in the other
+direction: copy the finalized `13th-forum:index.html` to
+`master:/dev/index.html`, copy `game/` and any updated Forum assets to master,
+and add `game` to master's static build/check lists. Do not replace master's
+public root teaser until the separate Forum launch decision.
+
 The game uses classic deferred scripts so it remains usable inside a sandboxed iframe with an opaque origin. It makes no network requests and has no account, analytics, cookies, service worker, leaderboard, audio, or third-party runtime.
 
 ## Generic iframe embed
