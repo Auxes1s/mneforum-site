@@ -5,8 +5,9 @@ Buzz to Bloom is a dependency-free evidence-to-action mini-game for the 13th M&E
 ## Routes
 
 - Standalone: `/game/`
-- Embedded: `/game/?embed=1`
-- Deterministic QA: `/game/?qa=1&seed=12345`
+- Embedded: `/game/?embed=1&pack=forum-v1`
+- Deterministic QA: `/game/?qa=1&seed=12345&pack=forum-v1`
+- Forum-page pack preview: `/?gamePack=forum-v1`
 
 ## Branch and promotion flow
 
@@ -20,7 +21,7 @@ direction: copy the finalized `13th-forum:index.html` to
 and add `game` to master's static build/check lists. Do not replace master's
 public root teaser until the separate Forum launch decision.
 
-The game uses classic deferred scripts so it remains usable inside a sandboxed iframe with an opaque origin. It makes no network requests and has no account, analytics, cookies, service worker, leaderboard, audio, or third-party runtime.
+The game uses classic scripts and a same-origin, versioned case-pack loader so it remains usable inside a sandboxed iframe with an opaque origin. It makes no API requests and has no account, analytics, cookies, service worker, leaderboard, audio, or third-party runtime. Its visual layer reuses the Forum site's existing identity logo, butterfly mark, textured geometric shapes, and background motif.
 
 ## Generic iframe embed
 
@@ -29,7 +30,7 @@ The production security policy intentionally permits **same-origin embedding onl
 ```html
 <iframe
   data-buzz-to-bloom
-  src="/game/?embed=1"
+  src="/game/?embed=1&amp;pack=forum-v1"
   title="Buzz to Bloom evidence-to-action challenge"
   sandbox="allow-scripts"
   style="width:100%;height:760px;border:0"
@@ -53,7 +54,9 @@ The host accepts messages only from the iframe's own `contentWindow`, validates 
 
 ## Content and controls
 
-The content pack contains 96 short cards: three difficulty variants at each of four stages for eight evolving cases. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**.
+The default content pack contains 96 short cards: three difficulty variants at each of four stages for eight evolving cases. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**.
+
+Case content is hot-swappable without changing the engine or interface. Add a versioned file under `cases/`, then select it with `?pack=<pack-id>` on the game route or `?gamePack=<pack-id>` on the Forum page. See `cases/README.md` for the pack contract and release workflow.
 
 - Keyboard: `1`–`4` choose actions, `P` or `Escape` pauses, `Enter` resumes.
 - Touch: every action is a native button at least 48 pixels high.
@@ -68,8 +71,9 @@ Run the engine/content tests from the repository root:
 node game/tests/engine.test.js
 node game/tests/embed.test.js
 node game/tests/integration.test.js
+node game/tests/case-packs.test.js
 ```
 
-Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify both `/` and `/game/?qa=1&seed=12345`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
+Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/`, `/?gamePack=forum-v1`, and `/game/?qa=1&seed=12345&pack=forum-v1`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
 
-The `*-v1` JavaScript and CSS filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update `game/index.html`.
+Versioned JavaScript, CSS, and case-pack filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update its reference.

@@ -322,6 +322,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // This section is a conventional same-site iframe rather than a bundled
     // nested page. Keep the anchor assertion strict so a template refresh
     // cannot silently move or duplicate the game.
+    const requestedGamePack = new URLSearchParams(window.location.search).get('gamePack');
+    const gamePack = requestedGamePack && /^[a-z0-9](?:[a-z0-9-]{0,47}[a-z0-9])?$/.test(requestedGamePack)
+      ? requestedGamePack
+      : 'forum-v1';
     const gameSectionAnchor = '<section id="program" class="program-section">';
     const gameSectionCount = template.split(gameSectionAnchor).length - 1;
     if (gameSectionCount !== 1) console.warn('Buzz to Bloom insertion skipped; anchor count was ' + gameSectionCount + '.');
@@ -335,8 +339,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p class="evidence-game-explainer">Choose the responsible next step across fictional public-service cases. Verify signals, connect evidence with people, commit to accountable action, and track what changes.</p>
       </div>
       <div class="sec-inner evidence-game-frame-shell">
-        <iframe data-buzz-to-bloom src="game/?embed=1" title="Buzz to Bloom evidence-to-action challenge" sandbox="allow-scripts" loading="lazy"></iframe>
-        <p class="evidence-game-fallback"><a href="game/" target="_blank" rel="noopener">Open Buzz to Bloom in a new page</a><span>Fictional practice cases · no account or personal data</span></p>
+        <iframe data-buzz-to-bloom src="game/?embed=1&amp;pack=${encodeURIComponent(gamePack)}" title="Buzz to Bloom evidence-to-action challenge" sandbox="allow-scripts" loading="lazy"></iframe>
+        <p class="evidence-game-fallback"><a href="game/?pack=${encodeURIComponent(gamePack)}" target="_blank" rel="noopener">Open Buzz to Bloom in a new page</a><span>Fictional practice cases · no account or personal data</span></p>
       </div>
     </section>`;
     if (gameSectionCount === 1) template = template.replace(gameSectionAnchor, gameSection + gameSectionAnchor);

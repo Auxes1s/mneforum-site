@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en-PH">
+<html lang="en-PH" data-case-pack="forum-v1">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0a57a3">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Buzz to Bloom — Evidence-to-Action Challenge</title>
-  <link rel="stylesheet" href="game-v1.css">
-  <script defer src="content-v1.js"></script>
+  <link rel="stylesheet" href="game-v2.css">
+  <script defer src="content-loader-v1.js"></script>
   <script defer src="engine-v1.js"></script>
-  <script defer src="ui-v1.js"></script>
+  <script defer src="ui-v2.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#game-main">Skip to game</a>
@@ -18,6 +18,7 @@
       <div>
         <p class="eyebrow">13th M&amp;E Network Forum mini-game</p>
         <h1>Buzz to <span>Bloom</span></h1>
+        <p class="pack-line"><span aria-hidden="true">&#10022;</span> <span id="pack-name">Loading practice cases…</span></p>
       </div>
       <button id="motion-toggle" class="text-button" type="button" aria-pressed="false">Reduce motion</button>
     </header>
@@ -27,6 +28,9 @@
         <p id="phase-copy" class="phase-copy">Practice the evidence-to-action loop before Forum day.</p>
         <h2 id="menu-title">Turn signals into accountable action.</h2>
         <p>Four decisions. Eight public-service cases. Keep Trust high while evidence moves from a first signal to tracked results.</p>
+        <figure class="journey-art journey-art-menu" aria-hidden="true">
+          <img src="../assets/forum-logo-v5-static.svg" width="855" height="459" decoding="async" alt="">
+        </figure>
         <ol class="action-loop" aria-label="The evidence-to-action loop">
           <li><b>1</b><span><strong>Check</strong><small>Verify the signal</small></span></li>
           <li><b>2</b><span><strong>Connect</strong><small>Read it with people</small></span></li>
@@ -83,6 +87,12 @@
       </div>
       <div class="case-layout">
         <article class="case-card">
+          <div id="case-art" class="case-art" aria-hidden="true">
+            <span class="case-shape case-shape-one"></span>
+            <span class="case-shape case-shape-two"></span>
+            <img class="case-butterfly" src="../assets/butterfly-mark.svg" width="255" height="285" decoding="async" alt="">
+            <span class="case-pulse"></span>
+          </div>
           <div class="case-meta">
             <span id="case-domain">Health</span>
             <span id="case-stage">Evidence signal</span>
@@ -102,6 +112,9 @@
             <button type="button" data-action="track"><kbd>4</kbd><span><strong>Track</strong><small>Follow results and adapt</small></span></button>
           </div>
         </div>
+      </div>
+      <div id="bloom-garden" class="bloom-garden" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
       </div>
       <div id="game-feedback" class="feedback game-feedback" aria-live="polite"></div>
       <p id="game-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
@@ -124,29 +137,40 @@
     </section>
 
     <section id="results-panel" class="panel results-panel" aria-labelledby="results-title" hidden>
-      <p class="eyebrow">Run complete</p>
-      <h2 id="results-title" tabindex="-1">You kept evidence moving.</h2>
-      <p id="end-reason" class="phase-copy"></p>
-      <div class="results-score"><strong id="final-score">0</strong><span>points</span></div>
-      <dl class="results-grid">
-        <div><dt>Blooms</dt><dd id="final-blooms">0</dd></div>
-        <div><dt>Best streak</dt><dd id="final-streak">0</dd></div>
-        <div><dt>Accuracy</dt><dd id="final-accuracy">0%</dd></div>
-        <div><dt>Best score</dt><dd id="final-best">0</dd></div>
-      </dl>
-      <div class="action-accuracy" aria-labelledby="action-accuracy-title">
-        <h3 id="action-accuracy-title">Decision accuracy</h3>
-        <dl>
-          <div><dt>Check</dt><dd id="accuracy-check">0%</dd></div>
-          <div><dt>Connect</dt><dd id="accuracy-connect">0%</dd></div>
-          <div><dt>Commit</dt><dd id="accuracy-commit">0%</dd></div>
-          <div><dt>Track</dt><dd id="accuracy-track">0%</dd></div>
-        </dl>
+      <div class="results-hero">
+        <div class="results-copy">
+          <p class="eyebrow">Run complete</p>
+          <h2 id="results-title" tabindex="-1">You kept evidence moving.</h2>
+          <p id="end-reason" class="phase-copy"></p>
+          <div class="results-score"><strong id="final-score">0</strong><span>points</span></div>
+        </div>
+        <figure class="results-bloom" aria-hidden="true">
+          <span class="results-shape results-shape-one"></span>
+          <span class="results-shape results-shape-two"></span>
+          <img src="../assets/butterfly-mark.svg" width="255" height="285" decoding="async" alt="">
+        </figure>
       </div>
-      <p id="takeaway" class="takeaway"></p>
-      <div class="results-actions">
-        <button id="again-button" class="primary-button" type="button">Play again</button>
-        <button id="menu-button" class="text-button" type="button">Change pace</button>
+      <div class="results-details">
+        <dl class="results-grid">
+          <div><dt>Blooms</dt><dd id="final-blooms">0</dd></div>
+          <div><dt>Best streak</dt><dd id="final-streak">0</dd></div>
+          <div><dt>Accuracy</dt><dd id="final-accuracy">0%</dd></div>
+          <div><dt>Best score</dt><dd id="final-best">0</dd></div>
+        </dl>
+        <div class="action-accuracy" aria-labelledby="action-accuracy-title">
+          <h3 id="action-accuracy-title">Decision accuracy</h3>
+          <dl>
+            <div><dt>Check</dt><dd id="accuracy-check">0%</dd></div>
+            <div><dt>Connect</dt><dd id="accuracy-connect">0%</dd></div>
+            <div><dt>Commit</dt><dd id="accuracy-commit">0%</dd></div>
+            <div><dt>Track</dt><dd id="accuracy-track">0%</dd></div>
+          </dl>
+        </div>
+        <p id="takeaway" class="takeaway"></p>
+        <div class="results-actions">
+          <button id="again-button" class="primary-button" type="button">Play again</button>
+          <button id="menu-button" class="text-button" type="button">Change pace</button>
+        </div>
       </div>
     </section>
 

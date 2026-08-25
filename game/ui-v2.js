@@ -32,7 +32,7 @@
   const reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const el = {};
-  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','start-form','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','game-feedback','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','again-button','menu-button','error-message','qa-seed'];
+  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','game-feedback','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','again-button','menu-button','error-message','qa-seed'];
 
   function copyRecord(value) {
     return {
@@ -207,7 +207,12 @@
       setText(el['case-stage'], 'Evidence signal');
       setText(el['case-title'], card.title);
       setText(el['case-signal'], card.signal);
+      const caseIndex = BuzzContent.cases.findIndex(function (item) { return item.id === card.caseId; });
+      el['case-art'].dataset.caseVisual = String(Math.max(0, caseIndex) % 4);
     }
+    el['bloom-garden'].querySelectorAll('span').forEach(function (node, index) {
+      node.classList.toggle('earned', index < Math.min(4, snapshot.blooms));
+    });
     const ratio = snapshot.decisionWindow ? Math.max(0, Math.min(1, snapshot.timeRemaining / snapshot.decisionWindow)) : 0;
     if (!effectiveReducedMotion()) {
       const timerTransform = 'scaleX(' + ratio + ')';
@@ -297,6 +302,7 @@
     BuzzGame.ACTIONS.forEach(action => setText(el['accuracy-' + action], actionAccuracy(snapshot, action)));
     setText(el.takeaway, snapshot.blooms ? 'Takeaway: action is not the finish line. Track results, notice uneven effects, and adapt.' : 'Takeaway: credible action starts by checking the signal, then connecting it to context and people.');
     setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent accuracy.');
+    el['results-panel'].dataset.outcome = snapshot.blooms ? 'bloom' : 'seed';
     showPanel('results-panel');
     el['results-title'].focus();
   }
@@ -332,7 +338,9 @@
 
   function init() {
     ids.forEach(function (id) { el[id] = document.getElementById(id); });
-    if (!el['start-form'] || !window.BuzzGame || !window.BuzzContent) return;
+    if (!el['start-form'] || !window.BuzzGame || !window.BuzzContent) throw new Error('The game interface or selected case pack is incomplete.');
+    setText(el['pack-name'], BuzzContent.name);
+    document.documentElement.dataset.activeCasePack = BuzzContent.packId;
     readRecord();
     syncSettings();
     updatePhaseCopy();
@@ -406,5 +414,14 @@
     announceHeight();
   }
 
-  init();
+  function showLoadError(error) {
+    ids.forEach(function (id) { el[id] = document.getElementById(id); });
+    if (!el['error-panel']) return;
+    setText(el['error-message'], error && error.message ? error.message : 'Please refresh the page.');
+    showPanel('error-panel');
+  }
+
+  (window.BuzzContentReady || Promise.resolve(window.BuzzContent)).then(function () {
+    init();
+  }).catch(showLoadError);
 }());

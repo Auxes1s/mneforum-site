@@ -1,6 +1,8 @@
 (function (root) {
   'use strict';
 
+  const packId = 'forum-v1';
+
   const themes = [
     'shared-mandate',
     'technological-innovations',
@@ -146,10 +148,19 @@
     return { id: spec.id, domain: spec.domain, title: spec.title, stages: builtStages };
   });
 
-  root.BuzzContent = {
+  const pack = {
     schemaVersion: 1,
+    packId: packId,
+    name: '13th Forum practice cases',
+    description: 'Eight fictional public-service cases grounded in the Forum concept-note themes.',
     locale: 'en-PH',
     themeIds: themes,
     cases: cases
   };
+
+  if (root.BuzzCasePacks && typeof root.BuzzCasePacks.register === 'function') {
+    root.BuzzCasePacks.register(packId, pack);
+  } else {
+    root.BuzzContent = pack;
+  }
 }(typeof window !== 'undefined' ? window : globalThis));

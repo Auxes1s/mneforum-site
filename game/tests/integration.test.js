@@ -14,15 +14,20 @@ function test(name, fn) {
 
 const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const html = fs.readFileSync(path.join(gameRoot, 'index.html'), 'utf8');
-const ui = fs.readFileSync(path.join(gameRoot, 'ui-v1.js'), 'utf8');
+const ui = fs.readFileSync(path.join(gameRoot, 'ui-v2.js'), 'utf8');
+const loader = fs.readFileSync(path.join(gameRoot, 'content-loader-v1.js'), 'utf8');
+const css = fs.readFileSync(path.join(gameRoot, 'game-v2.css'), 'utf8');
 const embed = fs.readFileSync(path.join(gameRoot, 'embed-v1.js'), 'utf8');
 const engine = fs.readFileSync(path.join(gameRoot, 'engine-v1.js'), 'utf8');
 
 test('standalone assets are local, versioned, and present', () => {
   const refs = Array.from(html.matchAll(/(?:src|href)="([^"]+)"/g), match => match[1]).filter(ref => !ref.startsWith('#'));
-  assert.deepEqual(refs.sort(), ['content-v1.js','engine-v1.js','game-v1.css','ui-v1.js'].sort());
+  assert.deepEqual(Array.from(new Set(refs)).sort(), ['game-v2.css','content-loader-v1.js','engine-v1.js','ui-v2.js','../assets/forum-logo-v5-static.svg','../assets/butterfly-mark.svg'].sort());
   refs.forEach(ref => assert.equal(fs.existsSync(path.join(gameRoot, ref)), true, ref + ' is missing'));
+  const cssRefs = Array.from(css.matchAll(/url\("([^"]+)"\)/g), match => match[1]);
+  cssRefs.forEach(ref => assert.equal(fs.existsSync(path.join(gameRoot, ref)), true, ref + ' is missing'));
   assert.equal(/https?:\/\//.test(html), false);
+  assert.doesNotMatch(html + css, /evidence-garden|signal-to-bloom|game\/assets/);
 });
 
 test('standalone markup has unique IDs and named controls', () => {
@@ -41,7 +46,9 @@ test('standalone markup has unique IDs and named controls', () => {
 
 test('homepage uses the guarded sandboxed iframe integration', () => {
   assert.match(homepage, /gameSectionCount !== 1/);
-  assert.match(homepage, /data-buzz-to-bloom src="game\/\?embed=1"/);
+  assert.match(homepage, /data-buzz-to-bloom src="game\/\?embed=1&amp;pack=\$\{encodeURIComponent\(gamePack\)\}"/);
+  assert.match(homepage, /requestedGamePack/);
+  assert.match(homepage, /\^\[a-z0-9\]/);
   assert.match(homepage, /sandbox="allow-scripts"/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-same-origin/);
   assert.match(homepage, /title="Buzz to Bloom evidence-to-action challenge"/);
@@ -82,6 +89,17 @@ test('the interface does not disclose answers and enforces accessible resolution
   assert.match(ui, /effectiveReducedMotion\(\)/);
   assert.match(ui, /accuracy-' \+ action/);
   assert.match(ui, /randomSeed\(\)/);
+});
+
+test('case packs are selected by a safe same-origin versioned loader', () => {
+  assert.match(html, /data-case-pack="forum-v1"/);
+  assert.match(loader, /BuzzContentReady/);
+  assert.match(loader, /PACK_PATTERN/);
+  assert.match(loader, /script\.src = 'cases\/' \+ requestedId \+ '\.js'/);
+  assert.match(loader, /id !== requestedId/);
+  assert.doesNotMatch(loader, /fetch\(|XMLHttpRequest|https?:\/\//);
+  assert.match(ui, /BuzzContent\.name/);
+  assert.match(ui, /activeCasePack/);
 });
 
 test('pure engine has no wall-clock or ambient randomness dependency', () => {

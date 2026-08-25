@@ -4,7 +4,6 @@
   const ACTIONS = ['check', 'connect', 'commit', 'track'];
   const THEME_IDS = ['shared-mandate', 'technological-innovations', 'local-partners', 'collaborative-action'];
   const TAGS = ['official-and-community', 'ai-assisted', 'human-led'];
-  const DOMAINS = ['Health', 'Education', 'Disaster response', 'Agriculture', 'Transport', 'Social protection', 'Environment', 'Local services'];
   const MODES = {
     classic: { interval: 30000, tierCap: 10, arrivalBase: 4200, arrivalStep: 280, arrivalMin: 1700, decisionBase: 10000, decisionStep: 500, decisionMin: 5500, queueCap: 6, wrong: 16, timeout: 22, correct: 1, bloom: 6 },
     relaxed: { interval: 45000, tierCap: 6, arrivalBase: 5600, arrivalStep: 420, arrivalMin: 3500, decisionBase: 16000, decisionStep: 1000, decisionMin: 11000, queueCap: 8, wrong: 10, timeout: 12, correct: 2, bloom: 10 }
@@ -31,12 +30,14 @@
     let aiCount = 0;
     let combinedCases = 0;
     if (!pack || pack.schemaVersion !== 1 || pack.locale !== 'en-PH' || !Array.isArray(pack.cases)) errors.push('Invalid content-pack header.');
+    if (!pack || typeof pack.packId !== 'string' || !/^[a-z0-9](?:[a-z0-9-]{0,47}[a-z0-9])?$/.test(pack.packId)) errors.push('Content pack needs a safe versioned packId.');
+    if (!pack || typeof pack.name !== 'string' || !pack.name.trim() || pack.name.length > 72) errors.push('Content pack needs a short display name.');
     if (!pack || !Array.isArray(pack.themeIds) || pack.themeIds.length !== THEME_IDS.length || !THEME_IDS.every(id => pack.themeIds.includes(id))) errors.push('Content pack must use the four cleared concept-note themes.');
     if (!pack || !Array.isArray(pack.cases) || pack.cases.length < 8) errors.push('At least eight cases are required.');
     (pack && pack.cases || []).forEach(function (item) {
       if (!item.id || ids.has(item.id)) errors.push('Case IDs must be unique.');
       ids.add(item.id);
-      if (!DOMAINS.includes(item.domain) || !item.title || typeof item.title !== 'string') errors.push((item.id || 'case') + ' has invalid case metadata.');
+      if (typeof item.domain !== 'string' || !item.domain.trim() || item.domain.length > 40 || typeof item.title !== 'string' || !item.title.trim() || item.title.length > 72) errors.push((item.id || 'case') + ' has invalid case metadata.');
       let combined = false;
       ACTIONS.forEach(function (stage) {
         const cards = item.stages && item.stages[stage];

@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-require('../content-v1.js');
+require('../cases/forum-v1.js');
 const game = require('../engine-v1.js');
 const content = global.BuzzContent;
 
@@ -54,6 +54,8 @@ function median(values) {
 test('content pack uses the cleared themes and at least 64 valid cards', () => {
   const validation = game.validateContent(content);
   assert.equal(validation.valid, true, validation.errors.join('\n'));
+  assert.equal(content.packId, 'forum-v1');
+  assert.equal(content.name, '13th Forum practice cases');
   assert.equal(content.cases.length, 8);
   assert.ok(content.cases.reduce((sum,item) => sum + Object.values(item.stages).flat().length, 0) >= 64);
   assert.deepEqual(content.themeIds, ['shared-mandate','technological-innovations','local-partners','collaborative-action']);
