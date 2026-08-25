@@ -47,6 +47,13 @@ Always create a new filename for revised deployed content, for example
 Write each signal as a situation with one first unmet need. Do not describe the
 expected action as already completed.
 
+Every signal must make sense on its own beside the case title. Use one plain
+sentence that names the public-service actor or AI tool, states what is already
+known, and identifies the concrete unresolved decision. Prefer “staff know the
+AI misreads legitimate bids, but no human review process exists” over compressed
+phrases such as “review needs are established.” Avoid unexplained acronyms,
+abstract stage labels, passive nominalizations, and long checklist-style lists.
+
 - `check` (**Verify evidence**): the source, definition, coverage, or data quality is uncertain.
 - `connect` (**Investigate why**): the pattern is verified, but who is affected, why, or how people
   understand it remains unclear.
