@@ -2,10 +2,10 @@
   'use strict';
 
   const themes = [
-    'global-frontiers',
-    'practical-use-cases',
-    'emerging-methodologies',
-    'responsible-governance'
+    'shared-mandate',
+    'technological-innovations',
+    'local-partners',
+    'collaborative-action'
   ];
   const stages = ['check', 'connect', 'commit', 'track'];
 
@@ -95,34 +95,51 @@
   const rationales = {
     check: [
       'Verify definitions, coverage, and source quality before treating a signal as a finding.',
-      'A responsible first move tests the signal and documents uncertainty before interpretation.'
+      'A responsible first move tests the signal and documents uncertainty before interpretation.',
+      'Technology can surface a signal, but people must still verify its sources, limits, and uncertainty.'
     ],
     connect: [
       'Combine verified measures with lived experience to understand who is affected and why.',
-      'Evidence becomes useful when people can interpret differences, context, and possible causes together.'
+      'Evidence becomes useful when people can interpret differences, context, and possible causes together.',
+      'Local partners help explain uneven patterns and reveal context that an overall measure cannot show.'
     ],
     commit: [
       'Turn shared understanding into a specific action with an owner, measure, and review point.',
-      'Accountability requires a feasible decision, a named lead, and a clear signal of progress.'
+      'Accountability requires a feasible decision, a named lead, and a clear signal of progress.',
+      'Collaborative action needs clear ownership, safeguards, success measures, and a scheduled review.'
     ],
     track: [
       'Follow implementation and outcomes, look for uneven effects, then adapt the response.',
-      'Tracking tests whether action worked for different groups and shows what needs adjustment.'
+      'Tracking tests whether action worked for different groups and shows what needs adjustment.',
+      'Shared monitoring should surface trade-offs early enough for partners to adjust the response.'
     ]
   };
 
-  const cases = caseSpecs.map(function (spec, caseIndex) {
+  const advancedSignals = {
+    check: title => 'An automated summary of ' + title.toLowerCase() + ' conflicts with source records and omits uncertainty.',
+    connect: title => 'Groups interpret the verified ' + title.toLowerCase() + ' pattern differently where access and exposure are uneven.',
+    commit: title => 'A proposed ' + title.toLowerCase() + ' response lacks clear ownership, safeguards, success measures, and review criteria.',
+    track: title => 'Early ' + title.toLowerCase() + ' results improve overall while one subgroup shows an unexpected trade-off.'
+  };
+  const stageThemes = {
+    check: ['shared-mandate', 'technological-innovations'],
+    connect: ['local-partners', 'shared-mandate'],
+    commit: ['collaborative-action', 'shared-mandate'],
+    track: ['collaborative-action', 'technological-innovations']
+  };
+
+  const cases = caseSpecs.map(function (spec) {
     const builtStages = {};
-    stages.forEach(function (stage, stageIndex) {
-      builtStages[stage] = spec.lines[stage].map(function (signal, variantIndex) {
-        const advanced = ((caseIndex + stageIndex) % 2 === 0) ? 3 : 2;
+    stages.forEach(function (stage) {
+      const signals = spec.lines[stage].concat(advancedSignals[stage](spec.title));
+      builtStages[stage] = signals.map(function (signal, variantIndex) {
         return {
           id: spec.id + '-' + stage + '-' + (variantIndex + 1),
-          difficulty: variantIndex === 0 ? 1 : advanced,
+          difficulty: variantIndex + 1,
           signal: signal,
           rationale: rationales[stage][variantIndex],
-          themeIds: [themes[(caseIndex + stageIndex) % themes.length], themes[(caseIndex + stageIndex + 1) % themes.length]],
-          tags: [spec.evidence, caseIndex === 3 && variantIndex === 1 ? 'ai-assisted' : 'human-led']
+          themeIds: stageThemes[stage].slice(),
+          tags: [spec.evidence, stage === 'check' && variantIndex === 2 ? 'ai-assisted' : 'human-led']
         };
       });
     });

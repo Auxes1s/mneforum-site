@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '</title><link rel="icon" href="event_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
-      'visibility:hidden!important;opacity:0!important}</style><script defer src="game/embed-v1.js"><\u002Fscript>'
+      'visibility:hidden!important;opacity:0!important}</style>'
     );
     // Keep the header mark faithful to the supplied source artwork. The
     // bundled fallback is a monochrome reduction; the repository SVG retains
@@ -149,9 +149,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // cannot silently move or duplicate the game.
     const gameSectionAnchor = '<section id="program" class="program-section">';
     const gameSectionCount = template.split(gameSectionAnchor).length - 1;
-    if (gameSectionCount !== 1) {
-      throw new Error('Buzz to Bloom insertion anchor expected once; found ' + gameSectionCount + '.');
-    }
+    if (gameSectionCount !== 1) console.warn('Buzz to Bloom insertion skipped; anchor count was ' + gameSectionCount + '.');
     const gameSection = `<section id="evidence-game" class="evidence-game-section" aria-labelledby="evidence-game-title">
       <div class="sec-inner evidence-game-intro">
         <div>
@@ -166,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p class="evidence-game-fallback"><a href="game/" target="_blank" rel="noopener">Open Buzz to Bloom in a new page</a><span>Fictional practice cases · no account or personal data</span></p>
       </div>
     </section>`;
-    template = template.replace(gameSectionAnchor, gameSection + gameSectionAnchor);
+    if (gameSectionCount === 1) template = template.replace(gameSectionAnchor, gameSection + gameSectionAnchor);
 
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker
@@ -3592,6 +3590,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         font-size: 12px;
       }
       .evidence-game-fallback a { color: var(--brand-blue-dark); font-weight: 700; }
+      html[data-thinking-mode="ultra"] .evidence-game-section {
+        background:
+          radial-gradient(circle at 92% 8%, rgba(241,168,30,.12), transparent 25rem),
+          linear-gradient(180deg, rgba(8,29,45,.98), rgba(5,20,33,.98)) !important;
+        border-color: rgba(82,145,184,.28) !important;
+      }
+      html[data-thinking-mode="ultra"] .evidence-game-section [data-game-phase-copy],
+      html[data-thinking-mode="ultra"] .evidence-game-explainer { color: #c9dce8 !important; }
+      html[data-thinking-mode="ultra"] .evidence-game-kicker { color: #ffc24a !important; }
+      html[data-thinking-mode="ultra"] .evidence-game-frame-shell { background: rgba(11,30,46,.88); border-color: rgba(92,163,205,.38); }
+      html[data-thinking-mode="ultra"] .evidence-game-fallback { color: #b8cad6; }
+      html[data-thinking-mode="ultra"] .evidence-game-fallback a { color: #dff3ff; }
       @media (max-width: 760px) {
         .evidence-game-section { padding: 64px 0 70px; }
         .evidence-game-intro { grid-template-columns: 1fr; gap: 14px; }
@@ -4536,6 +4546,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         heroThinkingObserver.disconnect();
       }
     }, 8000);
+
+    // Optional enhancement: do not put the game bridge on the homepage's
+    // critical unpacking path. The fixed-height iframe and standalone link
+    // remain usable if this script is delayed or unavailable.
+    if (gameSectionCount === 1) {
+      window.setTimeout(() => {
+        const bridge = document.createElement('script');
+        bridge.src = 'game/embed-v1.js';
+        bridge.async = true;
+        document.head.appendChild(bridge);
+      }, 0);
+    }
 
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);

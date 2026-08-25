@@ -12,16 +12,20 @@ The game uses classic deferred scripts so it remains usable inside a sandboxed i
 
 ## Generic iframe embed
 
+The production security policy intentionally permits **same-origin embedding only**. Put the `game/` folder on the same origin as the host page, then include the bridge and its marker attribute:
+
 ```html
 <iframe
+  data-buzz-to-bloom
   src="/game/?embed=1"
   title="Buzz to Bloom evidence-to-action challenge"
   sandbox="allow-scripts"
   style="width:100%;height:760px;border:0"
 ></iframe>
+<script defer src="/game/embed-v1.js"></script>
 ```
 
-For this forum homepage, `embed-v1.js` adds responsive height and persistence brokerage. The version 1 message envelope is:
+`embed-v1.js` adds responsive height, phase synchronization, and persistence brokerage. Without the bridge, the iframe still works at its fixed height but cannot persist embedded scores. The version 1 message envelope is:
 
 ```js
 {
@@ -37,7 +41,7 @@ The host accepts messages only from the iframe's own `contentWindow`, validates 
 
 ## Content and controls
 
-The content pack contains 64 short cards: two variants at each of four stages for eight evolving cases. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**.
+The content pack contains 96 short cards: three difficulty variants at each of four stages for eight evolving cases. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**.
 
 - Keyboard: `1`–`4` choose actions, `P` or `Escape` pauses, `Enter` resumes.
 - Touch: every action is a native button at least 48 pixels high.
@@ -50,4 +54,10 @@ Run the engine/content tests from the repository root:
 
 ```powershell
 node game/tests/engine.test.js
+node game/tests/embed.test.js
+node game/tests/integration.test.js
 ```
+
+Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify both `/` and `/game/?qa=1&seed=12345`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
+
+The `*-v1` JavaScript and CSS filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update `game/index.html`.

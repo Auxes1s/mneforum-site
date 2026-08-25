@@ -49,13 +49,14 @@
         <p class="best-line">Best: <strong id="menu-best">0</strong> points · <strong id="menu-blooms">0</strong> blooms</p>
         <button class="primary-button" type="submit">Start the challenge</button>
         <button id="how-button" class="text-button" type="button">How to play</button>
+        <button id="reset-button" class="text-button reset-button" type="button">Reset local game data</button>
       </form>
     </section>
 
     <section id="tutorial-panel" class="panel tutorial-panel" aria-labelledby="tutorial-title" hidden>
-      <p class="eyebrow">Practice clinic · no timer or penalties</p>
-      <h2 id="tutorial-title">What should happen first?</h2>
-      <p class="clinic-signal">A community report suggests a health clinic's waiting time has doubled.</p>
+      <p id="tutorial-step-label" class="eyebrow">Practice clinic · step 1 of 4 · no timer or penalties</p>
+      <h2 id="tutorial-title" tabindex="-1">What should happen next?</h2>
+      <p id="clinic-signal" class="clinic-signal">A community report suggests a health clinic's waiting time has doubled.</p>
       <div class="tutorial-actions">
         <button type="button" data-tutorial-action="check">1 · Check</button>
         <button type="button" data-tutorial-action="connect">2 · Connect</button>
@@ -84,12 +85,13 @@
         <article class="case-card">
           <div class="case-meta">
             <span id="case-domain">Health</span>
-            <span id="case-stage">Signal 1 of 4</span>
+            <span id="case-stage">Evidence signal</span>
           </div>
-          <h2 id="case-title">A new signal is arriving…</h2>
+          <h2 id="case-title" tabindex="-1">A new signal is arriving…</h2>
           <p id="case-signal">Get ready to choose the next responsible step.</p>
           <div class="timer-track" aria-hidden="true"><span id="timer-bar"></span></div>
-          <p id="timer-text" class="sr-only" aria-live="off"></p>
+          <p id="timer-text" class="timer-text">Time remaining: 10 seconds</p>
+          <p id="timer-status" class="sr-only" role="status" aria-live="polite"></p>
         </article>
         <div>
           <p class="action-prompt">What moves this case forward?</p>
@@ -102,6 +104,7 @@
         </div>
       </div>
       <div id="game-feedback" class="feedback game-feedback" aria-live="polite"></div>
+      <p id="game-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </section>
 
     <section id="pause-panel" class="panel modal-panel" aria-labelledby="pause-title" hidden>
@@ -122,7 +125,7 @@
 
     <section id="results-panel" class="panel results-panel" aria-labelledby="results-title" hidden>
       <p class="eyebrow">Run complete</p>
-      <h2 id="results-title">You kept evidence moving.</h2>
+      <h2 id="results-title" tabindex="-1">You kept evidence moving.</h2>
       <p id="end-reason" class="phase-copy"></p>
       <div class="results-score"><strong id="final-score">0</strong><span>points</span></div>
       <dl class="results-grid">
@@ -131,6 +134,15 @@
         <div><dt>Accuracy</dt><dd id="final-accuracy">0%</dd></div>
         <div><dt>Best score</dt><dd id="final-best">0</dd></div>
       </dl>
+      <div class="action-accuracy" aria-labelledby="action-accuracy-title">
+        <h3 id="action-accuracy-title">Decision accuracy</h3>
+        <dl>
+          <div><dt>Check</dt><dd id="accuracy-check">0%</dd></div>
+          <div><dt>Connect</dt><dd id="accuracy-connect">0%</dd></div>
+          <div><dt>Commit</dt><dd id="accuracy-commit">0%</dd></div>
+          <div><dt>Track</dt><dd id="accuracy-track">0%</dd></div>
+        </dl>
+      </div>
       <p id="takeaway" class="takeaway"></p>
       <div class="results-actions">
         <button id="again-button" class="primary-button" type="button">Play again</button>

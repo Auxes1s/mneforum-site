@@ -34,6 +34,9 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /<main id="game-main"/);
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /role="meter"/);
+  assert.match(html, /id="game-status"[^>]*role="status"[^>]*aria-atomic="true"/);
+  assert.match(html, /id="case-title" tabindex="-1"/);
+  assert.match(html, /id="results-title" tabindex="-1"/);
 });
 
 test('homepage uses the guarded sandboxed iframe integration', () => {
@@ -43,6 +46,9 @@ test('homepage uses the guarded sandboxed iframe integration', () => {
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-same-origin/);
   assert.match(homepage, /title="Buzz to Bloom evidence-to-action challenge"/);
   assert.match(homepage, /game\/embed-v1\.js/);
+  assert.match(homepage, /bridge\.async = true/);
+  assert.doesNotMatch(homepage.match(/template = template\.replace\(\s*'<\/title>'[\s\S]*?\);/)[0], /embed-v1/);
+  assert.match(homepage, /html\[data-thinking-mode="ultra"\] \.evidence-game-section/);
 });
 
 test('homepage loader parses and the bundled template keeps one stable anchor', () => {
@@ -58,11 +64,24 @@ test('homepage loader parses and the bundled template keeps one stable anchor', 
 test('message and storage boundaries are deny-by-default', () => {
   assert.match(embed, /event\.source !== frame\.contentWindow/);
   assert.match(ui, /event\.source !== window\.parent/);
-  assert.match(embed, /JSON\.stringify\(data\.payload\)\.length <= 2048/);
+  assert.match(embed, /const incoming = normalizeRecord\(value\)/);
   assert.match(embed, /Math\.max\(480, Math\.min\(1200/);
   assert.match(ui, /mneforum:buzz-to-bloom:v1/);
   assert.match(ui, /if \(qaMode\) return/);
   assert.match(embed, /new MutationObserver/);
+  assert.match(embed, /Math\.max\(current\.bests\[mode\]\.score/);
+  assert.match(embed, /dataset\.forumPhase/);
+});
+
+test('the interface does not disclose answers and enforces accessible resolution states', () => {
+  assert.doesNotMatch(ui, /'Step ' \+ \(card\.stageIndex/);
+  assert.doesNotMatch(html, /Signal 1 of 4/);
+  assert.match(ui, /inputLocked/);
+  assert.match(ui, /tutorialSteps = \[/);
+  assert.match(ui, /window\.setInterval\([\s\S]*?, 1000\)/);
+  assert.match(ui, /effectiveReducedMotion\(\)/);
+  assert.match(ui, /accuracy-' \+ action/);
+  assert.match(ui, /randomSeed\(\)/);
 });
 
 test('pure engine has no wall-clock or ambient randomness dependency', () => {
