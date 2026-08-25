@@ -118,7 +118,7 @@ assert.doesNotThrow(() => send(frameWindow, 'persist', { record: cyclic }));
 
 const leaderboardRun = {
   leaderboardName: 'ME Player 7', score: 12345, blooms: 3, loopMatch: 88, bestStreak: 7,
-  pace: 'Guided pace', casePack: 'philippines-v1', runId: 'RUN-TEST-123',
+  pace: 'Guided pace', casePack: 'philippines-ai-v2', runId: 'RUN-TEST-123',
   gameVersion: 'buzz-to-bloom-v2', endReason: 'Trust depleted', consent: true
 };
 send({}, 'leaderboard-submit', leaderboardRun);

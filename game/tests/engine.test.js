@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-require('../cases/philippines-v1.js');
+require('../cases/philippines-ai-v2.js');
 const game = require('../engine-v1.js');
 const content = global.BuzzContent;
 
@@ -51,11 +51,11 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-test('default Philippine pack uses the cleared themes and broad randomization', () => {
+test('default Philippine AI pack uses the cleared themes and broad randomization', () => {
   const validation = game.validateContent(content);
   assert.equal(validation.valid, true, validation.errors.join('\n'));
-  assert.equal(content.packId, 'philippines-v1');
-  assert.equal(content.name, 'Philippine public-service scenarios');
+  assert.equal(content.packId, 'philippines-ai-v2');
+  assert.equal(content.name, 'Philippine responsible AI scenarios');
   assert.equal(content.cases.length, 32);
   assert.equal(content.cases.reduce((sum,item) => sum + Object.values(item.stages).flat().length, 0), 256);
   assert.deepEqual(content.themeIds, ['shared-mandate','technological-innovations','local-partners','collaborative-action']);

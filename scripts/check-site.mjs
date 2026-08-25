@@ -28,6 +28,7 @@ const productionFiles = [
   "game/embed-v1.js",
   "game/cases/forum-v1.js",
   "game/cases/philippines-v1.js",
+  "game/cases/philippines-ai-v2.js",
   "site.webmanifest"
 ];
 
@@ -255,10 +256,10 @@ for (const leak of [
 // bridge needed for score submission/leaderboard reads, and phone-safe layout.
 if ((teaser.match(/\bdata-buzz-to-bloom\b/g) ?? []).length !== 1) fail("index.html must contain exactly one Buzz to Bloom iframe");
 if (!/<section\b[^>]*class=["'][^"']*\bgame-section\b[^"']*["'][^>]*aria-labelledby=["']buzz-to-bloom-title["']/i.test(teaser)) fail("index.html is missing the labelled game invitation section");
-if (!/<iframe\b[^>]*\bdata-buzz-to-bloom\b[^>]*\bsrc=["']game\/\?embed=1&amp;pack=philippines-v1["'][^>]*\bsandbox=["']allow-scripts["']/i.test(teaser)) fail("index.html is missing the reviewed sandboxed game iframe");
+if (!/<iframe\b[^>]*\bdata-buzz-to-bloom\b[^>]*\bsrc=["']game\/\?embed=1&amp;pack=philippines-ai-v2["'][^>]*\bsandbox=["']allow-scripts["']/i.test(teaser)) fail("index.html is missing the reviewed sandboxed game iframe");
 if (/sandbox=["'][^"']*(?:allow-same-origin|allow-forms)/i.test(teaser)) fail("index.html weakens the game iframe sandbox");
 if (!/<script\b[^>]*\bdefer\b[^>]*\bsrc=["']game\/embed-v1\.js["'][^>]*><\/script>/i.test(teaser)) fail("index.html is missing the deferred game parent bridge");
-if (!/<a\b[^>]*class=["'][^"']*\bgame-frame-link\b[^"']*["'][^>]*href=["']game\/\?pack=philippines-v1["'][^>]*target=["']_blank["'][^>]*rel=["']noopener["']/i.test(teaser)) fail("index.html is missing the accessible full-page game fallback");
+if (!/<a\b[^>]*class=["'][^"']*\bgame-frame-link\b[^"']*["'][^>]*href=["']game\/\?pack=philippines-ai-v2["'][^>]*target=["']_blank["'][^>]*rel=["']noopener["']/i.test(teaser)) fail("index.html is missing the accessible full-page game fallback");
 for (const marker of [
   ".game-section__inner {",
   "grid-template-columns: minmax(230px, 315px) minmax(0, 1fr);",

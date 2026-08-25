@@ -49,18 +49,26 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /id="leaderboard-board"/);
   assert.match(html, /id="leaderboard-rows"/);
   assert.match(html, /Three misses can empty Trust; every correct decision restores it\./);
-  assert.match(html, /data-action="check"[\s\S]*?<strong>Verify<\/strong>/);
+  assert.match(html, /data-action="check"[\s\S]*?<strong>Verify evidence<\/strong>/);
+  assert.match(html, /data-action="connect"[\s\S]*?<strong>Investigate why<\/strong>/);
+  assert.match(html, /data-action="commit"[\s\S]*?<strong>Choose a response<\/strong>/);
+  assert.match(html, /data-action="track"[\s\S]*?<strong>Measure results<\/strong>/);
+  assert.doesNotMatch(html, /<strong>(?:Connect|Commit|Track)<\/strong>/);
 });
 
 test('construction homepage deliberately composes the guarded iframe integration', () => {
   assert.equal((homepage.match(/\bdata-buzz-to-bloom\b/g) || []).length, 1);
   assert.match(homepage, /<section class="game-section" aria-labelledby="buzz-to-bloom-title">/);
-  assert.match(homepage, /src="game\/\?embed=1&amp;pack=philippines-v1"/);
+  assert.match(homepage, /src="game\/\?embed=1&amp;pack=philippines-ai-v2"/);
   assert.match(homepage, /sandbox="allow-scripts"/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-same-origin/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-forms/);
   assert.match(homepage, /Verify the evidence/);
+  assert.match(homepage, /Investigate why/);
+  assert.match(homepage, /Choose a response/);
+  assert.match(homepage, /Measure results/);
   assert.doesNotMatch(homepage, /Check the signal/);
+  assert.doesNotMatch(homepage, /Connect the context|Commit to action|Track what follows/);
   assert.match(homepage, /title="Buzz to Bloom evidence-to-action challenge"/);
   assert.match(homepage, /<script defer src="game\/embed-v1\.js"><\/script>/);
   assert.match(homepage, /data-game-phase-copy/);
@@ -126,7 +134,7 @@ test('leaderboard submission stays opt-in and the static reader exposes only san
 test('the interface teaches the decision rule and pauses for accessible review', () => {
   assert.doesNotMatch(ui, /'Step ' \+ \(card\.stageIndex/);
   assert.doesNotMatch(html, /Signal 1 of 4/);
-  assert.match(html, /first missing step/);
+  assert.match(html, /earliest action (?:the team )?has not (?:yet )?completed/i);
   assert.match(html, /id="answer-review"[^>]*hidden/);
   assert.match(html, /id="next-case-button"/);
   assert.match(html, /best fit in this four-step model/i);
@@ -143,7 +151,7 @@ test('the interface teaches the decision rule and pauses for accessible review',
 });
 
 test('case packs are selected by a safe same-origin versioned loader', () => {
-  assert.match(html, /data-case-pack="philippines-v1"/);
+  assert.match(html, /data-case-pack="philippines-ai-v2"/);
   assert.match(loader, /BuzzContentReady/);
   assert.match(loader, /PACK_PATTERN/);
   assert.match(loader, /script\.src = 'cases\/' \+ requestedId \+ '\.js'/);

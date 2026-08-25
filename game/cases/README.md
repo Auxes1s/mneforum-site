@@ -19,7 +19,8 @@ change only `data-case-pack` on the `<html>` element in `../index.html`.
 
 The shipped packs are:
 
-- `philippines-v1`: the default broad bank with 32 cases and 256 cards.
+- `philippines-ai-v2`: the default responsible-AI bank with 32 cases and 256 cards.
+- `philippines-v1`: the previous broad bank with 32 cases and 256 cards.
 - `forum-v1`: a compact bank with eight cases and 96 cards.
 
 ## Contract
@@ -46,16 +47,15 @@ Always create a new filename for revised deployed content, for example
 Write each signal as a situation with one first unmet need. Do not describe the
 expected action as already completed.
 
-- `check`: the source, definition, coverage, or data quality is uncertain.
-- `connect`: the pattern is verified, but who is affected, why, or how people
+- `check` (**Verify evidence**): the source, definition, coverage, or data quality is uncertain.
+- `connect` (**Investigate why**): the pattern is verified, but who is affected, why, or how people
   understand it remains unclear.
-- `commit`: the issue is understood, but the action, owner, measure, safeguard,
+- `commit` (**Choose a response**): the issue is understood, but the action, owner, measure, safeguard,
   or review point is missing.
-- `track`: an action is underway, but its results, uneven effects, or needed
+- `track` (**Measure results**): an action is underway, but its results, uneven effects, or needed
   adaptation have not been reviewed.
 
 Use `cue` to name the diagnostic feature that distinguishes the card from the
 other three actions. Keep cases fictional and avoid personal data, political
 claims, or language implying that the game has the only valid real-world
 answer.
-

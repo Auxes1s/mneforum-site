@@ -112,7 +112,7 @@
     ],
     track: [
       'Follow implementation and outcomes, look for uneven effects, then adapt the response.',
-      'Tracking tests whether action worked for different groups and shows what needs adjustment.',
+      'Measuring results shows whether the response worked for different groups and what needs adjustment.',
       'Shared monitoring should surface trade-offs early enough for partners to adjust the response.'
     ]
   };
@@ -171,4 +171,3 @@
     root.BuzzContent = pack;
   }
 }(typeof window !== 'undefined' ? window : globalThis));
-

@@ -5,9 +5,9 @@ Buzz to Bloom is a dependency-free evidence-to-action mini-game for the 13th M&E
 ## Routes
 
 - Standalone: `/game/`
-- Embedded: `/game/?embed=1&pack=philippines-v1`
-- Deterministic QA: `/game/?qa=1&seed=12345&pack=philippines-v1`
-- Forum-page pack preview: `/?gamePack=philippines-v1`
+- Embedded: `/game/?embed=1&pack=philippines-ai-v2`
+- Deterministic QA: `/game/?qa=1&seed=12345&pack=philippines-ai-v2`
+- Forum-page pack preview: `/?gamePack=philippines-ai-v2`
 
 On the pre-launch `master` page, the root construction teaser embeds the
 default Philippine pack directly and keeps the full-page `/game/` route as an
@@ -36,7 +36,7 @@ The production security policy intentionally permits **same-origin embedding onl
 ```html
 <iframe
   data-buzz-to-bloom
-  src="/game/?embed=1&amp;pack=philippines-v1"
+  src="/game/?embed=1&amp;pack=philippines-ai-v2"
   title="Buzz to Bloom evidence-to-action challenge"
   sandbox="allow-scripts"
   style="width:100%;height:760px;border:0"
@@ -70,7 +70,7 @@ Submission acknowledgement is necessarily optimistic because the Google response
 
 ## Content and controls
 
-The default `philippines-v1` content pack contains 256 short cards: two difficulty variants at each of four stages for 32 evolving fictional cases across Philippine public services. The smaller `forum-v1` pack remains available for focused previews. The fixed actions are **Check**, **Connect**, **Commit**, and **Track**. Each card describes a case with one unmet need; the player chooses the first missing step, not necessarily `Check`. Because real situations can support more than one defensible response, the interface describes answers as the **best fit in this loop** and explains the diagnostic clue after every choice.
+The default `philippines-ai-v2` content pack contains 256 short cards: two difficulty variants at each of four stages for 32 fictional responsible-AI cases across Philippine public services. The broader non-AI `philippines-v1` bank and smaller `forum-v1` pack remain available for previews and rollback. Players choose among **Verify evidence**, **Investigate why**, **Choose a response**, and **Measure results**. Each card describes a case with one unmet action; the player chooses what the team should do next. Because real situations can support more than one defensible response, the interface describes answers as the **best fit in this loop** and explains the diagnostic clue after every choice. The content-pack keys remain `check`, `connect`, `commit`, and `track` for backward compatibility.
 
 Case content is hot-swappable without changing the engine or interface. Add a versioned file under `cases/`, then select it with `?pack=<pack-id>` on the game route or `?gamePack=<pack-id>` on the Forum page. See `cases/README.md` for the pack contract and release workflow.
 
@@ -90,6 +90,6 @@ node game/tests/integration.test.js
 node game/tests/case-packs.test.js
 ```
 
-Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/`, `/?gamePack=forum-v1`, `/?gamePack=philippines-v1`, and `/game/?qa=1&seed=12345&pack=philippines-v1`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
+Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/`, `/?gamePack=forum-v1`, `/?gamePack=philippines-v1`, `/?gamePack=philippines-ai-v2`, and `/game/?qa=1&seed=12345&pack=philippines-ai-v2`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
 
 Versioned JavaScript, CSS, and case-pack filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update its reference.

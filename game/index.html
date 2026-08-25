@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-PH" data-case-pack="philippines-v1">
+<html lang="en-PH" data-case-pack="philippines-ai-v2">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -30,17 +30,17 @@
         <p>Each card shows a case with one important need still unmet. Find that gap and choose the best next step. Three misses can empty Trust; every correct decision restores it.</p>
         <aside class="game-rule" aria-labelledby="game-rule-title">
           <strong id="game-rule-title">The rule</strong>
-          <span>Choose the <b>first missing step</b>—not the step that usually comes first.</span>
+          <span>Choose <b>what the team should do next</b>—the earliest action it has not completed.</span>
           <small>Cases can enter anywhere in the loop. Real situations may allow several responses; the game asks for the best fit in this four-step model.</small>
         </aside>
         <figure class="journey-art journey-art-menu" aria-hidden="true">
           <img src="../assets/forum-logo-v5-static.svg" width="855" height="459" decoding="async" alt="">
         </figure>
         <ol class="action-loop" aria-label="The evidence-to-action loop">
-          <li><b>1</b><span><strong>Verify</strong><small>Source or quality is uncertain</small></span></li>
-          <li><b>2</b><span><strong>Connect</strong><small>Who or why is unclear</small></span></li>
-          <li><b>3</b><span><strong>Commit</strong><small>Action or ownership is missing</small></span></li>
-          <li><b>4</b><span><strong>Track</strong><small>An action needs follow-through</small></span></li>
+          <li><b>1</b><span><strong>Verify evidence</strong><small>Can we trust the finding?</small></span></li>
+          <li><b>2</b><span><strong>Investigate why</strong><small>Why, and who is affected?</small></span></li>
+          <li><b>3</b><span><strong>Choose a response</strong><small>What should be done, and by whom?</small></span></li>
+          <li><b>4</b><span><strong>Measure results</strong><small>Did it work, and for whom?</small></span></li>
         </ol>
       </div>
       <form id="start-form" class="start-card">
@@ -64,14 +64,14 @@
 
     <section id="tutorial-panel" class="panel tutorial-panel" aria-labelledby="tutorial-title" hidden>
       <p id="tutorial-step-label" class="eyebrow">Practice clinic · step 1 of 4 · no timer or penalties</p>
-      <h2 id="tutorial-title" tabindex="-1">Find what is still missing.</h2>
-      <p class="tutorial-rule"><strong>Decision rule:</strong> choose the first unmet need. The situation may already contain earlier steps.</p>
+      <h2 id="tutorial-title" tabindex="-1">What should the team do next?</h2>
+      <p class="tutorial-rule"><strong>Decision rule:</strong> choose the earliest action not yet completed. The situation may already show earlier actions.</p>
       <p id="clinic-signal" class="clinic-signal">A community report suggests a health clinic's waiting time has doubled.</p>
       <div class="tutorial-actions">
-        <button type="button" data-tutorial-action="check">1 · Check</button>
-        <button type="button" data-tutorial-action="connect">2 · Connect</button>
-        <button type="button" data-tutorial-action="commit">3 · Commit</button>
-        <button type="button" data-tutorial-action="track">4 · Track</button>
+        <button type="button" data-tutorial-action="check">1 · Verify evidence</button>
+        <button type="button" data-tutorial-action="connect">2 · Investigate why</button>
+        <button type="button" data-tutorial-action="commit">3 · Choose a response</button>
+        <button type="button" data-tutorial-action="track">4 · Measure results</button>
       </div>
       <p id="tutorial-feedback" class="feedback" aria-live="polite">What is missing: confidence that the signal is reliable.</p>
       <div class="tutorial-footer">
@@ -91,7 +91,7 @@
       <div class="trust-meter" role="meter" aria-label="Trust" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
         <span id="trust-bar"></span>
       </div>
-      <p class="round-rule"><strong>Find the gap:</strong> which important need is still unmet? A correct choice advances this case by one step; four advances earn a Bloom.</p>
+      <p class="round-rule"><strong>Choose the next move:</strong> identify the earliest action the team has not completed. Four correct moves earn a Bloom.</p>
       <div class="case-layout">
         <article class="case-card">
           <div id="case-art" class="case-art" aria-hidden="true">
@@ -102,7 +102,7 @@
           </div>
           <div class="case-meta">
             <span id="case-domain">Health</span>
-            <span id="case-stage">Find the missing step</span>
+            <span id="case-stage">Choose the next move</span>
           </div>
           <h2 id="case-title" tabindex="-1">A new signal is arriving…</h2>
           <p id="case-signal">Get ready to choose the next responsible step.</p>
@@ -111,16 +111,16 @@
           <p id="timer-status" class="sr-only" role="status" aria-live="polite"></p>
         </article>
         <div>
-          <p class="action-prompt"><strong>Which need is still unmet?</strong><span>Choose the best fit in this loop.</span></p>
+          <p class="action-prompt"><strong>What should the team do next?</strong><span>Choose the earliest action not yet completed.</span></p>
           <div id="action-buttons" class="action-grid">
-            <button type="button" data-action="check"><kbd>1</kbd><span><strong>Verify</strong><small>Source or quality is uncertain</small></span></button>
-            <button type="button" data-action="connect"><kbd>2</kbd><span><strong>Connect</strong><small>Who or why is unclear</small></span></button>
-            <button type="button" data-action="commit"><kbd>3</kbd><span><strong>Commit</strong><small>Action or ownership is missing</small></span></button>
-            <button type="button" data-action="track"><kbd>4</kbd><span><strong>Track</strong><small>An action needs follow-through</small></span></button>
+            <button type="button" data-action="check"><kbd>1</kbd><span><strong>Verify evidence</strong><small>Can we trust the finding?</small></span></button>
+            <button type="button" data-action="connect"><kbd>2</kbd><span><strong>Investigate why</strong><small>Why, and who is affected?</small></span></button>
+            <button type="button" data-action="commit"><kbd>3</kbd><span><strong>Choose a response</strong><small>What should be done, and by whom?</small></span></button>
+            <button type="button" data-action="track"><kbd>4</kbd><span><strong>Measure results</strong><small>Did it work, and for whom?</small></span></button>
           </div>
           <section id="answer-review" class="answer-review" aria-labelledby="review-title" hidden>
             <p id="review-kicker" class="eyebrow">Decision review</p>
-            <h3 id="review-title" tabindex="-1">Best fit: Check</h3>
+            <h3 id="review-title" tabindex="-1">Best fit: Verify evidence</h3>
             <p id="game-feedback" class="feedback game-feedback" aria-live="polite"></p>
             <button id="next-case-button" class="primary-button" type="button">Next case</button>
           </section>
@@ -172,10 +172,10 @@
         <div class="action-accuracy" aria-labelledby="action-accuracy-title">
           <h3 id="action-accuracy-title">Loop-match rate</h3>
           <dl>
-            <div><dt>Verify</dt><dd id="accuracy-check">0%</dd></div>
-            <div><dt>Connect</dt><dd id="accuracy-connect">0%</dd></div>
-            <div><dt>Commit</dt><dd id="accuracy-commit">0%</dd></div>
-            <div><dt>Track</dt><dd id="accuracy-track">0%</dd></div>
+            <div><dt>Verify evidence</dt><dd id="accuracy-check">0%</dd></div>
+            <div><dt>Investigate why</dt><dd id="accuracy-connect">0%</dd></div>
+            <div><dt>Choose response</dt><dd id="accuracy-commit">0%</dd></div>
+            <div><dt>Measure results</dt><dd id="accuracy-track">0%</dd></div>
           </dl>
         </div>
         <p id="takeaway" class="takeaway"></p>
