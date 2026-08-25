@@ -44,6 +44,8 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /id="results-title" tabindex="-1"/);
   assert.match(html, /id="leaderboard-form" novalidate/);
   assert.match(html, /id="leaderboard-consent"[^>]*required/);
+  assert.match(html, /id="leaderboard-board"/);
+  assert.match(html, /id="leaderboard-rows"/);
 });
 
 test('homepage uses the guarded sandboxed iframe integration', () => {
@@ -83,9 +85,11 @@ test('message and storage boundaries are deny-by-default', () => {
   assert.match(embed, /normalizeLeaderboard\(value\)/);
   assert.match(embed, /submittedRuns\.has\(normalized\.runId\)/);
   assert.match(embed, /type === 'leaderboard-submit'/);
+  assert.match(embed, /type === 'leaderboard-refresh'/);
+  assert.match(ui, /data\.type === 'leaderboard-data'/);
 });
 
-test('leaderboard submission stays opt-in and maps only to the supplied Google Form', () => {
+test('leaderboard submission stays opt-in and the static reader exposes only sanitized score fields', () => {
   assert.match(ui, /normalizeLeaderboardName/);
   assert.match(html, /leaderboard-consent/);
   assert.match(ui, /post\('leaderboard-submit'/);
@@ -95,6 +99,13 @@ test('leaderboard submission stays opt-in and maps only to the supplied Google F
   assert.match(homepage, /sandbox="allow-scripts"/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-forms/);
   assert.doesNotMatch(html, /docs\.google\.com|formResponse/);
+  assert.match(embed, /1MIiMCbrTRRf_oYMa4AjFp9qkv9sycJIFsllxfGfZqWw/);
+  assert.match(embed, /select C,D,E,F,G,H,J/);
+  assert.match(embed, /M = 'Yes, publish this run'/);
+  assert.doesNotMatch(embed, /select [^\n]*B,/);
+  assert.match(embed, /AUTOTEST-/);
+  assert.doesNotMatch(embed, /emailAddress|PLACEHOLDER_EMAIL/);
+  assert.match(ui, /cell\.textContent = String\(value\)/);
 });
 
 test('the interface teaches the decision rule and pauses for accessible review', () => {

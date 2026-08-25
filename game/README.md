@@ -45,7 +45,7 @@ The production security policy intentionally permits **same-origin embedding onl
   channel: "mneforum.game",
   version: 1,
   game: "buzz-to-bloom",
-  type: "ready" | "configure" | "resize" | "persist" | "leaderboard-submit" | "leaderboard-result",
+  type: "ready" | "configure" | "resize" | "persist" | "leaderboard-submit" | "leaderboard-result" | "leaderboard-refresh" | "leaderboard-data",
   payload: {}
 }
 ```
@@ -58,9 +58,9 @@ Leaderboard submission is opt-in and available only in the embedded Forum-page g
 
 `https://docs.google.com/forms/d/e/1FAIpQLSdy6j1jY3j9V9GWVu6tBGgiLcywYRh7usE_ARgmbUt0wZU-nA/formResponse`
 
-The integration submits only nickname, score, blooms, loop-match percentage, best streak, pace, case pack, random run ID, game version, end reason, and consent. It does not collect an email address. QA-mode submissions are disabled, and the parent keeps the latest 200 submitted run IDs locally to prevent accidental duplicate posts. The game iframe retains `sandbox="allow-scripts"`; Google communication happens only in the parent page.
+The integration submits only nickname, score, blooms, loop-match percentage, best streak, pace, case pack, random run ID, game version, end reason, and consent. The Google Form's email collection must remain disabled; the game does not submit a real or placeholder email address. QA-mode submissions are disabled, and the parent keeps the latest 200 submitted run IDs locally to prevent accidental duplicate posts. The game iframe retains `sandbox="allow-scripts"`; Google communication happens only in the parent page.
 
-Submission acknowledgement is necessarily optimistic because the Google response is cross-origin. Do not use this client-generated leaderboard for prizes or formal competition. Keep the raw response sheet private and publish only a separate sanitized leaderboard tab. The public leaderboard reader is intentionally not enabled until its published sheet URL is configured.
+Submission acknowledgement is necessarily optimistic because the Google response is cross-origin. Do not use this client-generated leaderboard for prizes or formal competition. The parent page reads up to 500 consented rows from the shared response Sheet through Google Visualization's JSONP endpoint, validates and sorts them in-browser, and sends only the top 20 nickname/score summaries into the sandboxed game. The query never selects the Sheet's email column, and `AUTOTEST-` integration runs are excluded. Because the underlying response tab must be publicly readable for this serverless approach, do not add personal or administrative fields to that tab.
 
 ## Content and controls
 

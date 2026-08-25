@@ -41,11 +41,12 @@
   let currentRunId = '';
   let leaderboardSubmitted = false;
   let leaderboardTimer = 0;
+  let leaderboardData = { status: 'loading', entries: [] };
   let lastTimerSecond = -1;
   const reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const el = {};
-  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','start-button','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','answer-review','review-kicker','review-title','game-feedback','next-case-button','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','leaderboard-card','leaderboard-form','leaderboard-name','leaderboard-consent','leaderboard-submit','leaderboard-status','again-button','menu-button','error-message','qa-seed'];
+  const ids = ['menu-panel','tutorial-panel','tutorial-step-label','tutorial-title','clinic-signal','play-panel','pause-panel','pause-title','countdown-panel','results-panel','results-title','error-panel','phase-copy','pack-name','start-form','start-button','menu-best','menu-blooms','how-button','reset-button','motion-toggle','tutorial-feedback','tutorial-skip','tutorial-continue','score','trust-text','queue-count','blooms','pause-button','trust-bar','case-art','bloom-garden','case-domain','case-stage','case-title','case-signal','timer-bar','timer-text','timer-status','answer-review','review-kicker','review-title','game-feedback','next-case-button','game-status','resume-button','quit-button','countdown-number','end-reason','final-score','final-blooms','final-streak','final-accuracy','final-best','accuracy-check','accuracy-connect','accuracy-commit','accuracy-track','takeaway','leaderboard-card','leaderboard-form','leaderboard-name','leaderboard-consent','leaderboard-submit','leaderboard-status','leaderboard-board','leaderboard-refresh','leaderboard-read-status','leaderboard-table-wrap','leaderboard-rows','again-button','menu-button','error-message','qa-seed'];
 
   function copyRecord(value) {
     return {
@@ -139,6 +140,48 @@
     clearTimeout(leaderboardTimer);
     setText(el['leaderboard-status'], message);
     el['leaderboard-status'].className = 'leaderboard-status' + (state ? ' ' + state : '');
+  }
+  function normalizeLeaderboardData(value) {
+    if (!value || !['loading','ready','error'].includes(value.status) || !Array.isArray(value.entries)) return null;
+    const entries = [];
+    value.entries.slice(0, 20).forEach(function (entry, index) {
+      if (!entry || typeof entry !== 'object') return;
+      const name = normalizeLeaderboardName(entry.name);
+      if (!name || !Number.isInteger(entry.score) || entry.score < 0 || entry.score > 100000000) return;
+      if (!Number.isInteger(entry.blooms) || entry.blooms < 0 || entry.blooms > 100000) return;
+      if (!Number.isInteger(entry.loopMatch) || entry.loopMatch < 0 || entry.loopMatch > 100) return;
+      if (!Number.isInteger(entry.bestStreak) || entry.bestStreak < 0 || entry.bestStreak > 100000) return;
+      if (!['Guided pace','Quick challenge'].includes(entry.pace)) return;
+      entries.push({ rank: index + 1, name: name, score: entry.score, blooms: entry.blooms, loopMatch: entry.loopMatch, bestStreak: entry.bestStreak, pace: entry.pace });
+    });
+    return { status: value.status, entries: entries };
+  }
+  function renderLeaderboard(value) {
+    const normalized = normalizeLeaderboardData(value);
+    if (normalized) leaderboardData = normalized;
+    if (!el['leaderboard-board']) return;
+    el['leaderboard-board'].hidden = qaMode || !embedded || currentPanel !== 'results-panel';
+    if (el['leaderboard-board'].hidden) return;
+    const tbody = el['leaderboard-rows'];
+    while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+    leaderboardData.entries.forEach(function (entry) {
+      const row = document.createElement('tr');
+      [entry.rank, entry.name, entry.score.toLocaleString('en-PH'), entry.blooms, entry.loopMatch + '%', entry.pace].forEach(function (value) {
+        const cell = document.createElement('td');
+        cell.textContent = String(value);
+        row.appendChild(cell);
+      });
+      tbody.appendChild(row);
+    });
+    const hasEntries = leaderboardData.entries.length > 0;
+    el['leaderboard-table-wrap'].hidden = !hasEntries;
+    el['leaderboard-read-status'].hidden = leaderboardData.status === 'ready' && hasEntries;
+    el['leaderboard-read-status'].className = 'leaderboard-read-status' + (leaderboardData.status === 'error' ? ' is-error' : '');
+    if (leaderboardData.status === 'loading') setText(el['leaderboard-read-status'], hasEntries ? 'Refreshing scores…' : 'Loading scores…');
+    else if (leaderboardData.status === 'error') setText(el['leaderboard-read-status'], hasEntries ? 'Could not refresh. Showing the latest scores already loaded.' : 'The leaderboard is temporarily unavailable. Your game still works.');
+    else if (!hasEntries) setText(el['leaderboard-read-status'], 'No public scores yet. Be the first to add a run.');
+    el['leaderboard-refresh'].disabled = leaderboardData.status === 'loading';
+    window.setTimeout(announceHeight, 0);
   }
   function submitLeaderboard() {
     if (!embedded || qaMode || !resultsSnapshot || leaderboardSubmitted) return;
@@ -466,6 +509,7 @@
       setLeaderboardStatus('', '');
     }
     showPanel('results-panel');
+    renderLeaderboard(leaderboardData);
     el['results-title'].focus();
   }
   function renderTutorialStep() {
@@ -498,13 +542,14 @@
   function handleMessage(event) {
     if (event.source !== window.parent) return;
     const data = event.data;
-    if (!data || data.channel !== CHANNEL || data.version !== 1 || data.game !== 'buzz-to-bloom' || !['configure','leaderboard-result'].includes(data.type) || !data.payload || typeof data.payload !== 'object') return;
+    if (!data || data.channel !== CHANNEL || data.version !== 1 || data.game !== 'buzz-to-bloom' || !['configure','leaderboard-result','leaderboard-data'].includes(data.type) || !data.payload || typeof data.payload !== 'object') return;
     if (data.type === 'configure') {
       const normalized = normalizeRecord(data.payload.record);
       if (normalized) mergeRecord(normalized);
       if (['before','live','after'].includes(data.payload.phase)) { phase = data.payload.phase; updatePhaseCopy(); }
       return;
     }
+    if (data.type === 'leaderboard-data') { renderLeaderboard(data.payload); return; }
     if (data.payload.runId !== currentRunId || !['accepted','duplicate','rejected','failed'].includes(data.payload.status)) return;
     clearTimeout(leaderboardTimer);
     if (data.payload.status === 'accepted' || data.payload.status === 'duplicate') {
@@ -514,6 +559,7 @@
       el['leaderboard-consent'].disabled = true;
       el['leaderboard-submit'].disabled = true;
       setLeaderboardStatus(data.payload.status === 'duplicate' ? 'This run was already submitted.' : 'Score sent. It will appear after the leaderboard refreshes.', 'is-sent');
+      window.setTimeout(function () { post('leaderboard-refresh', {}); }, 1800);
     } else {
       el['leaderboard-submit'].disabled = false;
       setLeaderboardStatus(data.payload.status === 'rejected' ? 'This run did not pass the leaderboard safety check.' : 'The score could not be sent. Check your connection and try again.', 'is-error');
@@ -594,6 +640,7 @@
     el['leaderboard-form'].addEventListener('submit', function (event) { event.preventDefault(); submitLeaderboard(); });
     el['leaderboard-name'].addEventListener('input', function () { el['leaderboard-name'].setAttribute('aria-invalid', 'false'); if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
     el['leaderboard-consent'].addEventListener('change', function () { if (!leaderboardSubmitted) setLeaderboardStatus('', ''); });
+    el['leaderboard-refresh'].addEventListener('click', function () { leaderboardData = { status: 'loading', entries: leaderboardData.entries }; renderLeaderboard(leaderboardData); post('leaderboard-refresh', {}); });
     el['motion-toggle'].addEventListener('click', function () { record.settings.reduceMotion = !record.settings.reduceMotion; syncSettings(); persist(false); if (engine) render(engine.snapshot(now())); });
     if (typeof reduceMedia.addEventListener === 'function') reduceMedia.addEventListener('change', function () { if (engine) render(engine.snapshot(now())); });
     window.addEventListener('keydown', function (event) {
@@ -609,7 +656,7 @@
     window.addEventListener('blur', function () { if (engine && engine.state === 'playing') pause(true); });
     window.addEventListener('message', handleMessage);
     if ('ResizeObserver' in window) new ResizeObserver(announceHeight).observe(document.body);
-    post('ready', { capabilities: ['configure','resize','persist','leaderboard-submit'] });
+    post('ready', { capabilities: ['configure','resize','persist','leaderboard-submit','leaderboard-read'] });
     announceHeight();
   }
 

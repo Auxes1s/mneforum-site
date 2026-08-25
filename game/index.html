@@ -199,6 +199,25 @@
             <p id="leaderboard-status" class="leaderboard-status" role="status" aria-live="polite"></p>
           </form>
         </section>
+        <section id="leaderboard-board" class="leaderboard-board" aria-labelledby="leaderboard-board-title" hidden>
+          <header>
+            <div>
+              <p class="eyebrow">Forum leaderboard</p>
+              <h3 id="leaderboard-board-title">Top 20 runs</h3>
+            </div>
+            <button id="leaderboard-refresh" class="text-button" type="button">Refresh</button>
+          </header>
+          <p id="leaderboard-read-status" class="leaderboard-read-status" role="status" aria-live="polite">Loading scores…</p>
+          <div id="leaderboard-table-wrap" class="leaderboard-table-wrap" hidden>
+            <table class="leaderboard-table">
+              <thead>
+                <tr><th scope="col">Rank</th><th scope="col">Nickname</th><th scope="col">Score</th><th scope="col">Blooms</th><th scope="col">Loop match</th><th scope="col">Pace</th></tr>
+              </thead>
+              <tbody id="leaderboard-rows"></tbody>
+            </table>
+          </div>
+          <p class="leaderboard-note">Practice scores are player-submitted and intended for friendly participation, not prizes.</p>
+        </section>
         <div class="results-actions">
           <button id="again-button" class="primary-button" type="button">Play again</button>
           <button id="menu-button" class="text-button" type="button">Change pace</button>
