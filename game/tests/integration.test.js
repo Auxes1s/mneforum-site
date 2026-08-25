@@ -1,9 +1,12 @@
 'use strict';
 
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const vm = require('node:vm');
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..', '..');
 const gameRoot = path.resolve(__dirname, '..');
 
@@ -12,7 +15,7 @@ function test(name, fn) {
   catch (error) { console.error('not ok - ' + name); throw error; }
 }
 
-const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const homepage = fs.readFileSync(path.join(root, 'dev', 'index.html'), 'utf8');
 const html = fs.readFileSync(path.join(gameRoot, 'index.html'), 'utf8');
 const ui = fs.readFileSync(path.join(gameRoot, 'ui-v1.js'), 'utf8');
 const embed = fs.readFileSync(path.join(gameRoot, 'embed-v1.js'), 'utf8');

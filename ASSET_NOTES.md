@@ -1,43 +1,58 @@
-# Asset repair notes
+# Production asset notes
 
-## Footer partner logos
+The original bundled page and its two visual stylesheet layers are preserved.
+The maintenance pass removes retired 2025 media and generated animation
+exports, replaces unstable footer/logo blob references with the reviewed local
+artwork, and skips manifest entries that are no longer referenced by the
+mounted page.
 
-The two footer UUIDs are not empty in the bundle:
+## Runtime inventory
 
-- `33b97d14-65ec-4339-a719-bb6c8b0b7166` decompresses to a 90,198-byte DEPDev SVG.
-- `1cdb3ddb-492a-4da8-a30c-3167de126d8a` decompresses to a 24,643-byte M&E Network SVG.
+| Asset | Role |
+| --- | --- |
+| `network_logo.svg` | Favicon, manifest icon, and colored, scalable M&E Network masthead mark |
+| `assets/forum-logo-v5-static.svg` | Static event identity and fallback artwork |
+| `assets/forum-logo-transformation.svg` | Original Thinking Mode transformation artwork |
+| `assets/butterfly-mark.svg` | Compact mark used on form handoff pages |
+| `assets/partners/depdev.svg` | DEPDev footer partner mark |
+| `assets/partners/mne-network.svg` | M&E Network footer partner mark |
+| `assets/partners/undp.svg` | UNDP footer partner mark |
+| `assets/depdev-logo-color.png` | Colored DEPDev masthead mark from the supplied logo resources |
+| `assets/depdev-logo-color-192.png` | Optimized colored DEPDev masthead mark; Ultra mode renders it white via CSS |
+| `assets/undp-logo-color.svg` | Colored, scalable UNDP masthead mark from the supplied logo resources |
+| `assets/og-teaser.png` | Social preview image referenced by page metadata |
+| `assets/fonts/OpenSans-SemiCondensed-Bold.ttf` | Local display font used by the form pages |
+| `assets/forum-brand.css` | Original brand and component layer |
+| `assets/forum-responsive.css` | Original responsive layer with small audited overrides |
+| `assets/redirect.css` | Original form handoff-page styling |
 
-The failure is therefore in the bundle/blob delivery path, not in the underlying artwork. Stable local replacements recovered from the exact manifest payloads are now available at:
+The brand and redirect styles retain their Fontshare import for visual fidelity.
+That external font request is a known performance trade-off and should be
+revisited only as a separately reviewed typography change.
 
-- `assets/partners/depdev.svg` — 90,198 bytes; viewBox `-10 -10 915 890`.
-- `assets/partners/mne-network.svg` — 24,643 bytes; viewBox `0 0 1270.06 816`.
+## Motion and embedded runtime
 
-Use these file paths directly instead of either manifest UUID. Both are self-contained white SVG lockups designed for the dark footer and were visually decoded together on `#1d1f20`.
+`index.html` contains the original self-unpacking runtime and template. Its
+static local substitutions keep the supplied logo and partner artwork stable;
+the startup guard avoids decoding manifest blobs that the mounted template no
+longer references. Keep the transformation SVG and static identity visually
+aligned when updating either asset.
 
-## Butterfly mark
+Do not add GIF or video exports to the page. They are design/distribution
+derivatives, not runtime sources, and the generated archive is ignored by
+`.gitignore`.
 
-`assets/butterfly-mark.svg` is a static, tightly cropped extraction of the completed red-and-amber butterfly from `assets/forum-logo-transformation.svg`. It has viewBox `600 165 255 285`, no wordmark, no transformation artboard, no animation, and only four paths. It is suitable for CSS-sized uses from small section markers to large translucent background ornaments.
+## Archive policy
 
-The original 855 × 459 transformation SVG remains appropriate for the one-shot hero sequence. The cropped mark should replace it in repeated decorative fields.
+The 2025 presenter photos and legacy page are not valid 2026 speaker data and
+are not part of the production tree. The pre-audit baseline tag remains the
+recovery point. If the old event is published again, restore it as a separately
+tested archive with its own metadata and asset paths.
 
-## Motifs for a longer scrolling page
+## Release checks
 
-Use a restrained recurring system rather than repeating the full event logo:
-
-- Section opener: `butterfly-mark.svg` at 28–44 CSS px beside the eyebrow or heading, alternating normal and horizontally mirrored orientation.
-- Section edge accent: the same mark at 140–240 CSS px, 5–9% opacity, clipped partly outside the section. Keep it `aria-hidden`.
-- Major transition: a thin amber-to-red rule sampled from the butterfly colors (`#f1a81f` to `#c3435d`), with a small butterfly at one end.
-- Dark/footer transition: `mne-network.svg` only where institutional identity is needed; do not use it as a background pattern.
-- Hero or full-bleed banner only: `background.png` (4269 × 2400) is large enough for a wide cover. Avoid repeating it on every section.
-- Social-card only: `og-teaser.png` (1200 × 630) should not be used as in-page decoration.
-- Square campaign tile: `std.png` (1080 × 1080) is suitable for a card or gallery feature, not a full-width background.
-
-Avoid injecting `forum-logo-transformation.svg` into decorative fields: it includes the complete 57 KB artboard and has its own animation clock.
-
-## Presenter photos
-
-`assets/presenters/presenter-map.csv` maps all 48 files to dimensions and provenance. Forty-four are name-verified against `archive/12th-mne-forum-2025.html`; two are unreferenced alternate formats (`deleon.jpg`, `esguerra.jpg`), and two remain unidentified (`holder.jpg`, `narag.png`).
-
-The current 2026 `SPEAKERS` data uses generic organizations/roles and new names, so these 2025 photos must not be attached by filename guessing. Join only on a confirmed `display_name`, and leave the initials fallback in place for unmatched 2026 speakers.
-
-All 48 raster presenter files decode successfully. They range from 200 × 200 to 8000 × 8000 and have mixed aspect ratios, so a square frame with `object-fit: cover` is required.
+Run `npm run check` before publishing. It verifies local references, preserved
+runtime markers, guarded external handoffs, metadata, retired paths, the
+production asset inventory, and the required response rules. Visual browser QA
+remains a release gate because static checks cannot verify responsive
+composition or animation behavior.

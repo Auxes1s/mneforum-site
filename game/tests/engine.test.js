@@ -1,9 +1,11 @@
 'use strict';
 
-const assert = require('node:assert/strict');
-require('../content-v1.js');
-const game = require('../engine-v1.js');
-const content = global.BuzzContent;
+import assert from 'node:assert/strict';
+import '../content-v1.js';
+import '../engine-v1.js';
+
+const game = globalThis.BuzzGame;
+const content = globalThis.BuzzContent;
 
 function test(name, fn) {
   try { fn(); console.log('ok - ' + name); }

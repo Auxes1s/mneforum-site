@@ -58,6 +58,6 @@ node game/tests/embed.test.js
 node game/tests/integration.test.js
 ```
 
-Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify both `/` and `/game/?qa=1&seed=12345`. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
+Also run `node --check` on every game JavaScript file, serve the repository over HTTP, and verify `/dev`, `/dev/`, and `/game/?qa=1&seed=12345`. The public root remains the pre-launch teaser. Before deployment, complete real-browser keyboard, screen-reader, reduced-motion, responsive/zoom, console, network, and production-header checks.
 
 The `*-v1` JavaScript and CSS filenames are immutable release assets because the root server configuration caches scripts and styles for one month. Any post-release asset change must use a new versioned filename and update `game/index.html`.

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dev
+Disallow: /archive
+
+Sitemap: https://mnenetwork.forum/sitemap.xml
