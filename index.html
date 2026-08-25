@@ -58,7 +58,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { font-size: 16px; }
+    html { font-size: 16px; overflow-x: hidden; }
 
     body {
       font-family: var(--font-primary);
@@ -372,6 +372,183 @@
     }
     .date-pill svg { color: var(--brand-blue-medium); flex-shrink: 0; }
 
+    /* ---------- Evidence-to-action game ---------- */
+    .game-section {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: clamp(1.25rem, 4vw, 3.5rem) clamp(.75rem, 3vw, 2rem) clamp(2.5rem, 6vw, 5rem);
+      border-top: 1px solid rgb(10 87 163 / .1);
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / .18), rgb(248 244 235 / .9) 14%, rgb(248 244 235 / .96)),
+        repeating-linear-gradient(90deg, transparent 0 39px, rgb(10 87 163 / .035) 39px 40px);
+    }
+    .game-section__inner {
+      display: grid;
+      grid-template-columns: minmax(230px, 315px) minmax(0, 1fr);
+      align-items: start;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+      width: min(1380px, 100%);
+      min-width: 0;
+      margin-inline: auto;
+    }
+    .game-intro {
+      position: sticky;
+      top: 2.25rem;
+      min-width: 0;
+      padding: clamp(1.25rem, 2.5vw, 1.85rem);
+      color: var(--text-dark);
+      text-align: left;
+      background: rgb(255 255 255 / .9);
+      border: 1px solid rgb(10 87 163 / .12);
+      border-top: 6px solid var(--brand-yellow);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(6px);
+    }
+    .game-eyebrow {
+      margin-bottom: .55rem;
+      color: var(--brand-red);
+      font: 700 .72rem/1.4 var(--font-ui);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .game-intro h2 {
+      max-width: 11ch;
+      color: var(--brand-blue-dark);
+      font: 900 clamp(1.8rem, 3vw, 2.65rem)/1.02 var(--font-secondary);
+      text-wrap: balance;
+    }
+    .game-intro__lead {
+      margin-top: .85rem;
+      color: var(--text-light);
+      font-size: .97rem;
+      line-height: 1.6;
+    }
+    .game-loop {
+      display: grid;
+      gap: .55rem;
+      margin: 1.2rem 0;
+      list-style: none;
+      counter-reset: loop-step;
+    }
+    .game-loop li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      align-items: center;
+      gap: .65rem;
+      min-height: 44px;
+      color: var(--brand-blue-dark);
+      font: 700 .86rem/1.25 var(--font-ui);
+      counter-increment: loop-step;
+    }
+    .game-loop li::before {
+      content: counter(loop-step);
+      display: grid;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      color: white;
+      background: var(--step-color, var(--brand-blue-dark));
+      border-radius: 50%;
+      font-size: .74rem;
+    }
+    .game-loop li:nth-child(2) { --step-color: var(--brand-blue-medium); }
+    .game-loop li:nth-child(3) { --step-color: var(--brand-red); }
+    .game-loop li:nth-child(4) { --step-color: #a86f04; }
+    .game-intro__rule {
+      margin-bottom: 1rem;
+      padding: .75rem .8rem;
+      color: #563c05;
+      background: rgb(241 168 30 / .13);
+      border-left: 4px solid var(--brand-yellow);
+      font-size: .83rem;
+      line-height: 1.5;
+    }
+    .game-new-page,
+    .game-frame-link {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      color: var(--brand-blue-dark);
+      font: 700 .83rem/1.2 var(--font-ui);
+      text-underline-offset: 3px;
+      border-radius: 8px;
+    }
+    .game-new-page:focus-visible,
+    .game-frame-link:focus-visible {
+      outline: 3px solid var(--brand-yellow);
+      outline-offset: 3px;
+    }
+    .game-frame-shell {
+      min-width: 0;
+      overflow: hidden;
+      background: #fffdf8;
+      border: 1px solid rgb(10 87 163 / .16);
+      border-radius: clamp(14px, 2vw, 24px);
+      box-shadow: var(--shadow-lg);
+    }
+    .game-frame-toolbar {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .65rem clamp(.8rem, 2vw, 1.2rem);
+      color: var(--brand-blue-dark);
+      background: rgb(72 152 211 / .1);
+      border-bottom: 1px solid rgb(10 87 163 / .12);
+      font: 700 .73rem/1.25 var(--font-ui);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .game-frame-toolbar__status {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      color: var(--text-light);
+      font-size: .68rem;
+      letter-spacing: .02em;
+      text-transform: none;
+    }
+    .game-frame-toolbar__status::before {
+      content: '';
+      width: .5rem;
+      height: .5rem;
+      flex: none;
+      background: #28785c;
+      border-radius: 50%;
+    }
+    .game-frame {
+      width: 100%;
+      min-width: 0;
+      background: #f8f4eb;
+    }
+    .game-frame iframe {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: 760px;
+      min-width: 0;
+      border: 0;
+      background: #f8f4eb;
+    }
+    .game-frame-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .7rem clamp(.8rem, 2vw, 1.2rem);
+      color: var(--text-light);
+      background: white;
+      border-top: 1px solid rgb(10 87 163 / .1);
+      font-size: .74rem;
+      line-height: 1.4;
+    }
+    .game-frame-link { flex: none; padding-inline: .35rem; }
+
     /* ---------- Footer ---------- */
     .footer {
       text-align: center;
@@ -498,6 +675,41 @@
       .footer { padding-inline: 1rem; }
     }
 
+    @media (max-width: 980px) {
+      .game-section__inner { grid-template-columns: 1fr; }
+      .game-intro {
+        position: static;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(230px, .72fr);
+        column-gap: 1.5rem;
+      }
+      .game-eyebrow, .game-intro h2, .game-intro__lead { grid-column: 1; }
+      .game-loop { grid-column: 2; grid-row: 1 / span 4; margin: 0; }
+      .game-intro__rule, .game-new-page { grid-column: 1; }
+      .game-intro h2 { max-width: 15ch; }
+    }
+
+    @media (max-width: 680px) {
+      .game-section { padding-inline: .75rem; }
+      .game-intro { display: block; border-radius: 14px; }
+      .game-intro h2 { max-width: 12ch; }
+      .game-loop { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .game-frame-shell { border-radius: 14px; }
+      .game-frame-toolbar { min-height: 48px; }
+      .game-frame-toolbar__status { display: none; }
+      .game-frame iframe { width: 100%; height: 820px; }
+      .game-frame-footer { align-items: stretch; flex-direction: column; gap: .25rem; }
+      .game-frame-link { width: 100%; justify-content: flex-start; }
+    }
+
+    @media (max-width: 390px) {
+      .game-section { padding-inline: .5rem; }
+      .game-intro { padding: 1.1rem; }
+      .game-loop { grid-template-columns: 1fr; gap: .35rem; }
+      .game-frame-toolbar { padding-inline: .7rem; }
+      .game-frame-footer { padding-inline: .7rem; }
+    }
+
     /* Balance the hero on short/landscape viewports */
     @media (max-height: 640px) and (min-width: 700px) {
       .hat { width: clamp(160px, 24vh, 260px); }
@@ -544,6 +756,49 @@
       September&nbsp;09,&nbsp;2026
     </span>
   </main>
+
+  <section class="game-section" aria-labelledby="buzz-to-bloom-title">
+    <div class="game-section__inner">
+      <div class="game-intro">
+        <p class="game-eyebrow">Play while we build</p>
+        <h2 id="buzz-to-bloom-title">Turn evidence into action.</h2>
+        <p class="game-intro__lead" data-game-phase-copy>Practice the evidence-to-action loop before Forum day.</p>
+        <ol class="game-loop" aria-label="The four evidence-to-action steps">
+          <li>Check the signal</li>
+          <li>Connect the context</li>
+          <li>Commit to action</li>
+          <li>Track what follows</li>
+        </ol>
+        <p class="game-intro__rule"><strong>Your rule:</strong> choose the first missing step in each Philippine public-service case. The game explains the best fit after every answer.</p>
+        <a class="game-new-page" href="game/?pack=philippines-v1" target="_blank" rel="noopener">Open the full-page game <span aria-hidden="true">↗</span></a>
+      </div>
+
+      <div class="game-frame-shell">
+        <div class="game-frame-toolbar" aria-hidden="true">
+          <span>Buzz to Bloom</span>
+          <span class="game-frame-toolbar__status">Live practice challenge</span>
+        </div>
+        <div class="game-frame">
+          <iframe
+            data-buzz-to-bloom
+            src="game/?embed=1&amp;pack=philippines-v1"
+            title="Buzz to Bloom evidence-to-action challenge"
+            sandbox="allow-scripts"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            width="1040"
+            height="760"
+          >
+            <p><a href="game/?pack=philippines-v1">Open Buzz to Bloom in a new page.</a></p>
+          </iframe>
+        </div>
+        <div class="game-frame-footer">
+          <span>Fictional practice cases · no account, analytics, or personal data required</span>
+          <a class="game-frame-link" href="game/?pack=philippines-v1" target="_blank" rel="noopener">Open in a new page <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer class="footer" role="contentinfo">
     <p><em>Strategic Outcome Evaluation Division</em> &mdash; <a href="mailto:%26mes-soed@depdev.gov.ph">&amp;mes-soed@depdev.gov.ph</a></p>
@@ -615,5 +870,6 @@
       timer = setInterval(render, 1000);
     })();
   </script>
+  <script defer src="game/embed-v1.js"></script>
 </body>
 </html>

@@ -16,6 +16,7 @@ const publishEntries = [
   "eg-submission",
   "dev",
   "evalform",
+  "game",
   "index.html",
   "network_logo.svg",
   "register",
