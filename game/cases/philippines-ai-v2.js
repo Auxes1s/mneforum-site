@@ -313,7 +313,7 @@
       'Combine official findings with staff and community experience to explain causes and affected groups.'
     ],
     commit: [
-      'Choose a feasible response with a named owner, safeguard, success measure, and review date.',
+      'Assign a feasible action, named owner, safeguard, success measure, and review date.',
       'The cause is established; now assign the action, accountability, protection, and decision point.'
     ],
     track: [
@@ -325,7 +325,7 @@
   const cues = {
     check: 'The AI output is uncertain; verify it against source records and known limitations.',
     connect: 'The finding is sound, but its causes and affected groups still need human investigation.',
-    commit: 'The explanation is ready; choose a response, owner, safeguard, measure, and review point.',
+    commit: 'The explanation is ready; assign the action, owner, safeguard, measure, and review point.',
     track: 'The response has started; measure outcomes, uneven effects, harms, and the need to adapt.'
   };
 

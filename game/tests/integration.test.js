@@ -51,7 +51,7 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.match(html, /Three misses can empty Trust; every correct decision restores it\./);
   assert.match(html, /data-action="check"[\s\S]*?<strong>Verify evidence<\/strong>/);
   assert.match(html, /data-action="connect"[\s\S]*?<strong>Investigate why<\/strong>/);
-  assert.match(html, /data-action="commit"[\s\S]*?<strong>Choose a response<\/strong>/);
+  assert.match(html, /data-action="commit"[\s\S]*?<strong>Assign action and owner<\/strong>/);
   assert.match(html, /data-action="track"[\s\S]*?<strong>Measure results<\/strong>/);
   assert.doesNotMatch(html, /<strong>(?:Connect|Commit|Track)<\/strong>/);
 });
@@ -65,7 +65,7 @@ test('construction homepage deliberately composes the guarded iframe integration
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-forms/);
   assert.match(homepage, /Verify the evidence/);
   assert.match(homepage, /Investigate why/);
-  assert.match(homepage, /Choose a response/);
+  assert.match(homepage, /Assign action and owner/);
   assert.match(homepage, /Measure results/);
   assert.doesNotMatch(homepage, /Check the signal/);
   assert.doesNotMatch(homepage, /Connect the context|Commit to action|Track what follows/);

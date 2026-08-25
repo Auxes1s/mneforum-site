@@ -50,7 +50,7 @@ expected action as already completed.
 - `check` (**Verify evidence**): the source, definition, coverage, or data quality is uncertain.
 - `connect` (**Investigate why**): the pattern is verified, but who is affected, why, or how people
   understand it remains unclear.
-- `commit` (**Choose a response**): the issue is understood, but the action, owner, measure, safeguard,
+- `commit` (**Assign action and owner**): the issue is understood, but the action, owner, measure, safeguard,
   or review point is missing.
 - `track` (**Measure results**): an action is underway, but its results, uneven effects, or needed
   adaptation have not been reviewed.

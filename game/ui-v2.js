@@ -11,17 +11,17 @@
   const qaSeed = qaMode && Number.isSafeInteger(seedNumber) && seedNumber >= 0 && seedNumber <= 0xffffffff ? seedNumber >>> 0 : (qaMode ? 1 : null);
   const embedded = params.get('embed') === '1' || window.parent !== window;
   const defaultRecord = { schemaVersion: 1, bests: { classic: { score: 0, blooms: 0 }, relaxed: { score: 0, blooms: 0 } }, settings: { mode: 'relaxed', reduceMotion: false, tutorialSeen: false } };
-  const actionNames = { check: 'Verify evidence', connect: 'Investigate why', commit: 'Choose a response', track: 'Measure results' };
+  const actionNames = { check: 'Verify evidence', connect: 'Investigate why', commit: 'Assign action and owner', track: 'Measure results' };
   const actionNeeds = {
     check: 'Verify the evidence when the source, definition, coverage, or data quality is still uncertain.',
     connect: 'Investigate why after the finding is verified but its causes, affected groups, or lived context are still unclear.',
-    commit: 'Choose a response when the problem is understood but a specific action, owner, safeguard, measure, or review point is missing.',
+    commit: 'Assign action and owner when the problem is understood but the action, accountable lead, safeguard, measure, or review point is missing.',
     track: 'Measure results when a response is underway but its effects, uneven outcomes, or needed changes are still unknown.'
   };
   const tutorialSteps = [
     { action: 'check', signal: 'A community report suggests a health clinic\'s waiting time has doubled.', need: 'What is missing: confidence that the signal is reliable.', cue: 'The report has not yet been verified.', success: 'Verify the source, definitions, and coverage before treating it as a finding.' },
     { action: 'connect', signal: 'The wait-time increase is verified, but no one knows why it differs by shift and patient group.', need: 'What is missing: an explanation of why and who is affected.', cue: 'The finding is already verified; its causes and context are still unclear.', success: 'Investigate why with staff and patients before selecting a response.' },
-    { action: 'commit', signal: 'Staff and patients understand the bottleneck, but no response, owner, or review date has been agreed.', need: 'What is missing: a specific response and accountable owner.', cue: 'The problem is understood; the response and ownership are still absent.', success: 'Choose a feasible response with an owner, measure, and review point.' },
+    { action: 'commit', signal: 'Staff and patients understand the bottleneck, but no response, owner, or review date has been agreed.', need: 'What is missing: a specific action and accountable owner.', cue: 'The problem is understood; the action and ownership are still absent.', success: 'Assign a feasible action, accountable owner, measure, and review point.' },
     { action: 'track', signal: 'A new intake step is running, but no one has checked its results across shifts and patient groups.', need: 'What is missing: evidence that the response worked.', cue: 'The response has begun; its results and uneven effects are still unknown.', success: 'Measure results, look for uneven effects, and adjust the response.' }
   ];
   let record = copyRecord(defaultRecord);
@@ -494,7 +494,7 @@
     setText(el['final-accuracy'], Math.round(snapshot.accuracy * 100) + '%');
     setText(el['final-best'], previous.score);
     BuzzGame.ACTIONS.forEach(action => setText(el['accuracy-' + action], actionAccuracy(snapshot, action)));
-    setText(el.takeaway, snapshot.blooms ? 'Takeaway: choosing a response is not the finish line. Measure results, notice uneven effects, and adapt.' : 'Takeaway: verify the evidence, investigate why, choose a response, then measure its results.');
+    setText(el.takeaway, snapshot.blooms ? 'Takeaway: assigning action and ownership is not the finish line. Measure results, notice uneven effects, and adapt.' : 'Takeaway: verify the evidence, investigate why, assign action and ownership, then measure results.');
     setText(el['game-status'], 'Run complete. ' + snapshot.score + ' points, ' + snapshot.blooms + ' blooms, ' + Math.round(snapshot.accuracy * 100) + ' percent loop match.');
     el['results-panel'].dataset.outcome = snapshot.blooms ? 'bloom' : 'seed';
     el['leaderboard-card'].hidden = qaMode || !embedded;
