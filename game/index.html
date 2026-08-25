@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en-PH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a57a3">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Buzz to Bloom — Evidence-to-Action Challenge</title>
+  <link rel="stylesheet" href="game-v1.css">
+  <script defer src="content-v1.js"></script>
+  <script defer src="engine-v1.js"></script>
+  <script defer src="ui-v1.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#game-main">Skip to game</a>
+  <main id="game-main" class="game-shell">
+    <header class="game-header">
+      <div>
+        <p class="eyebrow">13th M&amp;E Network Forum mini-game</p>
+        <h1>Buzz to <span>Bloom</span></h1>
+      </div>
+      <button id="motion-toggle" class="text-button" type="button" aria-pressed="false">Reduce motion</button>
+    </header>
+
+    <section id="menu-panel" class="panel menu-panel" aria-labelledby="menu-title">
+      <div class="menu-copy">
+        <p id="phase-copy" class="phase-copy">Practice the evidence-to-action loop before Forum day.</p>
+        <h2 id="menu-title">Turn signals into accountable action.</h2>
+        <p>Four decisions. Eight public-service cases. Keep Trust high while evidence moves from a first signal to tracked results.</p>
+        <ol class="action-loop" aria-label="The evidence-to-action loop">
+          <li><b>1</b><span><strong>Check</strong><small>Verify the signal</small></span></li>
+          <li><b>2</b><span><strong>Connect</strong><small>Read it with people</small></span></li>
+          <li><b>3</b><span><strong>Commit</strong><small>Name an action and owner</small></span></li>
+          <li><b>4</b><span><strong>Track</strong><small>Follow results and adapt</small></span></li>
+        </ol>
+      </div>
+      <form id="start-form" class="start-card">
+        <fieldset>
+          <legend>Choose your pace</legend>
+          <label class="mode-choice">
+            <input type="radio" name="mode" value="classic" checked>
+            <span><strong>Classic</strong><small>A quick, lively challenge</small></span>
+          </label>
+          <label class="mode-choice">
+            <input type="radio" name="mode" value="relaxed">
+            <span><strong>Relaxed</strong><small>More time, gentler pressure</small></span>
+          </label>
+        </fieldset>
+        <p class="best-line">Best: <strong id="menu-best">0</strong> points · <strong id="menu-blooms">0</strong> blooms</p>
+        <button class="primary-button" type="submit">Start the challenge</button>
+        <button id="how-button" class="text-button" type="button">How to play</button>
+      </form>
+    </section>
+
+    <section id="tutorial-panel" class="panel tutorial-panel" aria-labelledby="tutorial-title" hidden>
+      <p class="eyebrow">Practice clinic · no timer or penalties</p>
+      <h2 id="tutorial-title">What should happen first?</h2>
+      <p class="clinic-signal">A community report suggests a health clinic's waiting time has doubled.</p>
+      <div class="tutorial-actions">
+        <button type="button" data-tutorial-action="check">1 · Check</button>
+        <button type="button" data-tutorial-action="connect">2 · Connect</button>
+        <button type="button" data-tutorial-action="commit">3 · Commit</button>
+        <button type="button" data-tutorial-action="track">4 · Track</button>
+      </div>
+      <p id="tutorial-feedback" class="feedback" aria-live="polite">Choose the step that verifies the first signal.</p>
+      <div class="tutorial-footer">
+        <button id="tutorial-skip" class="text-button" type="button">Skip clinic</button>
+        <button id="tutorial-continue" class="primary-button" type="button" hidden>Continue</button>
+      </div>
+    </section>
+
+    <section id="play-panel" class="panel play-panel" aria-labelledby="case-title" hidden>
+      <div class="hud" aria-label="Game status">
+        <div><span>Score</span><strong id="score">0</strong></div>
+        <div><span>Trust</span><strong id="trust-text">100</strong></div>
+        <div><span>Queue</span><strong id="queue-count">1 / 6</strong></div>
+        <div><span>Blooms</span><strong id="blooms">0</strong></div>
+        <button id="pause-button" class="pause-button" type="button" aria-pressed="false">Pause <kbd>P</kbd></button>
+      </div>
+      <div class="trust-meter" role="meter" aria-label="Trust" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+        <span id="trust-bar"></span>
+      </div>
+      <div class="case-layout">
+        <article class="case-card">
+          <div class="case-meta">
+            <span id="case-domain">Health</span>
+            <span id="case-stage">Signal 1 of 4</span>
+          </div>
+          <h2 id="case-title">A new signal is arriving…</h2>
+          <p id="case-signal">Get ready to choose the next responsible step.</p>
+          <div class="timer-track" aria-hidden="true"><span id="timer-bar"></span></div>
+          <p id="timer-text" class="sr-only" aria-live="off"></p>
+        </article>
+        <div>
+          <p class="action-prompt">What moves this case forward?</p>
+          <div id="action-buttons" class="action-grid">
+            <button type="button" data-action="check"><kbd>1</kbd><span><strong>Check</strong><small>Verify the signal</small></span></button>
+            <button type="button" data-action="connect"><kbd>2</kbd><span><strong>Connect</strong><small>Read it with people</small></span></button>
+            <button type="button" data-action="commit"><kbd>3</kbd><span><strong>Commit</strong><small>Name action and owner</small></span></button>
+            <button type="button" data-action="track"><kbd>4</kbd><span><strong>Track</strong><small>Follow results and adapt</small></span></button>
+          </div>
+        </div>
+      </div>
+      <div id="game-feedback" class="feedback game-feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="pause-panel" class="panel modal-panel" aria-labelledby="pause-title" hidden>
+      <div class="modal-card">
+        <p class="eyebrow">Challenge paused</p>
+        <h2 id="pause-title">Evidence can wait. Your timer has stopped.</h2>
+        <button id="resume-button" class="primary-button" type="button">Resume</button>
+        <button id="quit-button" class="text-button" type="button">End this run</button>
+      </div>
+    </section>
+
+    <section id="countdown-panel" class="panel modal-panel" aria-labelledby="countdown-title" hidden>
+      <div class="modal-card countdown-card">
+        <p id="countdown-title">Ready?</p>
+        <strong id="countdown-number" aria-live="assertive">3</strong>
+      </div>
+    </section>
+
+    <section id="results-panel" class="panel results-panel" aria-labelledby="results-title" hidden>
+      <p class="eyebrow">Run complete</p>
+      <h2 id="results-title">You kept evidence moving.</h2>
+      <p id="end-reason" class="phase-copy"></p>
+      <div class="results-score"><strong id="final-score">0</strong><span>points</span></div>
+      <dl class="results-grid">
+        <div><dt>Blooms</dt><dd id="final-blooms">0</dd></div>
+        <div><dt>Best streak</dt><dd id="final-streak">0</dd></div>
+        <div><dt>Accuracy</dt><dd id="final-accuracy">0%</dd></div>
+        <div><dt>Best score</dt><dd id="final-best">0</dd></div>
+      </dl>
+      <p id="takeaway" class="takeaway"></p>
+      <div class="results-actions">
+        <button id="again-button" class="primary-button" type="button">Play again</button>
+        <button id="menu-button" class="text-button" type="button">Change pace</button>
+      </div>
+    </section>
+
+    <section id="error-panel" class="panel modal-panel" aria-labelledby="error-title" hidden>
+      <div class="modal-card">
+        <p class="eyebrow">Game unavailable</p>
+        <h2 id="error-title">The content pack did not pass its safety check.</h2>
+        <p id="error-message">Please refresh the page.</p>
+      </div>
+    </section>
+
+    <p id="qa-seed" class="qa-seed" hidden></p>
+    <p class="privacy-note">Fictional practice cases · no account, analytics, or personal data</p>
+  </main>
+</body>
+</html>
