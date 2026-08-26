@@ -2,9 +2,9 @@
  * 13th Forum release surface
  *
  * Loaded last, after the brand, responsive, UI-lock, and speaker-launch
- * layers. This file owns only launch-state behavior: the unpublished program
- * stays absent, the embedded game remains usable at every width, and final
- * phone/touch safeguards apply without changing the established visual system.
+ * layers. This file owns only launch-state behavior: the scheduled program and
+ * embedded game remain usable at every width, and final phone/touch
+ * safeguards apply without changing the established visual system.
  */
 
 html,
@@ -22,12 +22,6 @@ main > section,
 .game-frame-shell,
 .game-frame {
   min-width: 0;
-}
-
-/* Defense in depth: the loader removes this entire surface before mount. */
-#program,
-.program-section {
-  display: none !important;
 }
 
 main :is(h1, h2, h3, h4, p, a),

@@ -74,7 +74,8 @@ test('13th Forum homepage deliberately composes the guarded iframe integration',
   assert.match(homepage, /game\/embed-v1\.js/);
   assert.match(homepage, /data-game-phase-copy/);
   assert.match(homepage, /class="game-frame-link"[^>]*target="_blank"[^>]*rel="noopener"/);
-  assert.match(homepage, /template = template\.replace\('\\n  <section id="notes"', '\\n  ' \+ gameSection/);
+  assert.match(homepage, /template = template\.replace\('\\n  <section id="program"', '\\n  ' \+ gameSection/);
+  assert.match(homepage, /const PROGRAM_REVEAL_AT = '2026-08-28T00:00:00\+08:00';/);
   assert.match(homepage, /template = template\.replace\('<\/body>', '<script defer src="game\/embed-v1\.js"><\/\' \+ 'script><\/body>'\);/);
 });
 

@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, '..');
-const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/\r\n/g, '\n');
-const releaseCss = fs.readFileSync(path.join(root, 'assets', 'forum-release.css'), 'utf8').replace(/\r\n/g, '\n');
-const speakerCss = fs.readFileSync(path.join(root, 'speaker-launch.css'), 'utf8').replace(/\r\n/g, '\n');
-const gameCss = fs.readFileSync(path.join(root, 'game', 'game-v2.css'), 'utf8').replace(/\r\n/g, '\n');
-const gameHtml = fs.readFileSync(path.join(root, 'game', 'index.html'), 'utf8').replace(/\r\n/g, '\n');
+const readText = file => fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+const homepage = readText(path.join(root, 'index.html'));
+const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
+const speakerCss = readText(path.join(root, 'speaker-launch.css'));
+const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
+const gameHtml = readText(path.join(root, 'game', 'index.html'));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -74,12 +75,10 @@ let rendered = JSON.parse(templateMatch[1]);
 const gameMatch = homepage.match(/const gameSection = `([\s\S]*?)`;\n    template = template\.replace/);
 assert(gameMatch, 'The game section integration is missing.');
 const gameSection = gameMatch[1];
+assert(homepage.includes("const PROGRAM_REVEAL_AT = '2026-08-28T00:00:00+08:00';"),
+  'The Program release date must be fixed to 28 August 2026 Philippine time.');
 
 rendered = rendered
-  .replace('<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>', '')
-  .replace('<a class="btn btn-primary" href="#program">View the program</a>', '<a class="btn btn-primary" href="#speakers">Meet the speakers</a>')
-  .replace('<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>', '')
-  .replace(/\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/, '\n')
   .replace(
     '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a>',
     '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a><a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
@@ -92,11 +91,40 @@ rendered = rendered
     'Strategic Outcome Evaluation Division<br><a href="mailto:mes-soed@depdev.gov.ph" style="color: inherit;">mes-soed@depdev.gov.ph</a>',
     'M&amp;E Forum Secretariat<br><a href="mailto:m%26enetworksecretariat@depdev.gov.ph" style="color: inherit;">m&amp;enetworksecretariat@depdev.gov.ph</a>'
   )
-  .replace('\n  <section id="notes"', '\n  ' + gameSection + '\n\n  <section id="notes"');
+  .replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
 
-assert(!rendered.includes('<section id="program"'), 'Program of activities still renders.');
-assert(!rendered.includes('href="#program"'), 'A public #program link still renders.');
-assert(!rendered.includes('Program of activities'), 'The Program heading still renders.');
+const hideProgramUntilRelease = value => value
+  .replace(
+    '<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>',
+    ''
+  )
+  .replace(
+    '<a class="btn btn-primary" href="#program">View the program</a>',
+    ''
+  )
+  .replace(
+    '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>',
+    ''
+  )
+  .replace(
+    /\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/,
+    '\n'
+  );
+
+const pendingRendered = hideProgramUntilRelease(rendered);
+assert(!pendingRendered.includes('<section id="program"'),
+  'The Program section must stay hidden before its release date.');
+assert(!pendingRendered.includes('href="#program"'),
+  'Program links must stay hidden before the release date.');
+assert(!pendingRendered.includes('View the program'),
+  'The hero Program CTA must stay hidden before the release date.');
+
+assert((rendered.match(/<section id="program" class="program-section">/g) || []).length === 1,
+  'The Program section must render exactly once.');
+assert(rendered.includes('href="#program"'), 'Public access to the Program section is missing.');
+assert(rendered.includes('<a class="btn btn-primary" href="#program">View the program</a>'),
+  'The hero Program CTA is missing.');
+assert(rendered.includes('Program of activities'), 'The Program heading is missing.');
 assert(count(rendered, /<section id="game"/g) === 1, 'The game section must render exactly once.');
 assert(count(rendered, /\bdata-buzz-to-bloom\b/g) === 1, 'The game iframe must render exactly once.');
 assert(rendered.includes('src="game/?embed=1&amp;pack=philippines-ai-v2"'), 'The deployed Philippine AI pack is not embedded.');
@@ -113,12 +141,16 @@ assert(!/(?:%26|&amp;)?mes-soed@depdev\.gov\.ph/i.test(rendered), 'The old divis
 
 const sectionIds = Array.from(rendered.matchAll(/<section\b[^>]*\bid="([^"]+)"/g), match => match[1]);
 assert(new Set(sectionIds).size === sectionIds.length, 'Rendered section IDs are not unique.');
-assert(sectionIds.includes('speakers') && sectionIds.includes('game') && sectionIds.includes('notes'),
-  'The speaker-to-game-to-notes launch sequence is incomplete.');
-assert(rendered.indexOf('<section id="speakers"') < rendered.indexOf('<section id="game"'),
-  'The game must follow the speaker launch.');
-assert(rendered.indexOf('<section id="game"') < rendered.indexOf('<section id="notes"'),
-  'The game must precede notes and materials.');
+assert(sectionIds.includes('overview') && sectionIds.includes('game') && sectionIds.includes('program') && sectionIds.includes('speakers') && sectionIds.includes('notes'),
+  'The overview-to-game-to-program launch sequence is incomplete.');
+assert(rendered.indexOf('<section id="overview"') < rendered.indexOf('<section id="game"'),
+  'The game must follow the Overview section.');
+assert(rendered.indexOf('<section id="game"') < rendered.indexOf('<section id="program"'),
+  'The Game section must precede the Program section.');
+assert(rendered.indexOf('<section id="program"') < rendered.indexOf('<section id="speakers"'),
+  'The Program section must precede the speaker launch.');
+assert(rendered.indexOf('<section id="speakers"') < rendered.indexOf('<section id="notes"'),
+  'The speaker launch must precede notes and materials.');
 
 for (const required of [
   'html,\nbody',
@@ -157,6 +189,8 @@ for (const ref of gameRefs) {
 const cssWithoutComments = releaseCss.replace(/\/\*[\s\S]*?\*\//g, '');
 assert(count(cssWithoutComments, /\{/g) === count(cssWithoutComments, /\}/g),
   'Unbalanced braces in assets/forum-release.css.');
+assert(!/#program,\s*\.program-section\s*\{\s*display:\s*none\s*!important\s*;\s*\}/.test(releaseCss),
+  'The release stylesheet still hides the Program section.');
 
 process.stdout.write(`Verified ${Object.keys(deployedGameBlobs).length} deployed game files and ${Object.keys(visualBlobs).length} visual assets.\n`);
 process.stdout.write('Forum release checks passed.\n');

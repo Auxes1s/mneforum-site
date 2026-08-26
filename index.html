@@ -22,7 +22,7 @@
   <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style">
-  <link rel="preload" href="assets/forum-release.css?v=20260826-final" as="style">
+  <link rel="preload" href="assets/forum-release.css?v=20260826-program" as="style">
   <!-- Fontshare stays the typography source (see ASSET_NOTES.md), but its
        @import sits inside forum-brand.css, so the browser only discovers it
        after that sheet downloads and parses: four serial hops before the first
@@ -98,6 +98,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
+    // The Program is a scheduled public release. Use an explicit Philippine
+    // time boundary so the section and its entry points stay unavailable until
+    // 28 August, then appear automatically on any subsequent page load.
+    const PROGRAM_REVEAL_AT = '2026-08-28T00:00:00+08:00';
+    const programReleased = Date.now() >= new Date(PROGRAM_REVEAL_AT).getTime();
     // Instant is the default every visitor lands on. A mode the visitor chose
     // themselves is restored for the rest of the session, which is what the
     // Thinking Mode panel promises in copy ("Your choice is saved for this
@@ -128,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '<meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260826-final" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260826-program" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -169,14 +174,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // fallback if the embed is unavailable.
     template = template
       .replace(
-        '<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>',
-        ''
-      )
-      .replace(
-        '<a class="btn btn-primary" href="#program">View the program</a>',
-        '<a class="btn btn-primary" href="#speakers">Meet the speakers</a>'
-      )
-      .replace(
         '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a>',
         '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a>' +
         '<a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
@@ -209,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replace('>Knowledge Gallery</a>', '>Evaluation Gallery</a>')
       .replace(
         '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>',
-        ''
+        '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>'
       )
       .replace(
         '<a href="#speakers" style="color: inherit; text-decoration: none; opacity: .85;">Resource persons</a>',
@@ -361,15 +358,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       ''
     );
 
-    // The public launch page now lets the speaker section carry the session
-    // context on its own. Keep the underlying agenda data bundled for a later
-    // Secretariat release, but remove the complete Program surface from the
-    // rendered document so it cannot be reached by navigation or assistive
-    // technology.
-    template = template.replace(
-      /\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/,
-      '\n'
-    );
+    // Keep the Program bundled for its scheduled release; the gate below
+    // preserves the Overview -> Game -> Program sequence when it opens.
 
 
     // Speaker launches use the established 13th Forum design while replacing
@@ -632,7 +622,26 @@ const SPEAKERS = [
       </div>
     </div>
   </section>`;
-    template = template.replace('\n  <section id="notes"', '\n  ' + gameSection + '\n\n  <section id="notes"');
+    template = template.replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
+    if (!programReleased) {
+      template = template
+        .replace(
+          '<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>',
+          ''
+        )
+        .replace(
+          '<a class="btn btn-primary" href="#program">View the program</a>',
+          ''
+        )
+        .replace(
+          '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>',
+          ''
+        )
+        .replace(
+          /\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/,
+          '\n'
+        );
+    }
     template = template.replace('</body>', '<script defer src="game/embed-v1.js"></' + 'script></body>');
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker
@@ -6381,7 +6390,7 @@ const SPEAKERS = [
     const releaseLink = document.createElement('link');
     releaseLink.id = 'forum-release-styles';
     releaseLink.rel = 'stylesheet';
-    releaseLink.href = 'assets/forum-release.css?v=20260826-final';
+    releaseLink.href = 'assets/forum-release.css?v=20260826-program';
     document.head.appendChild(releaseLink);
     // All five sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, the audited responsive layer,
