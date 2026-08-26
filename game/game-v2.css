@@ -27,7 +27,7 @@ body::before {
   position: fixed;
   z-index: 0;
   inset: 0;
-  background: url("assets/background.png") top center / max(1180px, 100vw) auto no-repeat;
+  background: url("../assets/background.png") top center / max(1180px, 100vw) auto no-repeat;
   opacity: .34;
   pointer-events: none;
 }
@@ -157,18 +157,18 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
 .case-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: clamp(20px, 4vw, 40px); align-items: center; }
 .case-card { min-height: 340px; overflow: hidden; background: white; border: 1px solid var(--line); box-shadow: 9px 9px 0 rgba(72,152,211,.1); }
 .case-art {
-  --shape-one: url("shapes/shape3.png");
-  --shape-two: url("shapes/shape5.png");
+  --shape-one: url("../shapes/shape3.png");
+  --shape-two: url("../shapes/shape5.png");
   --case-bg: rgba(72,152,211,.11);
   position: relative;
   height: 130px;
   overflow: hidden;
-  background: var(--case-bg) url("assets/background.png") top center / 820px auto no-repeat;
+  background: var(--case-bg) url("../assets/background.png") top center / 820px auto no-repeat;
   border-bottom: 1px solid var(--line);
 }
-.case-art[data-case-visual="1"] { --shape-one: url("shapes/shape1.png"); --shape-two: url("shapes/shape4.png"); --case-bg: rgba(195,67,93,.09); }
-.case-art[data-case-visual="2"] { --shape-one: url("shapes/shape2.png"); --shape-two: url("shapes/shape6.png"); --case-bg: rgba(241,168,31,.1); }
-.case-art[data-case-visual="3"] { --shape-one: url("shapes/shape5.png"); --shape-two: url("shapes/shape3.png"); --case-bg: rgba(72,152,211,.09); }
+.case-art[data-case-visual="1"] { --shape-one: url("../shapes/shape1.png"); --shape-two: url("../shapes/shape4.png"); --case-bg: rgba(195,67,93,.09); }
+.case-art[data-case-visual="2"] { --shape-one: url("../shapes/shape2.png"); --shape-two: url("../shapes/shape6.png"); --case-bg: rgba(241,168,31,.1); }
+.case-art[data-case-visual="3"] { --shape-one: url("../shapes/shape5.png"); --shape-two: url("../shapes/shape3.png"); --case-bg: rgba(72,152,211,.09); }
 .case-shape { position: absolute; width: 190px; height: 190px; background-position: center; background-size: contain; background-repeat: no-repeat; }
 .case-shape-one { left: -23px; top: -35px; background-image: var(--shape-one); rotate: -8deg; }
 .case-shape-two { right: 50px; top: -28px; background-image: var(--shape-two); rotate: 10deg; }
@@ -225,11 +225,11 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
 .results-score { display: flex; align-items: baseline; gap: 9px; margin: 19px 0 0; }
 .results-score strong { color: var(--blue); font: 900 clamp(58px, 9vw, 91px)/.8 "Arial Narrow", sans-serif; letter-spacing: -.04em; text-shadow: 4px 4px 0 rgba(72,152,211,.14); }
 .results-score span { color: var(--muted); font-weight: 760; }
-.results-bloom { position: relative; min-width: 0; margin: 0; overflow: hidden; background: rgba(255,253,248,.55) url("assets/background.png") 90% top / 770px auto no-repeat; }
+.results-bloom { position: relative; min-width: 0; margin: 0; overflow: hidden; background: rgba(255,253,248,.55) url("../assets/background.png") 90% top / 770px auto no-repeat; }
 .results-bloom img { position: absolute; z-index: 3; right: 13%; top: 15%; width: 125px; height: 140px; filter: drop-shadow(8px 10px 0 rgba(241,168,31,.2)); animation: butterfly-hover 2.8s ease-in-out infinite; }
 .results-shape { position: absolute; width: 250px; height: 250px; background-position: center; background-size: contain; background-repeat: no-repeat; }
-.results-shape-one { left: -30px; bottom: -80px; background-image: url("shapes/shape3.png"); rotate: -10deg; }
-.results-shape-two { right: -35px; bottom: -55px; background-image: url("shapes/shape5.png"); rotate: 8deg; }
+.results-shape-one { left: -30px; bottom: -80px; background-image: url("../shapes/shape3.png"); rotate: -10deg; }
+.results-shape-two { right: -35px; bottom: -55px; background-image: url("../shapes/shape5.png"); rotate: 8deg; }
 .results-panel[data-outcome="seed"] .results-bloom img { opacity: .45; transform: scale(.75); }
 .results-panel[data-outcome="seed"] .results-shape-two { opacity: .25; }
 .results-details { padding: clamp(24px, 4vw, 40px); }
