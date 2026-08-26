@@ -90,7 +90,7 @@ rendered = rendered
   )
   .replace(
     'Strategic Outcome Evaluation Division<br><a href="mailto:mes-soed@depdev.gov.ph" style="color: inherit;">mes-soed@depdev.gov.ph</a>',
-    'M&amp;E Forum Secretariat<br><a href="mailto:m%26enetworksecretariat@depdev.gov.ph" style="color: inherit;">m&amp;enetworksecretariat@depdev.gov.ph</a>'
+    'M&amp;E Forum Secretariat<br><a href="mailto:m%26enetworksecretariat@depdev.gov.ph" style="color: inherit;">m&amp;enetworksecretariat@depdev.gov.ph</a><br>Strategic Outcome Evaluation Division<br><a href="mailto:%26mes-soed@depdev.gov.ph" style="color: inherit;">&amp;mes-soed@depdev.gov.ph</a>'
   )
   .replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
 
@@ -109,10 +109,13 @@ assert(rendered.includes('href="#game"'), 'Primary/footer access to the game is 
 
 const expectedAddress = 'm&amp;enetworksecretariat@depdev.gov.ph';
 const expectedMailto = 'mailto:m%26enetworksecretariat@depdev.gov.ph';
+const expectedDivisionAddress = '&amp;mes-soed@depdev.gov.ph';
+const expectedDivisionMailto = 'mailto:%26mes-soed@depdev.gov.ph';
 assert(rendered.includes(expectedAddress), 'The visible Secretariat address is not HTML-escaped.');
 assert(rendered.includes(expectedMailto), 'The Secretariat mailto is not percent-encoded.');
+assert(rendered.includes(expectedDivisionAddress), 'The visible Strategic Outcome Evaluation Division address is missing or not HTML-escaped.');
+assert(rendered.includes(expectedDivisionMailto), 'The Strategic Outcome Evaluation Division mailto is missing or not percent-encoded.');
 assert(!/m(?:%26|&amp;)eforumsecretariat@depdev\.gov\.ph/i.test(rendered), 'The old Forum Secretariat address still renders.');
-assert(!/(?:%26|&amp;)?mes-soed@depdev\.gov\.ph/i.test(rendered), 'The old division address still renders in the Secretariat surface.');
 
 const sectionIds = Array.from(rendered.matchAll(/<section\b[^>]*\bid="([^"]+)"/g), match => match[1]);
 assert(new Set(sectionIds).size === sectionIds.length, 'Rendered section IDs are not unique.');
