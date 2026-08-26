@@ -97,9 +97,23 @@ rendered = rendered
 assert((rendered.match(/<section id="program" class="program-section">/g) || []).length === 1,
   'The Program section must render exactly once.');
 assert(rendered.includes('href="#program"'), 'Public access to the Program section is missing.');
-assert(rendered.includes('<a class="btn btn-primary" href="#program">View the program</a>'),
-  'The hero Program CTA is missing.');
+assert(homepage.includes('/\\s*<div class="hero__actions">[\\s\\S]*?<\\/div>/'),
+  'The runtime transform that removes the retired hero action row is missing.');
 assert(rendered.includes('Program of activities'), 'The Program heading is missing.');
+for (const sessionTitle of [
+  'Plenary 1 — Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector',
+  'Breakout 1 — Unpacking the Cocoon: Practical AI Use Cases in Public Sector Monitoring',
+  'Breakout 2 — Taking Shape: Emerging AI-Enabled Methodologies in Evaluation',
+  'Plenary 2 — Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E'
+]) {
+  assert(rendered.includes(sessionTitle), `The Program is missing or mislabels: ${sessionTitle}`);
+}
+assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector"'),
+  'The Resource Persons area mislabels Plenary 1.');
+assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
+  'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
+assert(homepage.includes('label: "Plenary 1 + Breakout 1"') && homepage.includes('label: "Plenary 2 + Breakout 2"'),
+  'The Resource Persons reveal-wave labels do not match the Program.');
 assert(count(rendered, /<section id="game"/g) === 1, 'The game section must render exactly once.');
 assert(count(rendered, /\bdata-buzz-to-bloom\b/g) === 1, 'The game iframe must render exactly once.');
 assert(rendered.includes('src="game/?embed=1&amp;pack=philippines-ai-v2"'), 'The deployed Philippine AI pack is not embedded.');

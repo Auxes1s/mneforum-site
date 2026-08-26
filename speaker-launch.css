@@ -1,4 +1,8 @@
 /* Speaker reveals extend the existing 13th Forum design system. */
+.hero .hero__lede {
+  margin-bottom: clamp(22px, 3vw, 30px) !important;
+}
+
 .speaker-launch__heading {
   display: flex;
   align-items: flex-start;
