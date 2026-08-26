@@ -36,8 +36,14 @@ Avoid injecting `forum-logo-transformation.svg` into decorative fields: it inclu
 
 ## Presenter photos
 
-`assets/presenters/presenter-map.csv` maps all 48 files to dimensions and provenance. Forty-four are name-verified against `archive/12th-mne-forum-2025.html`; two are unreferenced alternate formats (`deleon.jpg`, `esguerra.jpg`), and two remain unidentified (`holder.jpg`, `narag.png`).
+The 2026 public speaker portraits live in `assets/speakers/2026/`. They are generated from the authoritative Resource Persons folder by `scripts/prepare-speaker-assets.ps1`; the adjacent `manifest.csv` records each source, extraction method, dimensions, byte size, focal position, and verification state.
 
-The current 2026 `SPEAKERS` data uses generic organizations/roles and new names, so these 2025 photos must not be attached by filename guessing. Join only on a confirmed `display_name`, and leave the initials fallback in place for unmatched 2026 speakers.
+The initial verified set covers Arsenio M. Balisacan, Christophe Bahuet, Roderick M. Planta, Diane Gail L. Maharjan, Joseph J. Capuno, and Vivien Suerte-Cortez. Capuno's portrait is copied from `word/media/image1.jpeg` inside his current DOCX bionote; the other five use standalone current-event files. Each public derivative is WebP, fits within 720 × 900 pixels without upscaling, strips metadata, and stays below 150 KB.
 
-All 48 raster presenter files decode successfully. They range from 200 × 200 to 8000 × 8000 and have mixed aspect ratios, so a square frame with `object-fit: cover` is required.
+Do not restore or attach the historical 2025 presenter files by filename guessing. Current speaker cards join only on an explicitly verified 2026 name and leave the branded initials fallback in place when no approved portrait exists. Mixed aspect ratios are displayed in a square frame with `object-fit: cover` and the focal position recorded in the manifest.
+
+## 13th Forum UI lock
+
+`assets/forum-ui-lock.css` is the locally owned final cascade layer for the fluid desktop shell and Ultra/Night Mode contrast. `scripts/port-master-dev.ps1` must keep it after the master brand, responsive, and speaker styles whenever `/dev` is ported again.
+
+Run `node scripts/verify-forum-ui-lock.mjs` after any port or theme change. It checks the stylesheet-order invariant, Thinking Mode hooks, required responsive and Ultra rules, syntax, and the locked color-pair contrast ratios.

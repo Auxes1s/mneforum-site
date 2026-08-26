@@ -1,0 +1,709 @@
+/*
+ * Final responsive contract for the bundled Forum page.
+ *
+ * index.html contains the source bundle's component styles and the brand
+ * stylesheet supplies the visual system. This file is deliberately narrow:
+ * it owns the audited breakpoint decisions that must win after both layers.
+ */
+
+/* Prevent flex/grid children from re-introducing an intrinsic-width floor. */
+.site-header__inner,
+.site-header__mode,
+.hero__inner,
+.hero__content,
+.hero__art,
+.section-shell,
+.notes-grid,
+.site-footer > .sec-inner {
+  min-width: 0;
+}
+
+.site-header__mode {
+  position: relative;
+  z-index: 60;
+}
+
+.site-header__mode .thinking-mode,
+.site-header__mode .thinking-mode summary {
+  max-width: 100%;
+}
+
+.site-header__mode .thinking-mode__panel {
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px);
+}
+
+/* The desktop popover stays three-up, but never grows below the fold or past
+   the right edge of the masthead. */
+@media (min-width: 881px) {
+  .site-header__mode .thinking-mode__panel {
+    top: calc(100% + 12px) !important;
+    right: 0 !important;
+    left: auto !important;
+    max-height: min(520px, calc(100dvh - var(--masthead-height, 72px) - 24px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Narrow laptops and tablets get a deliberate two-row masthead. This keeps
+   the full navigation readable without changing the existing <=880px mobile
+   navigation behavior or its JavaScript breakpoint. */
+@media (min-width: 881px) and (max-width: 1040px) {
+  .site-header__inner {
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+  }
+
+  .site-brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-header__mode {
+    order: 2;
+    flex: 0 0 auto !important;
+    margin-left: 0 !important;
+  }
+
+  .primary-nav {
+    order: 3;
+    flex: 1 0 100% !important;
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .primary-nav a {
+    flex: 0 0 auto;
+  }
+}
+
+/* Short desktop/tablet viewports need the same bounded panel treatment as
+   phones, without switching the page into the mobile navigation layout. */
+@media (min-width: 601px) and (max-height: 700px) {
+  .site-header__mode .thinking-mode__panel {
+    max-height: min(420px, calc(100dvh - var(--masthead-height, 72px) - 24px));
+  }
+}
+
+/* Keep the compact launcher visible in the mobile masthead. The navigation
+   remains a separate fixed sheet, while Thinking Mode is its own fixed sheet
+   so neither overlay squeezes the hero or creates page-width overflow. */
+@media (max-width: 880px) {
+  .site-header__inner {
+    flex-wrap: nowrap !important;
+  }
+
+  .site-brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-header__mode {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .mobile-menu-button {
+    order: 3 !important;
+    flex: 0 0 44px !important;
+  }
+
+  .primary-nav {
+    order: 4 !important;
+  }
+
+  .site-header__mode .thinking-mode {
+    width: auto !important;
+  }
+
+  .site-header__mode .thinking-mode summary {
+    white-space: nowrap;
+  }
+
+  .site-header__mode .thinking-mode__panel {
+    position: fixed !important;
+    z-index: 134 !important;
+    top: calc(var(--mobile-masthead, var(--masthead-height, 66px)) + 10px) !important;
+    right: var(--mobile-gutter, 18px) !important;
+    bottom: auto !important;
+    left: var(--mobile-gutter, 18px) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: calc(100dvh - var(--mobile-masthead, var(--masthead-height, 66px)) - 24px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+
+  .thinking-mode__option,
+  .thinking-mode__option-copy,
+  .thinking-mode__option small {
+    min-width: 0;
+  }
+
+  .thinking-mode__option small {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* The brand layer has a larger mobile headline floor. Reassert the fluid
+   mobile scale so the headline does not dominate a 320–390px viewport. */
+@media (max-width: 600px) {
+  .hero h1 {
+    max-width: 14ch !important;
+    font-size: clamp(34px, 9.6vw, 42px) !important;
+    line-height: 1.12 !important;
+  }
+
+  .hero__art,
+  .hero__art > img,
+  .hero__art > svg {
+    max-width: 100% !important;
+    height: auto;
+  }
+}
+
+/* These hooks replace inline-only layout decisions in the decoded template. */
+.notes-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.site-footer__dateline {
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .notes-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .site-footer__dateline {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    letter-spacing: 0.08em !important;
+  }
+}
+
+/* Hybrid masthead lockup: keep the supplied horizontal order on larger
+   screens, while giving the event wordmark the lead on narrow screens. */
+.site-brand__partner-strip {
+  grid-template-columns: auto auto auto !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  gap: clamp(6px, 0.8vw, 9px) !important;
+}
+
+.site-brand__partner-logo--mne {
+  width: clamp(72px, 6.5vw, 96px) !important;
+  max-width: 100% !important;
+  max-height: 64px !important;
+}
+
+.site-brand__partner-logo--depdev {
+  width: clamp(26px, 2.9vw, 40px) !important;
+  height: clamp(26px, 2.9vw, 40px) !important;
+}
+
+.site-brand__partner-logo--undp {
+  height: clamp(34px, 4.4vw, 52px) !important;
+  max-width: 30px !important;
+}
+
+.site-brand__divider {
+  height: clamp(42px, 4vw, 58px) !important;
+}
+
+.site-brand__wordmark {
+  font-size: clamp(1.35rem, 1.75vw, 1.75rem) !important;
+}
+
+@media (max-width: 600px) {
+  .site-header__inner {
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+  }
+
+  .site-brand {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "copy" "partners" !important;
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    order: 1 !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__copy {
+    grid-area: copy !important;
+    justify-content: center !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__wordmark {
+    font-size: clamp(1.2rem, 6vw, 1.65rem) !important;
+    letter-spacing: -0.05em !important;
+  }
+
+  .site-brand__partner-strip {
+    grid-area: partners !important;
+    justify-self: center !important;
+    gap: 5px !important;
+  }
+
+  .site-brand__divider {
+    display: none !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    width: clamp(56px, 14vw, 74px) !important;
+    max-height: 48px !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: clamp(24px, 6vw, 30px) !important;
+    height: clamp(24px, 6vw, 30px) !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    height: clamp(32px, 8vw, 40px) !important;
+    max-width: 24px !important;
+  }
+
+  .site-header__mode {
+    order: 2 !important;
+  }
+
+  .mobile-menu-button {
+    order: 3 !important;
+    flex: 0 0 44px !important;
+  }
+
+  .primary-nav {
+    order: 4 !important;
+  }
+}
+
+/* Keep the three supplied partner marks in one horizontal lockup. The
+   bundled page has several legacy `.site-brand` rules; these final, explicit
+   flex rules prevent those layers from collapsing the marks into a vertical
+   column when the page is served from `/dev` or at the root. */
+.site-brand {
+  display: inline-flex !important;
+  flex: 1 1 auto !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.site-brand__partner-strip {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+.site-brand__partner-logo {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 600px) {
+  .site-brand {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .site-brand__partner-strip {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Match the header partner marks to the footer lockup. Keep the logo
+   dimensions fixed across breakpoints so the three institutional marks retain
+   the same visual weight in both locations. */
+.site-brand__partner-logo--mne {
+  width: auto !important;
+  height: 38px !important;
+  max-height: 38px !important;
+}
+
+.site-brand__partner-logo--depdev {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.site-brand__partner-logo--undp {
+  width: auto !important;
+  height: 46px !important;
+  max-width: 30px !important;
+}
+
+/* Give the wordmark a deliberate cushion after the gold divider. Keep this
+   separate from the shared partner gap so the logo spacing remains stable. */
+.site-brand__copy {
+  flex: 0 0 auto !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  justify-content: flex-start !important;
+  padding-left: clamp(6px, 0.75vw, 10px) !important;
+}
+
+@media (max-width: 600px) {
+  .site-brand__copy {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* Final phone masthead contract. Keep the institutional marks, event
+   wordmark, Thinking Mode, and Menu in one balanced row. This preserves the
+   complete identity while avoiding the detached control row and excess blank
+   space produced by the earlier stacked treatment. */
+@media (max-width: 600px) {
+  :root {
+    --mobile-masthead: calc(62px + env(safe-area-inset-top));
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .site-header__inner {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 44px 44px !important;
+    grid-template-rows: 44px !important;
+    grid-template-areas: "brand mode menu" !important;
+    width: min(calc(100% - (2 * var(--mobile-gutter, 20px))), 1240px) !important;
+    min-height: 0 !important;
+    column-gap: 8px !important;
+    row-gap: 0 !important;
+    padding-block: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .site-brand {
+    grid-area: brand !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__copy {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__wordmark {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    font-size: clamp(.85rem, 3.8vw, 1.05rem) !important;
+    letter-spacing: -0.05em !important;
+    white-space: nowrap !important;
+  }
+
+  .site-brand__forum {
+    display: none !important;
+  }
+
+  .site-brand__divider {
+    display: block !important;
+    flex: 0 0 1px !important;
+    width: 1px !important;
+    height: 30px !important;
+    margin-inline: clamp(4px, 1.4vw, 7px) !important;
+  }
+
+  .site-brand__partner-strip {
+    display: flex !important;
+    flex: 0 1 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: clamp(3px, .9vw, 5px) !important;
+    width: max-content !important;
+    max-width: 42% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    width: auto !important;
+    height: clamp(24px, 6vw, 29px) !important;
+    max-width: 46px !important;
+    max-height: 29px !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: clamp(22px, 5.6vw, 27px) !important;
+    height: clamp(22px, 5.6vw, 27px) !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    width: auto !important;
+    height: clamp(25px, 6.5vw, 31px) !important;
+    max-width: 18px !important;
+  }
+
+  .site-header__mode {
+    grid-area: mode !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header__mode .thinking-mode {
+    width: 44px !important;
+    max-width: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header__mode .thinking-mode summary {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 6px !important;
+    gap: 0 !important;
+    touch-action: manipulation;
+  }
+
+  .site-header__mode .thinking-mode__label,
+  .site-header__mode .thinking-mode__current,
+  .site-header__mode .thinking-mode__chevron {
+    display: none !important;
+  }
+
+  .site-header__mode .thinking-mode__mark {
+    width: 30px !important;
+    height: 30px !important;
+    flex: 0 0 30px !important;
+  }
+
+  .mobile-menu-button {
+    grid-area: menu !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    touch-action: manipulation;
+  }
+
+  .mobile-menu-button__icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .primary-nav,
+  .primary-nav.is-open {
+    top: calc(var(--mobile-masthead) + 10px) !important;
+    max-width: calc(100vw - (2 * var(--mobile-gutter, 20px))) !important;
+    min-width: 0 !important;
+  }
+
+  /* The hero keeps its art first, but its content and controls now have a
+     bounded width and no intrinsic-width floor on 320px phones. */
+  .hero__inner {
+    width: min(calc(100% - (2 * var(--mobile-gutter, 20px))), 1240px) !important;
+    min-width: 0 !important;
+    gap: clamp(24px, 6vw, 36px) !important;
+    padding-block: clamp(28px, 7vw, 42px) clamp(48px, 10vw, 68px) !important;
+  }
+
+  .hero__content,
+  .hero__meta,
+  .hero__lede,
+  .hero__actions,
+  .countdown {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .hero__meta {
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .hero__meta .tag {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .hero h1 {
+    max-width: 14ch !important;
+    font-size: clamp(2.125rem, 9.8vw, 2.8rem) !important;
+    line-height: 1.08 !important;
+    overflow-wrap: normal;
+  }
+
+  .hero__lede {
+    font-size: clamp(.92rem, 3.7vw, 1rem) !important;
+    line-height: 1.58 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .hero__actions .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+  }
+
+  .hero__actions .text-link {
+    justify-self: center !important;
+    max-width: 100% !important;
+    min-height: 44px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__art,
+  html[data-thinking-mode="instant"] .hero__art,
+  html[data-thinking-mode="high"] .hero__art,
+  html[data-thinking-mode="ultra"] .hero__art {
+    width: min(100%, 330px) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+  }
+
+  .hero__art > img.hero__identity-logo,
+  html[data-thinking-mode="ultra"] .hero__art > svg.hero__transformation-logo,
+  html[data-thinking-mode="ultra"] .hero__art > img.hero__transformation-logo {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 855 / 459;
+  }
+
+  /* Ultra's synchronized inline SVG can be replaced by the page renderer
+     after a mode change. Never leave phones with only the small text lockup:
+     the live animated image wins when available, otherwise the complete
+     static identity remains visible as a resilient fallback. */
+  html[data-thinking-mode="ultra"] .hero__art > .hero__wordmark-lockup {
+    display: none !important;
+  }
+
+  html[data-thinking-mode="ultra"] .hero__art > img.hero__identity-logo {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  html[data-thinking-mode="ultra"][data-transformation-ready="fallback"]
+    .hero__art > img.hero__identity-logo,
+  html[data-thinking-mode="ultra"][data-transformation-ready="true"]
+    .hero__art:has(> svg.hero__transformation-logo) > img.hero__identity-logo {
+    display: none !important;
+  }
+
+  html[data-thinking-mode="ultra"][data-transformation-ready="fallback"]
+    .hero__art > img.hero__transformation-logo[src] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .countdown {
+    overflow: hidden;
+  }
+
+  .countdown__cell,
+  .countdown__value,
+  .countdown__label {
+    min-width: 0;
+  }
+}
+
+/* Preserve the one-row composition on 320px devices by tightening the brand
+   rather than reintroducing a tall, detached second row. */
+@media (max-width: 360px) {
+  .site-header__inner {
+    width: calc(100% - 24px) !important;
+    column-gap: 6px !important;
+  }
+
+  .site-brand__wordmark {
+    font-size: .78rem !important;
+  }
+
+  .site-brand__divider {
+    height: 26px !important;
+    margin-inline: 3px !important;
+  }
+
+  .site-brand__partner-strip {
+    gap: 2px !important;
+    max-width: 40% !important;
+  }
+
+  .site-brand__partner-logo--mne {
+    height: 23px !important;
+    max-width: 36px !important;
+  }
+
+  .site-brand__partner-logo--depdev {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .site-brand__partner-logo--undp {
+    height: 24px !important;
+    max-width: 14px !important;
+  }
+}
