@@ -27,8 +27,12 @@ body::before {
   position: fixed;
   z-index: 0;
   inset: 0;
-  background: url("assets/background.png") top center / max(1180px, 100vw) auto no-repeat;
-  opacity: .34;
+  background:
+    url("../assets/butterfly-mark.svg") 4vw 10vh / 82px auto no-repeat,
+    url("../assets/butterfly-mark.svg") 91vw 6vh / 118px auto no-repeat,
+    url("../assets/butterfly-mark.svg") 2vw 67vh / 132px auto no-repeat,
+    url("../assets/butterfly-mark.svg") 94vw 78vh / 74px auto no-repeat;
+  opacity: .13;
   pointer-events: none;
 }
 body::after {
@@ -163,7 +167,10 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
   position: relative;
   height: 130px;
   overflow: hidden;
-  background: var(--case-bg) url("assets/background.png") top center / 820px auto no-repeat;
+  background:
+    url("../assets/butterfly-mark.svg") 7% 58% / 58px auto no-repeat,
+    url("../assets/butterfly-mark.svg") 84% 28% / 82px auto no-repeat,
+    var(--case-bg);
   border-bottom: 1px solid var(--line);
 }
 .case-art[data-case-visual="1"] { --shape-one: url("shapes/shape1.png"); --shape-two: url("shapes/shape4.png"); --case-bg: rgba(195,67,93,.09); }
@@ -225,7 +232,16 @@ kbd { padding: 2px 6px; font: 700 12px/1.5 ui-monospace, monospace; background: 
 .results-score { display: flex; align-items: baseline; gap: 9px; margin: 19px 0 0; }
 .results-score strong { color: var(--blue); font: 900 clamp(58px, 9vw, 91px)/.8 "Arial Narrow", sans-serif; letter-spacing: -.04em; text-shadow: 4px 4px 0 rgba(72,152,211,.14); }
 .results-score span { color: var(--muted); font-weight: 760; }
-.results-bloom { position: relative; min-width: 0; margin: 0; overflow: hidden; background: rgba(255,253,248,.55) url("assets/background.png") 90% top / 770px auto no-repeat; }
+.results-bloom {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  background:
+    url("../assets/butterfly-mark.svg") 14% 72% / 72px auto no-repeat,
+    url("../assets/butterfly-mark.svg") 78% 18% / 96px auto no-repeat,
+    rgba(255,253,248,.55);
+}
 .results-bloom img { position: absolute; z-index: 3; right: 13%; top: 15%; width: 125px; height: 140px; filter: drop-shadow(8px 10px 0 rgba(241,168,31,.2)); animation: butterfly-hover 2.8s ease-in-out infinite; }
 .results-shape { position: absolute; width: 250px; height: 250px; background-position: center; background-size: contain; background-repeat: no-repeat; }
 .results-shape-one { left: -30px; bottom: -80px; background-image: url("shapes/shape3.png"); rotate: -10deg; }
