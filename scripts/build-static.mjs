@@ -24,6 +24,7 @@ const publishEntries = [
   "rp-register",
   "sec-reg",
 
+  "speaker-launch.css",
   "site.webmanifest",
   "sitemap.xml"
 ];

@@ -12,6 +12,7 @@ const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
+const buildScript = readText(path.join(root, 'scripts', 'build-static.mjs'));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -191,6 +192,8 @@ assert(count(cssWithoutComments, /\{/g) === count(cssWithoutComments, /\}/g),
   'Unbalanced braces in assets/forum-release.css.');
 assert(!/#program,\s*\.program-section\s*\{\s*display:\s*none\s*!important\s*;\s*\}/.test(releaseCss),
   'The release stylesheet still hides the Program section.');
+assert(buildScript.includes('"speaker-launch.css"'),
+  'The static build must publish speaker-launch.css.');
 
 process.stdout.write(`Verified ${Object.keys(deployedGameBlobs).length} deployed game files and ${Object.keys(visualBlobs).length} visual assets.\n`);
 process.stdout.write('Forum release checks passed.\n');
