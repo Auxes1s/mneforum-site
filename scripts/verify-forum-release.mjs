@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, '..');
-const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const releaseCss = fs.readFileSync(path.join(root, 'assets', 'forum-release.css'), 'utf8');
-const speakerCss = fs.readFileSync(path.join(root, 'speaker-launch.css'), 'utf8');
-const gameCss = fs.readFileSync(path.join(root, 'game', 'game-v2.css'), 'utf8');
-const gameHtml = fs.readFileSync(path.join(root, 'game', 'index.html'), 'utf8');
+const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/\r\n/g, '\n');
+const releaseCss = fs.readFileSync(path.join(root, 'assets', 'forum-release.css'), 'utf8').replace(/\r\n/g, '\n');
+const speakerCss = fs.readFileSync(path.join(root, 'speaker-launch.css'), 'utf8').replace(/\r\n/g, '\n');
+const gameCss = fs.readFileSync(path.join(root, 'game', 'game-v2.css'), 'utf8').replace(/\r\n/g, '\n');
+const gameHtml = fs.readFileSync(path.join(root, 'game', 'index.html'), 'utf8').replace(/\r\n/g, '\n');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);

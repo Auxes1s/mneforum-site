@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "check": "node scripts/check-site.mjs && npm run test:game",
+    "check": "node scripts/verify-forum-release.mjs && npm run test:game",
     "test:game": "node game/tests/engine.test.js && node game/tests/embed.test.js && node game/tests/integration.test.js && node game/tests/case-packs.test.js",
     "postinstall": "npm run build"
   }
