@@ -81,8 +81,8 @@ assert(!homepage.includes('PROGRAM_REVEAL_AT') && !homepage.includes('programRel
 
 rendered = rendered
   .replace(
-    '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a>',
-    '<a href="#speakers" aria-current="{{ navSpeakersCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Speakers</a><a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
+    '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a>',
+    '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a><a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
   )
   .replace(
     '<a href="#speakers" style="color: inherit; text-decoration: none; opacity: .85;">Resource persons</a>',
@@ -106,6 +106,13 @@ assert(rendered.includes('src="game/?embed=1&amp;pack=philippines-ai-v2"'), 'The
 assert(rendered.includes('sandbox="allow-scripts"'), 'The game sandbox is missing allow-scripts.');
 assert(!/sandbox="[^"]*(?:allow-same-origin|allow-forms)/.test(rendered), 'The game sandbox grants unnecessary privileges.');
 assert(rendered.includes('href="#game"'), 'Primary/footer access to the game is missing.');
+const navOverview = rendered.indexOf('<a href="#overview" aria-current=');
+const navGame = rendered.indexOf('<a href="#game" aria-current=');
+const navProgram = rendered.indexOf('<a href="#program" aria-current=');
+assert(navOverview !== -1 && navGame !== -1 && navProgram !== -1,
+  'Overview, Game, and Program must all appear in the primary navigation.');
+assert(navOverview < navGame && navGame < navProgram,
+  'Primary navigation must begin Overview, Game, Program.');
 
 const expectedAddress = 'm&amp;enetworksecretariat@depdev.gov.ph';
 const expectedMailto = 'mailto:m%26enetworksecretariat@depdev.gov.ph';
