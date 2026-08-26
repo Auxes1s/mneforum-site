@@ -236,10 +236,12 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand__copy {
   display: flex !important;
+  flex-direction: column !important;
   min-width: 0 !important;
   max-width: 100% !important;
   flex: 1 1 0 !important;
-  align-items: center !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
   overflow: hidden !important;
 }
 
@@ -266,15 +268,27 @@ html[data-thinking-mode="high"] .site-footer {
 }
 
 .site-brand__letter--m {
-  color: var(--brand-royal) !important;
-}
-
-.site-brand__letter--e {
   color: var(--brand-blush) !important;
 }
 
+.site-brand__letter--e {
+  color: var(--brand-sun-gold) !important;
+}
+
 .site-brand__rest {
-  color: var(--brand-black) !important;
+  color: var(--brand-midnight) !important;
+}
+
+.site-brand__tagline {
+  display: block !important;
+  margin-top: 5px !important;
+  color: var(--brand-blush) !important;
+  font-family: "Open Sans SemiCondensed", "Satoshi", sans-serif !important;
+  font-size: clamp(0.56rem, 0.68vw, 0.7rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.075em !important;
+  white-space: nowrap !important;
 }
 
 .site-brand__forum {
@@ -646,15 +660,27 @@ html[data-thinking-mode="ultra"] img.hero__transformation-logo:not([src]) {
 }
 
 .hero__wordmark-m {
-  color: var(--brand-royal) !important;
-}
-
-.hero__wordmark-e {
   color: var(--brand-blush) !important;
 }
 
+.hero__wordmark-e {
+  color: var(--brand-sun-gold) !important;
+}
+
 .hero__wordmark-rest {
-  color: var(--brand-black) !important;
+  color: var(--brand-midnight) !important;
+}
+
+.hero__wordmark-tagline {
+  margin-top: clamp(8px, 1vw, 12px) !important;
+  color: var(--brand-blush) !important;
+  font-family: "Open Sans SemiCondensed", "Satoshi", sans-serif !important;
+  font-size: clamp(1.05rem, 2.2vw, 2rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.075em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
 }
 
 .hero__art > div[style*="text-align"] > div:last-child {
@@ -1151,6 +1177,7 @@ html[data-thinking-mode="high"] .hero__art {
     display: flex !important;
     grid-area: copy !important;
     justify-content: center !important;
+    align-items: center !important;
     width: 100% !important;
     overflow: visible !important;
   }
@@ -1158,6 +1185,17 @@ html[data-thinking-mode="high"] .hero__art {
   .site-brand__wordmark {
     font-size: clamp(1.2rem, 6vw, 1.65rem) !important;
     letter-spacing: -0.05em !important;
+  }
+
+  .site-brand__tagline {
+    margin-top: 4px !important;
+    font-size: clamp(0.5rem, 2.5vw, 0.64rem) !important;
+    letter-spacing: 0.055em !important;
+  }
+
+  .hero__wordmark-tagline {
+    font-size: clamp(0.88rem, 4.4vw, 1.05rem) !important;
+    letter-spacing: 0.04em !important;
   }
 
   .site-brand__forum {
@@ -1414,6 +1452,11 @@ html[data-thinking-mode="ultra"] .site-brand {
 
 html[data-thinking-mode="ultra"] .site-brand__forum {
   color: #a9c4dc !important;
+}
+
+html[data-thinking-mode="ultra"] .site-brand__tagline,
+html[data-thinking-mode="ultra"] .hero__wordmark-tagline {
+  color: #f08fa5 !important;
 }
 
 html[data-thinking-mode="ultra"] section {

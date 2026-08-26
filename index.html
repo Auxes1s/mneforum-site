@@ -27,7 +27,7 @@
   <link rel="icon" href="network_logo.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
-  <link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style">
+  <link rel="preload" href="assets/forum-brand.css?v=20260826-wordmark" as="style">
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style">
   <link rel="preload" href="assets/forum-release.css?v=20260826-program" as="style">
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '<meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260813-daymode-depdev" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260826-program" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260826-wordmark" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260826-program" as="style">' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // scalable network mark, with only the MEtamorphosis wordmark in the masthead.
     template = template.replace(
       /<a class="site-brand" href="#overview"[\s\S]*?<\/a>/,
-        '<a class="site-brand" href="#overview" aria-label="MEtamorphosis home — M&amp;E Network Philippines, DEPDev, and UNDP">' +
+        '<a class="site-brand" href="#overview" aria-label="MEtamorphosis: Evidence to Action in the Age of AI — M&amp;E Network Philippines, DEPDev, and UNDP home">' +
         '<span class="site-brand__partner-strip" aria-label="DEPDev, M&amp;E Network, and UNDP">' +
           '<img class="site-brand__partner-logo site-brand__partner-logo--mne" src="network_logo.svg" width="1270" height="816" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
           '<img class="site-brand__partner-logo site-brand__partner-logo--depdev" src="assets/depdev-logo-color-192.png" width="192" height="192" loading="eager" decoding="async" fetchpriority="low" alt="" aria-hidden="true">' +
@@ -167,8 +167,9 @@ document.addEventListener('DOMContentLoaded', async function() {
           '<span class="site-brand__wordmark" aria-label="MEtamorphosis">' +
             '<span class="site-brand__letter site-brand__letter--m">M</span>' +
             '<span class="site-brand__letter site-brand__letter--e">E</span>' +
-            '<span class="site-brand__rest">tamorphosis</span>' +
+            '<span class="site-brand__rest">TAMORPHOSIS</span>' +
           '</span>' +
+          '<span class="site-brand__tagline">Evidence to Action in the Age of AI</span>' +
         '</span>' +
       '</a>'
     );
@@ -278,7 +279,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     );
     template = template.replace(
       '<div style="font-family: var(--font-heading); font-weight: 700; font-size: clamp(34px, 4vw, 54px); line-height: 0.95; letter-spacing: -0.025em; color: var(--brand-blue-dark);"><span style="color: var(--brand-red);">M</span><span style="color: var(--brand-yellow);">E</span>TAMORPHOSIS</div>',
-      '<div class="hero__wordmark" aria-hidden="true"><span class="hero__wordmark-m">M</span><span class="hero__wordmark-e">E</span><span class="hero__wordmark-rest">tamorphosis</span></div>'
+      '<div class="hero__wordmark" aria-hidden="true"><span class="hero__wordmark-m">M</span><span class="hero__wordmark-e">E</span><span class="hero__wordmark-rest">TAMORPHOSIS</span></div><div class="hero__wordmark-tagline" aria-hidden="true">Evidence to Action in the Age of AI</div>'
     );
     template = template.replace(
       '<div class="thinking-ambient" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>',
@@ -6360,7 +6361,7 @@ const SPEAKERS = [
     const brandLink = document.createElement('link');
     brandLink.id = 'forum-brand-styles';
     brandLink.rel = 'stylesheet';
-    brandLink.href = 'assets/forum-brand.css?v=20260813-daymode-depdev';
+    brandLink.href = 'assets/forum-brand.css?v=20260826-wordmark';
     document.head.appendChild(brandLink);
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';
