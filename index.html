@@ -98,11 +98,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
-    // The Program is a scheduled public release. Use an explicit Philippine
-    // time boundary so the section and its entry points stay unavailable until
-    // 28 August, then appear automatically on any subsequent page load.
-    const PROGRAM_REVEAL_AT = '2026-08-28T00:00:00+08:00';
-    const programReleased = Date.now() >= new Date(PROGRAM_REVEAL_AT).getTime();
     // Instant is the default every visitor lands on. A mode the visitor chose
     // themselves is restored for the rest of the session, which is what the
     // Thinking Mode panel promises in copy ("Your choice is saved for this
@@ -357,10 +352,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     </div>`,
       ''
     );
-
-    // Keep the Program bundled for its scheduled release; the gate below
-    // preserves the Overview -> Game -> Program sequence when it opens.
-
 
     // Speaker launches use the established 13th Forum design while replacing
     // the indicative placeholder roster with named, confirmed resource
@@ -623,25 +614,6 @@ const SPEAKERS = [
     </div>
   </section>`;
     template = template.replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
-    if (!programReleased) {
-      template = template
-        .replace(
-          '<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>',
-          ''
-        )
-        .replace(
-          '<a class="btn btn-primary" href="#program">View the program</a>',
-          ''
-        )
-        .replace(
-          '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>',
-          ''
-        )
-        .replace(
-          /\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/,
-          '\n'
-        );
-    }
     template = template.replace('</body>', '<script defer src="game/embed-v1.js"></' + 'script></body>');
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker

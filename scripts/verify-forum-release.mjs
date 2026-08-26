@@ -76,8 +76,8 @@ let rendered = JSON.parse(templateMatch[1]);
 const gameMatch = homepage.match(/const gameSection = `([\s\S]*?)`;\n    template = template\.replace/);
 assert(gameMatch, 'The game section integration is missing.');
 const gameSection = gameMatch[1];
-assert(homepage.includes("const PROGRAM_REVEAL_AT = '2026-08-28T00:00:00+08:00';"),
-  'The Program release date must be fixed to 28 August 2026 Philippine time.');
+assert(!homepage.includes('PROGRAM_REVEAL_AT') && !homepage.includes('programReleased'),
+  'The Program must remain visible without a date gate.');
 
 rendered = rendered
   .replace(
@@ -93,32 +93,6 @@ rendered = rendered
     'M&amp;E Forum Secretariat<br><a href="mailto:m%26enetworksecretariat@depdev.gov.ph" style="color: inherit;">m&amp;enetworksecretariat@depdev.gov.ph</a>'
   )
   .replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
-
-const hideProgramUntilRelease = value => value
-  .replace(
-    '<a href="#program" aria-current="{{ navProgramCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Program</a>',
-    ''
-  )
-  .replace(
-    '<a class="btn btn-primary" href="#program">View the program</a>',
-    ''
-  )
-  .replace(
-    '<a href="#program" style="color: inherit; text-decoration: none; opacity: .85;">Program</a>',
-    ''
-  )
-  .replace(
-    /\n  <section id="program" class="program-section">[\s\S]*?<\/section>\n(?=\s*<section id="speakers")/,
-    '\n'
-  );
-
-const pendingRendered = hideProgramUntilRelease(rendered);
-assert(!pendingRendered.includes('<section id="program"'),
-  'The Program section must stay hidden before its release date.');
-assert(!pendingRendered.includes('href="#program"'),
-  'Program links must stay hidden before the release date.');
-assert(!pendingRendered.includes('View the program'),
-  'The hero Program CTA must stay hidden before the release date.');
 
 assert((rendered.match(/<section id="program" class="program-section">/g) || []).length === 1,
   'The Program section must render exactly once.');
