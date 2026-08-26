@@ -1,0 +1,410 @@
+/*
+ * 13th Forum UI lock
+ *
+ * This stylesheet is intentionally loaded after the decoded template, the
+ * master /dev brand layer, the responsive layer, and speaker-launch.css.
+ * Keep durable local contrast and layout decisions here so another /dev port
+ * cannot silently return Ultra to light cards or the 1240px desktop shell.
+ */
+
+:root {
+  --forum-shell-max: 1680px;
+  --forum-shell-gutter: clamp(48px, 7vw, 120px);
+}
+
+.site-header__inner,
+.hero__inner,
+.section-shell,
+.live-banner > div,
+.site-footer > .sec-inner {
+  width: min(calc(100% - var(--forum-shell-gutter)), var(--forum-shell-max)) !important;
+}
+
+.hero__inner {
+  align-items: center !important;
+}
+
+/* Wide editorial canvas: keep readable measures inside a shell that uses the
+   display instead of leaving the entire composition inside a 1240px island. */
+@media (min-width: 1440px) {
+  .hero {
+    min-height: min(900px, calc(100svh - 110px)) !important;
+  }
+
+  .hero__inner {
+    min-height: min(900px, calc(100svh - 110px)) !important;
+    grid-template-columns: minmax(0, .96fr) minmax(560px, 1.04fr) !important;
+    gap: clamp(48px, 5vw, 88px) !important;
+    padding-block: clamp(28px, 3vw, 48px) clamp(44px, 5vw, 72px) !important;
+  }
+
+  .hero h1 {
+    max-width: 10.5ch !important;
+    font-size: clamp(5rem, 5vw, 6rem) !important;
+    line-height: .94 !important;
+  }
+
+  .hero__art {
+    width: min(100%, 760px) !important;
+    max-width: 760px !important;
+    justify-self: end !important;
+  }
+
+  .countdown {
+    width: min(100%, 520px) !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1439px) {
+  :root {
+    --forum-shell-gutter: clamp(48px, 4vw, 64px);
+  }
+
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(440px, .92fr) !important;
+    gap: clamp(30px, 3vw, 48px) !important;
+  }
+
+  .hero h1 {
+    max-width: 10.5ch !important;
+    font-size: clamp(3.75rem, 5.8vw, 5.125rem) !important;
+    line-height: .96 !important;
+  }
+
+  .hero__art {
+    width: min(100%, 620px) !important;
+    max-width: 620px !important;
+    justify-self: end !important;
+  }
+}
+
+/* Collapse before the two desktop tracks become cramped. */
+@media (max-width: 1024px) {
+  :root {
+    --forum-shell-gutter: clamp(32px, 5vw, 48px);
+  }
+
+  .hero,
+  .hero__inner {
+    min-height: auto !important;
+  }
+
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: clamp(32px, 6vw, 54px) !important;
+    padding-block: clamp(30px, 5vw, 48px) clamp(56px, 8vw, 82px) !important;
+  }
+
+  .hero__content {
+    order: 1 !important;
+  }
+
+  .hero__art {
+    order: 2 !important;
+    width: min(100%, 560px) !important;
+    max-width: 560px !important;
+    margin-inline: auto !important;
+    justify-self: center !important;
+  }
+
+  .hero h1 {
+    max-width: 12ch !important;
+    font-size: clamp(3.25rem, 8vw, 5.25rem) !important;
+    line-height: .98 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --forum-shell-gutter: 28px;
+  }
+
+  .site-header__inner,
+  .hero__inner,
+  .section-shell,
+  .live-banner > div,
+  .site-footer > .sec-inner {
+    width: calc(100% - var(--forum-shell-gutter)) !important;
+  }
+
+  .hero__inner {
+    gap: 28px !important;
+    padding-block: 28px 58px !important;
+  }
+
+  .hero h1 {
+    max-width: 14ch !important;
+    font-size: clamp(2.125rem, 9.8vw, 2.8rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .hero__actions {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .hero__actions .btn {
+    width: 100% !important;
+    min-height: 46px !important;
+  }
+
+  .hero__actions .text-link {
+    min-height: 44px !important;
+    justify-self: center !important;
+  }
+
+  .hero__art,
+  html[data-thinking-mode="instant"] .hero__art,
+  html[data-thinking-mode="high"] .hero__art,
+  html[data-thinking-mode="ultra"] .hero__art {
+    width: min(100%, 330px) !important;
+    max-width: 330px !important;
+  }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .hero,
+  .hero__inner {
+    min-height: auto !important;
+  }
+
+  .hero__inner {
+    padding-block: 20px 40px !important;
+  }
+
+  .hero__art {
+    width: min(100%, 460px) !important;
+    max-width: 460px !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Ultra / Night presentation
+   ------------------------------------------------------------------------- */
+
+html[data-thinking-mode="ultra"] {
+  --ultra-page: #0a1a2b;
+  --ultra-section: #0e2136;
+  --ultra-card: #12283f;
+  --ultra-card-raised: #17324d;
+  --ultra-ink: #eef4fa;
+  --ultra-muted: #b9d2e8;
+  --ultra-link: #9fd2f7;
+  --ultra-border: rgba(174, 208, 238, .34);
+  --ultra-border-soft: rgba(174, 208, 238, .2);
+  --ultra-control: #78bdf1;
+  --ultra-control-ink: #06182a;
+}
+
+html[data-thinking-mode="ultra"] body,
+html[data-thinking-mode="ultra"] main {
+  background: var(--ultra-page) !important;
+  color: var(--ultra-ink) !important;
+}
+
+html[data-thinking-mode="ultra"] main section:not(.hero) {
+  background: color-mix(in srgb, var(--ultra-section) 92%, transparent) !important;
+  border-color: var(--ultra-border-soft) !important;
+  color: var(--ultra-ink) !important;
+}
+
+html[data-thinking-mode="ultra"] .theme-card,
+html[data-thinking-mode="ultra"] .speaker-card,
+html[data-thinking-mode="ultra"] .track-card,
+html[data-thinking-mode="ultra"] .brandcard,
+html[data-thinking-mode="ultra"] .card,
+html[data-thinking-mode="ultra"] .dialog,
+html[data-thinking-mode="ultra"] .program-panel,
+html[data-thinking-mode="ultra"] .qa-empty,
+html[data-thinking-mode="ultra"] .gallery-empty,
+html[data-thinking-mode="ultra"] .speaker-wave,
+html[data-thinking-mode="ultra"] .speaker-wave.is-revealed,
+html[data-thinking-mode="ultra"] .speaker-session,
+html[data-thinking-mode="ultra"] .speaker-session.is-concealed,
+html[data-thinking-mode="ultra"] .speaker-session .speaker-card,
+html[data-thinking-mode="ultra"] .speaker-session .speaker-card.is-concealed,
+html[data-thinking-mode="ultra"] .speaker-session__coming,
+html[data-thinking-mode="ultra"] .sde-video-card {
+  background: var(--ultra-card) !important;
+  border-color: var(--ultra-border) !important;
+  color: var(--ultra-ink) !important;
+  box-shadow: none !important;
+}
+
+html[data-thinking-mode="ultra"] .speaker-wave.is-revealed,
+html[data-thinking-mode="ultra"] .speaker-session:not(.is-concealed) {
+  background: linear-gradient(145deg, var(--ultra-card-raised), var(--ultra-card)) !important;
+}
+
+html[data-thinking-mode="ultra"] main section h2,
+html[data-thinking-mode="ultra"] main section h3,
+html[data-thinking-mode="ultra"] main section h4,
+html[data-thinking-mode="ultra"] .theme-card h3,
+html[data-thinking-mode="ultra"] .track-card h3,
+html[data-thinking-mode="ultra"] .speaker-card h3,
+html[data-thinking-mode="ultra"] .speaker-session h3,
+html[data-thinking-mode="ultra"] .speaker-session .speaker-card__content h4,
+html[data-thinking-mode="ultra"] .notes-section article h3,
+html[data-thinking-mode="ultra"] .gallery-section article h3,
+html[data-thinking-mode="ultra"] .speaker-wave strong {
+  color: var(--ultra-ink) !important;
+}
+
+html[data-thinking-mode="ultra"] .theme-card p,
+html[data-thinking-mode="ultra"] .track-card p,
+html[data-thinking-mode="ultra"] .speaker-card p,
+html[data-thinking-mode="ultra"] .brandcard p,
+html[data-thinking-mode="ultra"] .speaker-launch__summary,
+html[data-thinking-mode="ultra"] .speaker-session__promise,
+html[data-thinking-mode="ultra"] .speaker-session .speaker-card__content p,
+html[data-thinking-mode="ultra"] .speaker-wave small,
+html[data-thinking-mode="ultra"] .program-panel,
+html[data-thinking-mode="ultra"] .notes-section article p,
+html[data-thinking-mode="ultra"] .gallery-section article p,
+html[data-thinking-mode="ultra"] .qa-section p,
+html[data-thinking-mode="ultra"] .section-shell > div:first-child > span {
+  color: var(--ultra-muted) !important;
+}
+
+/* Several status cards arrive from /dev with inline semantic colors. Lock the
+   actual Q&A, notes, and gallery descendants as well as their parent cards so
+   those inline light-theme declarations cannot create a low-contrast island. */
+html[data-thinking-mode="ultra"] .qa-section .brandcard :where(div, span, ul, p)[style*="color: color-mix"],
+html[data-thinking-mode="ultra"] .notes-section .brandcard :where(div, span, ul, p)[style*="color: color-mix"],
+html[data-thinking-mode="ultra"] .gallery-section .brandcard :where(div, span, ul, p)[style*="color: color-mix"] {
+  color: var(--ultra-muted) !important;
+}
+
+html[data-thinking-mode="ultra"] .qa-section .brandcard [style*="color: var(--color-accent-700)"],
+html[data-thinking-mode="ultra"] .notes-section .brandcard [style*="color: var(--color-accent-700)"],
+html[data-thinking-mode="ultra"] .gallery-section .brandcard [style*="color: var(--color-accent-700)"] {
+  color: var(--ultra-link) !important;
+}
+
+html[data-thinking-mode="ultra"] .qa-section .brandcard [style*="background: var(--color-accent-100)"] {
+  color: var(--ultra-ink) !important;
+  background: var(--ultra-card-raised) !important;
+  border-color: var(--ultra-border) !important;
+}
+
+html[data-thinking-mode="ultra"] .qa-empty {
+  color: var(--ultra-muted) !important;
+  border-style: dashed !important;
+}
+
+html[data-thinking-mode="ultra"] .eyebrow-heading,
+html[data-thinking-mode="ultra"] .kicker,
+html[data-thinking-mode="ultra"] .speaker-launch__eyebrow,
+html[data-thinking-mode="ultra"] .speaker-session__meta,
+html[data-thinking-mode="ultra"] .speaker-card__content .kicker {
+  color: #ff9bb0 !important;
+}
+
+html[data-thinking-mode="ultra"] .program-item {
+  border-color: var(--ultra-border-soft) !important;
+}
+
+html[data-thinking-mode="ultra"] .program-row,
+html[data-thinking-mode="ultra"] .program-row__title {
+  color: var(--ultra-ink) !important;
+}
+
+html[data-thinking-mode="ultra"] .program-row__time,
+html[data-thinking-mode="ultra"] .text-link,
+html[data-thinking-mode="ultra"] main a:not(.btn) {
+  color: var(--ultra-link) !important;
+}
+
+html[data-thinking-mode="ultra"] button.program-row:hover {
+  background: rgba(120, 189, 241, .09) !important;
+}
+
+html[data-thinking-mode="ultra"] .tag-neutral,
+html[data-thinking-mode="ultra"] .tag-outline,
+html[data-thinking-mode="ultra"] .speaker-session.is-concealed .speaker-session__status .tag {
+  color: var(--ultra-ink) !important;
+  background: rgba(120, 189, 241, .1) !important;
+  border-color: var(--ultra-border) !important;
+}
+
+html[data-thinking-mode="ultra"] .tag-accent {
+  color: var(--ultra-ink) !important;
+  background: rgba(120, 189, 241, .18) !important;
+}
+
+html[data-thinking-mode="ultra"] .btn-primary,
+html[data-thinking-mode="ultra"] .filter-chip.is-selected {
+  color: var(--ultra-control-ink) !important;
+  background: var(--ultra-control) !important;
+  border-color: var(--ultra-control) !important;
+}
+
+html[data-thinking-mode="ultra"] .btn-secondary,
+html[data-thinking-mode="ultra"] .filter-chip {
+  color: var(--ultra-ink) !important;
+  background: transparent !important;
+  border-color: var(--ultra-border) !important;
+}
+
+html[data-thinking-mode="ultra"] .thinking-mode__panel {
+  color: var(--ultra-ink) !important;
+  background: #0d2237 !important;
+  border-color: var(--ultra-border) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .42) !important;
+}
+
+html[data-thinking-mode="ultra"] .thinking-mode__panel legend,
+html[data-thinking-mode="ultra"] .thinking-mode__panel > p,
+html[data-thinking-mode="ultra"] .thinking-mode__option strong,
+html[data-thinking-mode="ultra"] .thinking-mode__option small,
+html[data-thinking-mode="ultra"] .thinking-mode__option em {
+  color: var(--ultra-ink) !important;
+}
+
+html[data-thinking-mode="ultra"] .thinking-mode__option {
+  background: var(--ultra-card) !important;
+  border-color: var(--ultra-border-soft) !important;
+}
+
+html[data-thinking-mode="ultra"] .thinking-mode__panel input:checked + .thinking-mode__option {
+  background: var(--ultra-card-raised) !important;
+  border-color: var(--ultra-control) !important;
+}
+
+html[data-thinking-mode="ultra"] .speaker-card__avatar {
+  color: var(--ultra-ink) !important;
+  background: linear-gradient(145deg, #285b83, #173b5b) !important;
+  box-shadow: inset 0 0 0 1px var(--ultra-border-soft) !important;
+}
+
+html[data-thinking-mode="ultra"] .gallery-empty {
+  border-style: dashed !important;
+}
+
+@media (max-width: 880px) {
+  html[data-thinking-mode="ultra"] .primary-nav,
+  html[data-thinking-mode="ultra"] .primary-nav.is-open {
+    background: #0d2237 !important;
+    border-color: var(--ultra-border) !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .42) !important;
+  }
+
+  html[data-thinking-mode="ultra"] .primary-nav.is-open a {
+    color: var(--ultra-ink) !important;
+    background: transparent !important;
+    border-color: var(--ultra-border-soft) !important;
+  }
+
+  html[data-thinking-mode="ultra"] .primary-nav.is-open a:hover,
+  html[data-thinking-mode="ultra"] .primary-nav.is-open a[aria-current="page"] {
+    color: #ffffff !important;
+    background: rgba(120, 189, 241, .1) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__inner,
+  .hero__content,
+  .hero__art {
+    scroll-behavior: auto !important;
+  }
+}

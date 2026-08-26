@@ -19,6 +19,7 @@ const loader = fs.readFileSync(path.join(gameRoot, 'content-loader-v1.js'), 'utf
 const css = fs.readFileSync(path.join(gameRoot, 'game-v2.css'), 'utf8');
 const embed = fs.readFileSync(path.join(gameRoot, 'embed-v1.js'), 'utf8');
 const engine = fs.readFileSync(path.join(gameRoot, 'engine-v1.js'), 'utf8');
+const releaseCss = fs.readFileSync(path.join(root, 'assets', 'forum-release.css'), 'utf8');
 
 test('standalone assets are local, versioned, and present', () => {
   const refs = Array.from(html.matchAll(/(?:src|href)="([^"]+)"/g), match => match[1]).filter(ref => !ref.startsWith('#'));
@@ -56,9 +57,9 @@ test('standalone markup has unique IDs and named controls', () => {
   assert.doesNotMatch(html, /<strong>(?:Connect|Commit|Track)<\/strong>/);
 });
 
-test('construction homepage deliberately composes the guarded iframe integration', () => {
+test('13th Forum homepage deliberately composes the guarded iframe integration', () => {
   assert.equal((homepage.match(/\bdata-buzz-to-bloom\b/g) || []).length, 1);
-  assert.match(homepage, /<section class="game-section" aria-labelledby="buzz-to-bloom-title">/);
+  assert.match(homepage, /<section id="game" class="game-section" aria-labelledby="buzz-to-bloom-title">/);
   assert.match(homepage, /src="game\/\?embed=1&amp;pack=philippines-ai-v2"/);
   assert.match(homepage, /sandbox="allow-scripts"/);
   assert.doesNotMatch(homepage, /sandbox="[^"]*allow-same-origin/);
@@ -70,23 +71,26 @@ test('construction homepage deliberately composes the guarded iframe integration
   assert.doesNotMatch(homepage, /Check the signal/);
   assert.doesNotMatch(homepage, /Connect the context|Commit to action|Track what follows/);
   assert.match(homepage, /title="Buzz to Bloom evidence-to-action challenge"/);
-  assert.match(homepage, /<script defer src="game\/embed-v1\.js"><\/script>/);
+  assert.match(homepage, /game\/embed-v1\.js/);
   assert.match(homepage, /data-game-phase-copy/);
   assert.match(homepage, /class="game-frame-link"[^>]*target="_blank"[^>]*rel="noopener"/);
-  assert.ok(homepage.indexOf('<main class="stage"') < homepage.indexOf('<section class="game-section"'));
-  assert.ok(homepage.indexOf('<section class="game-section"') < homepage.indexOf('<footer class="footer"'));
+  assert.match(homepage, /template = template\.replace\('\\n  <section id="notes"', '\\n  ' \+ gameSection/);
+  assert.match(homepage, /template = template\.replace\('<\/body>', '<script defer src="game\/embed-v1\.js"><\/\' \+ 'script><\/body>'\);/);
 });
 
-test('construction homepage scripts parse and the mobile frame remains usable', () => {
-  const inlineScripts = Array.from(homepage.matchAll(/<script>([\s\S]*?)<\/script>/g), match => match[1]);
-  assert.ok(inlineScripts.length >= 1, 'countdown script not found');
+test('homepage scripts parse and the mobile frame remains usable', () => {
+  const inlineScripts = Array.from(homepage.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g))
+    .filter(match => !/\bsrc\s*=/.test(match[1]) && !/__bundler\/(?:manifest|template)/.test(match[1]))
+    .map(match => match[2].trim())
+    .filter(Boolean);
+  assert.ok(inlineScripts.length >= 1, 'homepage loader script not found');
   inlineScripts.forEach((source, index) => new vm.Script(source, { filename: `index-inline-${index}.js` }));
-  assert.equal((homepage.match(/<h1\b/g) || []).length, 1);
-  assert.match(homepage, /\.game-frame iframe \{[\s\S]*?width: 100%;[\s\S]*?max-width: 100%;[\s\S]*?min-width: 0;/);
-  assert.match(homepage, /\.game-new-page,\s*\.game-frame-link \{[\s\S]*?min-height: 48px;/);
-  assert.match(homepage, /@media \(max-width: 980px\)[\s\S]*?\.game-section__inner \{ grid-template-columns: 1fr; \}/);
-  assert.match(homepage, /@media \(max-width: 390px\)[\s\S]*?\.game-section \{ padding-inline: \.5rem; \}/);
-  assert.match(homepage, /html \{ font-size: 16px; overflow-x: hidden; \}/);
+  assert.match(releaseCss, /\.game-frame iframe \{[\s\S]*?width: 100%;[\s\S]*?max-width: 100%;[\s\S]*?min-width: 0;/);
+  assert.match(releaseCss, /\.game-new-page,\s*\.game-frame-link \{[\s\S]*?min-height: 48px;/);
+  assert.match(releaseCss, /@media \(max-width: 1024px\)[\s\S]*?\.game-section__inner \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/);
+  assert.match(releaseCss, /@media \(max-width: 600px\)[\s\S]*?\.game-frame iframe \{[\s\S]*?height: 880px;/);
+  assert.match(releaseCss, /@media \(max-width: 390px\)[\s\S]*?\.primary-nav\.is-open \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/);
+  assert.match(releaseCss, /html,\s*body \{[\s\S]*?overflow-x: clip;/);
   assert.match(css, /\.start-card \.reset-button \{ min-height: 48px;/);
   assert.match(css, /\.primary-button, \.text-button, \.tutorial-actions button, \.action-grid button, \.pause-button \{ min-height: 48px;/);
   assert.match(css, /@media \(max-width: 420px\)[\s\S]*?\.leaderboard-entry \{ grid-template-columns: 1fr; \}/);
