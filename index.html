@@ -436,13 +436,13 @@ const SPEAKERS = [
       <div class="speaker-launch__timeline" aria-label="Speaker reveal schedule">
         <sc-for list="{{ speakerLaunchWaves }}" as="wave" hint-placeholder-count="2">
           <article class="speaker-wave {{ wave.cls }}">
-            <span class="speaker-wave__number">WAVE {{ wave.number }}</span>
+            <span class="speaker-wave__number">{{ wave.number }}</span>
             <strong>{{ wave.label }}</strong>
             <small>{{ wave.status }}</small>
           </article>
         </sc-for>
       </div>
-      <div class="filter-group speaker-launch__filters" role="group" aria-label="Filter confirmed resource persons by reveal wave">
+      <div class="filter-group speaker-launch__filters" role="group" aria-label="Filter confirmed resource persons by session group">
         <sc-for list="{{ speakerFilters }}" as="f" hint-placeholder-count="4">
           <button class="filter-chip {{ f.cls }}" type="button" aria-pressed="{{ f.pressed }}" sc-camel-on-click="{{ f.select }}">{{ f.label }}</button>
         </sc-for>
@@ -514,7 +514,7 @@ const SPEAKERS = [
     const revealedSpeakerWave = overrideSpeakerWave === null ? datedSpeakerWave : overrideSpeakerWave;
     const revealedWaveIds = SPEAKER_LAUNCH_WAVES.slice(0, revealedSpeakerWave).map(wave => wave.id);
     const filters = [
-      { id: "all", label: "All waves" },
+      { id: "all", label: "All" },
       ...SPEAKER_LAUNCH_WAVES.map(wave => ({ id: wave.id, label: wave.label }))
     ];
     const activeSpeakerFilter = filters.some(filter => filter.id === st.speakerFilter) ? st.speakerFilter : "all";
@@ -580,9 +580,9 @@ const SPEAKERS = [
         });
       });
     const speakerLaunchSummary = revealedSpeakerWave === 0
-      ? "Speaker profiles will be revealed in two scheduled waves, pairing each plenary with its breakout sessions."
+      ? "Speaker profiles will be revealed in two scheduled groups, pairing each plenary with its breakout sessions."
       : (revealedSpeakerWave < 2
-        ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with each scheduled wave."
+        ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
         : "Explore confirmed resource persons by session, and choose the conversations most useful to your work.");
 
     const activeRoom =`
