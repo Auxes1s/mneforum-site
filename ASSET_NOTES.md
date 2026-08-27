@@ -22,13 +22,18 @@ mounted page.
 | `assets/undp-logo-color.svg` | Colored, scalable UNDP masthead mark from the supplied logo resources |
 | `assets/og-teaser.png` | Social preview image referenced by page metadata |
 | `assets/fonts/OpenSans-SemiCondensed-Bold.ttf` | Local display font used by the form pages |
+| `assets/fonts/Satoshi-Regular.woff2` | Local brand body font used by the Forum page |
+| `assets/fonts/Satoshi-Bold.woff2` | Local brand heading and control font used by the Forum page |
+| `assets/fonts/Plein-Black.woff2` | Local brand display font used by the Forum identity and major display text |
+| `assets/fonts/Fontshare-FFL.txt` | ITF Free Font License supplied with the official Fontshare kit |
 | `assets/forum-brand.css` | Original brand and component layer |
 | `assets/forum-responsive.css` | Original responsive layer with small audited overrides |
 | `assets/redirect.css` | Original form handoff-page styling |
 
-The brand and redirect styles retain their Fontshare import for visual fidelity.
-That external font request is a known performance trade-off and should be
-revisited only as a separately reviewed typography change.
+The Forum brand stylesheet self-hosts the official Satoshi and Plein webfonts
+under the supplied ITF Free Font License. This preserves the approved type
+system even when the Fontshare API is unavailable. The redirect stylesheet
+retains its Fontshare import and remains outside this homepage typography fix.
 
 ## Motion and embedded runtime
 

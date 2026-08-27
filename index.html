@@ -27,22 +27,15 @@
   <link rel="icon" href="network_logo.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">
-  <link rel="preload" href="assets/forum-brand.css?v=20260826-wordmark" as="style">
+  <link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style">
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style">
   <link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">
-  <!-- Fontshare stays the typography source (see ASSET_NOTES.md), but its
-       @import sits inside forum-brand.css, so the browser only discovers it
-       after that sheet downloads and parses: four serial hops before the first
-       Plein/Satoshi glyph. Warming both origins and starting the font CSS here
-       collapses the chain without moving where the fonts come from. The font
-       files themselves are CORS requests, so cdn.fontshare.com is warmed with
-       crossorigin; the CSS request is not, so api.fontshare.com is warmed
-       without it. These live in the shell head on purpose — the loader strips
-       crossorigin from the swapped-in template. -->
-  <link rel="preconnect" href="https://api.fontshare.com">
-  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=plein@900&amp;f[]=satoshi@400,700&amp;display=swap">
+  <!-- The approved brand faces are local so the page cannot silently fall
+       back to a device font when Fontshare's API is restricted. -->
+  <link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #ebebeb; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -136,7 +129,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       '<meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260826-wordmark" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">' +
+      '<link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
       'visibility:hidden!important;opacity:0!important}</style>'
@@ -6361,7 +6355,7 @@ const SPEAKERS = [
     const brandLink = document.createElement('link');
     brandLink.id = 'forum-brand-styles';
     brandLink.rel = 'stylesheet';
-    brandLink.href = 'assets/forum-brand.css?v=20260826-wordmark';
+    brandLink.href = 'assets/forum-brand.css?v=20260827-local-fonts';
     document.head.appendChild(brandLink);
     const responsiveLink = document.createElement('link');
     responsiveLink.id = 'forum-responsive-styles';

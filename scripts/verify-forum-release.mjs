@@ -11,6 +11,7 @@ const homepage = readText(path.join(root, 'index.html'));
 const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
 const responsiveCss = readText(path.join(root, 'assets', 'forum-responsive.css'));
 const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
+const brandCss = readText(path.join(root, 'assets', 'forum-brand.css'));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
@@ -110,6 +111,27 @@ for (const sessionTitle of [
 ]) {
   assert(rendered.includes(sessionTitle), `The Program is missing or mislabels: ${sessionTitle}`);
 }
+
+const brandFonts = [
+  'assets/fonts/Satoshi-Regular.woff2',
+  'assets/fonts/Satoshi-Bold.woff2',
+  'assets/fonts/Plein-Black.woff2'
+];
+
+for (const file of brandFonts) {
+  const fontPath = path.join(root, file);
+  assert(fs.existsSync(fontPath), `Missing local brand font: ${file}`);
+  assert(fs.statSync(fontPath).size > 15000, `Local brand font is unexpectedly small: ${file}`);
+  assert(homepage.includes(file), `The homepage does not preload ${file}.`);
+}
+assert(fs.existsSync(path.join(root, 'assets', 'fonts', 'Fontshare-FFL.txt')),
+  'The Fontshare license supplied with the local brand fonts is missing.');
+assert(!brandCss.includes('api.fontshare.com'),
+  'The Forum brand stylesheet must not depend on the restricted Fontshare API.');
+assert(brandCss.includes('fonts/Satoshi-Regular.woff2') &&
+  brandCss.includes('fonts/Satoshi-Bold.woff2') &&
+  brandCss.includes('fonts/Plein-Black.woff2'),
+  'The Forum brand stylesheet does not register all approved local faces.');
 assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector"'),
   'The Resource Persons area mislabels Plenary 1.');
 assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
