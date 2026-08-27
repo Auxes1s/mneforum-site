@@ -390,11 +390,6 @@
     --mobile-masthead: calc(62px + env(safe-area-inset-top));
   }
 
-  html,
-  body {
-    overflow-x: clip;
-  }
-
   .site-header__inner {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) 44px 44px !important;
@@ -440,6 +435,13 @@
     font-size: clamp(.85rem, 3.8vw, 1.05rem) !important;
     letter-spacing: -0.05em !important;
     white-space: nowrap !important;
+  }
+
+  /* The full strapline is repeated in the hero. Keeping it in the compact
+     phone masthead creates a non-wrapping intrinsic-width floor beside three
+     partner marks and two 44px controls. */
+  .site-brand__tagline {
+    display: none !important;
   }
 
   .site-brand__forum {

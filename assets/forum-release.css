@@ -10,7 +10,6 @@
 html,
 body {
   max-width: 100%;
-  overflow-x: clip;
 }
 
 main,
@@ -317,6 +316,164 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
     line-height: 1.18;
   }
 
+  /* Phone agenda: time, title, then metadata. The decorative desktop rail
+     used nearly a third of a 375px panel and left long session titles in an
+     avoidably narrow column. */
+  #program .section-shell > .program-item::before,
+  #program .section-shell .program-row::after {
+    display: none !important;
+  }
+
+  #program .section-shell .program-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    gap: 7px !important;
+    min-width: 0;
+    min-height: 0;
+    padding: 17px 0 !important;
+  }
+
+  .program-row__time,
+  .program-row__title,
+  .program-row__meta {
+    grid-column: 1 !important;
+    min-width: 0;
+  }
+
+  .program-row__time {
+    grid-row: 1 !important;
+    padding: 0 !important;
+    color: var(--brand-blue-dark) !important;
+    font-size: .875rem;
+    font-weight: 700;
+  }
+
+  .program-row__title {
+    grid-row: 2 !important;
+    font-size: clamp(.98rem, 4.1vw, 1.08rem);
+    line-height: 1.42 !important;
+    text-wrap: pretty;
+  }
+
+  .program-row__meta {
+    grid-row: 3 !important;
+    justify-self: stretch !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .program-row__meta > span[aria-hidden="true"] {
+    margin-left: auto;
+  }
+
+  .program-panel {
+    min-width: 0;
+    margin-bottom: 20px !important;
+    padding: 8px 0 26px !important;
+  }
+
+  .program-panel .track-grid,
+  .program-panel .track-card {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .program-panel__actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .program-panel__actions .btn,
+  .program-panel__actions .text-link {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    min-height: 46px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .program-heading__actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+  }
+
+  .program-heading__actions .btn {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 10px !important;
+  }
+
+  /* Let the four numbered themes size to their real content on phones. */
+  .theme-card {
+    min-height: 0 !important;
+  }
+
+  /* The locked-state arrow no longer consumes a permanent desktop column. */
+  .notes-section .brandcard[style*="display: flex"] {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 12px !important;
+  }
+
+  .notes-section .brandcard[style*="display: flex"] > div:first-child {
+    font-size: 32px !important;
+  }
+
+  .notes-section .coming-soon .btn {
+    width: 100%;
+    white-space: normal;
+  }
+
+  /* A participant already viewing this site on a phone needs the room action,
+     not a QR code displayed on the same device. Desktop keeps both. */
+  #qa .qa-layout > div:first-child > .brandcard:first-child > div:nth-of-type(2) {
+    display: block !important;
+  }
+
+  #qa .qa-layout > div:first-child > .brandcard:first-child > div:nth-of-type(2) > div:last-child {
+    display: none !important;
+  }
+
+  #qa .qa-layout > div:first-child > .brandcard:first-child > div:nth-of-type(3) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  #qa .qa-layout > div:first-child > .brandcard:first-child > div:nth-of-type(3) > .btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  #qa .qa-layout > .brandcard > div:first-child {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 10px !important;
+  }
+
+  #qa .qa-layout > .brandcard > div:first-child > span:nth-child(2) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  #qa .qa-layout > .brandcard > div:first-child > .tag {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  #qa .qa-layout > .brandcard > div:first-child > span:last-child {
+    grid-column: 1 / -1;
+    margin-left: 0 !important;
+    padding-top: 4px;
+  }
+
   .game-section__inner {
     gap: 18px;
   }
@@ -374,6 +531,12 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
   }
 }
 
+@media (max-width: 880px) {
+  main section[id] {
+    scroll-margin-top: calc(var(--mobile-masthead, 62px) + 12px);
+  }
+}
+
 @media (max-width: 390px) {
   .primary-nav.is-open {
     grid-template-columns: minmax(0, 1fr);
@@ -397,6 +560,34 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
 
   .game-frame iframe {
     height: 920px;
+  }
+}
+
+@media (max-width: 340px) {
+  /* Three compact units scan faster and use less vertical space than the
+     inherited two-row countdown at the narrowest supported width. */
+  .countdown {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .countdown__cell {
+    min-height: 60px !important;
+    padding-inline: 4px !important;
+  }
+
+  .countdown__cell:nth-child(3) {
+    grid-column: auto !important;
+    border-top: 0 !important;
+    border-left: 1px solid var(--brand-line) !important;
+  }
+
+  .countdown__value {
+    font-size: 1.35rem !important;
+  }
+
+  .countdown__label {
+    font-size: .625rem !important;
+    letter-spacing: .045em !important;
   }
 }
 

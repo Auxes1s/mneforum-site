@@ -9,6 +9,8 @@ const root = path.resolve(scriptDir, '..');
 const readText = file => fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const homepage = readText(path.join(root, 'index.html'));
 const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
+const responsiveCss = readText(path.join(root, 'assets', 'forum-responsive.css'));
+const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
@@ -153,18 +155,34 @@ assert(rendered.indexOf('<section id="speakers"') < rendered.indexOf('<section i
 
 for (const required of [
   'html,\nbody',
-  'overflow-x: clip',
   '.game-frame iframe',
   'width: 100%',
   'max-width: 100%',
   'min-height: 48px',
   '@media (max-width: 600px)',
   '@media (max-width: 390px)',
+  'scroll-margin-top: calc(var(--mobile-masthead, 62px) + 12px)',
+  'grid-template-rows: auto auto auto !important',
+  '.notes-section .brandcard[style*="display: flex"]',
+  '#qa .qa-layout > div:first-child > .brandcard:first-child',
   '@media (prefers-reduced-motion: reduce)',
   'html[data-thinking-mode="ultra"] .game-section'
 ]) {
   assert(releaseCss.includes(required), `Missing release CSS safeguard: ${required}`);
 }
+
+assert(!/html,\s*\nbody\s*\{[^}]*overflow-x:\s*(?:hidden|clip)/.test(releaseCss),
+  'The release stylesheet must not conceal page overflow at the root.');
+assert(!/html,\s*\n\s*body\s*\{[^}]*overflow-x:\s*(?:hidden|clip)/.test(responsiveCss),
+  'The responsive stylesheet must not conceal page overflow at the root.');
+assert(responsiveCss.includes('.site-brand__tagline') && responsiveCss.includes('display: none !important'),
+  'The compact phone masthead must remove the non-wrapping tagline width floor.');
+assert(uiLockCss.includes('--forum-shell-gutter: clamp(32px, 10vw, 44px)'),
+  'The phone shell must retain a deliberate 16px-to-22px side gutter.');
+assert(uiLockCss.includes('--mobile-gutter: clamp(16px, 2.5vw, 24px)'),
+  'Tablet mobile rails must align with the shell instead of widening the page.');
+assert(uiLockCss.includes('--mobile-gutter: clamp(16px, 5vw, 22px)'),
+  'Mobile edge rails must share the phone shell gutter and stay within the viewport.');
 
 for (const required of [
   'overflow-x: auto',

@@ -114,9 +114,19 @@
   }
 }
 
+@media (max-width: 880px) {
+  :root {
+    /* Match edge-to-edge mobile rails to half of the tablet shell gutter. */
+    --mobile-gutter: clamp(16px, 2.5vw, 24px);
+  }
+}
+
 @media (max-width: 600px) {
   :root {
-    --forum-shell-gutter: 28px;
+    /* This token is the combined left-and-right gutter. Keep at least 16px
+       per side at 320px and let larger phones breathe a little more. */
+    --forum-shell-gutter: clamp(32px, 10vw, 44px);
+    --mobile-gutter: clamp(16px, 5vw, 22px);
   }
 
   .site-header__inner,
