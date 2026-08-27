@@ -240,7 +240,7 @@ html[data-thinking-mode="high"] .site-footer {
   min-width: 0 !important;
   max-width: 100% !important;
   flex: 1 1 0 !important;
-  align-items: flex-start !important;
+  align-items: center !important;
   justify-content: center !important;
   overflow: hidden !important;
 }
@@ -281,6 +281,7 @@ html[data-thinking-mode="high"] .site-footer {
 
 .site-brand__tagline {
   display: block !important;
+  width: 100% !important;
   margin-top: 5px !important;
   color: var(--brand-blush) !important;
   font-family: "Open Sans SemiCondensed", "Satoshi", sans-serif !important;
@@ -288,6 +289,7 @@ html[data-thinking-mode="high"] .site-footer {
   font-weight: 700 !important;
   line-height: 1.05 !important;
   letter-spacing: 0.075em !important;
+  text-align: center !important;
   white-space: nowrap !important;
 }
 
