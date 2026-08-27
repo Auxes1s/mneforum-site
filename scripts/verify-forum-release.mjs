@@ -172,32 +172,32 @@ const expectedSpeakerNames = [
   'Christophe Bahuet',
   'Roderick M. Planta',
   'Diane Gail L. Maharjan',
-  'Usec. Rosemarie G. Edillon',
-  'Mr. Byeongjo Kong',
+  'Rosemarie G. Edillon',
+  'Byeongjo Kong',
   'Rosstyn Fallorina',
   'Vivien Suerte-Cortez',
-  'Atty. Johann Carlos S. Barcena, CESO III',
-  'Usec. Joseph J. Capuno',
-  'Usec. Wilford Will L. Wong',
-  'Asec. Johannes Paulus B. Acuña',
-  'ARD Jasmin C. Zantua',
-  'Dr. Syrus Gomari',
-  'Engr. John Randy Cabanes',
-  'Engr. Mario Christopher G. Gumba',
-  'Assistant Director Maria Sherrina Ysabel S. Jose',
+  'Johann Carlos S. Barcena',
+  'Joseph J. Capuno',
+  'Wilford Will L. Wong',
+  'Johannes Paulus B. Acuña',
+  'Jasmin C. Zantua',
+  'Syrus Gomari',
+  'John Randy Cabanes',
+  'Mario Christopher G. Gumba',
+  'Maria Sherrina Ysabel S. Jose',
   'Francis Camarao',
-  'OIC-Assistant Director Mary Ash Day O. Malimit',
-  'Dr. Karl Robert L. Jandoc',
-  'Dr. Jose Ramon “Toots” T. Albert',
-  'Dr. Reinald Adrian D. Pugoy',
-  'Dr. Josefina V. Almeda',
+  'Mary Ash Day O. Malimit',
+  'Karl Robert L. Jandoc',
+  'Jose Ramon “Toots” T. Albert',
+  'Reinald Adrian D. Pugoy',
+  'Josefina V. Almeda',
   'Sebastian Felipe Bundoc',
-  'Dr. Aleli Kraft',
-  'Dr. Christopher James R. Cabuay',
-  'Assistant Secretary Agnes E. Tolentino',
-  'Executive Director David Joseph Emmanuel B. Yap Jr.',
-  'Usec. Ryan S. Lita',
-  'Chief EDS Yuko Lisette R. Domingo',
+  'Aleli Kraft',
+  'Christopher James R. Cabuay',
+  'Agnes E. Tolentino',
+  'David Joseph Emmanuel B. Yap Jr.',
+  'Ryan S. Lita',
+  'Yuko Lisette R. Domingo',
   'Xerxes S. Nitafan',
   'Kerry Albright'
 ];
@@ -241,10 +241,16 @@ for (const speaker of photoSpeakers) {
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
 assert(photoSpeakers.length === 7, `Expected 7 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
+  'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
+assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Atty\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
+  'Displayed resource-person names must not include honorifics or position titles.');
 const speakerManifest = readText(path.join(root, 'assets', 'speakers', '2026', 'manifest.csv'));
 assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
-  speakerManifest.includes('"24352","50% 22%","2.00","yes"'),
+  speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 7,
+  'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');
 assert(speakerCss.includes('border: 0;') && speakerCss.includes('background: transparent;') &&
@@ -257,9 +263,9 @@ assert(homepage.includes('speaker-card__avatar-shell {{ s.avatarClass }}') &&
 assert(speakerCss.includes('drop-shadow(0 1px 1px rgba(5, 42, 82, .34))') &&
   speakerCss.includes('drop-shadow(0 5px 9px rgba(5, 42, 82, .22))'),
   'Photo squircles must use the approved two-layer silhouette shadow.');
-assert(speakerCss.includes('transform: scale(var(--speaker-photo-scale, 1.08))') &&
-  speakerCss.includes('transform-origin: var(--speaker-photo-origin, 50% 30%)'),
-  'Speaker photos must apply their face-focused crop metadata.');
+assert(speakerCss.includes('.speaker-session .speaker-card__avatar img') &&
+  speakerCss.includes('transform: none;'),
+  'Pre-cropped speaker photos must not be enlarged by CSS transforms.');
 const speakerSessionsMatch = homepage.match(/const SPEAKER_SESSIONS = \[([\s\S]*?)\n\];/);
 assert(speakerSessionsMatch, 'The speaker-session definitions are missing.');
 const speakerSessionsSource = speakerSessionsMatch[1];

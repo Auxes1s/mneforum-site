@@ -226,8 +226,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(var(--speaker-photo-scale, 1.08));
-  transform-origin: var(--speaker-photo-origin, 50% 30%);
+  transform: none;
 }
 
 .speaker-session .speaker-card__avatar.has-photo {
@@ -240,7 +239,7 @@
 .speaker-card__photo--blurred {
   opacity: .78;
   filter: blur(13px) grayscale(.2) saturate(.65);
-  transform: scale(var(--speaker-photo-scale, 1.08));
+  transform: none;
 }
 
 .speaker-card.is-concealed .speaker-card__avatar::after {
