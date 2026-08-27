@@ -3,11 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { createDevPreview } from './dev-preview.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, '..');
 const readText = file => fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const homepage = readText(path.join(root, 'index.html'));
+const devHomepage = readText(path.join(root, 'dev', 'index.html'));
 const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
 const responsiveCss = readText(path.join(root, 'assets', 'forum-responsive.css'));
 const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
@@ -16,6 +18,7 @@ const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
 const buildScript = readText(path.join(root, 'scripts', 'build-static.mjs'));
+const htaccess = readText(path.join(root, '.htaccess'));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -112,6 +115,25 @@ for (const sessionTitle of [
   assert(rendered.includes(sessionTitle), `The Program is missing or mislabels: ${sessionTitle}`);
 }
 
+assert(devHomepage === createDevPreview(homepage),
+  'dev/index.html is stale. Run npm run sync:dev and review the generated diff.');
+assert(homepage.includes('<meta name="robots" content="index,follow">'),
+  'The production homepage must remain indexable.');
+assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),
+  'The development preview shell must not be indexed.');
+assert(devHomepage.includes("'<meta name=\"robots\" content=\"noindex,nofollow\"><link rel=\"canonical\""),
+  'The unpacked development document must retain its noindex directive.');
+assert(homepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
+  'Production speaker reveals must remain date-gated with the existing review override.');
+assert(devHomepage.includes('const speakerWaveOverride = "all"; // Full-layout reviewer preview.'),
+  'The development preview must reveal every populated speaker record.');
+assert(!devHomepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
+  'The development preview must not accept a query that re-conceals the layout.');
+assert(htaccess.includes('RewriteRule ^dev$ dev/index.html [END]'),
+  'The Apache /dev route must serve the physical development preview.');
+assert(htaccess.includes('RewriteRule ^$ dev/index.html [END]'),
+  'The development subdomain must serve the physical development preview.');
+
 const brandFonts = [
   'assets/fonts/Satoshi-Regular.woff2',
   'assets/fonts/Satoshi-Bold.woff2',
@@ -138,6 +160,123 @@ assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
   'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
 assert(homepage.includes('label: "Plenary 1 + Breakout 1"') && homepage.includes('label: "Plenary 2 + Breakout 2"'),
   'The Resource Persons reveal-wave labels do not match the Program.');
+
+const speakerRecords = Array.from(homepage.matchAll(
+  /\{ name: "([^"]+)", org: "([^"]+)", role: "([^"]+)", sessionId: "([^"]+)", wave: "([^"]+)", photo: "([^"]*)", objectPosition: "([^"]+)"(?:, photoScale: "([^"]+)")? \}/g
+), match => ({
+  name: match[1], org: match[2], role: match[3], sessionId: match[4],
+  wave: match[5], photo: match[6], objectPosition: match[7], photoScale: match[8] || ''
+}));
+const expectedSpeakerNames = [
+  'Arsenio M. Balisacan',
+  'Christophe Bahuet',
+  'Roderick M. Planta',
+  'Diane Gail L. Maharjan',
+  'Usec. Rosemarie G. Edillon',
+  'Mr. Byeongjo Kong',
+  'Rosstyn Fallorina',
+  'Vivien Suerte-Cortez',
+  'Atty. Johann Carlos S. Barcena, CESO III',
+  'Usec. Joseph J. Capuno',
+  'Usec. Wilford Will L. Wong',
+  'Asec. Johannes Paulus B. Acuña',
+  'ARD Jasmin C. Zantua',
+  'Dr. Syrus Gomari',
+  'Engr. John Randy Cabanes',
+  'Engr. Mario Christopher G. Gumba',
+  'Assistant Director Maria Sherrina Ysabel S. Jose',
+  'Francis Camarao',
+  'OIC-Assistant Director Mary Ash Day O. Malimit',
+  'Dr. Karl Robert L. Jandoc',
+  'Dr. Jose Ramon “Toots” T. Albert',
+  'Dr. Reinald Adrian D. Pugoy',
+  'Dr. Josefina V. Almeda',
+  'Sebastian Felipe Bundoc',
+  'Dr. Aleli Kraft',
+  'Dr. Christopher James R. Cabuay',
+  'Assistant Secretary Agnes E. Tolentino',
+  'Executive Director David Joseph Emmanuel B. Yap Jr.',
+  'Usec. Ryan S. Lita',
+  'Chief EDS Yuko Lisette R. Domingo',
+  'Xerxes S. Nitafan',
+  'Kerry Albright'
+];
+assert(speakerRecords.length === expectedSpeakerNames.length,
+  `Expected ${expectedSpeakerNames.length} resource-person records; found ${speakerRecords.length}.`);
+assert(new Set(speakerRecords.map(speaker => speaker.name)).size === speakerRecords.length,
+  'Resource-person names must be unique.');
+for (const name of expectedSpeakerNames) {
+  assert(speakerRecords.some(speaker => speaker.name === name), `Missing confirmed resource person: ${name}`);
+}
+assert(!speakerRecords.some(speaker => speaker.name === 'Kim Robert C. De Leon'),
+  'The superseded Plenary 2 DBM representative is still present.');
+const expectedSessionCounts = {
+  'opening-closing': 3,
+  'plenary-1': 4,
+  'plenary-2': 5,
+  'breakout-1-1': 4,
+  'breakout-1-2': 2,
+  'breakout-1-3': 1,
+  'breakout-2-1': 5,
+  'breakout-2-2': 2,
+  'breakout-2-3': 6
+};
+for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {
+  const actualCount = speakerRecords.filter(speaker => speaker.sessionId === sessionId).length;
+  assert(actualCount === expectedCount,
+    `${sessionId} must contain ${expectedCount} resource-person record(s); found ${actualCount}.`);
+}
+assert(homepage.includes('id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false'),
+  'Breakout 1.3 must publish its confirmed moderator.');
+assert(homepage.includes('id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false'),
+  'Breakout 2.2 must publish its confirmed lineup.');
+const photoSpeakers = speakerRecords.filter(record => record.photo);
+for (const speaker of photoSpeakers) {
+  assert(fs.existsSync(path.join(root, speaker.photo)),
+    `Missing resource-person photo for ${speaker.name}: ${speaker.photo}`);
+  const scale = Number(speaker.photoScale);
+  assert(Number.isFinite(scale) && scale >= 1 && scale <= 2,
+    `Invalid face-focused scale for ${speaker.name}: ${speaker.photoScale || '(missing)'}`);
+  assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
+    `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
+}
+assert(photoSpeakers.length === 7, `Expected 7 supplied resource-person photos; found ${photoSpeakers.length}.`);
+const speakerManifest = readText(path.join(root, 'assets', 'speakers', '2026', 'manifest.csv'));
+assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
+  speakerManifest.includes('"24352","50% 22%","2.00","yes"'),
+  'Wilford Wong photo provenance is missing or stale.');
+assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
+  'Speaker avatars must use the approved squircle clipping geometry.');
+assert(speakerCss.includes('border: 0;') && speakerCss.includes('background: transparent;') &&
+  speakerCss.includes('outline: 0;'),
+  'Speaker squircle edges must remain transparent.');
+assert(homepage.includes('speaker-card__avatar-shell {{ s.avatarClass }}') &&
+  homepage.includes('speaker-card__avatar {{ s.avatarClass }}') &&
+  speakerCss.includes('.speaker-session .speaker-card__avatar.has-photo'),
+  'Photo avatars must override the global initials background and inset border.');
+assert(speakerCss.includes('drop-shadow(0 1px 1px rgba(5, 42, 82, .34))') &&
+  speakerCss.includes('drop-shadow(0 5px 9px rgba(5, 42, 82, .22))'),
+  'Photo squircles must use the approved two-layer silhouette shadow.');
+assert(speakerCss.includes('transform: scale(var(--speaker-photo-scale, 1.08))') &&
+  speakerCss.includes('transform-origin: var(--speaker-photo-origin, 50% 30%)'),
+  'Speaker photos must apply their face-focused crop metadata.');
+const speakerSessionsMatch = homepage.match(/const SPEAKER_SESSIONS = \[([\s\S]*?)\n\];/);
+assert(speakerSessionsMatch, 'The speaker-session definitions are missing.');
+const speakerSessionsSource = speakerSessionsMatch[1];
+for (const breakoutId of [
+  'breakout-1-1', 'breakout-1-2', 'breakout-1-3',
+  'breakout-2-1', 'breakout-2-2', 'breakout-2-3'
+]) {
+  const line = speakerSessionsSource.split('\n').find(value => value.includes(`id: "${breakoutId}"`));
+  assert(line && !line.includes('promise:'), `${breakoutId} must not duplicate its Program description.`);
+}
+for (const retainedCaptionId of ['opening-closing', 'plenary-1', 'plenary-2']) {
+  const line = speakerSessionsSource.split('\n').find(value => value.includes(`id: "${retainedCaptionId}"`));
+  assert(line && line.includes('promise:'), `${retainedCaptionId} must retain its speaker-section caption.`);
+}
+assert(homepage.includes('<sc-if value="{{ session.hasPromise }}">') &&
+  homepage.includes('hasPromise: !!session.promise'),
+  'Speaker-session captions must render conditionally without leaving empty spacing.');
 assert(count(rendered, /<section id="game"/g) === 1, 'The game section must render exactly once.');
 assert(count(rendered, /\bdata-buzz-to-bloom\b/g) === 1, 'The game iframe must render exactly once.');
 assert(rendered.includes('src="game/?embed=1&amp;pack=philippines-ai-v2"'), 'The deployed Philippine AI pack is not embedded.');

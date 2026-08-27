@@ -42,10 +42,10 @@ DirectoryIndex index.html
 
 RewriteEngine On
 
-# The development preview resolves to the same preserved bundled page while
-# keeping /dev available as a staging-only route.
+# The development preview is a generated full-layout reviewer page. Keep one
+# canonical no-slash route while serving its physical static fallback.
 RewriteRule ^dev/$ /dev [R=301,END]
-RewriteRule ^dev$ index.html [END]
+RewriteRule ^dev$ dev/index.html [END]
 
 # Registration and form shortlinks go straight to their current providers.
 # Keep these temporary so a changed form URL can be corrected without a
@@ -70,4 +70,4 @@ RewriteRule ^agenda/?$ https://drive.google.com/drive/folders/1okuWWAQQ5pTnVbO26
 # Development subdomain support when the host is configured with this directory
 # as its document root.
 RewriteCond %{HTTP_HOST} ^dev\.mnenetwork\.forum(?::\d+)?$ [NC]
-RewriteRule ^$ index.html [END]
+RewriteRule ^$ dev/index.html [END]

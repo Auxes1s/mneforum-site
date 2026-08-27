@@ -1,6 +1,7 @@
-import { cp, mkdir, rm } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createDevPreview } from "./dev-preview.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const output = path.join(root, "dist");
@@ -35,5 +36,10 @@ await mkdir(output, { recursive: true });
 for (const entry of publishEntries) {
   await cp(path.join(root, entry), path.join(output, entry), { recursive: true });
 }
+
+// The checked-in /dev page supports simple static hosting, while the deploy
+// artifact is always regenerated from production so it cannot lag behind.
+const productionHtml = await readFile(path.join(root, "index.html"), "utf8");
+await writeFile(path.join(output, "dev", "index.html"), createDevPreview(productionHtml), "utf8");
 
 console.log(`Static site built in ${path.relative(root, output)}/`);

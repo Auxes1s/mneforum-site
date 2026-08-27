@@ -193,28 +193,54 @@
   animation: speaker-reveal .48s cubic-bezier(.2,.7,.2,1) both;
 }
 
+.speaker-session .speaker-card__avatar-shell {
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 0;
+}
+
+.speaker-session .speaker-card__avatar-shell.has-photo {
+  filter:
+    drop-shadow(0 1px 1px rgba(5, 42, 82, .34))
+    drop-shadow(0 5px 9px rgba(5, 42, 82, .22));
+}
+
 .speaker-session .speaker-card__avatar {
   position: relative;
   width: 100%;
   aspect-ratio: 1;
   min-height: 0;
   overflow: hidden;
-  border-radius: 16px;
-  background: linear-gradient(145deg, var(--brand-blue-dark), var(--brand-blue-mid));
+  border: 0;
+  border-radius: 28%;
+  outline: 0;
+  box-shadow: none;
+  clip-path: inset(0 round 28%);
+  background: transparent;
   color: #fff;
   font: 700 28px/1 var(--font-heading);
 }
 
 .speaker-session .speaker-card__avatar img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(var(--speaker-photo-scale, 1.08));
+  transform-origin: var(--speaker-photo-origin, 50% 30%);
+}
+
+.speaker-session .speaker-card__avatar.has-photo {
+  border-color: transparent !important;
+  outline-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .speaker-card__photo--blurred {
   opacity: .78;
   filter: blur(13px) grayscale(.2) saturate(.65);
-  transform: scale(1.18);
+  transform: scale(var(--speaker-photo-scale, 1.08));
 }
 
 .speaker-card.is-concealed .speaker-card__avatar::after {
@@ -222,7 +248,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(10,87,163,.09));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
+  box-shadow: none;
   pointer-events: none;
 }
 
@@ -465,7 +491,7 @@
   }
 
   .speaker-session .speaker-card__avatar {
-    border-radius: 14px;
+    border-radius: 28%;
   }
 
   .speaker-card__redacted {

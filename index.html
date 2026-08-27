@@ -381,38 +381,47 @@ const SPEAKER_SESSIONS = [
   { id: "opening-closing", wave: "wave1", order: 1, meta: "Opening and closing voices", title: "The Forum's call to action", promise: "Hear the national and development-partner framing for the day—and the charge that carries the Forum's work forward.", teaserOnly: false },
   { id: "plenary-1", wave: "wave1", order: 2, meta: "Plenary 1", title: "Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector", promise: "Examine international and regional AI experience alongside the readiness, governance, institutional, and capability gaps facing Philippine public agencies.", teaserOnly: false },
   { id: "plenary-2", wave: "wave2", order: 3, meta: "Plenary 2", title: "Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E", promise: "Hear what senior decision-makers require before AI-supported evidence can be trusted in public decisions.", teaserOnly: false },
-  { id: "breakout-1-1", wave: "wave1", order: 4, meta: "Breakout 1.1", title: "Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation", promise: "See how AI planners can collect and model transport data for city decision-making.", teaserOnly: false },
-  { id: "breakout-1-2", wave: "wave1", order: 5, meta: "Breakout 1.2", title: "A Data Path: Tracking Data on Environment, Mobility, and Tourism", promise: "Explore how analytics and sensor fusion can track environmental conditions, movement, and tourism activity.", teaserOnly: false },
-  { id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", promise: "See how Earth observation, satellites, computer vision, and drones can monitor infrastructure and agricultural assets over large areas.", teaserOnly: true },
-  { id: "breakout-2-1", wave: "wave2", order: 7, meta: "Breakout 2.1", title: "Laying the Foundation: Processing Qualitative Evidence at Scale", promise: "Learn how AI can process qualitative evidence at scale without losing rigor, context, or transparency.", teaserOnly: false },
-  { id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", promise: "Explore where machine learning can strengthen causal inference—and where evaluation design must still carry the claim.", teaserOnly: true },
-  { id: "breakout-2-3", wave: "wave2", order: 9, meta: "Breakout 2.3", title: "Taking Flight: Generative AI for Rapid Evidence Synthesis and Communication", promise: "See how generative AI can accelerate evidence synthesis and communication while keeping outputs verifiable.", teaserOnly: false }
+  { id: "breakout-1-1", wave: "wave1", order: 4, meta: "Breakout 1.1", title: "Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation", teaserOnly: false },
+  { id: "breakout-1-2", wave: "wave1", order: 5, meta: "Breakout 1.2", title: "A Data Path: Tracking Data on Environment, Mobility, and Tourism", teaserOnly: false },
+  { id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false },
+  { id: "breakout-2-1", wave: "wave2", order: 7, meta: "Breakout 2.1", title: "Laying the Foundation: Processing Qualitative Evidence at Scale", teaserOnly: false },
+  { id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false },
+  { id: "breakout-2-3", wave: "wave2", order: 9, meta: "Breakout 2.3", title: "Taking Flight: Generative AI for Rapid Evidence Synthesis and Communication", teaserOnly: false }
 ];
 
 const SPEAKERS = [
-  { name: "Arsenio M. Balisacan", org: "Department of Economy, Planning, and Development", role: "Opening speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/arsenio-balisacan.webp", objectPosition: "50% 28%" },
-  { name: "Christophe Bahuet", org: "United Nations Development Programme", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 24%" },
-  { name: "Roderick M. Planta", org: "Department of Economy, Planning, and Development", role: "Closing speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/roderick-planta.webp", objectPosition: "50% 24%" },
-  { name: "Byeongjo Kong", org: "Asian Development Bank", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Rosstyn Fallorina", org: "United Nations Development Programme", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Diane Gail L. Maharjan", org: "DEPDev Innovation Staff", role: "Moderator", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/diane-maharjan.webp", objectPosition: "50% 25%" },
-  { name: "Kim Robert C. De Leon", org: "Department of Budget and Management", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Johann Carlos S. Barcena, CESO III", org: "National Privacy Commission", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Joseph J. Capuno", org: "Department of Economy, Planning, and Development", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/joseph-capuno.webp", objectPosition: "50% 22%" },
-  { name: "Vivien Suerte-Cortez", org: "United Nations Development Programme", role: "Moderator", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/vivien-suerte-cortez.webp", objectPosition: "50% 28%" },
-  { name: "Mario Christopher G. Gumba", org: "Naga City Government", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Jhon Rhandy Cabanes", org: "Pasig City Government", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Syrus Gomari", org: "Mobility Vision Plus", role: "Panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Jasmin C. Zantua", org: "DEPDev Regional Office V", role: "Moderator", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Francis Camarao", org: "Baguio City Government", role: "Presenter and panelist", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Maria Sherrina Ysabel S. Jose", org: "DEPDev Monitoring and Evaluation Staff", role: "Moderator", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Sebastian Felipe Bundoc", org: "Department of Education - ECAIR", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Josefina V. Almeda", org: "Philippine Statistical Research and Training Institute", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Karl Robert L. Jandoc", org: "UP School of Economics", role: "Moderator", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Kerry Albright", org: "Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Yuko Lisette R. Domingo", org: "DEPDev Social Development Staff", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "David Joseph Emmanuel B. Yap Jr.", org: "Congressional Policy and Budget Research Department", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Ryan S. Lita", org: "Department of Budget and Management", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" }
+  { name: "Arsenio M. Balisacan", org: "Department of Economy, Planning, and Development", role: "Opening speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/arsenio-balisacan.webp", objectPosition: "52% 12%", photoScale: "1.85" },
+  { name: "Christophe Bahuet", org: "United Nations Development Programme", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 15%", photoScale: "1.10" },
+  { name: "Roderick M. Planta", org: "Department of Economy, Planning, and Development", role: "Closing speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/roderick-planta.webp", objectPosition: "47% 12%", photoScale: "1.82" },
+  { name: "Diane Gail L. Maharjan", org: "DEPDev Innovation Staff", role: "Moderator", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/diane-maharjan.webp", objectPosition: "50% 30%", photoScale: "1.60" },
+  { name: "Usec. Rosemarie G. Edillon", org: "Department of Economy, Planning, and Development", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Mr. Byeongjo Kong", org: "Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Rosstyn Fallorina", org: "United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Vivien Suerte-Cortez", org: "United Nations Development Programme (UNDP)", role: "Moderator", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/vivien-suerte-cortez.webp", objectPosition: "50% 30%", photoScale: "1.40" },
+  { name: "Atty. Johann Carlos S. Barcena, CESO III", org: "National Privacy Commission (NPC)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Usec. Joseph J. Capuno", org: "Department of Economy, Planning, and Development", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/joseph-capuno.webp", objectPosition: "50% 28%", photoScale: "1.50" },
+  { name: "Usec. Wilford Will L. Wong", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/wilford-wong.webp", objectPosition: "50% 22%", photoScale: "2.00" },
+  { name: "Asec. Johannes Paulus B. Acuña", org: "Department of Social Welfare and Development (DSWD)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "ARD Jasmin C. Zantua", org: "DEPDev Regional Office (DRO) V", role: "Moderator", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Syrus Gomari", org: "Mobility Vision Plus", role: "Panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Engr. John Randy Cabanes", org: "Local Government Unit (LGU) of Pasig City", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Engr. Mario Christopher G. Gumba", org: "Local Government Unit (LGU) of Naga City", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Assistant Director Maria Sherrina Ysabel S. Jose", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Francis Camarao", org: "Local Government Unit (LGU) of Baguio City", role: "Presenter and panelist", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "OIC-Assistant Director Mary Ash Day O. Malimit", org: "DEPDev Infrastructure Staff (IS)", role: "Moderator", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Karl Robert L. Jandoc", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Jose Ramon “Toots” T. Albert", org: "Philippine Institute for Development Studies (PIDS)", role: "Panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Reinald Adrian D. Pugoy", org: "University of the Philippines Open University", role: "Panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Josefina V. Almeda", org: "Philippine Statistical Research and Training Institute (PSRTI)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Sebastian Felipe Bundoc", org: "Department of Education (DepEd)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Aleli Kraft", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Dr. Christopher James R. Cabuay", org: "De La Salle University (DLSU)", role: "Panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Assistant Secretary Agnes E. Tolentino", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Executive Director David Joseph Emmanuel B. Yap Jr.", org: "Congressional Policy and Budget Research Department (CPBRD)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Usec. Ryan S. Lita", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Chief EDS Yuko Lisette R. Domingo", org: "DEPDev PPG Social Development Staff", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Xerxes S. Nitafan", org: "Senate Economic Planning Office (SEPO)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Kerry Albright", org: "Independent Evaluation Department, Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" }
 ];`
     );
     template = template.replace(
@@ -448,7 +457,9 @@ const SPEAKERS = [
               <div>
                 <p class="speaker-session__meta">{{ session.meta }}</p>
                 <h3>{{ session.title }}</h3>
-                <p class="speaker-session__promise">{{ session.promise }}</p>
+                <sc-if value="{{ session.hasPromise }}">
+                  <p class="speaker-session__promise">{{ session.promise }}</p>
+                </sc-if>
               </div>
               <div class="speaker-session__status">
                 <span class="tag tag-accent">{{ session.statusLabel }}</span>
@@ -458,16 +469,18 @@ const SPEAKERS = [
               <div class="speaker-session__people">
                 <sc-for list="{{ session.speakers }}" as="s" hint-placeholder-count="4">
                   <article class="speaker-card {{ s.cls }}">
-                    <div class="speaker-card__avatar" aria-hidden="true">
-                      <sc-if value="{{ s.hasPhoto }}">
-                        <img class="{{ s.photoClass }}" src="{{ s.photo }}" alt="" width="720" height="900" loading="lazy" decoding="async" style="object-position: {{ s.objectPosition }};">
-                      </sc-if>
-                      <sc-if value="{{ s.noPhoto }}">
-                        <span class="speaker-card__initials">{{ s.initials }}</span>
-                      </sc-if>
-                      <sc-if value="{{ s.blurFallback }}">
-                        <span class="speaker-card__blurred-avatar"><i></i></span>
-                      </sc-if>
+                    <div class="speaker-card__avatar-shell {{ s.avatarClass }}">
+                      <div class="speaker-card__avatar {{ s.avatarClass }}" aria-hidden="true">
+                        <sc-if value="{{ s.hasPhoto }}">
+                          <img class="{{ s.photoClass }}" src="{{ s.photo }}" alt="" width="720" height="900" loading="lazy" decoding="async" style="object-position: {{ s.objectPosition }}; --speaker-photo-scale: {{ s.photoScale }}; --speaker-photo-origin: {{ s.objectPosition }};">
+                        </sc-if>
+                        <sc-if value="{{ s.noPhoto }}">
+                          <span class="speaker-card__initials">{{ s.initials }}</span>
+                        </sc-if>
+                        <sc-if value="{{ s.blurFallback }}">
+                          <span class="speaker-card__blurred-avatar"><i></i></span>
+                        </sc-if>
+                      </div>
                     </div>
                     <div class="speaker-card__content">
                       <sc-if value="{{ s.isConcealed }}">
@@ -538,8 +551,10 @@ const SPEAKERS = [
               role: "",
               photo: speaker.photo,
               objectPosition: speaker.objectPosition,
+              photoScale: speaker.photoScale || "1.08",
               hasPhoto: !!speaker.photo,
               noPhoto: false,
+              avatarClass: speaker.photo ? "has-photo" : "has-initials",
               blurFallback: !speaker.photo,
               photoClass: "speaker-card__photo--blurred",
               isConcealed: true,
@@ -553,8 +568,10 @@ const SPEAKERS = [
               role: speaker.role,
               photo: speaker.photo,
               objectPosition: speaker.objectPosition,
+              photoScale: speaker.photoScale || "1.08",
               hasPhoto: !!speaker.photo,
               noPhoto: !speaker.photo,
+              avatarClass: speaker.photo ? "has-photo" : "has-initials",
               blurFallback: false,
               photoClass: "",
               isConcealed: false,
@@ -564,6 +581,7 @@ const SPEAKERS = [
               initials: speaker.name.replace(/[^A-Za-z ]/g, "").split(" ").filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase()
             });
         return Object.assign({}, session, {
+          hasPromise: !!session.promise,
           cls: isConcealed ? "is-concealed" : "is-revealed",
           statusLabel: isConcealed
             ? "Reveals " + wave.dateLabel
