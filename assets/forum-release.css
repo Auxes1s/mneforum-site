@@ -296,6 +296,14 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
   }
 }
 
+@media (max-width: 880px) {
+  /* The bundled mobile layer pads both the item wrapper and the row. Keep
+     the row padding (the touch target) and remove the duplicate outer band. */
+  #program .section-shell > .program-item {
+    padding-block: 0 !important;
+  }
+}
+
 @media (max-width: 600px) {
   .primary-nav.is-open {
     gap: 8px;
@@ -316,50 +324,73 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
     line-height: 1.18;
   }
 
-  /* Phone agenda: time, title, then metadata. The decorative desktop rail
-     used nearly a third of a 375px panel and left long session titles in an
-     avoidably narrow column. */
-  #program .section-shell > .program-item::before,
-  #program .section-shell .program-row::after {
+  /* Phone agenda: retain the desktop schedule's time rail and title/meta
+     column, but tighten the gutter for 320-430px screens. */
+  #program .section-shell > .program-item::before {
     display: none !important;
   }
 
   #program .section-shell .program-row {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: auto auto auto !important;
-    gap: 7px !important;
+    grid-template-columns: 52px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    gap: 6px 14px !important;
     min-width: 0;
-    min-height: 0;
-    padding: 17px 0 !important;
+    min-height: 70px !important;
+    padding: 12px 10px !important;
+    align-items: start !important;
   }
 
-  .program-row__time,
-  .program-row__title,
-  .program-row__meta {
-    grid-column: 1 !important;
-    min-width: 0;
+  #program .section-shell .program-row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 69px;
+    width: 1px;
+    background: var(--line-soft);
+  }
+
+  #program .section-shell .program-row::after {
+    display: block !important;
+    top: 23px !important;
+    left: 69px !important;
   }
 
   .program-row__time {
-    grid-row: 1 !important;
-    padding: 0 !important;
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+    align-self: start !important;
+    padding: 1px 10px 0 0 !important;
+    text-align: right !important;
     color: var(--brand-blue-dark) !important;
     font-size: .875rem;
     font-weight: 700;
   }
 
   .program-row__title {
-    grid-row: 2 !important;
-    font-size: clamp(.98rem, 4.1vw, 1.08rem);
-    line-height: 1.42 !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0;
+    font-size: clamp(1rem, 4.25vw, 1.08rem);
+    line-height: 1.32 !important;
     text-wrap: pretty;
   }
 
   .program-row__meta {
-    grid-row: 3 !important;
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    min-width: 0;
     justify-self: stretch !important;
     justify-content: flex-start !important;
     gap: 10px !important;
+  }
+
+  .program-row__meta .tag {
+    min-width: 0 !important;
+  }
+
+  .program-row--plain .program-row__meta::after {
+    display: none !important;
   }
 
   .program-row__meta > span[aria-hidden="true"] {
@@ -369,7 +400,7 @@ html[data-thinking-mode="ultra"] .game-intro__rule {
   .program-panel {
     min-width: 0;
     margin-bottom: 20px !important;
-    padding: 8px 0 26px !important;
+    padding: 10px 12px 24px !important;
   }
 
   .program-panel .track-grid,

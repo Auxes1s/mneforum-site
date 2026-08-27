@@ -91,7 +91,9 @@ test('homepage scripts parse and the mobile frame remains usable', () => {
   assert.match(releaseCss, /@media \(max-width: 600px\)[\s\S]*?\.game-frame iframe \{[\s\S]*?height: 880px;/);
   assert.match(releaseCss, /@media \(max-width: 390px\)[\s\S]*?\.primary-nav\.is-open \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/);
   assert.doesNotMatch(releaseCss, /html,\s*body \{[\s\S]*?overflow-x:\s*(?:hidden|clip);/);
-  assert.match(releaseCss, /#program \.section-shell \.program-row \{[\s\S]*?grid-template-rows: auto auto auto !important;/);
+  assert.match(releaseCss, /#program \.section-shell > \.program-item \{[\s\S]*?padding-block: 0 !important;/);
+  assert.match(releaseCss, /#program \.section-shell \.program-row \{[\s\S]*?grid-template-columns: 52px minmax\(0, 1fr\) !important;/);
+  assert.match(releaseCss, /\.program-row__time \{[\s\S]*?grid-row: 1 \/ 3 !important;/);
   assert.match(css, /\.start-card \.reset-button \{ min-height: 48px;/);
   assert.match(css, /\.primary-button, \.text-button, \.tutorial-actions button, \.action-grid button, \.pause-button \{ min-height: 48px;/);
   assert.match(css, /@media \(max-width: 420px\)[\s\S]*?\.leaderboard-entry \{ grid-template-columns: 1fr; \}/);

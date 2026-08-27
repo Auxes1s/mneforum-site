@@ -36,7 +36,7 @@ function contrast(foreground, background) {
 assert(fs.existsSync(lockPath), 'Missing assets/forum-ui-lock.css.');
 assert(count(html, 'forum-ui-lock.css?v=20260826-night-layout') >= 2,
   'The shell must preload and mount the UI-lock stylesheet.');
-assert(count(html, 'forum-release.css?v=20260826-program') >= 3,
+assert(count(html, 'forum-release.css?v=20260827-program-mobile') >= 3,
   'The shell must preload, inject, and mount the release stylesheet.');
 assert(html.includes('document.head.lastElementChild === releaseLink'),
   'The release stylesheet is not the final author stylesheet.');
