@@ -13,7 +13,9 @@ function loadPendingSpeakerRecords() {
     .map(record => {
       const sessionId = record.sessionIds[0];
       const session = roster.sessions.find(item => item.id === sessionId);
-      return `  { name: ${JSON.stringify(record.displayName || 'For confirmation')}, org: ${JSON.stringify(record.organization)}, role: ${JSON.stringify(record.role)}, sessionId: ${JSON.stringify(sessionId)}, wave: ${JSON.stringify(session ? session.wave : record.wave)}, photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }`;
+      const displayName = record.displayName || record.organization;
+      const affiliation = displayName === record.organization ? '' : record.organization;
+      return `  { name: ${JSON.stringify(displayName)}, org: ${JSON.stringify(affiliation)}, role: ${JSON.stringify(record.role)}, sessionId: ${JSON.stringify(sessionId)}, wave: ${JSON.stringify(session ? session.wave : record.wave)}, photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }`;
     });
 }
 
@@ -64,7 +66,7 @@ export function createDevPreview(productionHtml) {
   preview = replaceExactlyOnce(
     preview,
     'Confirmed resource persons',
-    'Resource persons · confirmation in progress',
+    'Resource persons',
     'development speaker heading'
   );
   preview = replaceExactlyOnce(

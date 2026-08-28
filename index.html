@@ -435,6 +435,7 @@ const SPEAKERS = [
   { name: "Sebastian Felipe Bundoc", org: "Department of Education (DepEd)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Aleli Kraft", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Christopher James R. Cabuay", org: "De La Salle University (DLSU)", role: "Panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Kris Ann M. Melad", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Agnes E. Tolentino", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "David Joseph Emmanuel B. Yap Jr.", org: "Congressional Policy and Budget Research Department (CPBRD)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Ryan S. Lita", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
@@ -513,7 +514,9 @@ const SPEAKERS = [
                       <sc-if value="{{ s.isRevealed }}">
                         <p class="kicker">{{ s.role }}</p>
                         <h4>{{ s.name }}</h4>
-                        <p>{{ s.org }}</p>
+                        <sc-if value="{{ s.hasOrg }}">
+                          <p>{{ s.org }}</p>
+                        </sc-if>
                       </sc-if>
                     </div>
                   </article>
@@ -592,6 +595,7 @@ const SPEAKERS = [
               photoScale: speaker.photoScale || "1.08",
               hasPhoto: !!speaker.photo,
               noPhoto: !speaker.photo,
+              hasOrg: !!speaker.org,
               avatarClass: speaker.photo ? "has-photo" : "has-initials",
               blurFallback: false,
               photoClass: "",
@@ -608,7 +612,7 @@ const SPEAKERS = [
             ? "Reveals " + wave.dateLabel
             : (people.length ? [
                 confirmedPeople ? confirmedPeople + (confirmedPeople === 1 ? " confirmed voice" : " confirmed voices") : "",
-                pendingPeople ? pendingPeople + " for confirmation" : ""
+                pendingPeople ? pendingPeople + " pending" : ""
               ].filter(Boolean).join(" · ") : "Lineup in progress"),
           hasSpeakers: people.length > 0,
           comingSoon: people.length === 0,
@@ -621,7 +625,7 @@ const SPEAKERS = [
       : (revealedSpeakerWave < 2
         ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
         : (hasPendingSpeakers
-          ? "Explore confirmed resource persons by session; pending entries are marked For confirmation."
+          ? "Explore confirmed resource persons by session; pending entries are shown by agency."
           : "Explore confirmed resource persons by session, and choose the conversations most useful to your work."));
 
     const activeRoom =`

@@ -435,22 +435,22 @@ const SPEAKERS = [
   { name: "Sebastian Felipe Bundoc", org: "Department of Education (DepEd)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Aleli Kraft", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Christopher James R. Cabuay", org: "De La Salle University (DLSU)", role: "Panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Kris Ann M. Melad", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Agnes E. Tolentino", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "David Joseph Emmanuel B. Yap Jr.", org: "Congressional Policy and Budget Research Department (CPBRD)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Ryan S. Lita", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Yuko Lisette R. Domingo", org: "DEPDev PPG Social Development Staff", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Xerxes S. Nitafan", org: "Senate Economic Planning Office (SEPO)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Kerry Albright", org: "Independent Evaluation Department, Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "For confirmation", org: "Department of Science and Technology (DOST)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "For confirmation", org: "Asian Institute of Management (AIM)", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "For confirmation", org: "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Designated representative - For confirmation", org: "Philippine Space Agency (PhilSA)", role: "Presenter and panelist", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Designated representative - For confirmation", org: "Philippine Rice Research Institute", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Designated representative - For confirmation", org: "Office of Civil Defense", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "For confirmation", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Representative - For confirmation", org: "United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "For confirmation", org: "Department of Labor and Employment (DOLE)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "For confirmation", org: "Department of Health (DOH)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }
+  { name: "Department of Science and Technology (DOST)", org: "", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Asian Institute of Management (AIM)", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Philippine Space Agency (PhilSA)", org: "", role: "Presenter and panelist", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Philippine Rice Research Institute", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Office of Civil Defense", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "United Nations Development Programme (UNDP)", org: "", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Department of Labor and Employment (DOLE)", org: "", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Department of Health (DOH)", org: "", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }
 ];`
     );
     template = template.replace(
@@ -462,7 +462,7 @@ const SPEAKERS = [
           <p class="speaker-launch__eyebrow">The program takes wing</p>
           <h2>Meet the Forum's voices</h2>
         </div>
-        <span class="tag tag-accent">Resource persons · confirmation in progress</span>
+        <span class="tag tag-accent">Resource persons</span>
       </div>
       <p class="speaker-launch__summary">{{ speakerLaunchSummary }}</p>
       <div class="speaker-launch__timeline" aria-label="Speaker reveal schedule">
@@ -523,7 +523,9 @@ const SPEAKERS = [
                       <sc-if value="{{ s.isRevealed }}">
                         <p class="kicker">{{ s.role }}</p>
                         <h4>{{ s.name }}</h4>
-                        <p>{{ s.org }}</p>
+                        <sc-if value="{{ s.hasOrg }}">
+                          <p>{{ s.org }}</p>
+                        </sc-if>
                       </sc-if>
                     </div>
                   </article>
@@ -602,6 +604,7 @@ const SPEAKERS = [
               photoScale: speaker.photoScale || "1.08",
               hasPhoto: !!speaker.photo,
               noPhoto: !speaker.photo,
+              hasOrg: !!speaker.org,
               avatarClass: speaker.photo ? "has-photo" : "has-initials",
               blurFallback: false,
               photoClass: "",
@@ -618,7 +621,7 @@ const SPEAKERS = [
             ? "Reveals " + wave.dateLabel
             : (people.length ? [
                 confirmedPeople ? confirmedPeople + (confirmedPeople === 1 ? " confirmed voice" : " confirmed voices") : "",
-                pendingPeople ? pendingPeople + " for confirmation" : ""
+                pendingPeople ? pendingPeople + " pending" : ""
               ].filter(Boolean).join(" · ") : "Lineup in progress"),
           hasSpeakers: people.length > 0,
           comingSoon: people.length === 0,
@@ -631,7 +634,7 @@ const SPEAKERS = [
       : (revealedSpeakerWave < 2
         ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
         : (hasPendingSpeakers
-          ? "Explore confirmed resource persons by session; pending entries are marked For confirmation."
+          ? "Explore confirmed resource persons by session; pending entries are shown by agency."
           : "Explore confirmed resource persons by session, and choose the conversations most useful to your work."));
 
     const activeRoom =`

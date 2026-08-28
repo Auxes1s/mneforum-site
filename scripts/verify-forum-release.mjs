@@ -131,17 +131,22 @@ assert(devHomepage.includes('const speakerWaveOverride = "all"; // Full-layout r
 assert(!devHomepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
   'The development preview must not accept a query that re-conceals the layout.');
 const pendingRoster = roster.roster.filter(record => record.status === 'pending_confirmation');
-assert(pendingRoster.length === 10, `Expected 10 pending roster entries; found ${pendingRoster.length}.`);
+assert(pendingRoster.length === 9, `Expected 9 pending roster entries; found ${pendingRoster.length}.`);
+assert(pendingRoster.every(record => record.displayName === record.organization),
+  'Pending roster entries must display their agency name only.');
 for (const record of pendingRoster) {
-  const pendingRecordText = `name: ${JSON.stringify(record.displayName)}, org: ${JSON.stringify(record.organization)}`;
+  const renderedAffiliation = record.displayName === record.organization ? '' : record.organization;
+  const pendingRecordText = `name: ${JSON.stringify(record.displayName)}, org: ${JSON.stringify(renderedAffiliation)}`;
   assert(!homepage.includes(pendingRecordText),
     `Production HTML must not embed the pending placeholder for ${record.id}.`);
   assert(devHomepage.includes(pendingRecordText),
     `Development preview must render the pending affiliation for ${record.id}.`);
 }
-assert(devHomepage.includes('Resource persons · confirmation in progress') &&
-  devHomepage.includes('pending entries are marked For confirmation'),
-  'Development preview must label and explain pending confirmation entries.');
+assert(!/for confirmation/i.test(homepage) && !/for confirmation/i.test(devHomepage),
+  'Production and development HTML must not expose a For Confirmation label.');
+assert(devHomepage.includes('<span class="tag tag-accent">Resource persons</span>') &&
+  devHomepage.includes('pending entries are shown by agency'),
+  'Development preview must label and explain pending agency placeholders.');
 assert(htaccess.includes('RewriteRule ^dev$ dev/index.html [END]'),
   'The Apache /dev route must serve the physical development preview.');
 assert(htaccess.includes('RewriteRule ^$ dev/index.html [END]'),
@@ -207,6 +212,7 @@ const expectedSpeakerNames = [
   'Sebastian Felipe Bundoc',
   'Aleli Kraft',
   'Christopher James R. Cabuay',
+  'Kris Ann M. Melad',
   'Agnes E. Tolentino',
   'David Joseph Emmanuel B. Yap Jr.',
   'Ryan S. Lita',
@@ -231,7 +237,7 @@ const expectedSessionCounts = {
   'breakout-1-2': 2,
   'breakout-1-3': 1,
   'breakout-2-1': 5,
-  'breakout-2-2': 2,
+  'breakout-2-2': 3,
   'breakout-2-3': 6
 };
 for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {

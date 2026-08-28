@@ -169,7 +169,7 @@
     {
       "id": "renato-u-solidum-jr",
       "name": "Dr. Renato U. Solidum, Jr.",
-      "displayName": "For confirmation",
+      "displayName": "Department of Science and Technology (DOST)",
       "organization": "Department of Science and Technology (DOST)",
       "position": "Secretary",
       "role": "Panelist",
@@ -279,7 +279,7 @@
     {
       "id": "christian-m-alis",
       "name": "Christian M. Alis, PhD",
-      "displayName": "For confirmation",
+      "displayName": "Asian Institute of Management (AIM)",
       "organization": "Asian Institute of Management (AIM)",
       "position": "Assistant Professor",
       "role": "Panelist/Reactor",
@@ -292,7 +292,7 @@
     {
       "id": "pita-s-picpican",
       "name": "Pita S. Picpican, Ph.D.",
-      "displayName": "For confirmation",
+      "displayName": "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)",
       "organization": "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)",
       "position": "Assistant Regional Director for Technical Services",
       "role": "Panelist/Reactor",
@@ -317,7 +317,7 @@
     {
       "id": "philsa-designated-representative",
       "name": null,
-      "displayName": "Designated representative - For confirmation",
+      "displayName": "Philippine Space Agency (PhilSA)",
       "organization": "Philippine Space Agency (PhilSA)",
       "position": null,
       "role": "Presenter and panelist",
@@ -330,7 +330,7 @@
     {
       "id": "philrice-designated-representative",
       "name": null,
-      "displayName": "Designated representative - For confirmation",
+      "displayName": "Philippine Rice Research Institute",
       "organization": "Philippine Rice Research Institute",
       "position": null,
       "role": "Panelist/Reactor",
@@ -343,7 +343,7 @@
     {
       "id": "ocd-designated-representative",
       "name": null,
-      "displayName": "Designated representative - For confirmation",
+      "displayName": "Office of Civil Defense",
       "organization": "Office of Civil Defense",
       "position": null,
       "role": "Panelist/Reactor",
@@ -428,15 +428,14 @@
     {
       "id": "kris-ann-m-melad",
       "name": "Kris Ann M. Melad",
-      "displayName": "For confirmation",
       "organization": "Philippine Institute for Development Studies",
       "position": "Supervising Research Specialist",
       "role": "Presenter and panelist",
       "sessionIds": ["breakout-2-2"],
       "wave": "wave2",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
       "id": "christopher-james-r-cabuay",
@@ -477,7 +476,7 @@
     {
       "id": "undp-designated-representative",
       "name": null,
-      "displayName": "Representative - For confirmation",
+      "displayName": "United Nations Development Programme (UNDP)",
       "organization": "United Nations Development Programme (UNDP)",
       "position": null,
       "role": "Presenter and panelist",
@@ -564,7 +563,7 @@
     {
       "id": "francis-tolentino",
       "name": "Francis Tolentino",
-      "displayName": "For confirmation",
+      "displayName": "Department of Labor and Employment (DOLE)",
       "organization": "Department of Labor and Employment (DOLE)",
       "position": "Secretary",
       "role": "Panelist",
@@ -577,7 +576,7 @@
     {
       "id": "edwin-m-mercado",
       "name": "Dr. Edwin M. Mercado",
-      "displayName": "For confirmation",
+      "displayName": "Department of Health (DOH)",
       "organization": "Department of Health (DOH)",
       "position": "Secretary",
       "role": "Panelist",
