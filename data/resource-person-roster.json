@@ -5,7 +5,7 @@
     "date": "2026-09-09",
     "timezone": "Asia/Manila"
   },
-  "reviewedOn": "2026-08-28",
+  "reviewedOn": "2026-08-29",
   "sourcePolicy": {
     "yellowHighlight": "pending_confirmation",
     "unhighlightedGuideEntry": "confirmed",
@@ -16,17 +16,17 @@
   "waves": [
     {
       "id": "wave1",
-      "number": "01",
+      "number": "02",
       "label": "Plenary 1 + Breakout 1",
-      "dateLabel": "29 August",
-      "revealAt": "2026-08-29T00:00:00+08:00"
+      "dateLabel": "4 September",
+      "revealAt": "2026-09-04T00:00:00+08:00"
     },
     {
       "id": "wave2",
-      "number": "02",
+      "number": "01",
       "label": "Plenary 2 + Breakout 2",
-      "dateLabel": "4 September",
-      "revealAt": "2026-09-04T00:00:00+08:00"
+      "dateLabel": "29 August",
+      "revealAt": "2026-08-29T00:00:00+08:00"
     }
   ],
   "sessions": [
@@ -201,6 +201,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/rosemarie-edillon.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -213,7 +214,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
-      "photo": "assets/speakers/2026/diane-maharjan.webp",
+      "photo": "assets/speakers/2026/diane-maharjan.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -226,6 +227,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/john-randy-cabanes.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -238,6 +240,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/mario-gumba.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -250,6 +253,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/syrus-gomari.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -262,6 +266,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/jasmin-zantua.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -274,6 +279,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/francis-camarao.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -375,6 +381,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/sebastian-bundoc.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -459,6 +466,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/aleli-kraft.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -466,6 +474,19 @@
       "name": "Kerry Albright",
       "organization": "Asian Development Bank (ADB)",
       "position": "Advisor, Independent Evaluation Department (IED) and Head, Evaluation Knowledge, IED",
+      "role": "Presenter and panelist",
+      "sessionIds": ["breakout-2-3"],
+      "wave": "wave2",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/kerry-albright.jpg",
+      "source": {"kind": "session-guide", "highlighted": false}
+    },
+    {
+      "id": "lorraine-goyena",
+      "name": "Lorraine Goyena",
+      "organization": "PINTIG Lab, United Nations Development Programme (UNDP)",
+      "position": "Enterprise Architect",
       "role": "Presenter and panelist",
       "sessionIds": ["breakout-2-3"],
       "wave": "wave2",
@@ -532,13 +553,14 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/agnes-tolentino.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
       "id": "joseph-j-capuno",
       "name": "Joseph J. Capuno, PhD",
       "organization": "Department of Economy, Planning, and Development (DEPDev)",
-      "position": "Undersecretary, Investment Programming Group",
+      "position": "Undersecretary",
       "role": "Panelist",
       "sessionIds": ["plenary-2"],
       "wave": "wave2",
@@ -588,33 +610,35 @@
     },
     {
       "id": "johannes-paulus-acuna",
-      "name": "Johannes Paulus Acuña",
+      "name": "Johannes Paulus B. Acuña",
       "organization": "Department of Social Welfare and Development (DSWD)",
-      "position": "Assistant Secretary, Information and Communications Technology",
+      "position": "Assistant Secretary",
       "role": "Panelist",
       "sessionIds": ["plenary-2"],
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/johannes-acuna.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
       "id": "johann-carlos-s-barcena",
-      "name": "Atty. Johann Carlos S. Barcena, CESO III",
+      "name": "Johann Carlos S. Barcena, CESO III",
       "organization": "National Privacy Commission (NPC)",
-      "position": "Privacy Commissioner and Chairman",
+      "position": "Privacy Commissioner & Chairperson",
       "role": "Panelist",
       "sessionIds": ["plenary-2"],
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/johann-barcena.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
       "id": "vivien-suerte-cortez",
-      "name": "Vivien Suerte-Cortez",
-      "organization": "United Nations Development Programme (UNDP)",
-      "position": "Team Leader, Institutions and Partnerships",
+      "name": "Vivien E. Suerte-Cortez",
+      "organization": "United Nations Development Programme (UNDP) Philippines",
+      "position": "Lead for Institutions & Partnerships",
       "role": "Moderator",
       "sessionIds": ["plenary-2"],
       "wave": "wave2",
