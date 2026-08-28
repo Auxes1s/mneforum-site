@@ -392,8 +392,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     template = template.replace(
       /const SPEAKERS = \[[\s\S]*?\n\];/,
 `const SPEAKER_LAUNCH_WAVES = [
-  { id: "wave1", number: "01", label: "Plenary 1 + Breakout 1", dateLabel: "29 August", revealAt: "2026-08-29T00:00:00+08:00" },
-  { id: "wave2", number: "02", label: "Plenary 2 + Breakout 2", dateLabel: "4 September", revealAt: "2026-09-04T00:00:00+08:00" }
+  { id: "wave1", number: "01", label: "Keynote and Forum voices", dateLabel: "29 August", revealAt: "2026-08-29T00:00:00+08:00" },
+  { id: "wave2", number: "02", label: "Plenary 2", dateLabel: "29 August", revealAt: "2026-08-29T00:00:00+08:00" }
 ];
 
 const SPEAKER_SESSIONS = [
@@ -416,11 +416,11 @@ const SPEAKERS = [
   { name: "Rosemarie G. Edillon", org: "Department of Economy, Planning, and Development", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
   { name: "Byeongjo Kong", org: "Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
   { name: "Rosstyn Fallorina", org: "United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Vivien Suerte-Cortez", org: "United Nations Development Programme (UNDP)", role: "Moderator", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/vivien-suerte-cortez.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Johann Carlos S. Barcena", org: "National Privacy Commission (NPC)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Joseph J. Capuno", org: "Department of Economy, Planning, and Development", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/joseph-capuno.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Wilford Will L. Wong", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/wilford-wong.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Johannes Paulus B. Acuña", org: "Department of Social Welfare and Development (DSWD)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Vivien E. Suerte-Cortez", position: "Lead for Institutions & Partnerships", org: "United Nations Development Programme (UNDP) Philippines", role: "Moderator", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/vivien-suerte-cortez.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Johann Carlos S. Barcena, CESO III", position: "Privacy Commissioner & Chairperson", org: "National Privacy Commission (NPC)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/johann-barcena.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Joseph J. Capuno, PhD", position: "Undersecretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/joseph-capuno.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Wilford Will L. Wong", position: "Undersecretary", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/wilford-wong.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Johannes Paulus B. Acuña", position: "Assistant Secretary", org: "Department of Social Welfare and Development (DSWD)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/johannes-acuna.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Jasmin C. Zantua", org: "DEPDev Regional Office (DRO) V", role: "Moderator", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
   { name: "Syrus Gomari", org: "Mobility Vision Plus", role: "Panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
   { name: "John Randy Cabanes", org: "Local Government Unit (LGU) of Pasig City", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
@@ -514,6 +514,9 @@ const SPEAKERS = [
                       <sc-if value="{{ s.isRevealed }}">
                         <p class="kicker">{{ s.role }}</p>
                         <h4>{{ s.name }}</h4>
+                        <sc-if value="{{ s.hasPosition }}">
+                          <p class="speaker-card__position">{{ s.position }}</p>
+                        </sc-if>
                         <sc-if value="{{ s.hasOrg }}">
                           <p>{{ s.org }}</p>
                         </sc-if>
@@ -542,9 +545,11 @@ const SPEAKERS = [
       : (/^[0-2]$/.test(speakerWaveOverride || "") ? Number(speakerWaveOverride) : null);
     const revealedSpeakerWave = overrideSpeakerWave === null ? datedSpeakerWave : overrideSpeakerWave;
     const revealedWaveIds = SPEAKER_LAUNCH_WAVES.slice(0, revealedSpeakerWave).map(wave => wave.id);
+    const visibleSpeakerSessionIds = ["opening-closing", "plenary-2"];
     const filters = [
       { id: "all", label: "All" },
-      ...SPEAKER_LAUNCH_WAVES.map(wave => ({ id: wave.id, label: wave.label }))
+      { id: "opening-closing", label: "Keynote speakers" },
+      { id: "plenary-2", label: "Plenary 2" }
     ];
     const activeSpeakerFilter = filters.some(filter => filter.id === st.speakerFilter) ? st.speakerFilter : "all";
     const speakerFilters = filters.map(f => ({
@@ -560,7 +565,8 @@ const SPEAKERS = [
       cls: index < revealedSpeakerWave ? "is-revealed" : "is-upcoming"
     }));
     const speakerSessions = SPEAKER_SESSIONS
-      .filter(session => activeSpeakerFilter === "all" || session.wave === activeSpeakerFilter)
+      .filter(session => visibleSpeakerSessionIds.includes(session.id))
+      .filter(session => activeSpeakerFilter === "all" || session.id === activeSpeakerFilter)
       .sort((a, b) => a.order - b.order)
       .map(session => {
         const isConcealed = !revealedWaveIds.includes(session.wave);
@@ -571,6 +577,7 @@ const SPEAKERS = [
         const people = sessionPeople.map(speaker => isConcealed
           ? {
               name: "",
+              position: "",
               org: "",
               role: "",
               photo: speaker.photo,
@@ -588,6 +595,7 @@ const SPEAKERS = [
             }
           : {
               name: speaker.name,
+              position: speaker.position || "",
               org: speaker.org,
               role: speaker.role,
               photo: speaker.photo,
@@ -596,6 +604,7 @@ const SPEAKERS = [
               hasPhoto: !!speaker.photo,
               noPhoto: !speaker.photo,
               hasOrg: !!speaker.org,
+              hasPosition: !!speaker.position,
               avatarClass: speaker.photo ? "has-photo" : "has-initials",
               blurFallback: false,
               photoClass: "",
@@ -619,14 +628,7 @@ const SPEAKERS = [
           speakers: people
         });
       });
-    const hasPendingSpeakers = SPEAKERS.some(speaker => speaker.status === "pending_confirmation");
-    const speakerLaunchSummary = revealedSpeakerWave === 0
-      ? "Speaker profiles will be revealed in two scheduled groups, pairing each plenary with its breakout sessions."
-      : (revealedSpeakerWave < 2
-        ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
-        : (hasPendingSpeakers
-          ? "Explore confirmed resource persons by session; pending entries are shown by agency."
-          : "Explore confirmed resource persons by session, and choose the conversations most useful to your work."));
+    const speakerLaunchSummary = "Meet the keynote and Forum voices, followed by the confirmed Plenary 2 lineup.";
 
     const activeRoom =`
     );

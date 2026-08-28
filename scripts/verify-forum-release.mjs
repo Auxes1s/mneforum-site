@@ -182,14 +182,16 @@ assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI R
   'The Resource Persons area mislabels Plenary 1.');
 assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
   'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
-assert(homepage.includes('label: "Plenary 1 + Breakout 1"') && homepage.includes('label: "Plenary 2 + Breakout 2"'),
-  'The Resource Persons reveal-wave labels do not match the Program.');
+assert(homepage.includes('label: "Keynote and Forum voices"') && homepage.includes('label: "Plenary 2"'),
+  'The live Resource Persons reveal must be limited to Forum voices and Plenary 2.');
+assert(homepage.includes('const visibleSpeakerSessionIds = ["opening-closing", "plenary-2"]'),
+  'The live speaker section must hide Plenary 1 and breakout lineups.');
 
 const speakerRecords = Array.from(homepage.matchAll(
-  /\{ name: "([^"]+)", org: "([^"]+)", role: "([^"]+)", sessionId: "([^"]+)", wave: "([^"]+)", photo: "([^"]*)", objectPosition: "([^"]+)"(?:, photoScale: "([^"]+)")? \}/g
+  /\{ name: "([^"]+)",(?: position: "([^"]+)",)? org: "([^"]+)", role: "([^"]+)", sessionId: "([^"]+)", wave: "([^"]+)", photo: "([^"]*)", objectPosition: "([^"]+)"(?:, photoScale: "([^"]+)")? \}/g
 ), match => ({
-  name: match[1], org: match[2], role: match[3], sessionId: match[4],
-  wave: match[5], photo: match[6], objectPosition: match[7], photoScale: match[8] || ''
+  name: match[1], position: match[2] || '', org: match[3], role: match[4], sessionId: match[5],
+  wave: match[6], photo: match[7], objectPosition: match[8], photoScale: match[9] || ''
 }));
 const expectedSpeakerNames = [
   'Arsenio M. Balisacan',
@@ -199,9 +201,9 @@ const expectedSpeakerNames = [
   'Rosemarie G. Edillon',
   'Byeongjo Kong',
   'Rosstyn Fallorina',
-  'Vivien Suerte-Cortez',
-  'Johann Carlos S. Barcena',
-  'Joseph J. Capuno',
+  'Vivien E. Suerte-Cortez',
+  'Johann Carlos S. Barcena, CESO III',
+  'Joseph J. Capuno, PhD',
   'Wilford Will L. Wong',
   'Johannes Paulus B. Acuña',
   'Jasmin C. Zantua',
@@ -235,6 +237,8 @@ for (const name of expectedSpeakerNames) {
 }
 assert(!speakerRecords.some(speaker => speaker.name === 'Kim Robert C. De Leon'),
   'The superseded Plenary 2 DBM representative is still present.');
+assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-2').every(speaker => speaker.position),
+  'Every live Plenary 2 resource person must show a position or designation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 4,
@@ -265,7 +269,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 7, `Expected 7 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 9, `Expected 9 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Atty\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
