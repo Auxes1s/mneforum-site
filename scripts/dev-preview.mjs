@@ -3,6 +3,20 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+function loadPendingSpeakerRecords() {
+  const rosterPath = path.join(projectRoot, 'data', 'resource-person-roster.json');
+  const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
+  return roster.roster
+    .filter(record => record.status === 'pending_confirmation')
+    .map(record => {
+      const sessionId = record.sessionIds[0];
+      const session = roster.sessions.find(item => item.id === sessionId);
+      return `  { name: ${JSON.stringify(record.displayName || 'For confirmation')}, org: ${JSON.stringify(record.organization)}, role: ${JSON.stringify(record.role)}, sessionId: ${JSON.stringify(sessionId)}, wave: ${JSON.stringify(session ? session.wave : record.wave)}, photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }`;
+    });
+}
+
 function replaceExactlyOnce(source, needle, replacement, label) {
   const first = source.indexOf(needle);
   const last = source.lastIndexOf(needle);
@@ -32,6 +46,32 @@ export function createDevPreview(productionHtml) {
     'const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");',
     'const speakerWaveOverride = "all"; // Full-layout reviewer preview.',
     'speaker reveal override'
+  );
+
+  const speakerBlockMatch = preview.match(/const SPEAKERS = \[[\s\S]*?\n\];/);
+  if (!speakerBlockMatch) throw new Error('Expected the production speaker roster before adding pending preview entries.');
+  const pendingRecords = loadPendingSpeakerRecords();
+  const speakerBlockWithPending = speakerBlockMatch[0].replace(
+    /\n\];$/,
+    `,\n${pendingRecords.join(',\n')}\n];`
+  );
+  preview = replaceExactlyOnce(
+    preview,
+    speakerBlockMatch[0],
+    speakerBlockWithPending,
+    'development pending speaker roster'
+  );
+  preview = replaceExactlyOnce(
+    preview,
+    'Confirmed resource persons',
+    'Resource persons · confirmation in progress',
+    'development speaker heading'
+  );
+  preview = replaceExactlyOnce(
+    preview,
+    'Filter confirmed resource persons by session group',
+    'Filter resource persons by session group',
+    'development speaker filter label'
   );
 
   return preview;

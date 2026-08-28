@@ -326,6 +326,25 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replaceAll('#f8f4eb', '#ebebeb')
       .replaceAll('#f3eee3', '#ebebeb');
 
+    // Polish public-facing status and instruction copy inherited from the
+    // original page export. Keep timing and publication commitments intact.
+    template = template
+      .replaceAll('Notes publish after the session', 'Notes will be published after the Forum')
+      .replaceAll('Official materials publish after the Forum', 'Official materials will be published after the Forum')
+      .replaceAll('No post-event materials are published yet.', 'Post-event materials are not yet available.')
+      .replaceAll('rapporteur syntheses, and answered Q&A', 'session syntheses and Q&A responses')
+      .replaceAll('Nothing to install, no account, works on any phone.', 'Nothing to install. No account is required, and the site works on any phone.')
+      .replaceAll('Secretariat exports the transcript at close of session.', 'The Secretariat exports the transcript at the end of each session.')
+      .replaceAll('Unanswered questions get written replies in the notes.', 'The Secretariat will add written responses to unanswered questions in the session notes.')
+      .replaceAll('Tally posts after the gallery walk closes.', 'The tally will be posted after the Gallery Walk closes.')
+      .replaceAll('Program indicative and subject to change', 'Program is indicative and subject to change')
+      .replaceAll('Materials pending Secretariat upload', 'Awaiting Secretariat upload')
+      .replaceAll('Official tally pending Secretariat upload', 'Awaiting the official tally from the Secretariat')
+      .replaceAll('Official gallery pending Secretariat upload', 'Awaiting the official gallery from the Secretariat')
+      .replaceAll('The official Slido transcript and any answered Q&A', 'The official Slido transcript and Q&A responses')
+      .replaceAll('Questions and upvotes will be handled inside Slido when the Forum opens. This panel will mirror the room\'s board for public viewing.', 'Participants can submit questions and upvote them in Slido once the Forum opens. This panel will display the room\'s question board for public viewing.')
+      .replaceAll('Opens Sept 9', 'Opens September 9');
+
     // Do not ship generic Slido-home links as if they were event rooms. Keep
     // the original button treatment, but make the unavailable destinations
     // explicit until the Secretariat publishes verified room URLs.
@@ -421,7 +440,17 @@ const SPEAKERS = [
   { name: "Ryan S. Lita", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Yuko Lisette R. Domingo", org: "DEPDev PPG Social Development Staff", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Xerxes S. Nitafan", org: "Senate Economic Planning Office (SEPO)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Kerry Albright", org: "Independent Evaluation Department, Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" }
+  { name: "Kerry Albright", org: "Independent Evaluation Department, Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "For confirmation", org: "Department of Science and Technology (DOST)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "For confirmation", org: "Asian Institute of Management (AIM)", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "For confirmation", org: "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Designated representative - For confirmation", org: "Philippine Space Agency (PhilSA)", role: "Presenter and panelist", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Designated representative - For confirmation", org: "Philippine Rice Research Institute", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Designated representative - For confirmation", org: "Office of Civil Defense", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "For confirmation", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "Representative - For confirmation", org: "United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "For confirmation", org: "Department of Labor and Employment (DOLE)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
+  { name: "For confirmation", org: "Department of Health (DOH)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }
 ];`
     );
     template = template.replace(
@@ -433,7 +462,7 @@ const SPEAKERS = [
           <p class="speaker-launch__eyebrow">The program takes wing</p>
           <h2>Meet the Forum's voices</h2>
         </div>
-        <span class="tag tag-accent">Confirmed resource persons</span>
+        <span class="tag tag-accent">Resource persons · confirmation in progress</span>
       </div>
       <p class="speaker-launch__summary">{{ speakerLaunchSummary }}</p>
       <div class="speaker-launch__timeline" aria-label="Speaker reveal schedule">
@@ -445,7 +474,7 @@ const SPEAKERS = [
           </article>
         </sc-for>
       </div>
-      <div class="filter-group speaker-launch__filters" role="group" aria-label="Filter confirmed resource persons by session group">
+      <div class="filter-group speaker-launch__filters" role="group" aria-label="Filter resource persons by session group">
         <sc-for list="{{ speakerFilters }}" as="f" hint-placeholder-count="4">
           <button class="filter-chip {{ f.cls }}" type="button" aria-pressed="{{ f.pressed }}" sc-camel-on-click="{{ f.select }}">{{ f.label }}</button>
         </sc-for>
@@ -502,7 +531,7 @@ const SPEAKERS = [
               </div>
             </sc-if>
             <sc-if value="{{ session.comingSoon }}">
-              <p class="speaker-session__coming">Speaker reveal coming soon</p>
+              <p class="speaker-session__coming">Speaker profiles coming soon</p>
             </sc-if>
           </article>
         </sc-for>
@@ -543,8 +572,10 @@ const SPEAKERS = [
       .map(session => {
         const isConcealed = !revealedWaveIds.includes(session.wave);
         const wave = SPEAKER_LAUNCH_WAVES.find(item => item.id === session.wave);
-        const confirmedPeople = session.teaserOnly ? [] : SPEAKERS.filter(speaker => speaker.sessionId === session.id);
-        const people = confirmedPeople.map(speaker => isConcealed
+        const sessionPeople = session.teaserOnly ? [] : SPEAKERS.filter(speaker => speaker.sessionId === session.id);
+        const pendingPeople = sessionPeople.filter(speaker => speaker.status === "pending_confirmation").length;
+        const confirmedPeople = sessionPeople.length - pendingPeople;
+        const people = sessionPeople.map(speaker => isConcealed
           ? {
               name: "",
               org: "",
@@ -585,17 +616,23 @@ const SPEAKERS = [
           cls: isConcealed ? "is-concealed" : "is-revealed",
           statusLabel: isConcealed
             ? "Reveals " + wave.dateLabel
-            : (people.length ? people.length + (people.length === 1 ? " confirmed voice" : " confirmed voices") : "Lineup in progress"),
+            : (people.length ? [
+                confirmedPeople ? confirmedPeople + (confirmedPeople === 1 ? " confirmed voice" : " confirmed voices") : "",
+                pendingPeople ? pendingPeople + " for confirmation" : ""
+              ].filter(Boolean).join(" · ") : "Lineup in progress"),
           hasSpeakers: people.length > 0,
           comingSoon: people.length === 0,
           speakers: people
         });
       });
+    const hasPendingSpeakers = SPEAKERS.some(speaker => speaker.status === "pending_confirmation");
     const speakerLaunchSummary = revealedSpeakerWave === 0
       ? "Speaker profiles will be revealed in two scheduled groups, pairing each plenary with its breakout sessions."
       : (revealedSpeakerWave < 2
         ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
-        : "Explore confirmed resource persons by session, and choose the conversations most useful to your work.");
+        : (hasPendingSpeakers
+          ? "Explore confirmed resource persons by session; pending entries are marked For confirmation."
+          : "Explore confirmed resource persons by session, and choose the conversations most useful to your work."));
 
     const activeRoom =`
     );

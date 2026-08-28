@@ -19,6 +19,7 @@ const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
 const buildScript = readText(path.join(root, 'scripts', 'build-static.mjs'));
 const htaccess = readText(path.join(root, '.htaccess'));
+const roster = JSON.parse(readText(path.join(root, 'data', 'resource-person-roster.json')));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -129,6 +130,18 @@ assert(devHomepage.includes('const speakerWaveOverride = "all"; // Full-layout r
   'The development preview must reveal every populated speaker record.');
 assert(!devHomepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
   'The development preview must not accept a query that re-conceals the layout.');
+const pendingRoster = roster.roster.filter(record => record.status === 'pending_confirmation');
+assert(pendingRoster.length === 10, `Expected 10 pending roster entries; found ${pendingRoster.length}.`);
+for (const record of pendingRoster) {
+  const pendingRecordText = `name: ${JSON.stringify(record.displayName)}, org: ${JSON.stringify(record.organization)}`;
+  assert(!homepage.includes(pendingRecordText),
+    `Production HTML must not embed the pending placeholder for ${record.id}.`);
+  assert(devHomepage.includes(pendingRecordText),
+    `Development preview must render the pending affiliation for ${record.id}.`);
+}
+assert(devHomepage.includes('Resource persons · confirmation in progress') &&
+  devHomepage.includes('pending entries are marked For confirmation'),
+  'Development preview must label and explain pending confirmation entries.');
 assert(htaccess.includes('RewriteRule ^dev$ dev/index.html [END]'),
   'The Apache /dev route must serve the physical development preview.');
 assert(htaccess.includes('RewriteRule ^$ dev/index.html [END]'),
