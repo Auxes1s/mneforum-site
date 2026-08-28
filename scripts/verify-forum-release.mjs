@@ -178,10 +178,8 @@ assert(brandCss.includes('fonts/Satoshi-Regular.woff2') &&
   brandCss.includes('fonts/Satoshi-Bold.woff2') &&
   brandCss.includes('fonts/Plein-Black.woff2'),
   'The Forum brand stylesheet does not register all approved local faces.');
-assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector"'),
-  'The Resource Persons area mislabels Plenary 1.');
-assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
-  'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
+assert(!homepage.includes('meta: "Plenary 1", title:'),
+  'The live Resource Persons area must not publish Plenary 1 yet.');
 assert(homepage.includes('label: "Keynote and Forum voices"') && homepage.includes('label: "Plenary 2"'),
   'The live Resource Persons reveal must be limited to Forum voices and Plenary 2.');
 assert(homepage.includes('const visibleSpeakerSessionIds = ["opening-closing", "plenary-2"]'),
@@ -197,36 +195,11 @@ const expectedSpeakerNames = [
   'Arsenio M. Balisacan',
   'Christophe Bahuet',
   'Roderick M. Planta',
-  'Diane Gail L. Maharjan',
-  'Rosemarie G. Edillon',
-  'Byeongjo Kong',
-  'Rosstyn Fallorina',
   'Vivien E. Suerte-Cortez',
   'Johann Carlos S. Barcena, CESO III',
   'Joseph J. Capuno, PhD',
   'Wilford Will L. Wong',
-  'Johannes Paulus B. Acuña',
-  'Jasmin C. Zantua',
-  'Syrus Gomari',
-  'John Randy Cabanes',
-  'Mario Christopher G. Gumba',
-  'Maria Sherrina Ysabel S. Jose',
-  'Francis Camarao',
-  'Mary Ash Day O. Malimit',
-  'Karl Robert L. Jandoc',
-  'Jose Ramon “Toots” T. Albert',
-  'Reinald Adrian D. Pugoy',
-  'Josefina V. Almeda',
-  'Sebastian Felipe Bundoc',
-  'Aleli Kraft',
-  'Christopher James R. Cabuay',
-  'Kris Ann M. Melad',
-  'Agnes E. Tolentino',
-  'David Joseph Emmanuel B. Yap Jr.',
-  'Ryan S. Lita',
-  'Yuko Lisette R. Domingo',
-  'Xerxes S. Nitafan',
-  'Kerry Albright'
+  'Johannes Paulus B. Acuña'
 ];
 assert(speakerRecords.length === expectedSpeakerNames.length,
   `Expected ${expectedSpeakerNames.length} resource-person records; found ${speakerRecords.length}.`);
@@ -241,24 +214,15 @@ assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-2').every
   'Every live Plenary 2 resource person must show a position or designation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
-  'plenary-1': 4,
-  'plenary-2': 5,
-  'breakout-1-1': 4,
-  'breakout-1-2': 2,
-  'breakout-1-3': 1,
-  'breakout-2-1': 5,
-  'breakout-2-2': 3,
-  'breakout-2-3': 6
+  'plenary-2': 5
 };
 for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {
   const actualCount = speakerRecords.filter(speaker => speaker.sessionId === sessionId).length;
   assert(actualCount === expectedCount,
     `${sessionId} must contain ${expectedCount} resource-person record(s); found ${actualCount}.`);
 }
-assert(homepage.includes('id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false'),
-  'Breakout 1.3 must publish its confirmed moderator.');
-assert(homepage.includes('id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false'),
-  'Breakout 2.2 must publish its confirmed lineup.');
+assert(!/sessionId: "(?:plenary-1|breakout-)/.test(homepage),
+  'Live production HTML must not embed Plenary 1 or breakout speaker records.');
 const photoSpeakers = speakerRecords.filter(record => record.photo);
 for (const speaker of photoSpeakers) {
   assert(fs.existsSync(path.join(root, speaker.photo)),
@@ -269,7 +233,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 9, `Expected 9 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 8, `Expected 8 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Atty\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -305,14 +269,7 @@ assert(speakerCss.includes('.speaker-session .speaker-card__avatar img') &&
 const speakerSessionsMatch = homepage.match(/const SPEAKER_SESSIONS = \[([\s\S]*?)\n\];/);
 assert(speakerSessionsMatch, 'The speaker-session definitions are missing.');
 const speakerSessionsSource = speakerSessionsMatch[1];
-for (const breakoutId of [
-  'breakout-1-1', 'breakout-1-2', 'breakout-1-3',
-  'breakout-2-1', 'breakout-2-2', 'breakout-2-3'
-]) {
-  const line = speakerSessionsSource.split('\n').find(value => value.includes(`id: "${breakoutId}"`));
-  assert(line && !line.includes('promise:'), `${breakoutId} must not duplicate its Program description.`);
-}
-for (const retainedCaptionId of ['opening-closing', 'plenary-1', 'plenary-2']) {
+for (const retainedCaptionId of ['opening-closing', 'plenary-2']) {
   const line = speakerSessionsSource.split('\n').find(value => value.includes(`id: "${retainedCaptionId}"`));
   assert(line && line.includes('promise:'), `${retainedCaptionId} must retain its speaker-section caption.`);
 }
