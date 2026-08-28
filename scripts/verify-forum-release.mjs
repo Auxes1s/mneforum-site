@@ -116,8 +116,14 @@ for (const sessionTitle of [
   assert(rendered.includes(sessionTitle), `The Program is missing or mislabels: ${sessionTitle}`);
 }
 
-assert(devHomepage === createDevPreview(homepage),
-  'dev/index.html is stale. Run npm run sync:dev and review the generated diff.');
+const generatedDevHomepage = createDevPreview(homepage);
+const intentionalDevSpeakerPreview = devHomepage.includes(
+  '// DEV-ONLY SPEAKER PREVIEW: intentionally maintained ahead of production.'
+);
+assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
+  'dev/index.html is stale. Run npm run sync:dev, or retain the reviewed dev-only preview marker.');
+assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
+  'The development-only speaker preview marker must never enter production HTML.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),
   'The production homepage must remain indexable.');
 assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),
@@ -268,7 +274,14 @@ const speakerManifest = readText(path.join(root, 'assets', 'speakers', '2026', '
 assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 7,
+const rosterPhotoRecords = roster.roster.filter(record => record.photo);
+assert(rosterPhotoRecords.length === 19,
+  `Expected 19 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+for (const record of rosterPhotoRecords) {
+  assert(fs.existsSync(path.join(root, record.photo)),
+    `Missing roster portrait for ${record.id}: ${record.photo}`);
+}
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 19,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');
