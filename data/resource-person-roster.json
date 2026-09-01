@@ -134,6 +134,7 @@
       "id": "roderick-m-planta",
       "name": "Roderick M. Planta",
       "organization": "Department of Economy, Planning, and Development",
+      "position": "Assistant Secretary",
       "role": "Closing speaker",
       "sessionIds": ["opening-closing"],
       "wave": "wave1",
@@ -623,7 +624,7 @@
     },
     {
       "id": "johann-carlos-s-barcena",
-      "name": "Johann Carlos S. Barcena, CESO III",
+      "name": "Atty. Johann Carlos S. Barcena, CESO III",
       "organization": "National Privacy Commission (NPC)",
       "position": "Privacy Commissioner & Chairperson",
       "role": "Panelist",

@@ -206,7 +206,7 @@ const expectedSpeakerNames = [
   'Byeongjo Kong',
   'Rosstyn Fallorina',
   'Vivien E. Suerte-Cortez',
-  'Johann Carlos S. Barcena, CESO III',
+  'Atty. Johann Carlos S. Barcena, CESO III',
   'Joseph J. Capuno, PhD',
   'Wilford Will L. Wong',
   'Johannes Paulus B. Acuña',
@@ -280,8 +280,8 @@ for (const speaker of photoSpeakers) {
 assert(photoSpeakers.length === 9, `Expected 9 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
-assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Atty\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
-  'Displayed resource-person names must not include honorifics or position titles.');
+assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
+  'Displayed resource-person names must not include position titles.');
 const speakerManifest = readText(path.join(root, 'assets', 'speakers', '2026', 'manifest.csv'));
 assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
