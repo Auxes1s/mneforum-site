@@ -245,6 +245,8 @@ assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-2').every
   'Every live Plenary 2 resource person must show a position or designation.');
 assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-1').every(speaker => speaker.position),
   'Every Plenary 1 resource person must show a position or designation.');
+assert(speakerRecords.filter(speaker => speaker.sessionId === 'opening-closing').every(speaker => speaker.position),
+  'Every keynote and Forum voice must show a position or designation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 4,
