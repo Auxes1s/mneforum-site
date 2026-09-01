@@ -243,6 +243,8 @@ assert(!speakerRecords.some(speaker => speaker.name === 'Kim Robert C. De Leon')
   'The superseded Plenary 2 DBM representative is still present.');
 assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-2').every(speaker => speaker.position),
   'Every live Plenary 2 resource person must show a position or designation.');
+assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-1').every(speaker => speaker.position),
+  'Every Plenary 1 resource person must show a position or designation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 4,
