@@ -49,6 +49,18 @@ export function createDevPreview(productionHtml) {
     'const speakerWaveOverride = "all"; // Full-layout reviewer preview.',
     'speaker reveal override'
   );
+  preview = replaceExactlyOnce(
+    preview,
+    'const revealedSpeakerSessionIds = ["plenary-1"];',
+    'const revealedSpeakerSessionIds = SPEAKER_SESSIONS.map(session => session.id);',
+    'speaker session reveal override'
+  );
+  preview = replaceExactlyOnce(
+    preview,
+    'const speakerLaunchSummary = "The Plenary 1 lineup is now revealed. All other session profiles remain concealed.";',
+    'const speakerLaunchSummary = "Explore confirmed resource persons by session; pending entries are shown by agency.";',
+    'development speaker summary'
+  );
 
   const speakerBlockMatch = preview.match(/const SPEAKERS = \[[\s\S]*?\n\];/);
   if (!speakerBlockMatch) throw new Error('Expected the production speaker roster before adding pending preview entries.');
@@ -84,7 +96,10 @@ if (isCli) {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const source = path.join(root, 'index.html');
   const destination = path.join(root, 'dev', 'index.html');
-  const productionHtml = fs.readFileSync(source, 'utf8');
+  // Git may check out the bundled production page with mixed CRLF/LF endings.
+  // Normalize before transforming so the generated preview is byte-stable and
+  // matches the release verifier on every platform.
+  const productionHtml = fs.readFileSync(source, 'utf8').replace(/\r\n/g, '\n');
   fs.writeFileSync(destination, createDevPreview(productionHtml), 'utf8');
   process.stdout.write(`Synchronized ${path.relative(root, destination)} from ${path.relative(root, source)}.\n`);
 }

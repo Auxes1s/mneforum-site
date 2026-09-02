@@ -150,7 +150,7 @@ assert(devHomepage.includes('const speakerWaveOverride = "all"; // Full-layout r
 assert(!devHomepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
   'The development preview must not accept a query that re-conceals the layout.');
 const pendingRoster = roster.roster.filter(record => record.status === 'pending_confirmation');
-assert(pendingRoster.length === 9, `Expected 9 pending roster entries; found ${pendingRoster.length}.`);
+assert(pendingRoster.length === 1, `Expected 1 pending roster entry; found ${pendingRoster.length}.`);
 assert(pendingRoster.every(record => record.displayName === record.organization),
   'Pending roster entries must display their agency name only.');
 for (const record of pendingRoster) {
@@ -195,12 +195,12 @@ assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI R
   'The Resource Persons area mislabels Plenary 1.');
 assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
   'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
-assert(homepage.includes('label: "Keynote and Forum voices"') && homepage.includes('label: "Plenary 2"'),
-  'The live Resource Persons reveal must be limited to Forum voices and Plenary 2.');
-assert(homepage.includes('const revealedSpeakerSessionIds = ["opening-closing", "plenary-2"]'),
-  'The live speaker section must reveal only the keynote speakers and Plenary 2.');
+assert(homepage.includes('label: "Plenary 1"') && !homepage.includes('label: "Keynote and Forum voices"') && !homepage.includes('label: "Plenary 2"'),
+  'The live Resource Persons reveal schedule must be limited to Plenary 1.');
+assert(homepage.includes('const revealedSpeakerSessionIds = ["plenary-1"]'),
+  'The live speaker section must reveal only Plenary 1.');
 assert(homepage.includes('const isConcealed = !revealedSpeakerSessionIds.includes(session.id);'),
-  'Plenary 1 and breakout profiles must remain visible but concealed.');
+  'Non-Plenary 1 profiles must remain visible but concealed.');
 assert(!homepage.includes('.filter(session => visibleSpeakerSessionIds.includes(session.id))'),
   'Unrevealed session cards must not be removed from the live speaker section.');
 
@@ -218,6 +218,7 @@ const expectedSpeakerNames = [
   'Rosemarie G. Edillon',
   'Byeongjo Kong',
   'Rosstyn Fallorina',
+  'Maria Victoria C. Castro',
   'Vivien E. Suerte-Cortez',
   'Atty. Johann Carlos S. Barcena, CESO III',
   'Joseph J. Capuno, PhD',
@@ -239,6 +240,7 @@ const expectedSpeakerNames = [
   'Christopher James R. Cabuay',
   'Kris Ann M. Melad',
   'Agnes E. Tolentino',
+  'Lorraine Goyena',
   'David Joseph Emmanuel B. Yap Jr.',
   'Ryan S. Lita',
   'Yuko Lisette R. Domingo',
@@ -262,14 +264,14 @@ assert(speakerRecords.filter(speaker => speaker.sessionId === 'opening-closing')
   'Every keynote and Forum voice must show a position or designation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
-  'plenary-1': 4,
+  'plenary-1': 5,
   'plenary-2': 5,
   'breakout-1-1': 4,
   'breakout-1-2': 2,
   'breakout-1-3': 1,
   'breakout-2-1': 5,
   'breakout-2-2': 3,
-  'breakout-2-3': 6
+  'breakout-2-3': 7
 };
 for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {
   const actualCount = speakerRecords.filter(speaker => speaker.sessionId === sessionId).length;
@@ -290,7 +292,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 9, `Expected 9 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 20, `Expected 20 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -300,13 +302,13 @@ assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
 const rosterPhotoRecords = roster.roster.filter(record => record.photo);
-assert(rosterPhotoRecords.length === 19,
-  `Expected 19 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+assert(rosterPhotoRecords.length === 26,
+  `Expected 26 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
 for (const record of rosterPhotoRecords) {
   assert(fs.existsSync(path.join(root, record.photo)),
     `Missing roster portrait for ${record.id}: ${record.photo}`);
 }
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 19,
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 29,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');

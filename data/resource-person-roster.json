@@ -5,7 +5,7 @@
     "date": "2026-09-09",
     "timezone": "Asia/Manila"
   },
-  "reviewedOn": "2026-08-29",
+  "reviewedOn": "2026-09-02",
   "sourcePolicy": {
     "yellowHighlight": "pending_confirmation",
     "unhighlightedGuideEntry": "confirmed",
@@ -107,43 +107,6 @@
   ],
   "roster": [
     {
-      "id": "arsenio-m-balisacan",
-      "name": "Arsenio M. Balisacan",
-      "organization": "Department of Economy, Planning, and Development",
-      "role": "Opening speaker",
-      "sessionIds": ["opening-closing"],
-      "wave": "wave1",
-      "status": "confirmed",
-      "publication": {"dev": true, "live": true},
-      "photo": "assets/speakers/2026/arsenio-balisacan.webp",
-      "source": {"kind": "existing-site-roster", "highlighted": false}
-    },
-    {
-      "id": "christophe-bahuet",
-      "name": "Christophe Bahuet",
-      "organization": "United Nations Development Programme",
-      "role": "Speaker",
-      "sessionIds": ["opening-closing"],
-      "wave": "wave1",
-      "status": "confirmed",
-      "publication": {"dev": true, "live": true},
-      "photo": "assets/speakers/2026/christophe-bahuet.webp",
-      "source": {"kind": "existing-site-roster", "highlighted": false}
-    },
-    {
-      "id": "roderick-m-planta",
-      "name": "Roderick M. Planta",
-      "organization": "Department of Economy, Planning, and Development",
-      "position": "Assistant Secretary",
-      "role": "Closing speaker",
-      "sessionIds": ["opening-closing"],
-      "wave": "wave1",
-      "status": "confirmed",
-      "publication": {"dev": true, "live": true},
-      "photo": "assets/speakers/2026/roderick-planta.webp",
-      "source": {"kind": "existing-site-roster", "highlighted": false}
-    },
-    {
       "id": "byeongjo-kong",
       "name": "Mr. Byeongjo Kong",
       "organization": "Asian Development Bank (ADB)",
@@ -153,6 +116,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/byeongjo-kong.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -165,20 +129,8 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/rosstyn-fallorina.webp",
       "source": {"kind": "session-guide", "highlighted": false}
-    },
-    {
-      "id": "renato-u-solidum-jr",
-      "name": "Dr. Renato U. Solidum, Jr.",
-      "displayName": "Department of Science and Technology (DOST)",
-      "organization": "Department of Science and Technology (DOST)",
-      "position": "Secretary",
-      "role": "Panelist",
-      "sessionIds": ["plenary-1"],
-      "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
     },
     {
       "id": "maria-victoria-c-castro",
@@ -190,6 +142,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/maria-victoria-c-castro.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -284,19 +237,6 @@
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
-      "id": "christian-m-alis",
-      "name": "Christian M. Alis, PhD",
-      "displayName": "Asian Institute of Management (AIM)",
-      "organization": "Asian Institute of Management (AIM)",
-      "position": "Assistant Professor",
-      "role": "Panelist/Reactor",
-      "sessionIds": ["breakout-1-2"],
-      "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
-    },
-    {
       "id": "pita-s-picpican",
       "name": "Pita S. Picpican, Ph.D.",
       "displayName": "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)",
@@ -322,45 +262,6 @@
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
-      "id": "philsa-designated-representative",
-      "name": null,
-      "displayName": "Philippine Space Agency (PhilSA)",
-      "organization": "Philippine Space Agency (PhilSA)",
-      "position": null,
-      "role": "Presenter and panelist",
-      "sessionIds": ["breakout-1-3"],
-      "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
-    },
-    {
-      "id": "philrice-designated-representative",
-      "name": null,
-      "displayName": "Philippine Rice Research Institute",
-      "organization": "Philippine Rice Research Institute",
-      "position": null,
-      "role": "Panelist/Reactor",
-      "sessionIds": ["breakout-1-3"],
-      "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
-    },
-    {
-      "id": "ocd-designated-representative",
-      "name": null,
-      "displayName": "Office of Civil Defense",
-      "organization": "Office of Civil Defense",
-      "position": null,
-      "role": "Panelist/Reactor",
-      "sessionIds": ["breakout-1-3"],
-      "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
-    },
-    {
       "id": "mary-ash-day-o-malimit",
       "name": "Mary Ash Day O. Malimit",
       "organization": "DEPDev Infrastructure Staff",
@@ -370,6 +271,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/mary-ash-day-o-malimit.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -395,6 +297,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/josefina-v-almeda.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -407,6 +310,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/jose-ramon-t-albert.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -431,6 +335,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/karl-robert-l-jandoc.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -443,6 +348,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/kris-ann-m-melad.webp",
       "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
@@ -455,6 +361,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/christopher-james-r-cabuay.webp",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -493,20 +400,8 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/lorraine-goyena.webp",
       "source": {"kind": "session-guide", "highlighted": false}
-    },
-    {
-      "id": "undp-designated-representative",
-      "name": null,
-      "displayName": "United Nations Development Programme (UNDP)",
-      "organization": "United Nations Development Programme (UNDP)",
-      "position": null,
-      "role": "Presenter and panelist",
-      "sessionIds": ["breakout-2-3"],
-      "wave": "wave2",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
     },
     {
       "id": "david-joseph-emmanuel-b-yap-jr",
@@ -582,32 +477,6 @@
       "publication": {"dev": true, "live": true},
       "photo": "assets/speakers/2026/wilford-wong.webp",
       "source": {"kind": "session-guide", "highlighted": false}
-    },
-    {
-      "id": "francis-tolentino",
-      "name": "Francis Tolentino",
-      "displayName": "Department of Labor and Employment (DOLE)",
-      "organization": "Department of Labor and Employment (DOLE)",
-      "position": "Secretary",
-      "role": "Panelist",
-      "sessionIds": ["plenary-2"],
-      "wave": "wave2",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
-    },
-    {
-      "id": "edwin-m-mercado",
-      "name": "Dr. Edwin M. Mercado",
-      "displayName": "Department of Health (DOH)",
-      "organization": "Department of Health (DOH)",
-      "position": "Secretary",
-      "role": "Panelist",
-      "sessionIds": ["plenary-2"],
-      "wave": "wave2",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
     },
     {
       "id": "johannes-paulus-acuna",

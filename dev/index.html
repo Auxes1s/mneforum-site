@@ -375,7 +375,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       ''
     );
 
-    // DEV-ONLY SPEAKER PREVIEW: intentionally maintained ahead of production.
     // Speaker launches use the established 13th Forum design while replacing
     // the indicative placeholder roster with named, confirmed resource
     // persons. Wave dates are evaluated in Philippine time; ?speakerWave=1,
@@ -399,8 +398,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     template = template.replace(
       /const SPEAKERS = \[[\s\S]*?\n\];/,
 `const SPEAKER_LAUNCH_WAVES = [
-  { id: "wave1", number: "02", label: "Plenary 1 + Breakout 1", dateLabel: "4 September", revealAt: "2026-09-04T00:00:00+08:00" },
-  { id: "wave2", number: "01", label: "Plenary 2 + Breakout 2", dateLabel: "29 August", revealAt: "2026-08-29T00:00:00+08:00" }
+  { id: "wave1", number: "01", label: "Plenary 1", dateLabel: "2 September", revealAt: "2026-09-02T00:00:00+08:00" }
 ];
 
 const SPEAKER_SESSIONS = [
@@ -416,49 +414,42 @@ const SPEAKER_SESSIONS = [
 ];
 
 const SPEAKERS = [
-  { name: "Arsenio M. Balisacan", org: "Department of Economy, Planning, and Development", role: "Opening speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/arsenio-balisacan.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Christophe Bahuet", org: "United Nations Development Programme", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Roderick M. Planta", position: "Assistant Secretary", org: "Department of Economy, Planning, and Development", role: "Closing speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/roderick-planta.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Diane Gail L. Maharjan", position: "Director, Innovation Staff", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Moderator", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/diane-maharjan.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Rosemarie G. Edillon, PhD", position: "Undersecretary, Policy and Planning Group", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/rosemarie-edillon.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Byeongjo Kong", org: "Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Rosstyn Fallorina", org: "United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Arsenio M. Balisacan", position: "Secretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Opening speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/arsenio-balisacan.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Christophe Bahuet", position: "Resident Representative", org: "United Nations Development Programme (UNDP) Philippines", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Roderick M. Planta", position: "Assistant Secretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Closing speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/roderick-planta.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Diane Gail L. Maharjan", position: "Director, Innovation Staff", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Moderator", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/diane-maharjan.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Rosemarie G. Edillon", position: "Undersecretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/rosemarie-edillon.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Byeongjo Kong", position: "Senior Economist", org: "Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/byeongjo-kong.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Rosstyn Fallorina", position: "Head of Solutions Mapping", org: "United Nations Development Programme (UNDP) Philippines", role: "Presenter and panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/rosstyn-fallorina.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Maria Victoria C. Castro", position: "Assistant Secretary", org: "Department of Information and Communications Technology (DICT)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/maria-victoria-c-castro.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Vivien E. Suerte-Cortez", position: "Lead for Institutions & Partnerships", org: "United Nations Development Programme (UNDP) Philippines", role: "Moderator", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/vivien-suerte-cortez.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Atty. Johann Carlos S. Barcena, CESO III", position: "Privacy Commissioner & Chairperson", org: "National Privacy Commission (NPC)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/johann-barcena.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Joseph J. Capuno, PhD", position: "Undersecretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/joseph-capuno.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Wilford Will L. Wong", position: "Undersecretary", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/wilford-wong.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Johannes Paulus B. Acuña", position: "Assistant Secretary", org: "Department of Social Welfare and Development (DSWD)", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "assets/speakers/2026/johannes-acuna.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Jasmin C. Zantua", position: "Assistant Regional Director", org: "Department of Economy, Planning, and Development — Regional Office V", role: "Moderator", sessionId: "breakout-1-1", wave: "wave1", photo: "assets/speakers/2026/jasmin-zantua.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Syrus Borja Gomari", position: "Chief Executive Officer and Founder", org: "Seermo", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "assets/speakers/2026/syrus-gomari.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Jhon Rhandy Cabanes", position: "Officer-in-Charge, City Transportation Development and Management Office (CTDMO)", org: "City Government of Pasig", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "assets/speakers/2026/john-randy-cabanes.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Mario Christopher G. Gumba", position: "Engineer I and concurrent Local Transport Specialist, City Planning and Development Office (CPDO)", org: "City Government of Naga", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "assets/speakers/2026/mario-gumba.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Jasmin C. Zantua", org: "DEPDev Regional Office (DRO) V", role: "Moderator", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Syrus Gomari", org: "Mobility Vision Plus", role: "Panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "John Randy Cabanes", org: "Local Government Unit (LGU) of Pasig City", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Mario Christopher G. Gumba", org: "Local Government Unit (LGU) of Naga City", role: "Presenter and panelist", sessionId: "breakout-1-1", wave: "wave1", photo: "", objectPosition: "50% 50%" },
   { name: "Maria Sherrina Ysabel S. Jose", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Francis L. Camarao", position: "Information Technology Officer II", org: "Baguio City Government", role: "Presenter and panelist", sessionId: "breakout-1-2", wave: "wave1", photo: "assets/speakers/2026/francis-camarao.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Mary Ash Day O. Malimit", org: "DEPDev Infrastructure Staff (IS)", role: "Moderator", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%" },
-  { name: "Karl Robert L. Jandoc", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Jose Ramon “Toots” T. Albert", org: "Philippine Institute for Development Studies (PIDS)", role: "Panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Francis Camarao", org: "Local Government Unit (LGU) of Baguio City", role: "Presenter and panelist", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%" },
+  { name: "Mary Ash Day O. Malimit", org: "DEPDev Infrastructure Staff (IS)", role: "Moderator", sessionId: "breakout-1-3", wave: "wave1", photo: "assets/speakers/2026/mary-ash-day-o-malimit.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Karl Robert L. Jandoc", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-1", wave: "wave2", photo: "assets/speakers/2026/karl-robert-l-jandoc.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Jose Ramon “Toots” T. Albert", org: "Philippine Institute for Development Studies (PIDS)", role: "Panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "assets/speakers/2026/jose-ramon-t-albert.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Reinald Adrian D. Pugoy", org: "University of the Philippines Open University", role: "Panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Josefina V. Almeda", org: "Philippine Statistical Research and Training Institute (PSRTI)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Sebastian Felipe Bundoc", position: "Senior Data Scientist", org: "Department of Education — Education Center for AI Research (DepEd-ECAIR)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "assets/speakers/2026/sebastian-bundoc.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Aleli D. Kraft", position: "Professor", org: "UP School of Economics", role: "Moderator", sessionId: "breakout-2-2", wave: "wave2", photo: "assets/speakers/2026/aleli-kraft.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Christopher James R. Cabuay", org: "De La Salle University (DLSU)", role: "Panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Kris Ann M. Melad", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Agnes M. Espinas-Tolentino, CESO III", position: "Assistant Secretary, Regional Development Group (RDG)", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/agnes-tolentino.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Josefina V. Almeda", org: "Philippine Statistical Research and Training Institute (PSRTI)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "assets/speakers/2026/josefina-v-almeda.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Sebastian Felipe Bundoc", org: "Department of Education (DepEd)", role: "Presenter and panelist", sessionId: "breakout-2-1", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Aleli Kraft", org: "UP School of Economics (UPSE)", role: "Moderator", sessionId: "breakout-2-2", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Christopher James R. Cabuay", org: "De La Salle University (DLSU)", role: "Panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "assets/speakers/2026/christopher-james-r-cabuay.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Kris Ann M. Melad", org: "Philippine Institute for Development Studies", role: "Presenter and panelist", sessionId: "breakout-2-2", wave: "wave2", photo: "assets/speakers/2026/kris-ann-m-melad.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Agnes E. Tolentino", org: "Department of Economy, Planning, and Development", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Lorraine Goyena", org: "PINTIG Lab, United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/lorraine-goyena.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "David Joseph Emmanuel B. Yap Jr.", org: "Congressional Policy and Budget Research Department (CPBRD)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Ryan S. Lita", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Yuko Lisette R. Domingo", org: "DEPDev PPG Social Development Staff", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
   { name: "Xerxes S. Nitafan", org: "Senate Economic Planning Office (SEPO)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Kerry Albright", position: "Advisor and Head of Evaluation Knowledge Management Unit", org: "Independent Evaluation Department, Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/kerry-albright.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Lorraine Goyena", position: "Enterprise Architect", org: "PINTIG Lab, United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
-  { name: "Department of Science and Technology (DOST)", org: "", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Asian Institute of Management (AIM)", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Philippine Space Agency (PhilSA)", org: "", role: "Presenter and panelist", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Philippine Rice Research Institute", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Office of Civil Defense", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-3", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "United Nations Development Programme (UNDP)", org: "", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Department of Labor and Employment (DOLE)", org: "", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" },
-  { name: "Department of Health (DOH)", org: "", role: "Panelist", sessionId: "plenary-2", wave: "wave2", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }
+  { name: "Kerry Albright", org: "Independent Evaluation Department, Asian Development Bank", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)", org: "", role: "Panelist/Reactor", sessionId: "breakout-1-2", wave: "wave1", photo: "", objectPosition: "50% 50%", status: "pending_confirmation" }
 ];`
     );
     template = template.replace(
@@ -555,18 +546,17 @@ const SPEAKERS = [
     template = template.replace(
       /    const filters = \[[\s\S]*?    const activeRoom =/,
 `    const speakerWaveOverride = "all"; // Full-layout reviewer preview.
-    const datedRevealedWaveIds = SPEAKER_LAUNCH_WAVES
-      .filter(wave => st.now >= new Date(wave.revealAt).getTime())
-      .map(wave => wave.id);
+    const datedSpeakerWave = SPEAKER_LAUNCH_WAVES.reduce((latest, wave, index) =>
+      st.now >= new Date(wave.revealAt).getTime() ? index + 1 : latest, 0);
     const overrideSpeakerWave = speakerWaveOverride === "all"
       ? SPEAKER_LAUNCH_WAVES.length
-      : (/^[0-2]$/.test(speakerWaveOverride || "") ? Number(speakerWaveOverride) : null);
-    const revealedWaveIds = overrideSpeakerWave === null
-      ? datedRevealedWaveIds
-      : SPEAKER_LAUNCH_WAVES.slice(0, overrideSpeakerWave).map(wave => wave.id);
+      : (/^[0-1]$/.test(speakerWaveOverride || "") ? Number(speakerWaveOverride) : null);
+    const revealedSpeakerWave = overrideSpeakerWave === null ? datedSpeakerWave : overrideSpeakerWave;
+    const revealedWaveIds = SPEAKER_LAUNCH_WAVES.slice(0, revealedSpeakerWave).map(wave => wave.id);
+    const revealedSpeakerSessionIds = SPEAKER_SESSIONS.map(session => session.id);
     const filters = [
       { id: "all", label: "All" },
-      ...SPEAKER_LAUNCH_WAVES.map(wave => ({ id: wave.id, label: wave.label }))
+      { id: "plenary-1", label: "Plenary 1" }
     ];
     const activeSpeakerFilter = filters.some(filter => filter.id === st.speakerFilter) ? st.speakerFilter : "all";
     const speakerFilters = filters.map(f => ({
@@ -575,19 +565,17 @@ const SPEAKERS = [
       pressed: activeSpeakerFilter === f.id,
       select: () => this.setState({ speakerFilter: f.id })
     }));
-    const speakerLaunchWaves = [...SPEAKER_LAUNCH_WAVES]
-      .sort((a, b) => new Date(a.revealAt) - new Date(b.revealAt))
-      .map(wave => ({
+    const speakerLaunchWaves = SPEAKER_LAUNCH_WAVES.map((wave, index) => ({
       number: wave.number,
       label: wave.label,
-      status: revealedWaveIds.includes(wave.id) ? "Revealed" : "Reveals " + wave.dateLabel,
-      cls: revealedWaveIds.includes(wave.id) ? "is-revealed" : "is-upcoming"
+      status: index < revealedSpeakerWave ? "Revealed" : "Reveals " + wave.dateLabel,
+      cls: index < revealedSpeakerWave ? "is-revealed" : "is-upcoming"
     }));
     const speakerSessions = SPEAKER_SESSIONS
-      .filter(session => activeSpeakerFilter === "all" || session.wave === activeSpeakerFilter)
+      .filter(session => activeSpeakerFilter === "all" || session.id === activeSpeakerFilter)
       .sort((a, b) => a.order - b.order)
       .map(session => {
-        const isConcealed = !revealedWaveIds.includes(session.wave);
+        const isConcealed = !revealedSpeakerSessionIds.includes(session.id);
         const wave = SPEAKER_LAUNCH_WAVES.find(item => item.id === session.wave);
         const sessionPeople = session.teaserOnly ? [] : SPEAKERS.filter(speaker => speaker.sessionId === session.id);
         const pendingPeople = sessionPeople.filter(speaker => speaker.status === "pending_confirmation").length;
@@ -609,7 +597,7 @@ const SPEAKERS = [
               isConcealed: true,
               isRevealed: false,
               cls: "is-concealed",
-              revealDate: wave.dateLabel
+              revealDate: "next week"
             }
           : {
               name: speaker.name,
@@ -636,7 +624,7 @@ const SPEAKERS = [
           hasPromise: !!session.promise,
           cls: isConcealed ? "is-concealed" : "is-revealed",
           statusLabel: isConcealed
-            ? "Reveals " + wave.dateLabel
+            ? "Reveals next week"
             : (people.length ? [
                 confirmedPeople ? confirmedPeople + (confirmedPeople === 1 ? " confirmed voice" : " confirmed voices") : "",
                 pendingPeople ? pendingPeople + " pending" : ""
@@ -646,14 +634,7 @@ const SPEAKERS = [
           speakers: people
         });
       });
-    const hasPendingSpeakers = SPEAKERS.some(speaker => speaker.status === "pending_confirmation");
-    const speakerLaunchSummary = revealedWaveIds.length === 0
-      ? "Speaker profiles will be revealed in two scheduled groups, pairing each plenary with its breakout sessions."
-      : (revealedWaveIds.length < SPEAKER_LAUNCH_WAVES.length
-        ? "Explore the confirmed voices revealed so far. Additional speaker profiles will appear with the next scheduled group."
-        : (hasPendingSpeakers
-          ? "Explore confirmed resource persons by session; pending entries are shown by agency."
-          : "Explore confirmed resource persons by session, and choose the conversations most useful to your work."));
+    const speakerLaunchSummary = "Explore confirmed resource persons by session; pending entries are shown by agency.";
 
     const activeRoom =`
     );
