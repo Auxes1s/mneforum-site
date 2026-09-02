@@ -195,12 +195,12 @@ assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI R
   'The Resource Persons area mislabels Plenary 1.');
 assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
   'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
-assert(homepage.includes('label: "Plenary 1"') && !homepage.includes('label: "Keynote and Forum voices"') && !homepage.includes('label: "Plenary 2"'),
-  'The live Resource Persons reveal schedule must be limited to Plenary 1.');
-assert(homepage.includes('const revealedSpeakerSessionIds = ["plenary-1"]'),
-  'The live speaker section must reveal only Plenary 1.');
+assert(homepage.includes('label: "Keynote and Forum voices"') && homepage.includes('label: "Plenary 1 and Plenary 2"'),
+  'The live Resource Persons reveal schedule must include the keynote and both plenaries.');
+assert(homepage.includes('const revealedSpeakerSessionIds = ["opening-closing", "plenary-1", "plenary-2"]'),
+  'The live speaker section must reveal the keynote and both plenaries.');
 assert(homepage.includes('const isConcealed = !revealedSpeakerSessionIds.includes(session.id);'),
-  'Non-Plenary 1 profiles must remain visible but concealed.');
+  'Breakout profiles must remain visible but concealed.');
 assert(!homepage.includes('.filter(session => visibleSpeakerSessionIds.includes(session.id))'),
   'Unrevealed session cards must not be removed from the live speaker section.');
 
@@ -292,7 +292,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 20, `Expected 20 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 29, `Expected 29 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),

@@ -51,13 +51,13 @@ export function createDevPreview(productionHtml) {
   );
   preview = replaceExactlyOnce(
     preview,
-    'const revealedSpeakerSessionIds = ["plenary-1"];',
+    'const revealedSpeakerSessionIds = ["opening-closing", "plenary-1", "plenary-2"];',
     'const revealedSpeakerSessionIds = SPEAKER_SESSIONS.map(session => session.id);',
     'speaker session reveal override'
   );
   preview = replaceExactlyOnce(
     preview,
-    'const speakerLaunchSummary = "The Plenary 1 lineup is now revealed. All other session profiles remain concealed.";',
+    'const speakerLaunchSummary = "The keynote and Forum voices, Plenary 1, and Plenary 2 lineups are now revealed. Breakout profiles remain concealed.";',
     'const speakerLaunchSummary = "Explore confirmed resource persons by session; pending entries are shown by agency.";',
     'development speaker summary'
   );
