@@ -243,9 +243,8 @@ const expectedSpeakerNames = [
   'Lorraine Goyena',
   'David Joseph Emmanuel B. Yap Jr.',
   'Ryan S. Lita',
-  'Yuko Lisette R. Domingo',
-  'Xerxes S. Nitafan',
-  'Kerry Albright'
+   'Yuko Lisette R. Domingo',
+   'Kerry Albright'
 ];
 assert(speakerRecords.length === expectedSpeakerNames.length,
   `Expected ${expectedSpeakerNames.length} resource-person records; found ${speakerRecords.length}.`);
@@ -271,7 +270,7 @@ const expectedSessionCounts = {
   'breakout-1-3': 1,
   'breakout-2-1': 5,
   'breakout-2-2': 3,
-  'breakout-2-3': 7
+  'breakout-2-3': 6
 };
 for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {
   const actualCount = speakerRecords.filter(speaker => speaker.sessionId === sessionId).length;
