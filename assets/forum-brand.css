@@ -476,9 +476,7 @@ html[data-thinking-mode="high"] .site-footer {
   margin-bottom: 28px !important;
 }
 
-/* The date is the one fact worth pinning, so it gets an outlined chip. The
-   second tag is supporting context and stays plain text — two chips side by
-   side give equal billing to unequal information. */
+/* The date, linked venue, and program status use one compact visual language. */
 .hero__meta .tag {
   min-height: 34px !important;
   padding: 6px 16px !important;
@@ -493,11 +491,14 @@ html[data-thinking-mode="high"] .site-footer {
   background: transparent !important;
 }
 
-.hero__meta .tag:nth-child(2) {
-  padding-inline: 0 !important;
-  border: 0 !important;
-  color: var(--brand-midnight) !important;
-  opacity: .72 !important;
+.hero__meta .hero__venue-link {
+  text-decoration: none !important;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.hero__meta .hero__venue-link:hover {
+  border-color: rgba(10, 87, 163, .42) !important;
+  background: rgba(255, 255, 255, .48) !important;
 }
 
 /* The lower bound matters more than the upper one here. At 4.2rem the headline
@@ -1399,10 +1400,6 @@ html[data-thinking-mode="ultra"] .hero__lede {
 html[data-thinking-mode="ultra"] .hero__meta .tag {
   border-color: rgba(174, 208, 238, 0.34) !important;
   color: #9ecbf2 !important;
-}
-
-html[data-thinking-mode="ultra"] .hero__meta .tag:nth-child(2) {
-  color: #b9d2e8 !important;
 }
 
 /* Controls. The solid pill brightens so it still reads as primary against a

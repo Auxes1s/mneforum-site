@@ -392,9 +392,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const VENUE_MAP_HREF = 'https://www.google.com/maps/search/?api=1&query=EDSA%20Shangri-La%2C%20Manila%2C%201%20Garden%20Way%2C%20Ortigas%20Centre%2C%20Mandaluyong%20City%201550%2C%20Philippines';
     template = template.replace(
       '          <span class="tag tag-neutral">Indicative program</span>',
-      '          <span class="tag tag-neutral">Venue: EDSA Shangri-La, Manila</span>\n' +
-      '          <span class="tag tag-neutral">Indicative program</span>\n' +
-      '          <a class="btn btn-secondary" href="' + VENUE_MAP_HREF + '" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">View on Google Maps <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>'
+      '          <a class="tag tag-neutral hero__venue-link" href="' + VENUE_MAP_HREF + '" target="_blank" rel="noopener noreferrer" aria-label="EDSA Shangri-La, Manila on Google Maps (opens in a new tab)">EDSA Shangri-La, Manila</a>\n' +
+      '          <span class="tag tag-neutral">Indicative program</span>'
     );
     template = template.replace(
       /const SPEAKERS = \[[\s\S]*?\n\];/,

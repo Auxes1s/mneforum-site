@@ -109,13 +109,16 @@ assert(homepage.includes('/\\s*<div class="hero__actions">[\\s\\S]*?<\\/div>/'),
 const venueMapHref = 'https://www.google.com/maps/search/?api=1&query=EDSA%20Shangri-La%2C%20Manila%2C%201%20Garden%20Way%2C%20Ortigas%20Centre%2C%20Mandaluyong%20City%201550%2C%20Philippines';
 assert(homepage.includes(`const VENUE_MAP_HREF = '${venueMapHref}';`),
   'The Forum venue map URL is missing or changed.');
-assert(homepage.includes('Venue: EDSA Shangri-La, Manila') &&
-  homepage.includes('View on Google Maps') &&
-  homepage.includes('target="_blank" rel="noopener noreferrer"'),
-  'The Forum venue label or accessible Google Maps link is missing.');
-assert(devHomepage.includes('Venue: EDSA Shangri-La, Manila') &&
-  devHomepage.includes('View on Google Maps'),
-  'The development preview is missing the Forum venue or Google Maps link.');
+assert(homepage.includes('class="tag tag-neutral hero__venue-link"') &&
+  homepage.includes('>EDSA Shangri-La, Manila</a>') &&
+  homepage.includes('aria-label="EDSA Shangri-La, Manila on Google Maps (opens in a new tab)"') &&
+  homepage.includes('target="_blank" rel="noopener noreferrer"') &&
+  !homepage.includes('View on Google Maps'),
+  'The Forum venue must be the sole visible label of its accessible Google Maps chip.');
+assert(devHomepage.includes('class="tag tag-neutral hero__venue-link"') &&
+  devHomepage.includes('>EDSA Shangri-La, Manila</a>') &&
+  !devHomepage.includes('View on Google Maps'),
+  'The development preview is missing the venue-only Google Maps chip.');
 assert(rendered.includes('Program of activities'), 'The Program heading is missing.');
 for (const sessionTitle of [
   'Plenary 1 — Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector',
