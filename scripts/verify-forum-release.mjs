@@ -319,7 +319,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 29, `Expected 29 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 30, `Expected 30 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -329,13 +329,13 @@ assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
 const rosterPhotoRecords = roster.roster.filter(record => record.photo);
-assert(rosterPhotoRecords.length === 26,
-  `Expected 26 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+assert(rosterPhotoRecords.length === 27,
+  `Expected 27 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
 for (const record of rosterPhotoRecords) {
   assert(fs.existsSync(path.join(root, record.photo)),
     `Missing roster portrait for ${record.id}: ${record.photo}`);
 }
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 29,
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 30,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');
