@@ -223,7 +223,7 @@ const expectedSpeakerNames = [
   'Syrus Gomari',
   'John Randy Cabanes',
   'Mario Christopher G. Gumba',
-  'Maria Sherrina Ysabel S. Jose',
+  'Maria Sherinna Ysabel S. Jose',
   'Ralph Camelo Mariano',
   'Pita S. Picpican',
   'Francis Camarao',
@@ -265,12 +265,22 @@ assert(speakerRecords.every(speaker => speaker.position),
 assert(!speakerRecords.some(speaker => /designation not provided/i.test(speaker.position)),
   'The confirmed breakout roster must not fall back to an unverified missing-designation label.');
 const expectedBreakoutPositions = {
+  'Rosemarie G. Edillon': 'Undersecretary, Policy and Planning Group',
+  'John Randy Cabanes': 'Officer-in-Charge, City Transportation Development and Management Office (CTDMO)',
+  'Mario Christopher G. Gumba': 'Engineer I and concurrent Local Transport Specialist, City Planning and Development Office (CPDO)',
+  'Pita S. Picpican': 'Assistant Regional Director for Technical Services',
+  'Mark Edwin A. Tupas': 'Director IV, Space Information Infrastructure Bureau',
+  'Reinald Adrian D. Pugoy': 'Associate Professor of Computer Science and Information Systems, and Director, Information and Communication Technology Development Office (ICTDO)',
   'Francis Camarao': 'Information Technology Officer II',
   'Sonia L. Asilo': 'Supervising Science Research Specialist',
   'Sebastian Felipe Bundoc': 'Senior Data Scientist',
   'Jose Ramon “Toots” T. Albert': 'Senior Research Fellow',
   'Lorraine Goyena': 'Enterprise Architect',
-  'Kerry Albright': 'Advisor; Head, Evaluation Knowledge'
+  'David Joseph Emmanuel B. Yap Jr.': 'Executive Director, Socio-Economic Research Bureau',
+  'Ryan S. Lita': 'Undersecretary, Chief of Staff, and Functional Group Head of Local Government and Regional Operations (LGRO)',
+  'Yuko Lisette R. Domingo': 'Chief Economic Development Specialist, Social Development Staff (SDS)',
+  'Agnes E. Tolentino': 'Assistant Secretary, Regional Development Group (RDG)',
+  'Kerry Albright': 'Advisor and Head of Evaluation Knowledge Management Unit'
 };
 for (const [name, position] of Object.entries(expectedBreakoutPositions)) {
   assert(speakerRecords.some(speaker => speaker.name === name && speaker.position === position),
@@ -306,7 +316,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 29, `Expected 29 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 30, `Expected 30 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -316,13 +326,13 @@ assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
 const rosterPhotoRecords = roster.roster.filter(record => record.photo);
-assert(rosterPhotoRecords.length === 26,
-  `Expected 26 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+assert(rosterPhotoRecords.length === 27,
+  `Expected 27 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
 for (const record of rosterPhotoRecords) {
   assert(fs.existsSync(path.join(root, record.photo)),
     `Missing roster portrait for ${record.id}: ${record.photo}`);
 }
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 29,
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 30,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');

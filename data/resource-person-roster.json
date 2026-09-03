@@ -272,6 +272,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/maria-sherinna-ysabel-s-jose.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
