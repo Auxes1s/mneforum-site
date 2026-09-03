@@ -51,30 +51,25 @@ export function createDevPreview(productionHtml) {
   );
   preview = replaceExactlyOnce(
     preview,
-    'const revealedSpeakerSessionIds = ["opening-closing", "plenary-1", "plenary-2"];',
+    'const revealedSpeakerSessionIds = SPEAKER_SESSIONS\n      .filter(session => revealedWaveIds.includes(session.wave))\n      .map(session => session.id);',
     'const revealedSpeakerSessionIds = SPEAKER_SESSIONS.map(session => session.id);',
     'speaker session reveal override'
   );
-  preview = replaceExactlyOnce(
-    preview,
-    'const speakerLaunchSummary = "The keynote and Forum voices, Plenary 1, and Plenary 2 lineups are now revealed. Breakout profiles remain concealed.";',
-    'const speakerLaunchSummary = "Explore confirmed resource persons by session; pending entries are shown by agency.";',
-    'development speaker summary'
-  );
-
   const speakerBlockMatch = preview.match(/const SPEAKERS = \[[\s\S]*?\n\];/);
   if (!speakerBlockMatch) throw new Error('Expected the production speaker roster before adding pending preview entries.');
   const pendingRecords = loadPendingSpeakerRecords();
-  const speakerBlockWithPending = speakerBlockMatch[0].replace(
-    /\n\];$/,
-    `,\n${pendingRecords.join(',\n')}\n];`
-  );
-  preview = replaceExactlyOnce(
-    preview,
-    speakerBlockMatch[0],
-    speakerBlockWithPending,
-    'development pending speaker roster'
-  );
+  if (pendingRecords.length) {
+    const speakerBlockWithPending = speakerBlockMatch[0].replace(
+      /\n\];$/,
+      `,\n${pendingRecords.join(',\n')}\n];`
+    );
+    preview = replaceExactlyOnce(
+      preview,
+      speakerBlockMatch[0],
+      speakerBlockWithPending,
+      'development pending speaker roster'
+    );
+  }
   preview = replaceExactlyOnce(
     preview,
     'Confirmed resource persons',

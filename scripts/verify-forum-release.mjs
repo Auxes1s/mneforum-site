@@ -150,22 +150,11 @@ assert(devHomepage.includes('const speakerWaveOverride = "all"; // Full-layout r
 assert(!devHomepage.includes('const speakerWaveOverride = new URLSearchParams(window.location.search).get("speakerWave");'),
   'The development preview must not accept a query that re-conceals the layout.');
 const pendingRoster = roster.roster.filter(record => record.status === 'pending_confirmation');
-assert(pendingRoster.length === 1, `Expected 1 pending roster entry; found ${pendingRoster.length}.`);
-assert(pendingRoster.every(record => record.displayName === record.organization),
-  'Pending roster entries must display their agency name only.');
-for (const record of pendingRoster) {
-  const renderedAffiliation = record.displayName === record.organization ? '' : record.organization;
-  const pendingRecordText = `name: ${JSON.stringify(record.displayName)}, org: ${JSON.stringify(renderedAffiliation)}`;
-  assert(!homepage.includes(pendingRecordText),
-    `Production HTML must not embed the pending placeholder for ${record.id}.`);
-  assert(devHomepage.includes(pendingRecordText),
-    `Development preview must render the pending affiliation for ${record.id}.`);
-}
+assert(pendingRoster.length === 0, `Expected no pending roster entries after directory confirmation; found ${pendingRoster.length}.`);
 assert(!/for confirmation/i.test(homepage) && !/for confirmation/i.test(devHomepage),
   'Production and development HTML must not expose a For Confirmation label.');
-assert(devHomepage.includes('<span class="tag tag-accent">Resource persons</span>') &&
-  devHomepage.includes('pending entries are shown by agency'),
-  'Development preview must label and explain pending agency placeholders.');
+assert(devHomepage.includes('<span class="tag tag-accent">Resource persons</span>'),
+  'Development preview must label the complete directory-confirmed roster.');
 assert(htaccess.includes('RewriteRule ^dev$ dev/index.html [END]'),
   'The Apache /dev route must serve the physical development preview.');
 assert(htaccess.includes('RewriteRule ^$ dev/index.html [END]'),
@@ -195,12 +184,18 @@ assert(homepage.includes('meta: "Plenary 1", title: "Setting the Chrysalis: AI R
   'The Resource Persons area mislabels Plenary 1.');
 assert(!homepage.includes('meta: "Plenary 1", title: "Unpacking the Cocoon:'),
   'The Resource Persons area still assigns the Breakout 1 title to Plenary 1.');
-assert(homepage.includes('label: "Keynote and Forum voices"') && homepage.includes('label: "Plenary 1 and Plenary 2"'),
-  'The live Resource Persons reveal schedule must include the keynote and both plenaries.');
-assert(homepage.includes('const revealedSpeakerSessionIds = ["opening-closing", "plenary-1", "plenary-2"]'),
-  'The live speaker section must reveal the keynote and both plenaries.');
+assert(homepage.includes('label: "Keynote, Forum voices, Plenary 1, and Breakout 1"') &&
+  homepage.includes('label: "Plenary 2 and Breakout 2"'),
+  'The live Resource Persons reveal schedule must include every session group.');
+assert(homepage.includes('const revealedSpeakerSessionIds = SPEAKER_SESSIONS') &&
+  homepage.includes('.filter(session => revealedWaveIds.includes(session.wave))') &&
+  homepage.includes('.map(session => session.id);'),
+  'The live speaker section must reveal every session in the released waves.');
 assert(homepage.includes('const isConcealed = !revealedSpeakerSessionIds.includes(session.id);'),
-  'Breakout profiles must remain visible but concealed.');
+  'Speaker cards must retain the date-aware concealment guard.');
+assert(homepage.includes('{ id: "breakout-1", label: "Breakout 1" }') &&
+  homepage.includes('{ id: "breakout-2", label: "Breakout 2" }'),
+  'Resource-person filters must include both breakout groups.');
 assert(!homepage.includes('.filter(session => visibleSpeakerSessionIds.includes(session.id))'),
   'Unrevealed session cards must not be removed from the live speaker section.');
 
@@ -229,8 +224,12 @@ const expectedSpeakerNames = [
   'John Randy Cabanes',
   'Mario Christopher G. Gumba',
   'Maria Sherrina Ysabel S. Jose',
+  'Ralph Camelo Mariano',
+  'Pita S. Picpican',
   'Francis Camarao',
   'Mary Ash Day O. Malimit',
+  'Sonia L. Asilo',
+  'Mark Edwin A. Tupas',
   'Karl Robert L. Jandoc',
   'Jose Ramon “Toots” T. Albert',
   'Reinald Adrian D. Pugoy',
@@ -263,13 +262,27 @@ assert(speakerRecords.filter(speaker => speaker.sessionId === 'opening-closing')
   'Every keynote and Forum voice must show a position or designation.');
 assert(speakerRecords.every(speaker => speaker.position),
   'Every resource-person card must show a position or designation.');
+assert(!speakerRecords.some(speaker => /designation not provided/i.test(speaker.position)),
+  'The confirmed breakout roster must not fall back to an unverified missing-designation label.');
+const expectedBreakoutPositions = {
+  'Francis Camarao': 'Information Technology Officer II',
+  'Sonia L. Asilo': 'Supervising Science Research Specialist',
+  'Sebastian Felipe Bundoc': 'Senior Data Scientist',
+  'Jose Ramon “Toots” T. Albert': 'Senior Research Fellow',
+  'Lorraine Goyena': 'Enterprise Architect',
+  'Kerry Albright': 'Advisor; Head, Evaluation Knowledge'
+};
+for (const [name, position] of Object.entries(expectedBreakoutPositions)) {
+  assert(speakerRecords.some(speaker => speaker.name === name && speaker.position === position),
+    `${name} must show the repository-confirmed position: ${position}.`);
+}
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 5,
   'plenary-2': 5,
   'breakout-1-1': 4,
-  'breakout-1-2': 2,
-  'breakout-1-3': 1,
+  'breakout-1-2': 4,
+  'breakout-1-3': 3,
   'breakout-2-1': 5,
   'breakout-2-2': 3,
   'breakout-2-3': 6

@@ -5,13 +5,15 @@
     "date": "2026-09-09",
     "timezone": "Asia/Manila"
   },
-  "reviewedOn": "2026-09-02",
+  "reviewedOn": "2026-09-03",
   "sourcePolicy": {
+    "directoryWorkbook": "Directories_Combined_260825 (1).xlsx",
+    "directoryConfirmedSheet": "Summary_RPs",
     "yellowHighlight": "pending_confirmation",
     "unhighlightedGuideEntry": "confirmed",
     "devPublication": "all_roster_entries",
     "livePublication": "confirmed_entries_only_with_existing_wave_sequence",
-    "note": "Yellow highlighting was read from the active Word session guides. Unnamed designated representatives remain pending roster entries and are not live-eligible."
+    "note": "The directory workbook's Summary_RPs confirmed roster is the source of truth for public Resource Persons. The current Forum session guides in the MES-soed repository supply position and affiliation detail where available."
   },
   "waves": [
     {
@@ -237,17 +239,28 @@
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
-      "id": "pita-s-picpican",
-      "name": "Pita S. Picpican, Ph.D.",
-      "displayName": "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)",
-      "organization": "Department of Science and Technology - Cordillera Administrative Region (DOST-CAR)",
-      "position": "Assistant Regional Director for Technical Services",
-      "role": "Panelist/Reactor",
+      "id": "ralph-camelo-mariano",
+      "name": "Ralph Camelo Mariano",
+      "organization": "Department of Economy, Planning, and Development",
+      "position": "OIC-Assistant Director",
+      "role": "Panelist",
       "sessionIds": ["breakout-1-2"],
       "wave": "wave1",
-      "status": "pending_confirmation",
-      "publication": {"dev": true, "live": false},
-      "source": {"kind": "session-guide", "highlighted": true}
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 10, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.2/4_Session Guide/Session Guide_Breakout 1.2.docx", "highlighted": false}
+    },
+    {
+      "id": "pita-s-picpican",
+      "name": "Pita S. Picpican, Ph.D.",
+      "organization": "Department of Science and Technology – Cordillera Administrative Region (DOST-CAR)",
+      "position": "Assistant Regional Director for Technical Services",
+      "role": "Panelist",
+      "sessionIds": ["breakout-1-2"],
+      "wave": "wave1",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 11, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.2/4_Session Guide/Session Guide_Breakout 1.2.docx", "highlighted": false}
     },
     {
       "id": "maria-sherinna-ysabel-s-jose",
@@ -260,6 +273,30 @@
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
       "source": {"kind": "session-guide", "highlighted": false}
+    },
+    {
+      "id": "sonia-l-asilo",
+      "name": "Sonia L. Asilo",
+      "organization": "Philippine Rice Research Institute (PhilRice)",
+      "position": "Supervising Science Research Specialist",
+      "role": "Panelist",
+      "sessionIds": ["breakout-1-3"],
+      "wave": "wave1",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 14, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.3/4_Session Guide/Session Guide_Breakout 1.3.docx", "highlighted": false}
+    },
+    {
+      "id": "mark-edwin-a-tupas",
+      "name": "Mark Edwin A. Tupas",
+      "organization": "Philippine Space Agency (PhilSA)",
+      "position": "Director IV, Space Information Infrastructure Bureau",
+      "role": "Presenter and panelist",
+      "sessionIds": ["breakout-1-3"],
+      "wave": "wave1",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 15, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.3/4_Session Guide/Session Guide_Breakout 1.3.docx", "highlighted": false}
     },
     {
       "id": "mary-ash-day-o-malimit",
@@ -317,7 +354,7 @@
       "id": "reinald-adrian-d-pugoy",
       "name": "Reinald Adrian D. Pugoy, PhD",
       "organization": "University of the Philippines Open University (UPOU)",
-      "position": "Associate Professor of Computer Science and Information Systems; Director, Information and Communication Technology Development Office (ICTDO)",
+      "position": "Associate Professor of Computer Science and Information Systems, and Director, Information and Communication Technology Development Office (ICTDO)",
       "role": "Panelist/Reactor",
       "sessionIds": ["breakout-2-1"],
       "wave": "wave2",
@@ -329,7 +366,7 @@
       "id": "karl-robert-l-jandoc",
       "name": "Karl Robert L. Jandoc, PhD",
       "organization": "University of the Philippines - School of Economics (UPSE)",
-      "position": "Professor",
+      "position": "Professor of Economics and Research Director",
       "role": "Moderator",
       "sessionIds": ["breakout-2-1"],
       "wave": "wave2",
@@ -355,7 +392,7 @@
       "id": "christopher-james-r-cabuay",
       "name": "Dr. Christopher James R. Cabuay",
       "organization": "School of Economics, De La Salle University",
-      "position": "Associate Professor",
+      "position": "Associate Professor, School of Economics",
       "role": "Panelist/Reactor",
       "sessionIds": ["breakout-2-2"],
       "wave": "wave2",
@@ -368,7 +405,7 @@
       "id": "aleli-d-kraft",
       "name": "Dr. Aleli D. Kraft",
       "organization": "School of Economics, University of the Philippines-Diliman",
-      "position": "Professor",
+      "position": "Professor, School of Economics",
       "role": "Moderator",
       "sessionIds": ["breakout-2-2"],
       "wave": "wave2",
@@ -381,7 +418,7 @@
       "id": "kerry-albright",
       "name": "Kerry Albright",
       "organization": "Asian Development Bank (ADB)",
-      "position": "Advisor, Independent Evaluation Department (IED) and Head, Evaluation Knowledge, IED",
+      "position": "Advisor and Head of Evaluation Knowledge Management Unit",
       "role": "Presenter and panelist",
       "sessionIds": ["breakout-2-3"],
       "wave": "wave2",
