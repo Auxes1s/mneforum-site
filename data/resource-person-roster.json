@@ -109,17 +109,16 @@
   ],
   "roster": [
     {
-      "id": "byeongjo-kong",
-      "name": "Mr. Byeongjo Kong",
-      "organization": "Asian Development Bank (ADB)",
-      "position": "Senior Digital Transformation Specialist",
+      "id": "suparna-roy",
+      "name": "Suparna Roy",
+      "organization": "ADB Digital Sector Office",
+      "position": "Digital Technology Specialist (AI & Data Analytics)",
       "role": "Presenter and panelist",
       "sessionIds": ["plenary-1"],
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
-      "photo": "assets/speakers/2026/byeongjo-kong.webp",
-      "source": {"kind": "session-guide", "highlighted": false}
+      "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
       "id": "rosstyn-fallorina",
@@ -133,6 +132,18 @@
       "publication": {"dev": true, "live": true},
       "photo": "assets/speakers/2026/rosstyn-fallorina.webp",
       "source": {"kind": "session-guide", "highlighted": false}
+    },
+    {
+      "id": "cezar-pedraza",
+      "name": "Cezar Pedraza",
+      "organization": "Department of Science and Technology (DOST)",
+      "position": "Director, Planning and Evaluation Service",
+      "role": "Panelist",
+      "sessionIds": ["plenary-1"],
+      "wave": "wave1",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
       "id": "maria-victoria-c-castro",
