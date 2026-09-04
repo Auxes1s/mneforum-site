@@ -265,29 +265,33 @@ assert(speakerRecords.every(speaker => speaker.position),
   'Every resource-person card must show a position or designation.');
 assert(!speakerRecords.some(speaker => /designation not provided/i.test(speaker.position)),
   'The confirmed breakout roster must not fall back to an unverified missing-designation label.');
-const expectedBreakoutPositions = {
+const expectedDisplayPositions = {
+  'Diane Gail L. Maharjan': 'Director',
   'Suparna Roy': 'Digital Technology Specialist (AI & Data Analytics)',
-  'Cezar Pedraza': 'Director, Planning and Evaluation Service',
-  'Rosemarie G. Edillon': 'Undersecretary, Policy and Planning Group',
-  'John Randy Cabanes': 'Officer-in-Charge, City Transportation Development and Management Office (CTDMO)',
-  'Mario Christopher G. Gumba': 'Engineer I and concurrent Local Transport Specialist, City Planning and Development Office (CPDO)',
+  'Cezar Pedraza': 'Director',
+  'Rosemarie G. Edillon': 'Undersecretary',
+  'John Randy Cabanes': 'Officer-in-Charge, City Transportation Development and Management Office',
+  'Mario Christopher G. Gumba': 'Engineer I and concurrent Local Transport Specialist',
   'Pita S. Picpican': 'Assistant Regional Director for Technical Services',
-  'Mark Edwin A. Tupas': 'Director IV, Space Information Infrastructure Bureau',
-  'Reinald Adrian D. Pugoy': 'Associate Professor of Computer Science and Information Systems, and Director, Information and Communication Technology Development Office (ICTDO)',
+  'Mark Edwin A. Tupas': 'Director IV',
+  'Reinald Adrian D. Pugoy': 'Associate Professor',
   'Francis Camarao': 'Information Technology Officer II',
   'Sonia L. Asilo': 'Supervising Science Research Specialist',
   'Sebastian Felipe Bundoc': 'Senior Data Scientist',
   'Jose Ramon “Toots” T. Albert': 'Senior Research Fellow',
+  'Karl Robert L. Jandoc': 'Professor',
+  'Christopher James R. Cabuay': 'Associate Professor',
+  'Aleli Kraft': 'Professor',
   'Lorraine Goyena': 'Enterprise Architect',
-  'David Joseph Emmanuel B. Yap Jr.': 'Executive Director, Socio-Economic Research Bureau',
-  'Ryan S. Lita': 'Undersecretary, Chief of Staff, and Functional Group Head of Local Government and Regional Operations (LGRO)',
-  'Yuko Lisette R. Domingo': 'Chief Economic Development Specialist, Social Development Staff (SDS)',
-  'Agnes E. Tolentino': 'Assistant Secretary, Regional Development Group (RDG)',
-  'Kerry Albright': 'Advisor and Head of Evaluation Knowledge Management Unit'
+  'David Joseph Emmanuel B. Yap Jr.': 'Executive Director',
+  'Ryan S. Lita': 'Undersecretary and Chief of Staff',
+  'Yuko Lisette R. Domingo': 'Chief Economic Development Specialist',
+  'Agnes E. Tolentino': 'Assistant Secretary',
+  'Kerry Albright': 'Advisor and Head of Evaluation Knowledge Management'
 };
-for (const [name, position] of Object.entries(expectedBreakoutPositions)) {
+for (const [name, position] of Object.entries(expectedDisplayPositions)) {
   assert(speakerRecords.some(speaker => speaker.name === name && speaker.position === position),
-    `${name} must show the repository-confirmed position: ${position}.`);
+    `${name} must show the approved display position: ${position}.`);
 }
 const expectedSessionCounts = {
   'opening-closing': 3,
@@ -369,6 +373,11 @@ for (const retainedCaptionId of ['opening-closing', 'plenary-1', 'plenary-2']) {
 assert(homepage.includes('<sc-if value="{{ session.hasPromise }}">') &&
   homepage.includes('hasPromise: !!session.promise'),
   'Speaker-session captions must render conditionally without leaving empty spacing.');
+assert(homepage.includes('if (normalizedRole.includes("presenter")) return 1;') &&
+  homepage.includes('if (normalizedRole.includes("panelist")) return 2;') &&
+  homepage.includes('if (normalizedRole.includes("moderator")) return 3;') &&
+  homepage.includes('.sort((a, b) => roleOrder(a.role) - roleOrder(b.role));'),
+  'Plenary and breakout cards must be ordered Presenter, Panelist, then Moderator.');
 assert(count(rendered, /<section id="game"/g) === 1, 'The game section must render exactly once.');
 assert(count(rendered, /\bdata-buzz-to-bloom\b/g) === 1, 'The game iframe must render exactly once.');
 assert(rendered.includes('src="game/?embed=1&amp;pack=philippines-ai-v2"'), 'The deployed Philippine AI pack is not embedded.');
