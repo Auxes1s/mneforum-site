@@ -20,6 +20,7 @@ const publishEntries = [
   "game",
   "index.html",
   "network_logo.svg",
+  "open-reg",
   "register",
   "robots.txt",
   "rp-register",
