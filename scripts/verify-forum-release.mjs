@@ -237,6 +237,7 @@ const expectedSpeakerNames = [
   'Josefina V. Almeda',
   'Sebastian Felipe Bundoc',
   'Aleli Kraft',
+  'Nikkin N. Beronilla',
   'Christopher James R. Cabuay',
   'Kris Ann M. Melad',
   'Agnes E. Tolentino',
@@ -282,6 +283,7 @@ const expectedDisplayPositions = {
   'Karl Robert L. Jandoc': 'Professor',
   'Christopher James R. Cabuay': 'Associate Professor',
   'Aleli Kraft': 'Professor',
+  'Nikkin N. Beronilla': 'Director, Statistical Methodology Unit',
   'Lorraine Goyena': 'Enterprise Architect',
   'David Joseph Emmanuel B. Yap Jr.': 'Executive Director',
   'Ryan S. Lita': 'Undersecretary and Chief of Staff',
@@ -301,7 +303,7 @@ const expectedSessionCounts = {
   'breakout-1-2': 4,
   'breakout-1-3': 3,
   'breakout-2-1': 5,
-  'breakout-2-2': 3,
+  'breakout-2-2': 4,
   'breakout-2-3': 6
 };
 for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) {
