@@ -309,9 +309,9 @@ for (const [sessionId, expectedCount] of Object.entries(expectedSessionCounts)) 
   assert(actualCount === expectedCount,
     `${sessionId} must contain ${expectedCount} resource-person record(s); found ${actualCount}.`);
 }
-assert(homepage.includes('id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false'),
+assert(homepage.includes('id: "breakout-1-3", wave: "wave1", order: 5, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false'),
   'Breakout 1.3 must publish its confirmed moderator.');
-assert(homepage.includes('id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false'),
+assert(homepage.includes('id: "breakout-2-2", wave: "wave2", order: 7, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false'),
   'Breakout 2.2 must publish its confirmed lineup.');
 const photoSpeakers = speakerRecords.filter(record => record.photo);
 for (const speaker of photoSpeakers) {

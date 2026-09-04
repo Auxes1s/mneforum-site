@@ -405,13 +405,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 const SPEAKER_SESSIONS = [
   { id: "opening-closing", wave: "wave1", order: 1, meta: "Opening and closing voices", title: "The Forum's call to action", promise: "Hear the national and development-partner framing for the day—and the charge that carries the Forum's work forward.", teaserOnly: false },
   { id: "plenary-1", wave: "wave1", order: 2, meta: "Plenary 1", title: "Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector", promise: "Examine international and regional AI experience alongside the readiness, governance, institutional, and capability gaps facing Philippine public agencies.", teaserOnly: false },
-  { id: "plenary-2", wave: "wave2", order: 3, meta: "Plenary 2", title: "Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E", promise: "Hear what senior decision-makers require before AI-supported evidence can be trusted in public decisions.", teaserOnly: false },
-  { id: "breakout-1-1", wave: "wave1", order: 4, meta: "Breakout 1.1", title: "Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation", teaserOnly: false },
-  { id: "breakout-1-2", wave: "wave1", order: 5, meta: "Breakout 1.2", title: "A Data Path: Tracking Data on Environment, Mobility, and Tourism", teaserOnly: false },
-  { id: "breakout-1-3", wave: "wave1", order: 6, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false },
-  { id: "breakout-2-1", wave: "wave2", order: 7, meta: "Breakout 2.1", title: "Laying the Foundation: Processing Qualitative Evidence at Scale", teaserOnly: false },
-  { id: "breakout-2-2", wave: "wave2", order: 8, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false },
-  { id: "breakout-2-3", wave: "wave2", order: 9, meta: "Breakout 2.3", title: "Taking Flight: Generative AI for Rapid Evidence Synthesis and Communication", teaserOnly: false }
+  { id: "breakout-1-1", wave: "wave1", order: 3, meta: "Breakout 1.1", title: "Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation", teaserOnly: false },
+  { id: "breakout-1-2", wave: "wave1", order: 4, meta: "Breakout 1.2", title: "A Data Path: Tracking Data on Environment, Mobility, and Tourism", teaserOnly: false },
+  { id: "breakout-1-3", wave: "wave1", order: 5, meta: "Breakout 1.3", title: "Flying from Afar: Advanced Technologies for Monitoring", teaserOnly: false },
+  { id: "breakout-2-1", wave: "wave2", order: 6, meta: "Breakout 2.1", title: "Laying the Foundation: Processing Qualitative Evidence at Scale", teaserOnly: false },
+  { id: "breakout-2-2", wave: "wave2", order: 7, meta: "Breakout 2.2", title: "Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning", teaserOnly: false },
+  { id: "breakout-2-3", wave: "wave2", order: 8, meta: "Breakout 2.3", title: "Taking Flight: Generative AI for Rapid Evidence Synthesis and Communication", teaserOnly: false },
+  { id: "plenary-2", wave: "wave2", order: 9, meta: "Plenary 2", title: "Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E", promise: "Hear what senior decision-makers require before AI-supported evidence can be trusted in public decisions.", teaserOnly: false }
 ];
 
 const SPEAKERS = [
@@ -552,8 +552,8 @@ const SPEAKERS = [
       { id: "opening-closing", label: "Keynote speakers" },
       { id: "plenary-1", label: "Plenary 1" },
       { id: "breakout-1", label: "Breakout 1" },
-      { id: "plenary-2", label: "Plenary 2" },
-      { id: "breakout-2", label: "Breakout 2" }
+      { id: "breakout-2", label: "Breakout 2" },
+      { id: "plenary-2", label: "Plenary 2" }
     ];
     const activeSpeakerFilter = filters.some(filter => filter.id === st.speakerFilter) ? st.speakerFilter : "all";
     const matchesSpeakerFilter = session => activeSpeakerFilter === "all"
