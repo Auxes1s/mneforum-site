@@ -284,7 +284,7 @@ const expectedDisplayPositions = {
   'Jose Ramon “Toots” T. Albert': 'Senior Research Fellow',
   'Karl Robert L. Jandoc': 'Professor',
   'Christopher James R. Cabuay': 'Associate Professor',
-  'Aleli Kraft': 'Professor',
+  'Aleli Kraft': 'Professor, School of Economics',
   'Nikkin N. Beronilla': 'Director, Statistical Methodology Unit',
   'Lorraine Goyena': 'Enterprise Architect',
   'David Joseph Emmanuel B. Yap Jr.': 'Executive Director',
@@ -299,6 +299,8 @@ for (const [name, position] of Object.entries(expectedDisplayPositions)) {
 }
 assert(speakerRecords.some(speaker => speaker.name === 'Suparna Roy' && speaker.org === 'Asian Development Bank'),
   'Suparna Roy must show Asian Development Bank as her sole affiliation.');
+assert(speakerRecords.some(speaker => speaker.name === 'Aleli Kraft' && speaker.org === 'University of the Philippines'),
+  'Aleli Kraft must show University of the Philippines as her affiliation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 6,
