@@ -297,6 +297,8 @@ for (const [name, position] of Object.entries(expectedDisplayPositions)) {
   assert(speakerRecords.some(speaker => speaker.name === name && speaker.position === position),
     `${name} must show the approved display position: ${position}.`);
 }
+assert(speakerRecords.some(speaker => speaker.name === 'Suparna Roy' && speaker.org === 'Asian Development Bank'),
+  'Suparna Roy must show Asian Development Bank as her sole affiliation.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 6,
