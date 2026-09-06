@@ -230,7 +230,7 @@ const expectedSpeakerNames = [
   'Francis Camarao',
   'Mary Ash Day O. Malimit',
   'Sonia L. Asilo',
-  'Mark Edwin A. Tupas',
+  'Noel Jerome B. Borlongan',
   'Karl Robert L. Jandoc',
   'Jose Ramon “Toots” T. Albert',
   'Reinald Adrian D. Pugoy',
@@ -254,6 +254,8 @@ assert(new Set(speakerRecords.map(speaker => speaker.name)).size === speakerReco
 for (const name of expectedSpeakerNames) {
   assert(speakerRecords.some(speaker => speaker.name === name), `Missing confirmed resource person: ${name}`);
 }
+assert(!speakerRecords.some(speaker => speaker.name === 'Mark Edwin A. Tupas'),
+  'The superseded Breakout 1.3 PhilSA representative is still present.');
 assert(!speakerRecords.some(speaker => speaker.name === 'Kim Robert C. De Leon'),
   'The superseded Plenary 2 DBM representative is still present.');
 assert(speakerRecords.filter(speaker => speaker.sessionId === 'plenary-2').every(speaker => speaker.position),
@@ -274,7 +276,7 @@ const expectedDisplayPositions = {
   'John Randy Cabanes': 'Officer-in-Charge, City Transportation Development and Management Office',
   'Mario Christopher G. Gumba': 'Engineer I and concurrent Local Transport Specialist',
   'Pita S. Picpican': 'Assistant Regional Director for Technical Services',
-  'Mark Edwin A. Tupas': 'Director IV',
+  'Noel Jerome B. Borlongan': 'Senior Science Research Specialist',
   'Reinald Adrian D. Pugoy': 'Associate Professor',
   'Francis Camarao': 'Information Technology Officer II',
   'Sonia L. Asilo': 'Supervising Science Research Specialist',

@@ -5,7 +5,7 @@
     "date": "2026-09-09",
     "timezone": "Asia/Manila"
   },
-  "reviewedOn": "2026-09-03",
+  "reviewedOn": "2026-09-06",
   "sourcePolicy": {
     "directoryWorkbook": "Directories_Combined_260825 (1).xlsx",
     "directoryConfirmedSheet": "Summary_RPs",
@@ -303,16 +303,16 @@
       "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 14, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.3/4_Session Guide/Session Guide_Breakout 1.3.docx", "highlighted": false}
     },
     {
-      "id": "mark-edwin-a-tupas",
-      "name": "Mark Edwin A. Tupas",
+      "id": "noel-jerome-b-borlongan",
+      "name": "Noel Jerome B. Borlongan",
       "organization": "Philippine Space Agency (PhilSA)",
-      "position": "Director IV, Space Information Infrastructure Bureau",
+      "position": "Senior Science Research Specialist",
       "role": "Presenter and panelist",
       "sessionIds": ["breakout-1-3"],
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
-      "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 15, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.3/4_Session Guide/Session Guide_Breakout 1.3.docx", "highlighted": false}
+      "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
       "id": "mary-ash-day-o-malimit",
