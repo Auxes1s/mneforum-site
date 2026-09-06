@@ -382,8 +382,8 @@
     {
       "id": "karl-robert-l-jandoc",
       "name": "Karl Robert L. Jandoc, PhD",
-      "organization": "University of the Philippines - School of Economics (UPSE)",
-      "position": "Professor of Economics and Research Director",
+      "organization": "University of the Philippines",
+      "position": "Professor of Economics and Research Director, School of Economics",
       "role": "Moderator",
       "sessionIds": ["breakout-2-1"],
       "wave": "wave2",
@@ -408,7 +408,7 @@
     {
       "id": "christopher-james-r-cabuay",
       "name": "Dr. Christopher James R. Cabuay",
-      "organization": "School of Economics, De La Salle University",
+      "organization": "De La Salle University",
       "position": "Associate Professor, School of Economics",
       "role": "Panelist/Reactor",
       "sessionIds": ["breakout-2-2"],

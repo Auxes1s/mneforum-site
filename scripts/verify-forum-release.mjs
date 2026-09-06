@@ -282,8 +282,8 @@ const expectedDisplayPositions = {
   'Sonia L. Asilo': 'Supervising Science Research Specialist',
   'Sebastian Felipe Bundoc': 'Senior Data Scientist',
   'Jose Ramon “Toots” T. Albert': 'Senior Research Fellow',
-  'Karl Robert L. Jandoc': 'Professor',
-  'Christopher James R. Cabuay': 'Associate Professor',
+  'Karl Robert L. Jandoc': 'Professor, School of Economics',
+  'Christopher James R. Cabuay': 'Associate Professor, School of Economics',
   'Aleli Kraft': 'Professor, School of Economics',
   'Nikkin N. Beronilla': 'Director, Statistical Methodology Unit',
   'Lorraine Goyena': 'Enterprise Architect',
@@ -301,6 +301,19 @@ assert(speakerRecords.some(speaker => speaker.name === 'Suparna Roy' && speaker.
   'Suparna Roy must show Asian Development Bank as her sole affiliation.');
 assert(speakerRecords.some(speaker => speaker.name === 'Aleli Kraft' && speaker.org === 'University of the Philippines'),
   'Aleli Kraft must show University of the Philippines as her affiliation.');
+const expectedEconomicsAffiliations = {
+  'Karl Robert L. Jandoc': 'University of the Philippines',
+  'Christopher James R. Cabuay': 'De La Salle University',
+  'Aleli Kraft': 'University of the Philippines'
+};
+for (const [name, organization] of Object.entries(expectedEconomicsAffiliations)) {
+  assert(speakerRecords.some(speaker => speaker.name === name && speaker.org === organization),
+    `${name} must show only the university in the affiliation line.`);
+}
+assert(!speakerRecords.some(speaker => /School of Economics/i.test(speaker.org)),
+  'School of Economics must appear in the position line, not the affiliation line.');
+assert(!roster.roster.some(record => /School of Economics/i.test(record.organization)),
+  'Roster organizations must keep School of Economics in the position field.');
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 6,
