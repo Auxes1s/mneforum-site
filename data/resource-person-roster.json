@@ -260,6 +260,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/ralph-camelo-mariano.jpg",
       "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 10, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.2/4_Session Guide/Session Guide_Breakout 1.2.docx", "highlighted": false}
     },
     {
@@ -272,6 +273,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/pita-s-picpican.jpg",
       "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 11, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.2/4_Session Guide/Session Guide_Breakout 1.2.docx", "highlighted": false}
     },
     {
@@ -297,6 +299,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/sonia-l-asilo.jpg",
       "source": {"kind": "directory-confirmed", "sheet": "Summary_RPs", "row": 14, "positionSource": "Forum/13th M&E Network Forum 2026/3 Resource Persons/Resource Persons/Breakout Session 1.3/4_Session Guide/Session Guide_Breakout 1.3.docx", "highlighted": false}
     },
     {
@@ -463,6 +466,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/david-joseph-emmanuel-b-yap-jr.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
@@ -487,6 +491,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/yuko-lisette-r-domingo.png",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {
