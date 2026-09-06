@@ -227,7 +227,7 @@
     {
       "id": "jasmin-c-zantua",
       "name": "ARD Jasmin C. Zantua",
-      "organization": "Department of Economy, Planning, and Development - Regional Office V",
+      "organization": "Department of Economy, Planning, and Development (DEPDev)",
       "position": "Assistant Regional Director",
       "role": "Moderator",
       "sessionIds": ["breakout-1-1"],
@@ -253,7 +253,7 @@
     {
       "id": "ralph-camelo-mariano",
       "name": "Ralph Camelo Mariano",
-      "organization": "Department of Economy, Planning, and Development",
+      "organization": "Department of Economy, Planning, and Development (DEPDev)",
       "position": "OIC-Assistant Director",
       "role": "Panelist",
       "sessionIds": ["breakout-1-2"],
@@ -279,7 +279,7 @@
     {
       "id": "maria-sherinna-ysabel-s-jose",
       "name": "Maria Sherinna Ysabel S. Jose",
-      "organization": "DEPDev Monitoring & Evaluation Staff (MES)",
+      "organization": "Department of Economy, Planning, and Development (DEPDev)",
       "position": "OIC-Assistant Director",
       "role": "Moderator",
       "sessionIds": ["breakout-1-2"],
@@ -498,7 +498,7 @@
     {
       "id": "agnes-m-espinas-tolentino",
       "name": "Agnes M. Espinas-Tolentino, CESO III",
-      "organization": "DEPDev",
+      "organization": "Department of Economy, Planning, and Development (DEPDev)",
       "position": "Assistant Secretary, Regional Development Group (RDG)",
       "role": "Moderator",
       "sessionIds": ["breakout-2-3"],
