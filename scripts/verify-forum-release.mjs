@@ -314,6 +314,11 @@ assert(!speakerRecords.some(speaker => /School of Economics/i.test(speaker.org))
   'School of Economics must appear in the position line, not the affiliation line.');
 assert(!roster.roster.some(record => /School of Economics/i.test(record.organization)),
   'Roster organizations must keep School of Economics in the position field.');
+for (const name of ['Mary Ash Day O. Malimit', 'Yuko Lisette R. Domingo']) {
+  assert(speakerRecords.some(speaker =>
+    speaker.name === name && speaker.org === 'Department of Economy, Planning, and Development (DEPDev)'),
+  `${name} must show the full DEPDev name without a staff or group suffix.`);
+}
 const expectedSessionCounts = {
   'opening-closing': 3,
   'plenary-1': 6,
