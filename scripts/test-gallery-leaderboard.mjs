@@ -1,53 +1,63 @@
 import assert from 'node:assert/strict';
-import {buildLeaderboardUrl, parseLeaderboardResponse, podiumGroups} from '../assets/evaluation-gallery-leaderboard.mjs';
+import {
+  buildLeaderboardUrl,
+  createDemoLeaderboard,
+  parseLeaderboardResponse,
+  podiumGroups
+} from '../assets/evaluation-gallery-leaderboard.mjs';
 
-const headers = [
-  'rank', 'poster_id', 'display_title', 'presenting_unit', 'first_count',
-  'second_count', 'third_count', 'total_points', 'status', 'last_updated'
-];
-const rows = Array.from({length: 12}, (_, index) => ({
-  rank: index + 1,
-  poster_id: `P${String(index + 1).padStart(2, '0')}`,
-  display_title: `Evaluation ${index + 1}`,
-  presenting_unit: index < 7 ? `DRO ${index + 1}` : 'MES/SEED',
-  first_count: Math.max(0, 12 - index),
-  second_count: 2,
-  third_count: 1,
-  total_points: Math.max(0, 40 - index * 3),
-  status: 'LIVE - UNOFFICIAL',
-  last_updated: '9/7/2026 12:00:00'
-}));
+const posterHeaders = Array.from({length: 12}, (_, index) => {
+  const id = `P${String(index + 1).padStart(2, '0')}`;
+  return `Your ranking of the Evaluation Gallery [${id} — Evaluation ${index + 1} — ${index < 7 ? `DRO ${index + 1}` : 'MES/SEED'}]`;
+});
 
-function payload(data = rows, labels = headers) {
+function payload(ballots = []) {
   return {
     status: 'ok',
     table: {
-      cols: labels.map(label => ({label})),
-      rows: data.map(row => ({c: headers.map(header => ({v: row[header]}))}))
+      cols: [...posterHeaders, 'I certify this ballot'].map(label => ({label})),
+      rows: ballots.map(values => ({c: values.map(value => value ? {v: value} : null)}))
     }
   };
 }
 
-const parsed = parseLeaderboardResponse(payload());
-assert.equal(parsed.length, 12);
-assert.deepEqual(parsed.slice(0, 3).map(row => row.poster_id), ['P01', 'P02', 'P03']);
-assert.deepEqual(podiumGroups(parsed).map(group => group.rank), [1, 2, 3]);
+const ballot = Array(13).fill('');
+ballot[0] = '1st';
+ballot[4] = '3rd';
+ballot[11] = '2nd';
+ballot[12] = 'Yes';
 
-const tiedRows = rows.map(row => ({...row}));
-tiedRows[1].rank = 1;
-assert.deepEqual(podiumGroups(parseLeaderboardResponse(payload(tiedRows)))[0].rows.map(row => row.poster_id), ['P01', 'P02']);
+const parsed = parseLeaderboardResponse(payload([ballot]));
+assert.equal(parsed.rows.length, 12);
+assert.equal(parsed.ballotCount, 1);
+assert.equal(parsed.ignoredCount, 0);
+assert.deepEqual(parsed.rows.slice(0, 3).map(row => row.poster_id), ['P01', 'P12', 'P05']);
+assert.deepEqual(parsed.rows.slice(0, 3).map(row => row.total_points), [3, 2, 1]);
+assert.deepEqual(podiumGroups(parsed.rows).map(group => group.rank), [1, 2, 3]);
 
-assert.throws(() => parseLeaderboardResponse(payload(rows.slice(0, 11))), /one row for each poster/);
-assert.throws(() => parseLeaderboardResponse(payload(rows, ['Email Address', ...headers.slice(1)])), /not ready/);
+const invalid = [...ballot];
+invalid[12] = '';
+const withInvalid = parseLeaderboardResponse(payload([ballot, invalid]));
+assert.equal(withInvalid.ballotCount, 1);
+assert.equal(withInvalid.ignoredCount, 1);
+
+assert.throws(() => parseLeaderboardResponse(payload().table), /could not be read/);
+assert.throws(() => parseLeaderboardResponse({status: 'ok', table: {cols: [], rows: []}}), /12 poster columns/);
 assert.throws(() => parseLeaderboardResponse({status: 'error', errors: [{message: 'missing'}]}), /missing/);
+
+const demo = createDemoLeaderboard();
+assert.equal(demo.ballotCount, 50);
+assert.equal(demo.rows.length, 12);
+assert.deepEqual(demo.rows.slice(0, 3).map(row => row.poster_id), ['P01', 'P02', 'P03']);
+assert.deepEqual(demo.rows.slice(0, 3).map(row => row.total_points), [58, 54, 43]);
 
 const url = new URL(buildLeaderboardUrl(123));
 assert.equal(url.hostname, 'docs.google.com');
-assert.equal(url.searchParams.get('sheet'), 'Public_Leaderboard');
-assert.equal(url.searchParams.get('range'), 'A2:J14');
-assert.match(url.searchParams.get('tq'), /where B matches 'P\(0\[1-9\]\|1\[0-2\]\)'/);
-assert.match(url.searchParams.get('tq'), /label A 'rank', B 'poster_id'/);
+assert.equal(url.searchParams.get('range'), 'D1:P');
+assert.equal(url.searchParams.get('headers'), '1');
 assert.equal(url.searchParams.get('_'), '123');
 assert.match(url.searchParams.get('tqx'), /forumGalleryLeaderboardReceive/);
+assert.equal(url.searchParams.has('sheet'), false);
+assert.equal(url.searchParams.has('tq'), false);
 
 console.log('Evaluation Gallery leaderboard tests passed.');

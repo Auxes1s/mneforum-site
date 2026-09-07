@@ -1,14 +1,11 @@
 const CONFIG = Object.freeze({
   spreadsheetId: '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA',
-  sheetName: 'Public_Leaderboard',
-  range: 'A2:J14',
+  range: 'D1:P',
   voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'
 });
 
-const EXPECTED_HEADERS = Object.freeze([
-  'rank', 'poster_id', 'display_title', 'presenting_unit', 'first_count',
-  'second_count', 'third_count', 'total_points', 'status', 'last_updated'
-]);
+const POSTER_ID = /^P(?:0[1-9]|1[0-2])$/;
+const CHOICES = Object.freeze({first: '1st', second: '2nd', third: '3rd'});
 
 function cellValue(cell) {
   if (!cell) return '';
@@ -16,49 +13,95 @@ function cellValue(cell) {
   return cell.v === undefined || cell.v === null ? '' : cell.v;
 }
 
-function finiteNonNegative(value, field) {
-  const number = Number(value);
-  if (!Number.isFinite(number) || number < 0) throw new Error(`Invalid ${field} in leaderboard feed.`);
-  return number;
+function parsePosterHeader(label) {
+  const bracketed = String(label || '').match(/\[([^\]]+)\]\s*$/)?.[1] || '';
+  const parts = bracketed.split(' — ').map(part => part.trim()).filter(Boolean);
+  const posterId = parts.shift()?.toUpperCase() || '';
+  const presentingUnit = parts.pop() || '';
+  const displayTitle = parts.join(' — ');
+  if (!POSTER_ID.test(posterId) || !displayTitle || !presentingUnit) {
+    throw new Error('The public Sheet poster headings are not in the expected format.');
+  }
+  return {poster_id: posterId, display_title: displayTitle, presenting_unit: presentingUnit};
+}
+
+function assignRanks(rows) {
+  const ranked = [...rows].sort((a, b) =>
+    b.total_points - a.total_points ||
+    b.first_count - a.first_count ||
+    b.second_count - a.second_count ||
+    b.third_count - a.third_count ||
+    a.poster_id.localeCompare(b.poster_id)
+  );
+  ranked.forEach((row, index) => {
+    const previous = ranked[index - 1];
+    const tied = previous &&
+      row.total_points === previous.total_points &&
+      row.first_count === previous.first_count &&
+      row.second_count === previous.second_count &&
+      row.third_count === previous.third_count;
+    row.rank = tied ? previous.rank : index + 1;
+    Object.freeze(row);
+  });
+  return ranked;
 }
 
 export function parseLeaderboardResponse(payload) {
   if (!payload || payload.status !== 'ok' || !payload.table) {
     const message = payload?.errors?.[0]?.detailed_message || payload?.errors?.[0]?.message;
-    throw new Error(message || 'The leaderboard feed is not ready.');
+    throw new Error(message || 'The public Sheet could not be read.');
   }
 
-  const headers = (payload.table.cols || []).map(column => String(column.label || column.id || '').trim());
-  if (JSON.stringify(headers) !== JSON.stringify(EXPECTED_HEADERS)) {
-    throw new Error('The Public_Leaderboard tab is not ready yet.');
+  const columns = payload.table.cols || [];
+  if (columns.length !== 13) {
+    throw new Error('The public Sheet must contain 12 poster columns and the certification column.');
   }
 
-  const rows = (payload.table.rows || []).map(({c = []}) => {
-    const values = EXPECTED_HEADERS.map((header, index) => [header, cellValue(c[index])]);
-    const row = Object.fromEntries(values);
-    const posterId = String(row.poster_id).trim().toUpperCase();
-    if (!/^P(?:0[1-9]|1[0-2])$/.test(posterId)) throw new Error('Unexpected poster ID in leaderboard feed.');
-    if (!String(row.display_title).trim() || !String(row.presenting_unit).trim()) {
-      throw new Error(`Incomplete leaderboard entry for ${posterId}.`);
+  const posters = columns.slice(0, 12).map(column => parsePosterHeader(column.label));
+  if (new Set(posters.map(poster => poster.poster_id)).size !== 12) {
+    throw new Error('The public Sheet must contain one heading for each poster from P01 to P12.');
+  }
+
+  const tallies = posters.map(poster => ({
+    ...poster,
+    first_count: 0,
+    second_count: 0,
+    third_count: 0,
+    total_points: 0,
+    rank: 0
+  }));
+  let ballotCount = 0;
+  let ignoredCount = 0;
+
+  for (const {c = []} of payload.table.rows || []) {
+    const selections = tallies.map((_, index) => String(cellValue(c[index])).trim());
+    const certified = /^yes$/i.test(String(cellValue(c[12])).trim());
+    const first = selections.reduce((count, value) => count + (value === CHOICES.first ? 1 : 0), 0);
+    const second = selections.reduce((count, value) => count + (value === CHOICES.second ? 1 : 0), 0);
+    const third = selections.reduce((count, value) => count + (value === CHOICES.third ? 1 : 0), 0);
+
+    if (!certified || first !== 1 || second !== 1 || third !== 1) {
+      ignoredCount += 1;
+      continue;
     }
-    return Object.freeze({
-      rank: finiteNonNegative(row.rank, 'rank'),
-      poster_id: posterId,
-      display_title: String(row.display_title).trim(),
-      presenting_unit: String(row.presenting_unit).trim(),
-      first_count: finiteNonNegative(row.first_count, 'first_count'),
-      second_count: finiteNonNegative(row.second_count, 'second_count'),
-      third_count: finiteNonNegative(row.third_count, 'third_count'),
-      total_points: finiteNonNegative(row.total_points, 'total_points'),
-      status: String(row.status || '').trim(),
-      last_updated: String(row.last_updated || '').trim()
+
+    ballotCount += 1;
+    selections.forEach((choice, index) => {
+      if (choice === CHOICES.first) tallies[index].first_count += 1;
+      if (choice === CHOICES.second) tallies[index].second_count += 1;
+      if (choice === CHOICES.third) tallies[index].third_count += 1;
     });
+  }
+
+  tallies.forEach(row => {
+    row.total_points = row.first_count * 3 + row.second_count * 2 + row.third_count;
   });
 
-  if (rows.length !== 12 || new Set(rows.map(row => row.poster_id)).size !== 12) {
-    throw new Error('The leaderboard must contain one row for each poster from P01 to P12.');
-  }
-  return rows.sort((a, b) => a.rank - b.rank || a.poster_id.localeCompare(b.poster_id));
+  return Object.freeze({
+    rows: assignRanks(tallies),
+    ballotCount,
+    ignoredCount
+  });
 }
 
 export function podiumGroups(rows) {
@@ -70,22 +113,44 @@ export function podiumGroups(rows) {
 }
 
 export function buildLeaderboardUrl(cacheBuster = Date.now()) {
-  const aggregateOnlyQuery = [
-    'select A,B,C,D,E,F,G,H,I,J',
-    "where B matches 'P(0[1-9]|1[0-2])'",
-    "label A 'rank', B 'poster_id', C 'display_title', D 'presenting_unit',",
-    "E 'first_count', F 'second_count', G 'third_count', H 'total_points',",
-    "I 'status', J 'last_updated'"
-  ].join(' ');
   const query = new URLSearchParams({
-    sheet: CONFIG.sheetName,
     range: CONFIG.range,
     headers: '1',
-    tq: aggregateOnlyQuery,
     tqx: 'out:json;responseHandler:forumGalleryLeaderboardReceive',
     _: String(cacheBuster)
   });
   return `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/gviz/tq?${query}`;
+}
+
+export function createDemoLeaderboard() {
+  const first = [12, 9, 7, 5, 4, 3, 3, 2, 2, 1, 1, 1];
+  const second = [8, 10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1];
+  const third = [6, 7, 8, 6, 5, 5, 4, 3, 2, 2, 1, 1];
+  const names = [
+    ['P01', 'Impact Evaluation Study of the DOLE Integrated Livelihood Program for Parents of Child Laborers in Region I', 'DRO I'],
+    ['P02', "An Impact Evaluation of the FRIMP's Role in Riverbank Erosion Mitigation and Socio-Economic Resilience in Brgy. Alibago, Enrile", 'DRO II'],
+    ['P03', 'Impact Evaluation Study of Yolanda Permanent Housing Projects in Western Visayas', 'DRO VI'],
+    ['P04', 'Impact Evaluation of the Convergence Strategy of the Tuburan Coffee Production Program', 'DRO VII'],
+    ['P05', 'Impact Evaluation Study on Natural Resources Conservation and Upper River Basin Productivity in the Muleta Watershed', 'DRO X'],
+    ['P06', 'Assessing the Impact of Built-in Right-of-Way Acquisition Cost in Project Implementation', 'DRO XI'],
+    ['P07', 'Impact Evaluation on the Umayam River Irrigation System in Agusan del Sur', 'DRO Caraga'],
+    ['P08', 'Impact Evaluation of the DOLE Integrated Livelihood Program', 'MES/SEED'],
+    ['P09', 'Process Evaluation of the KADIWA ni Ani at Kita Program', 'MES/SEED'],
+    ['P10', 'Process Evaluation of the PhilHealth Konsulta Package', 'MES/SEED'],
+    ['P11', 'Process Evaluation of Telemedicine in Individual-Based Health Services', 'MES/SEED'],
+    ['P12', 'Quasi-experimental Impact Evaluation of the TUPAD Program', 'MES/SEED']
+  ];
+  const rows = names.map(([poster_id, display_title, presenting_unit], index) => ({
+    poster_id,
+    display_title,
+    presenting_unit,
+    first_count: first[index],
+    second_count: second[index],
+    third_count: third[index],
+    total_points: first[index] * 3 + second[index] * 2 + third[index],
+    rank: 0
+  }));
+  return Object.freeze({rows: assignRanks(rows), ballotCount: 50, ignoredCount: 0});
 }
 
 function element(tag, className, text) {
@@ -95,25 +160,18 @@ function element(tag, className, text) {
   return node;
 }
 
-function statusLabel(rows) {
-  if (rows.every(row => row.status === 'FINAL')) return 'Final';
-  if (rows.some(row => row.status.includes('TIE_'))) return 'Live — tie pending';
-  return 'Live — unofficial';
-}
-
-function latestUpdate(rows) {
-  return rows.map(row => row.last_updated).filter(Boolean).sort().at(-1) || '';
-}
-
 const state = {
   rows: [],
+  ballotCount: 0,
+  ignoredCount: 0,
   loading: false,
   error: '',
   lastLoadedAt: '',
   initialRequested: false,
   requestToken: 0,
   timeout: 0,
-  script: null
+  script: null,
+  demo: false
 };
 
 function renderPodium(root, rows) {
@@ -121,7 +179,7 @@ function renderPodium(root, rows) {
   podium.replaceChildren();
   const groups = podiumGroups(rows);
   if (!groups.length) {
-    podium.appendChild(element('p', 'eg-empty', 'The podium will appear after the first validated vote.'));
+    podium.appendChild(element('p', 'eg-empty', 'The podium will appear after the first complete ballot.'));
     return;
   }
 
@@ -187,23 +245,23 @@ function render() {
   if (state.loading && !state.rows.length) {
     status.textContent = 'Loading results…';
     status.dataset.state = 'loading';
-    detail.textContent = 'Connecting to the Forum voting tally.';
+    detail.textContent = 'Reading the public Google Sheet.';
     return;
   }
   if (state.error && !state.rows.length) {
-    status.textContent = 'Results are being prepared';
+    status.textContent = 'Results unavailable';
     status.dataset.state = 'error';
     detail.textContent = state.error;
     return;
   }
   if (!state.rows.length) return;
 
-  status.textContent = statusLabel(state.rows);
-  status.dataset.state = 'ready';
-  const sourceUpdate = latestUpdate(state.rows);
-  detail.textContent = sourceUpdate
-    ? `Tally updated ${sourceUpdate}. Refreshed on this page ${state.lastLoadedAt}.`
-    : `Refreshed on this page ${state.lastLoadedAt}.`;
+  status.textContent = state.demo ? 'Demo data' : 'Live sheet';
+  status.dataset.state = state.demo ? 'demo' : 'ready';
+  const noun = state.ballotCount === 1 ? 'ballot' : 'ballots';
+  detail.textContent = state.demo
+    ? `Illustrative results using ${state.ballotCount} sample ${noun}. Add ?galleryDemo=1 to preview this design.`
+    : `${state.ballotCount} complete ${noun} counted directly from the public Sheet · refreshed ${state.lastLoadedAt}.`;
   renderPodium(root, state.rows);
   renderRanking(root, state.rows);
 }
@@ -211,13 +269,14 @@ function render() {
 function mount() {
   const root = document.querySelector('#evaluation-gallery-leaderboard');
   if (!root || root.dataset.egInitialized === 'true') return Boolean(root);
+  state.demo = new URLSearchParams(window.location.search).get('galleryDemo') === '1';
   root.dataset.egInitialized = 'true';
   root.innerHTML = `
     <header class="eg-heading">
       <div>
         <p class="eg-kicker">People’s Choice Award</p>
         <h2>Evaluation Gallery</h2>
-        <p class="eg-intro">Rank three different entries: First Choice receives 3 points, Second Choice 2 points, and Third Choice 1 point.</p>
+        <p class="eg-intro">First Choice receives 3 points, Second Choice 2 points, and Third Choice 1 point. Results are read directly from the public response Sheet.</p>
       </div>
       <div class="eg-actions">
         <a class="btn btn-primary eg-vote" href="${CONFIG.voteUrl}" target="_blank" rel="noopener noreferrer" aria-label="Vote for the Evaluation Gallery People’s Choice Award (opens in a new tab)">Vote now</a>
@@ -226,11 +285,11 @@ function mount() {
     </header>
     <div class="eg-status-line" role="status" aria-live="polite">
       <span class="eg-status" data-eg-status data-state="loading">Loading results…</span>
-      <span class="eg-status-detail" data-eg-detail>Connecting to the Forum voting tally.</span>
+      <span class="eg-status-detail" data-eg-detail>Reading the public Google Sheet.</span>
     </div>
     <section class="eg-podium-section" aria-labelledby="eg-podium-title">
       <div class="eg-section-label"><span>Top three</span><h3 id="eg-podium-title">Podium</h3></div>
-      <div class="eg-podium" data-eg-podium><p class="eg-empty">The podium will appear after the first validated vote.</p></div>
+      <div class="eg-podium" data-eg-podium><p class="eg-empty">The podium will appear after the first complete ballot.</p></div>
     </section>
     <section class="eg-ranking-section" aria-labelledby="eg-ranking-title">
       <div class="eg-section-label"><span>All entries</span><h3 id="eg-ranking-title">Live ranking</h3></div>
@@ -245,6 +304,15 @@ function mount() {
   return true;
 }
 
+function applyResult(result) {
+  state.rows = result.rows;
+  state.ballotCount = result.ballotCount;
+  state.ignoredCount = result.ignoredCount;
+  state.lastLoadedAt = new Intl.DateTimeFormat('en-PH', {
+    hour: 'numeric', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Manila'
+  }).format(new Date());
+}
+
 function settleRequest(token) {
   if (token !== state.requestToken) return false;
   window.clearTimeout(state.timeout);
@@ -257,16 +325,20 @@ export function loadLeaderboard() {
   if (state.loading) return;
   state.loading = true;
   state.error = '';
-  const token = ++state.requestToken;
   render();
 
+  if (state.demo) {
+    applyResult(createDemoLeaderboard());
+    state.loading = false;
+    render();
+    return;
+  }
+
+  const token = ++state.requestToken;
   globalThis.forumGalleryLeaderboardReceive = payload => {
     if (!settleRequest(token)) return;
     try {
-      state.rows = parseLeaderboardResponse(payload);
-      state.lastLoadedAt = new Intl.DateTimeFormat('en-PH', {
-        hour: 'numeric', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Manila'
-      }).format(new Date());
+      applyResult(parseLeaderboardResponse(payload));
     } catch (error) {
       state.error = error.message;
     } finally {
@@ -282,7 +354,7 @@ export function loadLeaderboard() {
   script.onerror = () => {
     if (!settleRequest(token)) return;
     state.loading = false;
-    state.error = 'The live tally could not be reached. Please try Refresh results again.';
+    state.error = 'The public Sheet could not be reached. Please try Refresh results again.';
     render();
   };
   state.script = script;
@@ -290,7 +362,7 @@ export function loadLeaderboard() {
   state.timeout = window.setTimeout(() => {
     if (!settleRequest(token)) return;
     state.loading = false;
-    state.error = 'The live tally took too long to respond. Please try Refresh results again.';
+    state.error = 'The public Sheet took too long to respond. Please try Refresh results again.';
     render();
   }, 12000);
 }

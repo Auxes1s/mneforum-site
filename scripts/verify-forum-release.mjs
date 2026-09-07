@@ -140,22 +140,26 @@ assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
 assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
   'The development-only speaker preview marker must never enter production HTML.');
 assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907'),
+  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-direct-sheet') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-direct-sheet'),
   'The Evaluation Gallery live leaderboard is not mounted with its release assets.');
 assert(galleryJs.includes("spreadsheetId: '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
-  galleryJs.includes("sheetName: 'Public_Leaderboard'") &&
+  galleryJs.includes("range: 'D1:P'") &&
   galleryJs.includes('forumGalleryLeaderboardReceive') &&
-  galleryJs.includes("where B matches 'P(0[1-9]|1[0-2])'") &&
+  galleryJs.includes("get('galleryDemo') === '1'") &&
   galleryJs.includes('data-eg-refresh'),
-  'The leaderboard is not wired to the aggregate Google Sheet feed and manual refresh control.');
+  'The leaderboard is not wired directly to the public response Sheet, demo mode, and manual refresh control.');
 assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'"),
   'The Evaluation Gallery vote button is not wired to the approved Google Form.');
 assert(!galleryJs.includes('setInterval('),
   'The Evaluation Gallery must refresh only on initial load or a visitor click.');
-assert(galleryJs.includes("'rank', 'poster_id', 'display_title', 'presenting_unit', 'first_count'") &&
-  galleryJs.includes("'second_count', 'third_count', 'total_points', 'status', 'last_updated'"),
-  'The public feed allowlist must remain aggregate-only and exclude voter data.');
+assert(!galleryJs.includes('Public_Leaderboard') &&
+  !galleryJs.includes('Email Address') &&
+  !galleryJs.includes('Voting Code') &&
+  !galleryJs.includes("range: 'A") &&
+  !galleryJs.includes("range: 'B") &&
+  !galleryJs.includes("range: 'C"),
+  'The browser feed must exclude the private identity and voting-code columns.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),
   'The production homepage must remain indexable.');
 assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),

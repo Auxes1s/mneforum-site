@@ -86,6 +86,7 @@
 
 .eg-status[data-state="loading"] { background: var(--brand-royal); }
 .eg-status[data-state="error"] { background: var(--brand-text-berry); }
+.eg-status[data-state="demo"] { background: var(--brand-sun-gold); color: var(--brand-midnight); }
 
 .eg-status-detail {
   color: color-mix(in srgb, var(--brand-midnight) 72%, transparent);
