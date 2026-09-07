@@ -412,7 +412,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 36, `Expected 36 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 38, `Expected 38 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -422,8 +422,8 @@ assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
 const rosterPhotoRecords = roster.roster.filter(record => record.photo);
-assert(rosterPhotoRecords.length === 33,
-  `Expected 33 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+assert(rosterPhotoRecords.length === 35,
+  `Expected 35 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
 for (const record of rosterPhotoRecords) {
   assert(fs.existsSync(path.join(root, record.photo)),
     `Missing roster portrait for ${record.id}: ${record.photo}`);
@@ -432,7 +432,9 @@ const expectedNewPortraits = [
   ['ralph-camelo-mariano', 'Ralph Camelo Mariano', 'assets/speakers/2026/ralph-camelo-mariano.jpg'],
   ['pita-s-picpican', 'Pita S. Picpican', 'assets/speakers/2026/pita-s-picpican.jpg'],
   ['sonia-l-asilo', 'Sonia L. Asilo', 'assets/speakers/2026/sonia-l-asilo.jpg'],
+  ['noel-jerome-b-borlongan', 'Noel Jerome B. Borlongan', 'assets/speakers/2026/noel-jerome-b-borlongan.webp'],
   ['reinald-adrian-d-pugoy', 'Reinald Adrian D. Pugoy', 'assets/speakers/2026/reinald-adrian-d-pugoy.jpg'],
+  ['nikkin-n-beronilla', 'Nikkin N. Beronilla', 'assets/speakers/2026/nikkin-n-beronilla.webp'],
   ['david-joseph-emmanuel-b-yap-jr', 'David Joseph Emmanuel B. Yap Jr.', 'assets/speakers/2026/david-joseph-emmanuel-b-yap-jr.jpg'],
   ['yuko-lisette-r-domingo', 'Yuko Lisette R. Domingo', 'assets/speakers/2026/yuko-lisette-r-domingo.png']
 ];
@@ -442,7 +444,7 @@ for (const [id, displayName, photo] of expectedNewPortraits) {
   assert(speakerRecords.some(record => record.name === displayName && record.photo === photo),
     `${displayName} must retain its verified public portrait mapping.`);
 }
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 36,
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 38,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');

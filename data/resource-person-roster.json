@@ -312,6 +312,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/noel-jerome-b-borlongan.webp",
       "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
@@ -417,6 +418,19 @@
       "publication": {"dev": true, "live": true},
       "photo": "assets/speakers/2026/christopher-james-r-cabuay.webp",
       "source": {"kind": "session-guide", "highlighted": false}
+    },
+    {
+      "id": "nikkin-n-beronilla",
+      "name": "Nikkin N. Beronilla",
+      "organization": "Philippine Statistics Authority (PSA)",
+      "position": "Director, Statistical Methodology Unit",
+      "role": "Panelist",
+      "sessionIds": ["breakout-2-2"],
+      "wave": "wave2",
+      "status": "confirmed",
+      "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/nikkin-n-beronilla.webp",
+      "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {
       "id": "aleli-d-kraft",
