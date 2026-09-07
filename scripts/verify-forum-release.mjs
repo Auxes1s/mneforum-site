@@ -142,8 +142,8 @@ assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
 assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
   'The development-only speaker preview marker must never enter production HTML.');
 assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-frozen-podium') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-frozen-podium') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-responsive-ceremony') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-responsive-ceremony') &&
   homepage.includes('id="evaluation-gallery-results"'),
   'The frozen Evaluation Gallery snapshot is not mounted with its release assets.');
 assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'"),
@@ -151,6 +151,26 @@ assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe
 assert(galleryJs.includes('assets/butterfly-mark.svg') &&
   galleryCss.includes('.eg-butterfly') && galleryCss.includes('.eg-podium-winner-mark'),
   'The podium must reuse the Forum butterfly asset.');
+assert(galleryJs.includes('function prepareCeremony(root)') &&
+  galleryJs.includes("root.classList.add('eg-motion-ready')") &&
+  galleryJs.includes("root.classList.add('eg-is-revealed')") &&
+  galleryJs.includes("window.matchMedia('(prefers-reduced-motion: reduce)')") &&
+  galleryJs.includes("getPropertyValue('--eg-score-delay-ms')") &&
+  galleryJs.includes('index < 5') &&
+  galleryCss.includes('@keyframes eg-podium-rise') &&
+  galleryCss.includes('@keyframes eg-winner-rise') &&
+  galleryCss.includes('@keyframes eg-winner-flight') &&
+  /@media \(prefers-reduced-motion: reduce\)[\s\S]*?animation: none !important/.test(galleryCss),
+  'The Gallery podium ceremony or its reduced-motion fallback is incomplete.');
+assert(/@media \(max-width: 860px\)[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/.test(galleryCss) &&
+  /@media \(max-width: 600px\)[\s\S]*?grid-template-columns: 76px minmax\(0, 1fr\)/.test(galleryCss) &&
+  galleryCss.includes('grid-template-areas:') &&
+  galleryCss.includes('"title score"') &&
+  galleryCss.includes('@media (max-width: 380px)') &&
+  galleryCss.includes('--eg-winner-celebration-delay: 680ms'),
+  'The Gallery podium must use the reviewed tablet, phone, and narrow-phone compositions.');
+assert(!/\.(?:gif|mp4)/i.test(galleryJs + galleryCss),
+  'The Gallery ceremony must use the existing SVG mark rather than video or GIF exports.');
 assert(!galleryJs.includes('setInterval(') &&
   !galleryJs.includes('fetch(') &&
   !galleryJs.includes('forumGalleryLeaderboardReceive') &&

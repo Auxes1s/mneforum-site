@@ -98,6 +98,13 @@ export function podiumGroups(rows) {
     .filter(group => group.rows.length);
 }
 
+export function interpolateScore(target, progress) {
+  const finalScore = Math.max(0, Math.floor(Number(target) || 0));
+  const boundedProgress = Math.max(0, Math.min(1, Number(progress) || 0));
+  const easedProgress = 1 - Math.pow(1 - boundedProgress, 3);
+  return Math.min(finalScore, Math.round(finalScore * easedProgress));
+}
+
 export function normalizeSnapshot(snapshot) {
   if (!snapshot || !['pending', 'published'].includes(snapshot.status)) {
     throw new Error('The Evaluation Gallery snapshot is invalid.');
@@ -171,6 +178,20 @@ function createPlinth(rank) {
   return plinth;
 }
 
+function createWinnerFlight() {
+  const flight = element('div', 'eg-winner-flight');
+  flight.setAttribute('aria-hidden', 'true');
+  for (let index = 0; index < 5; index += 1) {
+    const butterfly = element('img', 'eg-winner-flight-mark');
+    butterfly.src = 'assets/butterfly-mark.svg';
+    butterfly.alt = '';
+    butterfly.width = 42;
+    butterfly.height = 47;
+    flight.appendChild(butterfly);
+  }
+  return flight;
+}
+
 function renderPodium(root, rows, pending = false) {
   const podium = root.querySelector('[data-eg-podium]');
   podium.replaceChildren();
@@ -179,6 +200,7 @@ function renderPodium(root, rows, pending = false) {
   groups.forEach(group => {
     const place = element('article', `eg-podium-place eg-podium-place--${group.rank}${pending ? ' eg-podium-place--pending' : ''}`);
     const placeName = group.rank === 1 ? 'First place' : group.rank === 2 ? 'Second place' : 'Third place';
+    place.dataset.egRank = String(group.rank);
     place.setAttribute('aria-label', placeName);
     if (!pending) {
       const contenders = element('div', 'eg-podium-contenders');
@@ -193,16 +215,91 @@ function renderPodium(root, rows, pending = false) {
         entry.appendChild(title);
         entry.append(element('p', 'eg-podium-unit', row.presenting_unit));
         const points = element('p', 'eg-podium-points');
-        points.append(element('strong', '', String(row.total_points)));
-        points.append(document.createTextNode(` point${row.total_points === 1 ? '' : 's'}`));
+        points.setAttribute('aria-label', `${row.total_points} point${row.total_points === 1 ? '' : 's'}`);
+        const score = element('strong', 'eg-score-value', String(row.total_points));
+        score.dataset.finalScore = String(row.total_points);
+        score.setAttribute('aria-hidden', 'true');
+        points.append(score);
+        const pointLabel = element('span', 'eg-score-label', ` point${row.total_points === 1 ? '' : 's'}`);
+        pointLabel.setAttribute('aria-hidden', 'true');
+        points.append(pointLabel);
         entry.appendChild(points);
         contenders.appendChild(entry);
       });
       place.appendChild(contenders);
     }
     place.appendChild(createPlinth(group.rank));
+    if (!pending && group.rank === 1) place.appendChild(createWinnerFlight());
     podium.appendChild(place);
   });
+}
+
+function setFinalScores(root) {
+  root.querySelectorAll('[data-final-score]').forEach(node => {
+    node.textContent = String(Math.max(0, Math.floor(Number(node.dataset.finalScore) || 0)));
+  });
+}
+
+function animateScores(root, reduceMotion) {
+  const scores = Array.from(root.querySelectorAll('[data-final-score]')).map(node => ({
+    node,
+    finalScore: Math.max(0, Math.floor(Number(node.dataset.finalScore) || 0)),
+    delay: Math.max(0, Number.parseFloat(
+      window.getComputedStyle(node.closest('[data-eg-rank]')).getPropertyValue('--eg-score-delay-ms')
+    ) || 0)
+  }));
+  const duration = 900;
+  const startedAt = performance.now();
+
+  const frame = now => {
+    if (reduceMotion.matches) {
+      setFinalScores(root);
+      return;
+    }
+    let complete = true;
+    scores.forEach(score => {
+      const progress = Math.max(0, Math.min(1, (now - startedAt - score.delay) / duration));
+      score.node.textContent = String(interpolateScore(score.finalScore, progress));
+      if (progress < 1) complete = false;
+    });
+    if (!complete) window.requestAnimationFrame(frame);
+  };
+
+  scores.forEach(score => { score.node.textContent = '0'; });
+  window.requestAnimationFrame(frame);
+}
+
+function prepareCeremony(root) {
+  if (root.dataset.egCeremonyReady === 'true') return;
+  root.dataset.egCeremonyReady = 'true';
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const podiumSection = root.querySelector('.eg-podium-section');
+
+  if (!podiumSection || reduceMotion.matches || document.hidden) {
+    root.classList.add('eg-is-revealed');
+    setFinalScores(root);
+    return;
+  }
+
+  root.classList.add('eg-motion-ready');
+  const reveal = () => {
+    if (root.dataset.egCeremonyPlayed === 'true') return;
+    root.dataset.egCeremonyPlayed = 'true';
+    root.classList.add('eg-is-revealed');
+    animateScores(root, reduceMotion);
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    reveal();
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    observer.disconnect();
+    reveal();
+  }, {rootMargin: '0px 0px -4% 0px', threshold: 0.05});
+  observer.observe(podiumSection);
 }
 
 function renderRanking(root, rows) {
@@ -249,6 +346,7 @@ function render() {
   const snapshot = state.snapshot;
 
   if (state.error) {
+    root.dataset.egState = 'error';
     status.textContent = 'Results unavailable';
     status.dataset.state = 'error';
     detail.textContent = 'The saved results could not be read.';
@@ -258,6 +356,7 @@ function render() {
   }
 
   if (snapshot.status === 'pending') {
+    root.dataset.egState = 'pending';
     status.textContent = 'Results will be announced';
     status.dataset.state = 'pending';
     detail.textContent = 'The final tally will appear here after voting closes.';
@@ -267,12 +366,14 @@ function render() {
   }
 
   status.textContent = 'Official results';
+  root.dataset.egState = 'published';
   status.dataset.state = 'ready';
   const noun = snapshot.ballotCount === 1 ? 'ballot' : 'ballots';
   detail.textContent = `${snapshot.ballotCount} complete ${noun} counted · published ${formatPublishedAt(snapshot.publishedAt)}.`;
   rankingSection.hidden = false;
   renderPodium(root, snapshot.rows);
   renderRanking(root, snapshot.rows);
+  prepareCeremony(root);
 }
 
 function mount() {

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {normalizeSnapshot, parseLeaderboardResponse, podiumGroups} from '../assets/evaluation-gallery-leaderboard.mjs';
+import {interpolateScore, normalizeSnapshot, parseLeaderboardResponse, podiumGroups} from '../assets/evaluation-gallery-leaderboard.mjs';
 import {createPublishedSnapshot, parseGvizResponse, replaceSnapshotBlock} from './publish-gallery-results.mjs';
 
 const posterHeaders = Array.from({length: 12}, (_, index) => {
@@ -33,6 +33,14 @@ assert.equal(parsed.ignoredCount, 0);
 assert.deepEqual(parsed.rows.slice(0, 3).map(row => row.poster_id), ['P01', 'P12', 'P05']);
 assert.deepEqual(parsed.rows.slice(0, 3).map(row => row.total_points), [3, 2, 1]);
 assert.deepEqual(podiumGroups(parsed.rows).map(group => group.rank), [1, 2, 3]);
+
+assert.equal(interpolateScore(10, 0), 0);
+assert.equal(interpolateScore(10, 0.5), 9);
+assert.equal(interpolateScore(10, 1), 10);
+assert.equal(interpolateScore(10, 2), 10);
+assert.equal(interpolateScore(10, -1), 0);
+assert.equal(interpolateScore(0, 0.7), 0);
+assert.equal(interpolateScore(7.9, 1), 7);
 
 const withInvalid = parseLeaderboardResponse(payload([ballot(0, 11, 4), ballot(1, 2, 3, false)]));
 assert.equal(withInvalid.ballotCount, 1);
