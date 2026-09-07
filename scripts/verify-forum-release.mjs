@@ -14,6 +14,8 @@ const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
 const responsiveCss = readText(path.join(root, 'assets', 'forum-responsive.css'));
 const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
 const brandCss = readText(path.join(root, 'assets', 'forum-brand.css'));
+const galleryCss = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.css'));
+const galleryJs = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.mjs'));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
@@ -137,6 +139,23 @@ assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
   'dev/index.html is stale. Run npm run sync:dev, or retain the reviewed dev-only preview marker.');
 assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
   'The development-only speaker preview marker must never enter production HTML.');
+assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907'),
+  'The Evaluation Gallery live leaderboard is not mounted with its release assets.');
+assert(galleryJs.includes("spreadsheetId: '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
+  galleryJs.includes("sheetName: 'Public_Leaderboard'") &&
+  galleryJs.includes('forumGalleryLeaderboardReceive') &&
+  galleryJs.includes("where B matches 'P(0[1-9]|1[0-2])'") &&
+  galleryJs.includes('data-eg-refresh'),
+  'The leaderboard is not wired to the aggregate Google Sheet feed and manual refresh control.');
+assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'"),
+  'The Evaluation Gallery vote button is not wired to the approved Google Form.');
+assert(!galleryJs.includes('setInterval('),
+  'The Evaluation Gallery must refresh only on initial load or a visitor click.');
+assert(galleryJs.includes("'rank', 'poster_id', 'display_title', 'presenting_unit', 'first_count'") &&
+  galleryJs.includes("'second_count', 'third_count', 'total_points', 'status', 'last_updated'"),
+  'The public feed allowlist must remain aggregate-only and exclude voter data.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),
   'The production homepage must remain indexable.');
 assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),
@@ -513,6 +532,9 @@ for (const ref of gameRefs) {
 const cssWithoutComments = releaseCss.replace(/\/\*[\s\S]*?\*\//g, '');
 assert(count(cssWithoutComments, /\{/g) === count(cssWithoutComments, /\}/g),
   'Unbalanced braces in assets/forum-release.css.');
+const galleryCssWithoutComments = galleryCss.replace(/\/\*[\s\S]*?\*\//g, '');
+assert(count(galleryCssWithoutComments, /\{/g) === count(galleryCssWithoutComments, /\}/g),
+  'Unbalanced braces in assets/evaluation-gallery-leaderboard.css.');
 assert(!/#program,\s*\.program-section\s*\{\s*display:\s*none\s*!important\s*;\s*\}/.test(releaseCss),
   'The release stylesheet still hides the Program section.');
 assert(buildScript.includes('"speaker-launch.css"'),

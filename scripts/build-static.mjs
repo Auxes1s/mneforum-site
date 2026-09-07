@@ -40,7 +40,7 @@ for (const entry of publishEntries) {
 
 // The checked-in /dev page supports simple static hosting, while the deploy
 // artifact is always regenerated from production so it cannot lag behind.
-const productionHtml = await readFile(path.join(root, "index.html"), "utf8");
+const productionHtml = (await readFile(path.join(root, "index.html"), "utf8")).replace(/\r\n/g, "\n");
 await writeFile(path.join(output, "dev", "index.html"), createDevPreview(productionHtml), "utf8");
 
 console.log(`Static site built in ${path.relative(root, output)}/`);

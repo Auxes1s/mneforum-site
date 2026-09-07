@@ -138,6 +138,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     // The exported template carried a Google Fonts preconnect, but its font
     // files are bundled locally below. Avoid an unused third-party connection.
     template = template.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">', '');
+    // Replace the static Gallery placeholder with the live aggregate-results
+    // mount point. Voting-code validation stays in the private Apps Script;
+    // this public page receives only the P01-P12 tally rows.
+    template = template.replace(
+      /<section id="gallery" class="gallery-section">[\s\S]*?<\/section>/,
+      '<section id="gallery" class="gallery-section">' +
+        '<div class="section-shell">' +
+          '<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>' +
+        '</div>' +
+      '</section>'
+    );
     // Keep the header mark faithful to the supplied source artwork. The
     // bundled fallback is a monochrome reduction; the repository SVG retains
     // the original blue, amber, red, grey, and white logo colors.
@@ -6395,6 +6406,7 @@ const SPEAKERS = [
     document.getElementById('forum-responsive-styles')?.remove();
     document.getElementById('forum-ui-lock-styles')?.remove();
     document.getElementById('forum-release-styles')?.remove();
+    document.getElementById('evaluation-gallery-leaderboard-styles')?.remove();
     const polishStyle = document.createElement('style');
     polishStyle.id = 'forum-mobile-polish';
     polishStyle.textContent = mobilePolish
@@ -6421,15 +6433,22 @@ const SPEAKERS = [
     releaseLink.rel = 'stylesheet';
     releaseLink.href = 'assets/forum-release.css?v=20260827-program-mobile';
     document.head.appendChild(releaseLink);
-    // All five sheets have to sit at the end of <head>, in order: the
+    const galleryLink = document.createElement('link');
+    galleryLink.id = 'evaluation-gallery-leaderboard-styles';
+    galleryLink.rel = 'stylesheet';
+    galleryLink.href = 'assets/evaluation-gallery-leaderboard.css?v=20260907';
+    document.head.appendChild(galleryLink);
+    // All six sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, the audited responsive layer,
-    // the local Night Mode/fluid-layout lock, then the release surface.
+    // the local Night Mode/fluid-layout lock, the release surface, then the
+    // namespaced Evaluation Gallery leaderboard.
     //
     // Test the complete sequence as an ordered invariant, never as "each one
     // must be last". Corrective appends retrigger this observer, so the stable
     // sequence must be checked before appending anything.
     const keepResponsiveStylesLast = () => {
-      if (document.head.lastElementChild === releaseLink &&
+      if (document.head.lastElementChild === galleryLink &&
+          galleryLink.previousElementSibling === releaseLink &&
           releaseLink.previousElementSibling === uiLockLink &&
           uiLockLink.previousElementSibling === responsiveLink &&
           responsiveLink.previousElementSibling === brandLink &&
@@ -6441,10 +6460,16 @@ const SPEAKERS = [
       document.head.appendChild(responsiveLink);
       document.head.appendChild(uiLockLink);
       document.head.appendChild(releaseLink);
+      document.head.appendChild(galleryLink);
     };
     const polishObserver = new MutationObserver(keepResponsiveStylesLast);
     polishObserver.observe(document.head, { childList: true });
     requestAnimationFrame(() => requestAnimationFrame(keepResponsiveStylesLast));
+
+    const galleryScript = document.createElement('script');
+    galleryScript.type = 'module';
+    galleryScript.src = 'assets/evaluation-gallery-leaderboard.mjs?v=20260907';
+    document.body.appendChild(galleryScript);
 
     // Keep the Facebook player out of the initial dependency tree. The
     // iframe is still hydrated automatically as it approaches the viewport;
