@@ -18,6 +18,7 @@ const galleryCss = readText(path.join(root, 'assets', 'evaluation-gallery-leader
 const galleryJs = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.mjs'));
 const galleryPublisherJs = readText(path.join(root, 'scripts', 'publish-gallery-results.mjs'));
 const packageJson = JSON.parse(readText(path.join(root, 'package.json')));
+const galleryEvent = JSON.parse(readText(path.join(root, 'data', 'evaluation-gallery-event.json')));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
@@ -146,7 +147,9 @@ assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="tr
   homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-responsive-ceremony') &&
   homepage.includes('id="evaluation-gallery-results"'),
   'The frozen Evaluation Gallery snapshot is not mounted with its release assets.');
-assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'"),
+assert(galleryJs.includes(`voteUrl: '${galleryEvent.form_responder_url}'`) &&
+  galleryJs.includes(`eventId: '${galleryEvent.event_id}'`) &&
+  galleryJs.includes(`schemaVersion: ${galleryEvent.schema_version}`),
   'The Evaluation Gallery vote button is not wired to the approved Google Form.');
 assert(galleryJs.includes('assets/butterfly-mark.svg') &&
   galleryCss.includes('.eg-butterfly') && galleryCss.includes('.eg-podium-winner-mark'),
@@ -182,17 +185,26 @@ assert(!galleryJs.includes('setInterval(') &&
   !galleryJs.includes('Email Address') &&
   !galleryJs.includes('Voting Code'),
   'The visitor-facing leaderboard must use only the frozen aggregate snapshot, with no polling or voter data.');
-assert(packageJson.scripts?.['gallery:publish'] === 'node scripts/publish-gallery-results.mjs' &&
-  galleryPublisherJs.includes("const SHEET_RANGE = 'D1:P'") &&
-  galleryPublisherJs.includes("const SPREADSHEET_ID = '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
-  galleryPublisherJs.includes("answer.trim() !== 'PUBLISH'") &&
-  galleryPublisherJs.includes("run('git', ['push', 'origin', 'master'])"),
-  'The one-command live-Sheet publication pipeline is incomplete.');
+assert(packageJson.scripts?.['gallery:prepare'] === 'node scripts/publish-gallery-results.mjs' &&
+  !packageJson.scripts?.['gallery:publish'] &&
+  galleryEvent.public_contract.leaderboard.sheet_name === 'Public_Leaderboard' &&
+  galleryEvent.public_contract.leaderboard.range === 'A2:J14' &&
+  galleryEvent.public_contract.metadata.sheet_name === 'Public_Metadata' &&
+  galleryEvent.public_contract.metadata.range === 'A1:B7' &&
+  galleryPublisherJs.includes('process.env.GALLERY_PUBLIC_SPREADSHEET_ID') &&
+  galleryPublisherJs.includes("answer.trim() !== 'PREPARE'") &&
+  !galleryPublisherJs.includes("run('git', ['push'") &&
+  !galleryPublisherJs.includes("run('git', ['commit'") &&
+  !galleryPublisherJs.includes('12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA') &&
+  !galleryPublisherJs.includes('D1:P'),
+  'The prepare-only sanitized Gallery publication pipeline is incomplete.');
 const gallerySnapshotMatch = homepage.match(/\/\/ EVALUATION_GALLERY_SNAPSHOT_START\n  const evaluationGallerySnapshot = Object\.freeze\((\{[\s\S]*?\})\);\n  \/\/ EVALUATION_GALLERY_SNAPSHOT_END/);
 assert(gallerySnapshotMatch, 'The embedded Evaluation Gallery snapshot marker is missing.');
 const gallerySnapshot = JSON.parse(gallerySnapshotMatch[1]);
-assert(['pending', 'published'].includes(gallerySnapshot.status), 'The Evaluation Gallery snapshot status is invalid.');
-assert(gallerySnapshot.status === 'pending' ? gallerySnapshot.rows.length === 0 : gallerySnapshot.rows.length === 12,
+assert(['PENDING', 'FINAL'].includes(gallerySnapshot.status), 'The Evaluation Gallery snapshot status is invalid.');
+assert(gallerySnapshot.schemaVersion === galleryEvent.schema_version && gallerySnapshot.eventId === galleryEvent.event_id,
+  'The embedded Evaluation Gallery snapshot does not match the versioned event contract.');
+assert(gallerySnapshot.status === 'PENDING' ? gallerySnapshot.rows.length === 0 : gallerySnapshot.rows.length === 12,
   'The Evaluation Gallery snapshot does not match its publication status.');
 assert(!/(email|voting.?code|uuid|response.?id)/i.test(JSON.stringify(gallerySnapshot)),
   'The embedded Evaluation Gallery snapshot must remain PII-free.');

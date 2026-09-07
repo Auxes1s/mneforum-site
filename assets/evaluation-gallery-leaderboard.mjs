@@ -1,96 +1,10 @@
 const CONFIG = Object.freeze({
+  schemaVersion: 1,
+  eventId: '13th-me-network-forum-2026',
   voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'
 });
 
 const POSTER_ID = /^P(?:0[1-9]|1[0-2])$/;
-const CHOICES = Object.freeze({first: '1st', second: '2nd', third: '3rd'});
-
-function cellValue(cell) {
-  if (!cell) return '';
-  if (cell.f !== undefined && cell.f !== null) return cell.f;
-  return cell.v === undefined || cell.v === null ? '' : cell.v;
-}
-
-function parsePosterHeader(label) {
-  const bracketed = String(label || '').match(/\[([^\]]+)\]\s*$/)?.[1] || '';
-  const parts = bracketed.split(' — ').map(part => part.trim()).filter(Boolean);
-  const posterId = parts.shift()?.toUpperCase() || '';
-  const presentingUnit = parts.pop() || '';
-  const displayTitle = parts.join(' — ');
-  if (!POSTER_ID.test(posterId) || !displayTitle || !presentingUnit) {
-    throw new Error('The public Sheet poster headings are not in the expected format.');
-  }
-  return {poster_id: posterId, display_title: displayTitle, presenting_unit: presentingUnit};
-}
-
-function assignRanks(rows) {
-  const ranked = [...rows].sort((a, b) =>
-    b.total_points - a.total_points ||
-    b.first_count - a.first_count ||
-    b.second_count - a.second_count ||
-    b.third_count - a.third_count ||
-    a.poster_id.localeCompare(b.poster_id)
-  );
-  ranked.forEach((row, index) => {
-    row.rank = index + 1;
-    Object.freeze(row);
-  });
-  return ranked;
-}
-
-export function parseLeaderboardResponse(payload) {
-  if (!payload || payload.status !== 'ok' || !payload.table) {
-    const message = payload?.errors?.[0]?.detailed_message || payload?.errors?.[0]?.message;
-    throw new Error(message || 'The public Sheet could not be read.');
-  }
-
-  const columns = payload.table.cols || [];
-  if (columns.length !== 13) {
-    throw new Error('The public Sheet must contain 12 poster columns and the certification column.');
-  }
-
-  const posters = columns.slice(0, 12).map(column => parsePosterHeader(column.label));
-  if (new Set(posters.map(poster => poster.poster_id)).size !== 12) {
-    throw new Error('The public Sheet must contain one heading for each poster from P01 to P12.');
-  }
-
-  const tallies = posters.map(poster => ({
-    ...poster,
-    first_count: 0,
-    second_count: 0,
-    third_count: 0,
-    total_points: 0,
-    rank: 0
-  }));
-  let ballotCount = 0;
-  let ignoredCount = 0;
-
-  for (const {c = []} of payload.table.rows || []) {
-    const selections = tallies.map((_, index) => String(cellValue(c[index])).trim());
-    const certified = /^yes$/i.test(String(cellValue(c[12])).trim());
-    const first = selections.filter(value => value === CHOICES.first).length;
-    const second = selections.filter(value => value === CHOICES.second).length;
-    const third = selections.filter(value => value === CHOICES.third).length;
-
-    if (!certified || first !== 1 || second !== 1 || third !== 1) {
-      ignoredCount += 1;
-      continue;
-    }
-
-    ballotCount += 1;
-    selections.forEach((choice, index) => {
-      if (choice === CHOICES.first) tallies[index].first_count += 1;
-      if (choice === CHOICES.second) tallies[index].second_count += 1;
-      if (choice === CHOICES.third) tallies[index].third_count += 1;
-    });
-  }
-
-  tallies.forEach(row => {
-    row.total_points = row.first_count * 3 + row.second_count * 2 + row.third_count;
-  });
-
-  return Object.freeze({rows: assignRanks(tallies), ballotCount, ignoredCount});
-}
 
 export function podiumGroups(rows) {
   if (!rows.some(row => row.total_points > 0)) return [];
@@ -106,13 +20,32 @@ export function interpolateScore(target, progress) {
 }
 
 export function normalizeSnapshot(snapshot) {
-  if (!snapshot || !['pending', 'published'].includes(snapshot.status)) {
+  if (!snapshot || !['PENDING', 'FINAL'].includes(snapshot.status)) {
     throw new Error('The Evaluation Gallery snapshot is invalid.');
   }
-  if (snapshot.status === 'pending') {
-    return Object.freeze({status: 'pending', snapshotId: '', publishedAt: '', ballotCount: 0, ignoredCount: 0, rows: []});
+  if (snapshot.status === 'PENDING') {
+    if (snapshot.schemaVersion !== CONFIG.schemaVersion || snapshot.eventId !== CONFIG.eventId ||
+        (Array.isArray(snapshot.rows) && snapshot.rows.length !== 0)) {
+      throw new Error('The pending Evaluation Gallery snapshot has the wrong event contract.');
+    }
+    return Object.freeze({
+      schemaVersion: CONFIG.schemaVersion,
+      eventId: CONFIG.eventId,
+      status: 'PENDING',
+      snapshotId: '',
+      sourceDigest: '',
+      publishedAt: '',
+      ballotCount: 0,
+      ignoredCount: 0,
+      rows: []
+    });
   }
-  if (!String(snapshot.snapshotId || '').trim() || Number(snapshot.ballotCount) < 1 || !String(snapshot.publishedAt || '').trim()) {
+  if (snapshot.schemaVersion !== CONFIG.schemaVersion || snapshot.eventId !== CONFIG.eventId ||
+      !/^[a-f0-9]{12}$/.test(String(snapshot.snapshotId || '')) ||
+      !/^[a-f0-9]{64}$/.test(String(snapshot.sourceDigest || '')) ||
+      !Number.isSafeInteger(Number(snapshot.ballotCount)) || Number(snapshot.ballotCount) < 1 ||
+      !Number.isSafeInteger(Number(snapshot.ignoredCount)) || Number(snapshot.ignoredCount) < 0 ||
+      !String(snapshot.publishedAt || '').trim() || !Number.isFinite(Date.parse(snapshot.publishedAt))) {
     throw new Error('The published Evaluation Gallery snapshot is incomplete.');
   }
   if (!Array.isArray(snapshot.rows) || snapshot.rows.length !== 12) {
@@ -122,11 +55,12 @@ export function normalizeSnapshot(snapshot) {
     const posterId = String(row.poster_id || '').trim().toUpperCase();
     const values = ['first_count', 'second_count', 'third_count', 'total_points'].map(field => Number(row[field]));
     if (!POSTER_ID.test(posterId) || !String(row.display_title || '').trim() || !String(row.presenting_unit || '').trim() ||
-        values.some(value => !Number.isFinite(value) || value < 0) || Number(row.rank) !== index + 1) {
+        values.some(value => !Number.isSafeInteger(value) || value < 0) || !Number.isSafeInteger(Number(row.rank)) || Number(row.rank) < 1 ||
+        values[3] !== values[0] * 3 + values[1] * 2 + values[2]) {
       throw new Error('The published Evaluation Gallery snapshot contains an invalid poster row.');
     }
     return Object.freeze({
-      rank: index + 1,
+      rank: Number(row.rank),
       poster_id: posterId,
       display_title: String(row.display_title).trim(),
       presenting_unit: String(row.presenting_unit).trim(),
@@ -139,12 +73,38 @@ export function normalizeSnapshot(snapshot) {
   if (new Set(rows.map(row => row.poster_id)).size !== 12) {
     throw new Error('The published Evaluation Gallery snapshot contains duplicate posters.');
   }
+  const sameScore = (left, right) =>
+    left.total_points === right.total_points && left.first_count === right.first_count &&
+    left.second_count === right.second_count && left.third_count === right.third_count;
+  rows.forEach((row, index) => {
+    const previous = rows[index - 1];
+    const scoreOrder = previous && (
+      previous.total_points - row.total_points ||
+      previous.first_count - row.first_count ||
+      previous.second_count - row.second_count ||
+      previous.third_count - row.third_count ||
+      row.poster_id.localeCompare(previous.poster_id)
+    );
+    if (previous && scoreOrder < 0) throw new Error('The published Evaluation Gallery snapshot is not in canonical score order.');
+    const expectedRank = previous && sameScore(previous, row) ? previous.rank : index + 1;
+    if (row.rank !== expectedRank) throw new Error('The published Evaluation Gallery snapshot has invalid competition ranks.');
+  });
+  const ballotCount = Number(snapshot.ballotCount);
+  if (rows.reduce((sum, row) => sum + row.first_count, 0) !== ballotCount ||
+      rows.reduce((sum, row) => sum + row.second_count, 0) !== ballotCount ||
+      rows.reduce((sum, row) => sum + row.third_count, 0) !== ballotCount ||
+      rows.reduce((sum, row) => sum + row.total_points, 0) !== ballotCount * 6) {
+    throw new Error('The published Evaluation Gallery snapshot fails ballot accounting.');
+  }
   return Object.freeze({
-    status: 'published',
+    schemaVersion: CONFIG.schemaVersion,
+    eventId: CONFIG.eventId,
+    status: 'FINAL',
     snapshotId: String(snapshot.snapshotId).trim(),
+    sourceDigest: String(snapshot.sourceDigest).trim(),
     publishedAt: String(snapshot.publishedAt).trim(),
-    ballotCount: Number(snapshot.ballotCount),
-    ignoredCount: Math.max(0, Number(snapshot.ignoredCount) || 0),
+    ballotCount,
+    ignoredCount: Number(snapshot.ignoredCount),
     rows
   });
 }
@@ -157,7 +117,7 @@ function element(tag, className, text) {
 }
 
 const state = {
-  snapshot: Object.freeze({status: 'pending', snapshotId: '', publishedAt: '', ballotCount: 0, ignoredCount: 0, rows: []}),
+  snapshot: Object.freeze({schemaVersion: 1, eventId: CONFIG.eventId, status: 'PENDING', snapshotId: '', sourceDigest: '', publishedAt: '', ballotCount: 0, ignoredCount: 0, rows: []}),
   error: ''
 };
 
@@ -355,7 +315,7 @@ function render() {
     return;
   }
 
-  if (snapshot.status === 'pending') {
+  if (snapshot.status === 'PENDING') {
     root.dataset.egState = 'pending';
     status.textContent = 'Results will be announced';
     status.dataset.state = 'pending';

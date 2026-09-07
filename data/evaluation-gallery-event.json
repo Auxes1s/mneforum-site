@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "event_id": "13th-me-network-forum-2026",
+  "event_name": "13th M&E Network Forum Evaluation Gallery",
+  "form_responder_url": "https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform",
+  "scoring": {
+    "first": 3,
+    "second": 2,
+    "third": 1
+  },
+  "posters": [
+    {"poster_id": "P01", "presenting_unit": "DRO I", "display_title": "Impact Evaluation Study of the DOLE Integrated Livelihood Program for Parents of Child Laborers in Region I", "title_status": "working", "active": true},
+    {"poster_id": "P02", "presenting_unit": "DRO II", "display_title": "An Impact Evaluation of the FRIMP's Role in Riverbank Erosion Mitigation and Socio-Economic Resilience in Brgy. Alibago, Enrile", "title_status": "working", "active": true},
+    {"poster_id": "P03", "presenting_unit": "DRO VI", "display_title": "Impact Evaluation Study of Yolanda Permanent Housing Projects in Western Visayas", "title_status": "final_poster_available", "active": true},
+    {"poster_id": "P04", "presenting_unit": "DRO VII", "display_title": "Impact Evaluation of the Convergence Strategy of the Tuburan Coffee Production Program", "title_status": "working", "active": true},
+    {"poster_id": "P05", "presenting_unit": "DRO X", "display_title": "Impact Evaluation Study on the Smallholder and Institutional Investments in Natural Resources Conservation and Upper River Basin Productivity in Forestry and Agriculture in the Muleta Watershed of the Upper Bukidnon River Basin of the Integrated Natural Resources and Environmental Management Project (INREMP)", "title_status": "working", "active": true},
+    {"poster_id": "P06", "presenting_unit": "DRO XI", "display_title": "Assessing the Impact of Built-in Right-of-Way (ROW) Acquisition Cost in Project Implementation", "title_status": "working", "active": true},
+    {"poster_id": "P07", "presenting_unit": "DRO Caraga", "display_title": "Impact Evaluation on the Umayam River Irrigation System in Agusan del Sur, Caraga Region", "title_status": "final_poster_available", "active": true},
+    {"poster_id": "P08", "presenting_unit": "MES/SEED", "display_title": "Impact Evaluation of the Department of Labor and Employment Integrated Livelihood Program (DILP)", "title_status": "working", "active": true},
+    {"poster_id": "P09", "presenting_unit": "MES/SEED", "display_title": "Process Evaluation of the Implementation of the KADIWA ni Ani at Kita Program in the Philippines", "title_status": "working", "active": true},
+    {"poster_id": "P10", "presenting_unit": "MES/SEED", "display_title": "Process Evaluation of the PhilHealth Konsulta Package", "title_status": "working", "active": true},
+    {"poster_id": "P11", "presenting_unit": "MES/SEED", "display_title": "Process Evaluation of the Implementation of Telemedicine in the Delivery of Individual-Based Health Services in the Philippines", "title_status": "working", "active": true},
+    {"poster_id": "P12", "presenting_unit": "MES/SEED", "display_title": "Quasi-experimental Impact Evaluation of the Tulong Panghanapbuhay sa Ating Disadvantaged Workers (TUPAD) Program of the Department of Labor and Employment", "title_status": "working", "active": true}
+  ],
+  "public_contract": {
+    "publication_state": "FINAL",
+    "leaderboard": {
+      "sheet_name": "Public_Leaderboard",
+      "range": "A2:J14",
+      "columns": ["rank", "poster_id", "display_title", "presenting_unit", "first_count", "second_count", "third_count", "total_points", "status", "updated_at"]
+    },
+    "metadata": {
+      "sheet_name": "Public_Metadata",
+      "range": "A1:B7",
+      "keys": ["schema_version", "event_id", "publication_state", "published_at", "valid_ballot_count", "invalid_ballot_count", "audit_digest"]
+    }
+  }
+}
