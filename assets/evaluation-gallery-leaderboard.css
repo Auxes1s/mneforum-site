@@ -130,64 +130,125 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: end;
-  gap: clamp(12px, 2.5vw, 28px);
-  min-height: 410px;
-  padding: clamp(30px, 6vw, 68px) 0 26px;
+  gap: clamp(10px, 1.8vw, 22px);
+  min-height: 570px;
+  padding: clamp(34px, 6vw, 70px) clamp(8px, 2vw, 24px) 28px;
 }
 
 .eg-podium-place {
   position: relative;
-  overflow: hidden;
-  min-height: 260px;
-  border: 1px solid var(--brand-line-soft);
-  border-radius: 28px 28px 8px 8px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 22px 60px rgba(22, 22, 91, 0.13);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
-.eg-podium-place--1 {
-  order: 2;
-  min-height: 340px;
-  transform: translateY(-22px);
-}
+.eg-podium-place--1 { order: 2; }
 .eg-podium-place--2 { order: 1; }
-.eg-podium-place--3 { order: 3; min-height: 225px; }
+.eg-podium-place--3 { order: 3; }
 
-.eg-podium-cap {
+.eg-podium-contenders {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 18px 50px rgba(22, 22, 91, 0.13);
+}
+
+.eg-podium-entry {
+  display: flex;
+  flex-direction: column;
+  min-height: 255px;
+  padding: 22px 20px 20px;
+  overflow: hidden;
+  border: 1px solid var(--brand-line-soft);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.eg-podium-entry + .eg-podium-entry {
+  border-top: 5px solid var(--brand-sun-gold);
+  border-radius: 0;
+}
+
+.eg-podium-place--1 .eg-podium-entry { border-top: 6px solid var(--eg-gold); }
+.eg-podium-place--2 .eg-podium-entry { border-top: 6px solid var(--eg-silver); }
+.eg-podium-place--3 .eg-podium-entry { border-top: 6px solid var(--eg-bronze); }
+
+.eg-podium-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 74px;
-  padding: 14px 18px;
-  color: var(--brand-midnight);
-  background: color-mix(in srgb, var(--eg-silver) 28%, #fff);
-  border-bottom: 5px solid var(--eg-silver);
-}
-
-.eg-podium-place--1 .eg-podium-cap {
-  background: color-mix(in srgb, var(--eg-gold) 28%, #fff);
-  border-bottom-color: var(--eg-gold);
-}
-.eg-podium-place--3 .eg-podium-cap {
-  background: color-mix(in srgb, var(--eg-bronze) 22%, #fff);
-  border-bottom-color: var(--eg-bronze);
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .eg-podium-rank {
   font-family: "Plein", system-ui, sans-serif;
-  font-size: 2.5rem;
-  line-height: 1;
+  font-size: clamp(4.5rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 0.75;
+  letter-spacing: -0.06em;
 }
 
 .eg-podium-place-label {
+  color: color-mix(in srgb, var(--brand-midnight) 72%, transparent);
   font-size: 0.79rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
-.eg-podium-entry { padding: 22px 20px 24px; }
-.eg-podium-entry + .eg-podium-entry { border-top: 1px solid var(--brand-line-soft); }
+.eg-podium-plinth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 126px;
+  padding: 20px;
+  overflow: hidden;
+  color: var(--brand-midnight);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.52), transparent 42%),
+    linear-gradient(180deg, #dfe6ed, #a8b5c4);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 20px 36px rgba(22, 22, 91, 0.14);
+}
+
+.eg-podium-plinth::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  pointer-events: none;
+}
+
+.eg-podium-plinth span {
+  margin-top: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eg-podium-place--1 .eg-podium-plinth {
+  min-height: 210px;
+  color: var(--brand-midnight);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.58), transparent 42%),
+    linear-gradient(180deg, #ffd66f, var(--eg-gold));
+}
+
+.eg-podium-place--3 .eg-podium-plinth {
+  min-height: 88px;
+  color: #fff;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.22), transparent 42%),
+    linear-gradient(180deg, #ca8561, var(--eg-bronze));
+}
+
+.eg-podium-place--3 .eg-podium-rank { font-size: clamp(3.7rem, 6vw, 5.3rem); }
+.eg-podium-place--3 .eg-podium-plinth span { margin-top: 7px; }
 
 .eg-poster-code {
   display: inline-flex;
@@ -204,7 +265,11 @@
 
 .eg-podium-title {
   margin: 13px 0 10px;
-  font-size: clamp(1.06rem, 1.7vw, 1.34rem) !important;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  font-size: clamp(0.98rem, 1.45vw, 1.22rem) !important;
   line-height: 1.28 !important;
   color: var(--brand-midnight) !important;
 }
@@ -217,7 +282,8 @@
 }
 
 .eg-podium-points {
-  margin: 24px 0 0;
+  margin: auto 0 0;
+  padding-top: 18px;
   color: var(--brand-midnight);
   font-size: 0.84rem;
 }
@@ -343,18 +409,13 @@ html[data-thinking-mode="ultra"] .eg-empty {
 }
 
 html[data-thinking-mode="ultra"] .eg-status-line,
-html[data-thinking-mode="ultra"] .eg-podium-place,
+html[data-thinking-mode="ultra"] .eg-podium-entry,
 html[data-thinking-mode="ultra"] .eg-ranking-row {
   border-color: rgba(255, 255, 255, 0.18);
   background: rgba(14, 24, 66, 0.86);
 }
 
-html[data-thinking-mode="ultra"] .eg-podium-cap {
-  color: #fff;
-  background: rgba(168, 181, 196, 0.16);
-}
-html[data-thinking-mode="ultra"] .eg-podium-place--1 .eg-podium-cap { background: rgba(241, 168, 31, 0.18); }
-html[data-thinking-mode="ultra"] .eg-podium-place--3 .eg-podium-cap { background: rgba(181, 107, 69, 0.18); }
+html[data-thinking-mode="ultra"] .eg-podium-place-label { color: rgba(255, 255, 255, 0.72); }
 
 @keyframes eg-spin { to { transform: rotate(360deg); } }
 
@@ -366,7 +427,7 @@ html[data-thinking-mode="ultra"] .eg-podium-place--3 .eg-podium-cap { background
 @media (max-width: 860px) {
   .eg-heading { grid-template-columns: 1fr; align-items: start; }
   .eg-actions { justify-content: flex-start; }
-  .eg-podium { grid-template-columns: 1fr; min-height: 0; }
+  .eg-podium { grid-template-columns: 1fr; min-height: 0; padding-inline: 0; }
   .eg-podium-place,
   .eg-podium-place--1,
   .eg-podium-place--2,
@@ -374,6 +435,10 @@ html[data-thinking-mode="ultra"] .eg-podium-place--3 .eg-podium-cap { background
   .eg-podium-place--1 { order: 1; }
   .eg-podium-place--2 { order: 2; }
   .eg-podium-place--3 { order: 3; }
+  .eg-podium-entry { min-height: 230px; }
+  .eg-podium-place--1 .eg-podium-plinth { min-height: 150px; }
+  .eg-podium-place--2 .eg-podium-plinth { min-height: 112px; }
+  .eg-podium-place--3 .eg-podium-plinth { min-height: 84px; }
 }
 
 @media (max-width: 600px) {

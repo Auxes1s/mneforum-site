@@ -186,22 +186,31 @@ function renderPodium(root, rows) {
   groups.forEach(group => {
     const place = element('article', `eg-podium-place eg-podium-place--${group.rank}`);
     place.setAttribute('aria-label', `${group.rank === 1 ? 'First' : group.rank === 2 ? 'Second' : 'Third'} place`);
-    const cap = element('div', 'eg-podium-cap');
-    cap.append(element('span', 'eg-podium-rank', String(group.rank)));
-    cap.append(element('span', 'eg-podium-place-label', group.rank === 1 ? 'First place' : group.rank === 2 ? 'Second place' : 'Third place'));
-    place.appendChild(cap);
+    const placeName = group.rank === 1 ? 'First place' : group.rank === 2 ? 'Second place' : 'Third place';
+    const contenders = element('div', 'eg-podium-contenders');
     group.rows.forEach(row => {
       const entry = element('div', 'eg-podium-entry');
-      entry.append(element('div', 'eg-poster-code', row.poster_id));
-      entry.append(element('h3', 'eg-podium-title', row.display_title));
+      const meta = element('div', 'eg-podium-meta');
+      meta.append(element('span', 'eg-poster-code', row.poster_id));
+      meta.append(element('span', 'eg-podium-place-label', placeName));
+      entry.appendChild(meta);
+      const title = element('h3', 'eg-podium-title', row.display_title);
+      title.title = row.display_title;
+      entry.appendChild(title);
       entry.append(element('p', 'eg-podium-unit', row.presenting_unit));
       const points = element('p', 'eg-podium-points');
       points.append(element('strong', '', String(row.total_points)));
       points.append(document.createTextNode(` point${row.total_points === 1 ? '' : 's'}`));
       entry.appendChild(points);
       if (group.rows.length > 1) entry.append(element('span', 'eg-tie-tag', 'Tied'));
-      place.appendChild(entry);
+      contenders.appendChild(entry);
     });
+    place.appendChild(contenders);
+    const plinth = element('div', 'eg-podium-plinth');
+    plinth.setAttribute('aria-hidden', 'true');
+    plinth.append(element('strong', 'eg-podium-rank', String(group.rank)));
+    plinth.append(element('span', '', placeName));
+    place.appendChild(plinth);
     podium.appendChild(place);
   });
 }

@@ -140,8 +140,8 @@ assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
 assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
   'The development-only speaker preview marker must never enter production HTML.');
 assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-direct-sheet') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-direct-sheet'),
+  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-podium') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-podium'),
   'The Evaluation Gallery live leaderboard is not mounted with its release assets.');
 assert(galleryJs.includes("spreadsheetId: '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
   galleryJs.includes("range: 'D1:P'") &&
