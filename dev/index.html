@@ -60,6 +60,17 @@ document.addEventListener('DOMContentLoaded', async function() {
   const loading = document.getElementById('__bundler_loading');
   function setStatus(msg) { if (loading) loading.textContent = msg; }
 
+  // EVALUATION_GALLERY_SNAPSHOT_START
+  const evaluationGallerySnapshot = Object.freeze({
+    "status": "pending",
+    "snapshotId": "",
+    "publishedAt": "",
+    "ballotCount": 0,
+    "ignoredCount": 0,
+    "rows": []
+  });
+  // EVALUATION_GALLERY_SNAPSHOT_END
+
   const FONT_MIME = /^(font[/]|application[/](x-)?font-|application[/]vnd\.ms-fontobject)/i;
   const MIME_TOKEN = /^[\w.+-]+[/][\w.+-]+$/;
   function toBase64(bytes) {
@@ -138,12 +149,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     // The exported template carried a Google Fonts preconnect, but its font
     // files are bundled locally below. Avoid an unused third-party connection.
     template = template.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">', '');
-    // Replace the static Gallery placeholder with the direct public-Sheet
-    // leaderboard mount point. The browser requests only ranking columns D:P.
+    // Replace the static Gallery placeholder with the frozen-results mount.
+    // The publication command reads Google once; visitors receive only this
+    // aggregate snapshot embedded in the uncached HTML document.
+    const publicGallerySnapshot = JSON.stringify(evaluationGallerySnapshot).replace(/</g, '\\u003c');
     template = template.replace(
       /<section id="gallery" class="gallery-section">[\s\S]*?<\/section>/,
       '<section id="gallery" class="gallery-section">' +
         '<div class="section-shell">' +
+          '<script type="application/json" id="evaluation-gallery-results">' + publicGallerySnapshot + '</' + 'script>' +
           '<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>' +
         '</div>' +
       '</section>'
@@ -6435,7 +6449,7 @@ const SPEAKERS = [
     const galleryLink = document.createElement('link');
     galleryLink.id = 'evaluation-gallery-leaderboard-styles';
     galleryLink.rel = 'stylesheet';
-    galleryLink.href = 'assets/evaluation-gallery-leaderboard.css?v=20260907-podium';
+    galleryLink.href = 'assets/evaluation-gallery-leaderboard.css?v=20260907-frozen-podium';
     document.head.appendChild(galleryLink);
     // All six sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, the audited responsive layer,
@@ -6467,7 +6481,7 @@ const SPEAKERS = [
 
     const galleryScript = document.createElement('script');
     galleryScript.type = 'module';
-    galleryScript.src = 'assets/evaluation-gallery-leaderboard.mjs?v=20260907-podium';
+    galleryScript.src = 'assets/evaluation-gallery-leaderboard.mjs?v=20260907-frozen-podium';
     document.body.appendChild(galleryScript);
 
     // Keep the Facebook player out of the initial dependency tree. The

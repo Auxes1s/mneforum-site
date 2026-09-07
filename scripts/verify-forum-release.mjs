@@ -16,6 +16,8 @@ const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
 const brandCss = readText(path.join(root, 'assets', 'forum-brand.css'));
 const galleryCss = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.css'));
 const galleryJs = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.mjs'));
+const galleryPublisherJs = readText(path.join(root, 'scripts', 'publish-gallery-results.mjs'));
+const packageJson = JSON.parse(readText(path.join(root, 'package.json')));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
 const gameCss = readText(path.join(root, 'game', 'game-v2.css'));
 const gameHtml = readText(path.join(root, 'game', 'index.html'));
@@ -140,26 +142,40 @@ assert(devHomepage === generatedDevHomepage || intentionalDevSpeakerPreview,
 assert(!homepage.includes('DEV-ONLY SPEAKER PREVIEW'),
   'The development-only speaker preview marker must never enter production HTML.');
 assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="true"></div>') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-podium') &&
-  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-podium'),
-  'The Evaluation Gallery live leaderboard is not mounted with its release assets.');
-assert(galleryJs.includes("spreadsheetId: '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
-  galleryJs.includes("range: 'D1:P'") &&
-  galleryJs.includes('forumGalleryLeaderboardReceive') &&
-  galleryJs.includes("get('galleryDemo') === '1'") &&
-  galleryJs.includes('data-eg-refresh'),
-  'The leaderboard is not wired directly to the public response Sheet, demo mode, and manual refresh control.');
+  homepage.includes('assets/evaluation-gallery-leaderboard.css?v=20260907-frozen-podium') &&
+  homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-frozen-podium') &&
+  homepage.includes('id="evaluation-gallery-results"'),
+  'The frozen Evaluation Gallery snapshot is not mounted with its release assets.');
 assert(galleryJs.includes("voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'"),
   'The Evaluation Gallery vote button is not wired to the approved Google Form.');
-assert(!galleryJs.includes('setInterval('),
-  'The Evaluation Gallery must refresh only on initial load or a visitor click.');
-assert(!galleryJs.includes('Public_Leaderboard') &&
+assert(galleryJs.includes('assets/butterfly-mark.svg') &&
+  galleryCss.includes('.eg-butterfly') && galleryCss.includes('.eg-podium-winner-mark'),
+  'The podium must reuse the Forum butterfly asset.');
+assert(!galleryJs.includes('setInterval(') &&
+  !galleryJs.includes('fetch(') &&
+  !galleryJs.includes('forumGalleryLeaderboardReceive') &&
+  !galleryJs.includes('galleryDemo') &&
+  !galleryJs.includes('data-eg-refresh') &&
+  !galleryJs.includes('Refresh results') &&
+  !galleryJs.includes('docs.google.com/spreadsheets') &&
+  !galleryJs.includes('Public_Leaderboard') &&
   !galleryJs.includes('Email Address') &&
-  !galleryJs.includes('Voting Code') &&
-  !galleryJs.includes("range: 'A") &&
-  !galleryJs.includes("range: 'B") &&
-  !galleryJs.includes("range: 'C"),
-  'The browser feed must exclude the private identity and voting-code columns.');
+  !galleryJs.includes('Voting Code'),
+  'The visitor-facing leaderboard must use only the frozen aggregate snapshot, with no polling or voter data.');
+assert(packageJson.scripts?.['gallery:publish'] === 'node scripts/publish-gallery-results.mjs' &&
+  galleryPublisherJs.includes("const SHEET_RANGE = 'D1:P'") &&
+  galleryPublisherJs.includes("const SPREADSHEET_ID = '12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA'") &&
+  galleryPublisherJs.includes("answer.trim() !== 'PUBLISH'") &&
+  galleryPublisherJs.includes("run('git', ['push', 'origin', 'master'])"),
+  'The one-command live-Sheet publication pipeline is incomplete.');
+const gallerySnapshotMatch = homepage.match(/\/\/ EVALUATION_GALLERY_SNAPSHOT_START\n  const evaluationGallerySnapshot = Object\.freeze\((\{[\s\S]*?\})\);\n  \/\/ EVALUATION_GALLERY_SNAPSHOT_END/);
+assert(gallerySnapshotMatch, 'The embedded Evaluation Gallery snapshot marker is missing.');
+const gallerySnapshot = JSON.parse(gallerySnapshotMatch[1]);
+assert(['pending', 'published'].includes(gallerySnapshot.status), 'The Evaluation Gallery snapshot status is invalid.');
+assert(gallerySnapshot.status === 'pending' ? gallerySnapshot.rows.length === 0 : gallerySnapshot.rows.length === 12,
+  'The Evaluation Gallery snapshot does not match its publication status.');
+assert(!/(email|voting.?code|uuid|response.?id)/i.test(JSON.stringify(gallerySnapshot)),
+  'The embedded Evaluation Gallery snapshot must remain PII-free.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),
   'The production homepage must remain indexable.');
 assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),

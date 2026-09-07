@@ -36,6 +36,21 @@ The check verifies the original bundled-runtime markers, local references,
 metadata, pending live-room safeguards, guarded form pages, retired paths, the
 asset allowlist, and required Apache rules.
 
+## Publish the Evaluation Gallery results
+
+At the official reveal time, run this once from an interactive terminal on a
+clean, synchronized `master` branch:
+
+```sh
+npm run gallery:publish
+```
+
+The command reads ranking columns D:P from the public response Sheet once,
+prints the computed podium, and requires `PUBLISH` confirmation. It then freezes
+the aggregate result into the site, runs the release checks and build, commits
+only the generated result pages, and pushes `master` for deployment. Visitors
+never poll the Sheet; later responses do not change the published snapshot.
+
 ## Release gates
 
 Before production publication, the release owner must complete all of these:
