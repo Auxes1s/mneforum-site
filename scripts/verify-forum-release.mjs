@@ -127,6 +127,28 @@ assert(devHomepage.includes('class="tag tag-neutral hero__venue-link"') &&
   !devHomepage.includes('View on Google Maps'),
   'The development preview is missing the venue-only Google Maps chip.');
 assert(rendered.includes('Program of activities'), 'The Program heading is missing.');
+const bundledSignalsTitle = 'Signals from Antennae: Prototyping Naga City’s AI Planner to Collect Data on Transportation';
+const approvedSignalsTitle = 'Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation';
+const bundledDialogueDescription = 'An open-floor exchange between evaluators, commissioning agencies and users of evidence on what is and is not working in the national M&E ecosystem.';
+const approvedDialogueDescription = 'An interactive exchange between DEPDev evaluators and forum participants highlighting evaluation initiatives across regions and showcasing how evidence from evaluations has been utilized to strengthen policies, enhance program design and implementation, and improve public service delivery.';
+assert(homepage.includes(bundledSignalsTitle) && homepage.includes(approvedSignalsTitle) &&
+  homepage.includes(bundledDialogueDescription) && homepage.includes(approvedDialogueDescription),
+  'The production transform is missing an approved Program copy replacement.');
+rendered = rendered
+  .replace(bundledSignalsTitle, approvedSignalsTitle)
+  .replace(bundledDialogueDescription, approvedDialogueDescription);
+const programMatch = rendered.match(/const PROGRAM = \[([\s\S]*?)\n\];/);
+assert(programMatch, 'The Program definitions are missing.');
+const programTitles = Array.from(programMatch[1].matchAll(/title: "([^"]+)"/g), match => match[1]);
+assert(programTitles.includes(approvedSignalsTitle),
+  'The Program is missing the approved Signals from Antennae title.');
+assert(!programTitles.some(title => /Naga City/i.test(title)),
+  'Naga City must not appear in a Program title.');
+assert(programMatch[1].includes(`desc: "${approvedDialogueDescription}"`),
+  'The Evaluation Dialogue Session is missing its approved description.');
+assert(roster.sessions.some(session => session.id === 'breakout-1-1' && session.title === approvedSignalsTitle) &&
+  !roster.sessions.some(session => /Naga City/i.test(session.title)),
+  'The roster session titles must retain the approved Signals from Antennae wording without Naga City.');
 for (const sessionTitle of [
   'Plenary 1 — Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector',
   'Breakout 1 — Unpacking the Cocoon: Practical AI Use Cases in Public Sector Monitoring',
@@ -398,6 +420,9 @@ for (const [name, position] of Object.entries(expectedDisplayPositions)) {
 }
 assert(speakerRecords.some(speaker => speaker.name === 'Suparna Roy' && speaker.org === 'Asian Development Bank'),
   'Suparna Roy must show Asian Development Bank as her sole affiliation.');
+assert(speakerRecords.some(speaker => speaker.name === 'Christophe Bahuet' &&
+  speaker.org === 'United Nations Development Programme (UNDP) in the Philippines'),
+  'Christophe Bahuet must show the approved UNDP Philippines affiliation.');
 assert(speakerRecords.some(speaker => speaker.name === 'Aleli Kraft' && speaker.org === 'University of the Philippines'),
   'Aleli Kraft must show University of the Philippines as her affiliation.');
 const expectedEconomicsAffiliations = {
@@ -452,7 +477,7 @@ for (const speaker of photoSpeakers) {
   assert(/^\d{1,3}% \d{1,3}%$/.test(speaker.objectPosition),
     `Invalid face focal position for ${speaker.name}: ${speaker.objectPosition}`);
 }
-assert(photoSpeakers.length === 39, `Expected 39 supplied resource-person photos; found ${photoSpeakers.length}.`);
+assert(photoSpeakers.length === 40, `Expected 40 supplied resource-person photos; found ${photoSpeakers.length}.`);
 assert(photoSpeakers.every(speaker => speaker.photoScale === '1.00' && speaker.objectPosition === '50% 50%'),
   'Pre-cropped speaker photos must render without browser zoom or focal repositioning.');
 assert(!speakerRecords.some(speaker => /^(Usec\.|Asec\.|Mr\.|Ms\.|Dr\.|Engr\.|ARD\b|Assistant\b|Executive\b|Chief\b|OIC-)/.test(speaker.name)),
@@ -462,13 +487,14 @@ assert(speakerManifest.includes('"Wilford Will L. Wong","wilford-wong.webp"') &&
   speakerManifest.includes('"225","225","7224","50% 50%","1.00","yes"'),
   'Wilford Wong photo provenance is missing or stale.');
 const rosterPhotoRecords = roster.roster.filter(record => record.photo);
-assert(rosterPhotoRecords.length === 36,
-  `Expected 36 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
+assert(rosterPhotoRecords.length === 37,
+  `Expected 37 roster records with supplied portraits; found ${rosterPhotoRecords.length}.`);
 for (const record of rosterPhotoRecords) {
   assert(fs.existsSync(path.join(root, record.photo)),
     `Missing roster portrait for ${record.id}: ${record.photo}`);
 }
 const expectedNewPortraits = [
+  ['ryan-s-lita', 'Ryan S. Lita', 'assets/speakers/2026/ryan-s-lita.jpg'],
   ['suparna-roy', 'Suparna Roy', 'assets/speakers/2026/suparna-roy.jpg'],
   ['ralph-camelo-mariano', 'Ralph Camelo Mariano', 'assets/speakers/2026/ralph-camelo-mariano.jpg'],
   ['pita-s-picpican', 'Pita S. Picpican', 'assets/speakers/2026/pita-s-picpican.jpg'],
@@ -485,7 +511,7 @@ for (const [id, displayName, photo] of expectedNewPortraits) {
   assert(speakerRecords.some(record => record.name === displayName && record.photo === photo),
     `${displayName} must retain its verified public portrait mapping.`);
 }
-assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 39,
+assert((speakerManifest.match(/"manual-square-crop"/g) || []).length === 40,
   'All supplied speaker photos must use the approved manual square crops.');
 assert(speakerCss.includes('border-radius: 28%') && speakerCss.includes('clip-path: inset(0 round 28%)'),
   'Speaker avatars must use the approved squircle clipping geometry.');

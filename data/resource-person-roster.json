@@ -495,6 +495,7 @@
       "wave": "wave2",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/ryan-s-lita.jpg",
       "source": {"kind": "session-guide", "highlighted": false}
     },
     {

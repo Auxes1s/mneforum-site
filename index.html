@@ -374,6 +374,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Public Slido destinations and Q&A interaction are intentionally redacted.
 
+    // Keep the published Program wording aligned with the approved session copy.
+    template = template
+      .replace(
+        'Signals from Antennae: Prototyping Naga City’s AI Planner to Collect Data on Transportation',
+        'Signals from Antennae: Prototyping AI Planners to Collect Data on Transportation'
+      )
+      .replace(
+        'An open-floor exchange between evaluators, commissioning agencies and users of evidence on what is and is not working in the national M&E ecosystem.',
+        'An interactive exchange between DEPDev evaluators and forum participants highlighting evaluation initiatives across regions and showcasing how evidence from evaluations has been utilized to strengthen policies, enhance program design and implementation, and improve public service delivery.'
+      );
+
     // Keep presenter identity in the speaker section only. The program remains
     // a stable agenda of times, rooms, topics, and session descriptions, while
     // the complete confirmed roster is presented below.
@@ -432,7 +443,7 @@ const SPEAKER_SESSIONS = [
 
 const SPEAKERS = [
   { name: "Arsenio M. Balisacan", position: "Secretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Opening speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/arsenio-balisacan.webp", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Christophe Bahuet", position: "Resident Representative", org: "United Nations Development Programme (UNDP) Philippines", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 50%", photoScale: "1.00" },
+  { name: "Christophe Bahuet", position: "Resident Representative", org: "United Nations Development Programme (UNDP) in the Philippines", role: "Speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/christophe-bahuet.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Roderick M. Planta", position: "Assistant Secretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Closing speaker", sessionId: "opening-closing", wave: "wave1", photo: "assets/speakers/2026/roderick-planta.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Diane Gail L. Maharjan", position: "Director", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Moderator", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/diane-maharjan.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Rosemarie G. Edillon", position: "Undersecretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "plenary-1", wave: "wave1", photo: "assets/speakers/2026/rosemarie-edillon.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
@@ -468,7 +479,7 @@ const SPEAKERS = [
   { name: "Agnes E. Tolentino", position: "Assistant Secretary", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Moderator", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/agnes-tolentino.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Lorraine Goyena", position: "Enterprise Architect", org: "Pintig Lab, United Nations Development Programme (UNDP)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/lorraine-goyena.webp", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "David Joseph Emmanuel B. Yap Jr.", position: "Executive Director", org: "Congressional Policy and Budget Research Department (CPBRD)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/david-joseph-emmanuel-b-yap-jr.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
-  { name: "Ryan S. Lita", position: "Undersecretary and Chief of Staff", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "", objectPosition: "50% 50%" },
+  { name: "Ryan S. Lita", position: "Undersecretary and Chief of Staff", org: "Department of Budget and Management (DBM)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/ryan-s-lita.jpg", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Yuko Lisette R. Domingo", position: "Chief Economic Development Specialist", org: "Department of Economy, Planning, and Development (DEPDev)", role: "Panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/yuko-lisette-r-domingo.png", objectPosition: "50% 50%", photoScale: "1.00" },
   { name: "Kerry Albright", position: "Advisor and Head of Evaluation Knowledge Management", org: "Independent Evaluation Department, Asian Development Bank (ADB)", role: "Presenter and panelist", sessionId: "breakout-2-3", wave: "wave2", photo: "assets/speakers/2026/kerry-albright.jpg", objectPosition: "50% 50%", photoScale: "1.00" }
 ];`
