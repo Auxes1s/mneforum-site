@@ -31,6 +31,7 @@
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style">
   <link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">
+  <link rel="preload" href="assets/forum-qa.css?v=20260908-ux" as="style">
   <!-- The approved brand faces are local so the page cannot silently fall
        back to a device font when Fontshare's API is restricted. -->
   <link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin>
@@ -143,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '<meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style"><link rel="preload" href="assets/forum-qa.css?v=20260908-ux" as="style">' +
       '<link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
@@ -660,6 +661,11 @@ const SPEAKERS = [
     short: "Plenary 1",
     badge: "Plenary Hall · 8:45 AM",
     time: "8:45 AM – 10:15 AM",
+    scheduleBlock: "plenary-1",
+    hall: "Plenary Hall",
+    track: "Opening plenary",
+    start: "2026-09-09T08:45:00+08:00",
+    end: "2026-09-09T10:15:00+08:00",
     label: "Plenary 1 — Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector",
     desc: "Examine international and regional AI experience alongside the readiness, governance, institutional, and capability gaps facing Philippine public agencies.",
     code: "2283519",
@@ -672,6 +678,11 @@ const SPEAKERS = [
     short: "BR 1.1",
     badge: "Track A · Hall 1 · 10:30 AM",
     time: "10:30 AM – 11:45 AM",
+    scheduleBlock: "morning-breakouts",
+    hall: "Hall 1",
+    track: "Track A",
+    start: "2026-09-09T10:30:00+08:00",
+    end: "2026-09-09T11:45:00+08:00",
     label: "Breakout 1.1 (Track A) — Signals from Antennae: Prototyping Naga City’s AI Planner",
     desc: "Demonstration of computer vision and automated data capture used to model municipal traffic, public transport, and urban infrastructure.",
     code: "3536711",
@@ -684,6 +695,11 @@ const SPEAKERS = [
     short: "BR 1.2",
     badge: "Track B · Hall 2 · 10:30 AM",
     time: "10:30 AM – 11:45 AM",
+    scheduleBlock: "morning-breakouts",
+    hall: "Hall 2",
+    track: "Track B",
+    start: "2026-09-09T10:30:00+08:00",
+    end: "2026-09-09T11:45:00+08:00",
     label: "Breakout 1.2 (Track B) — A Data Path: Tracking Data on Environment, Mobility, and Tourism",
     desc: "Data analytics and sensor fusion to monitor environmental conditions, pedestrian movement, and tourism activity in Baguio City.",
     code: "1293730",
@@ -696,6 +712,11 @@ const SPEAKERS = [
     short: "BR 1.3",
     badge: "Track C · Hall 3 · 10:30 AM",
     time: "10:30 AM – 11:45 AM",
+    scheduleBlock: "morning-breakouts",
+    hall: "Hall 3",
+    track: "Track C",
+    start: "2026-09-09T10:30:00+08:00",
+    end: "2026-09-09T11:45:00+08:00",
     label: "Breakout 1.3 (Track C) — Flying from Afar: Advanced Technologies for Monitoring",
     desc: "Earth observation data, satellite imagery, computer vision, and drone analytics for large-area monitoring of infrastructure and food security.",
     code: "2139425",
@@ -708,6 +729,11 @@ const SPEAKERS = [
     short: "BR 2.1",
     badge: "Track A · Hall 1 · 1:45 PM",
     time: "1:45 PM – 3:00 PM",
+    scheduleBlock: "afternoon-breakouts",
+    hall: "Hall 1",
+    track: "Track A",
+    start: "2026-09-09T13:45:00+08:00",
+    end: "2026-09-09T15:00:00+08:00",
     label: "Breakout 2.1 (Track A) — Laying the Foundation: Processing Qualitative Evidence at Scale",
     desc: "Processing qualitative evidence at scale with AI and NLP while maintaining rigorous qualitative data safeguards and human oversight.",
     code: "1973556",
@@ -720,6 +746,11 @@ const SPEAKERS = [
     short: "BR 2.2",
     badge: "Track B · Hall 2 · 1:45 PM",
     time: "1:45 PM – 3:00 PM",
+    scheduleBlock: "afternoon-breakouts",
+    hall: "Hall 2",
+    track: "Track B",
+    start: "2026-09-09T13:45:00+08:00",
+    end: "2026-09-09T15:00:00+08:00",
     label: "Breakout 2.2 (Track B) — Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning",
     desc: "Advanced machine learning and econometric methods to strengthen causal identification and impact estimation in public sector programs.",
     code: "2282758",
@@ -732,6 +763,11 @@ const SPEAKERS = [
     short: "Plenary 2",
     badge: "Plenary Hall · 3:00 PM",
     time: "3:00 PM – 4:30 PM",
+    scheduleBlock: "plenary-2",
+    hall: "Plenary Hall",
+    track: "Closing plenary",
+    start: "2026-09-09T15:00:00+08:00",
+    end: "2026-09-09T16:30:00+08:00",
     label: "Plenary 2 — Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E",
     desc: "Closing plenary on institutional requirements, ethical safeguards, and transparency standards needed before AI-supported evidence can inform public decisions.",
     code: "3613753",
@@ -741,36 +777,78 @@ const SPEAKERS = [
   }
 ];`;
     template = template.replace(/const ROOMS = \[[\s\S]*?\n\];/, verifiedRooms);
+    template = template.replace(
+      'room: "a",',
+      'room: null,\n    qaEmbedOpen: false,'
+    );
 
     template = template.replace(
       /const activeRoom = ROOMS\.find\(r => r\.id === st\.room\) \|\| ROOMS\[0\];[\s\S]*?const mirrorFoot =[\s\S]*?;\n/,
-`const activeRoom = ROOMS.find(r => r.id === st.room) || ROOMS[0];
-    const rooms = ROOMS.map(r => ({
+`const selectedRoom = ROOMS.find(r => r.id === st.room) || null;
+    const currentRooms = phase === "live"
+      ? ROOMS.filter(r => st.now >= new Date(r.start).getTime() && st.now < new Date(r.end).getTime())
+      : [];
+    const automaticRoom = !selectedRoom && currentRooms.length === 1
+      ? currentRooms[0]
+      : (!selectedRoom && phase === "before" ? ROOMS[0] : (!selectedRoom && phase === "after" ? ROOMS[ROOMS.length - 1] : null));
+    const activeRoom = selectedRoom || automaticRoom;
+    const roomView = r => ({
       id: r.id,
       short: r.short,
-      cls: r.id === activeRoom.id ? "is-selected" : "",
-      pressed: r.id === activeRoom.id,
-      select: () => this.setState({ room: r.id })
-    }));
+      hall: r.hall,
+      track: r.track,
+      cls: activeRoom && r.id === activeRoom.id ? "is-selected" : "",
+      pressed: !!activeRoom && r.id === activeRoom.id,
+      select: event => {
+        const fromKeyboard = !!event && event.detail === 0;
+        this.setState({ room: r.id, qaEmbedOpen: false }, () => {
+          if (!fromKeyboard) return;
+          const heading = document.querySelector("#qa-active-room-title");
+          if (heading) heading.focus({ preventScroll: true });
+        });
+      }
+    });
+    const plenary1Rooms = ROOMS.filter(r => r.scheduleBlock === "plenary-1").map(roomView);
+    const morningRooms = ROOMS.filter(r => r.scheduleBlock === "morning-breakouts").map(roomView);
+    const afternoonRooms = ROOMS.filter(r => r.scheduleBlock === "afternoon-breakouts").map(roomView);
+    const plenary2Rooms = ROOMS.filter(r => r.scheduleBlock === "plenary-2").map(roomView);
+    const breakoutChoiceRequired = phase === "live" && currentRooms.length > 1 && !selectedRoom;
+    const activeRoomIsLive = !!activeRoom && currentRooms.some(r => r.id === activeRoom.id);
+    const isQaMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 700px)").matches;
+    const showInlineEmbed = !!activeRoom && (!isQaMobile || !!st.qaEmbedOpen);
 `
     );
 
     template = template.replace(
       /rooms,\s*activeRoomLabel:\s*activeRoom\.label,\s*activeRoomShort:\s*activeRoom\.short,[\s\S]*?mirrorDot:[\s\S]*?,/,
-`rooms,
+`plenary1Rooms, morningRooms, afternoonRooms, plenary2Rooms,
+      hasActiveRoom: !!activeRoom,
+      noActiveRoom: !activeRoom,
+      breakoutChoiceRequired,
+      choiceTitle: breakoutChoiceRequired ? "Choose your breakout hall" : "Choose a Q&A room",
+      choiceDesc: breakoutChoiceRequired
+        ? "Select the hall shown on your badge or venue signage. Each concurrent breakout has a separate question board."
+        : "Select a session and hall above to open its question board.",
+      roomStatusLabel: activeRoomIsLive ? "Live Slido room" : (phase === "after" ? "Slido room" : "Q&A room"),
+      beaconClass: activeRoomIsLive ? "is-live" : "",
+      showInlineEmbed,
+      hideInlineEmbed: !!activeRoom && !showInlineEmbed,
+      embedToggleLabel: st.qaEmbedOpen ? "Hide embedded Q&A" : "View Q&A here",
+      toggleQaEmbed: () => this.setState(s => ({ qaEmbedOpen: !s.qaEmbedOpen })),
       activeRoom,
-      activeRoomId: activeRoom.id,
-      activeRoomShort: activeRoom.short,
-      activeRoomBadge: activeRoom.badge,
-      activeRoomTime: activeRoom.time,
-      activeRoomLabel: activeRoom.label,
-      activeRoomDesc: activeRoom.desc,
-      activeRoomCode: activeRoom.code,
-      activeRoomUrl: activeRoom.url,
-      activeRoomQr: activeRoom.qr,
+      activeRoomId: activeRoom ? activeRoom.id : "",
+      activeRoomShort: activeRoom ? activeRoom.short : "",
+      activeRoomBadge: activeRoom ? activeRoom.badge : "",
+      activeRoomTime: activeRoom ? activeRoom.time : "",
+      activeRoomLabel: activeRoom ? activeRoom.label : "Choose your breakout hall",
+      activeRoomDesc: activeRoom ? activeRoom.desc : "Select the hall shown on your badge or venue signage. Each breakout has a separate question board.",
+      activeRoomCode: activeRoom ? activeRoom.code : "",
+      activeRoomUrl: activeRoom ? activeRoom.url : "#qa-room-picker",
+      activeRoomQr: activeRoom ? activeRoom.qr : "",
       copiedCode: !!st.copiedCode,
       notCopiedCode: !st.copiedCode,
       copyCode: () => {
+        if (!activeRoom) return;
         if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(activeRoom.code).catch(() => {});
         }
@@ -788,31 +866,78 @@ const SPEAKERS = [
         </div>
         <div class="qa-header__row">
           <h2 id="qa-title" style="margin: 0; font-size: 38px;">Join the Q&amp;A</h2>
-          <span class="qa-header__powered">Powered by Slido · 7 Dedicated Session Rooms</span>
+          <span class="qa-header__powered">Powered by Slido · 7 session rooms</span>
         </div>
         <p class="qa-lead">
-          Participate directly in plenary and breakout discussions. Choose your session room below to submit questions, upvote audience inquiries, and follow the live moderator queue in Slido.
+          Find your session, choose your hall, and join its Slido room to ask or upvote questions.
         </p>
       </div>
 
-      <div class="filter-group qa-room-nav" role="group" aria-label="Select session room for Q&amp;A">
-        <sc-for list="{{ rooms }}" as="r" hint-placeholder-count="7">
-          <button class="filter-chip qa-room-chip {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
-            <span class="qa-room-chip__dot" aria-hidden="true"></span>
-            <span>{{ r.short }}</span>
-          </button>
-        </sc-for>
+      <div id="qa-room-picker" class="qa-room-picker" aria-label="Choose a Q&amp;A session room">
+        <div class="qa-room-group" role="group" aria-labelledby="qa-group-p1">
+          <div class="qa-room-group__heading">
+            <span id="qa-group-p1">Plenary 1</span><span>8:45–10:15 AM</span>
+          </div>
+          <sc-for list="{{ plenary1Rooms }}" as="r" hint-placeholder-count="1">
+            <button class="qa-room-button {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
+              <span class="qa-room-button__place">{{ r.hall }}</span><span class="qa-room-button__track">{{ r.track }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div class="qa-room-group" role="group" aria-labelledby="qa-group-am">
+          <div class="qa-room-group__heading">
+            <span id="qa-group-am">Morning breakouts</span><span>10:30–11:45 AM</span>
+          </div>
+          <div class="qa-room-group__options">
+            <sc-for list="{{ morningRooms }}" as="r" hint-placeholder-count="3">
+              <button class="qa-room-button {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
+                <span class="qa-room-button__place">{{ r.hall }}</span><span class="qa-room-button__track">{{ r.track }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div class="qa-room-group" role="group" aria-labelledby="qa-group-pm">
+          <div class="qa-room-group__heading">
+            <span id="qa-group-pm">Afternoon breakouts</span><span>1:45–3:00 PM</span>
+          </div>
+          <div class="qa-room-group__options">
+            <sc-for list="{{ afternoonRooms }}" as="r" hint-placeholder-count="2">
+              <button class="qa-room-button {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
+                <span class="qa-room-button__place">{{ r.hall }}</span><span class="qa-room-button__track">{{ r.track }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div class="qa-room-group" role="group" aria-labelledby="qa-group-p2">
+          <div class="qa-room-group__heading">
+            <span id="qa-group-p2">Plenary 2</span><span>3:00–4:30 PM</span>
+          </div>
+          <sc-for list="{{ plenary2Rooms }}" as="r" hint-placeholder-count="1">
+            <button class="qa-room-button {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
+              <span class="qa-room-button__place">{{ r.hall }}</span><span class="qa-room-button__track">{{ r.track }}</span>
+            </button>
+          </sc-for>
+        </div>
       </div>
 
       <div class="qa-layout">
-        <div>
-          <div class="brandcard qa-passport-card">
+        <div class="qa-details-column">
+          <sc-if value="{{ noActiveRoom }}">
+            <div class="qa-choice-card" role="status">
+              <span class="qa-choice-card__eyebrow">Your hall matters</span>
+              <h3 id="qa-active-room-title" tabindex="-1">{{ choiceTitle }}</h3>
+              <p>{{ choiceDesc }}</p>
+              <a class="qa-choice-card__back" href="#qa-room-picker">Choose a room ↑</a>
+            </div>
+          </sc-if>
+          <sc-if value="{{ hasActiveRoom }}">
+          <div class="qa-passport-card">
             <div class="qa-passport-header">
               <span class="tag tag-accent">{{ activeRoomBadge }}</span>
               <span class="qa-passport-time">{{ activeRoomTime }}</span>
             </div>
 
-            <h3 class="qa-passport-title">{{ activeRoomLabel }}</h3>
+            <h3 id="qa-active-room-title" class="qa-passport-title" tabindex="-1">{{ activeRoomLabel }}</h3>
             <p class="qa-passport-desc">{{ activeRoomDesc }}</p>
 
             <div class="qa-code-card">
@@ -821,7 +946,7 @@ const SPEAKERS = [
                 <div class="qa-code-val">#{{ activeRoomCode }}</div>
                 <span class="qa-code-sub">Join at <strong>slido.com</strong> or scan QR</span>
               </div>
-              <button class="btn btn-secondary qa-copy-btn" type="button" sc-camel-on-click="{{ copyCode }}" aria-label="Copy event code {{ activeRoomCode }}">
+              <button class="qa-copy-btn" type="button" sc-camel-on-click="{{ copyCode }}" aria-label="Copy event code {{ activeRoomCode }}">
                 <sc-if value="{{ copiedCode }}">
                   <span>✓ Copied</span>
                 </sc-if>
@@ -832,13 +957,9 @@ const SPEAKERS = [
             </div>
 
             <div class="qa-actions">
-              <a class="btn btn-primary qa-btn-primary" href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">
-                <span>Open in Slido App</span>
+              <a class="qa-btn-primary" href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">
+                <span>Join Q&amp;A on Slido</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                <span class="sr-only">(opens in a new tab)</span>
-              </a>
-              <a class="btn btn-secondary qa-btn-secondary" href="https://www.sli.do" target="_blank" rel="noopener noreferrer">
-                <span>slido.com</span>
                 <span class="sr-only">(opens in a new tab)</span>
               </a>
             </div>
@@ -856,21 +977,22 @@ const SPEAKERS = [
             <div class="qa-guide-card">
               <div class="qa-guide-title">How Q&amp;A runs</div>
               <ul class="qa-guide-list">
-                <li>Moderators track the live question queue on their podium screen.</li>
-                <li>Upvote questions from fellow participants to elevate priority topics.</li>
-                <li>The Secretariat exports the official Slido transcript at close of session.</li>
-                <li>Unanswered questions receive written responses in the official session notes.</li>
+                <li>Ask a concise question or upvote one already in the queue.</li>
+                <li>Moderators prioritize the most relevant audience questions.</li>
+                <li>Unanswered questions may receive responses in the official session notes.</li>
               </ul>
             </div>
           </div>
+          </sc-if>
         </div>
 
-        <div>
-          <div class="brandcard qa-stage-card">
+        <div class="qa-stage-column">
+          <sc-if value="{{ hasActiveRoom }}">
+          <div class="qa-stage-card">
             <div class="qa-stage-header">
-              <div class="qa-beacon">
+              <div class="qa-beacon {{ beaconClass }}">
                 <span class="qa-beacon-dot" aria-hidden="true"></span>
-                <span class="qa-beacon-text">Live Slido Room</span>
+                <span class="qa-beacon-text">{{ roomStatusLabel }}</span>
               </div>
               <div class="qa-stage-meta">
                 <span class="qa-stage-title">{{ activeRoomShort }}</span>
@@ -882,17 +1004,33 @@ const SPEAKERS = [
               </a>
             </div>
 
+            <button class="qa-embed-toggle" type="button" aria-expanded="{{ showInlineEmbed }}" sc-camel-on-click="{{ toggleQaEmbed }}">{{ embedToggleLabel }}</button>
+
+            <sc-if value="{{ showInlineEmbed }}">
             <div class="qa-iframe-shell">
               <iframe class="qa-slido-frame" src="{{ activeRoomUrl }}" title="Slido Live Q&amp;A and Polls for {{ activeRoomShort }}" allow="clipboard-read; clipboard-write" loading="lazy">
                 <p>Your browser does not display embedded frames. <a href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">Open {{ activeRoomShort }} directly on Slido</a>.</p>
               </iframe>
             </div>
+            </sc-if>
+
+            <sc-if value="{{ hideInlineEmbed }}">
+              <div class="qa-embed-placeholder">
+                <strong>Continue on Slido for the best mobile experience.</strong>
+                <span>You can also open the live board here if you prefer to stay on this page.</span>
+              </div>
+            </sc-if>
 
             <div class="qa-stage-footer">
               <span>Submit questions and upvote in real time · Accessible on any device</span>
-              <a href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">Open on Slido ↗</a>
             </div>
           </div>
+          </sc-if>
+          <sc-if value="{{ noActiveRoom }}">
+            <div class="qa-stage-empty" aria-hidden="true">
+              <span>{{ choiceDesc }}</span>
+            </div>
+          </sc-if>
         </div>
       </div>
     </div>
@@ -6660,6 +6798,7 @@ const SPEAKERS = [
     document.getElementById('forum-ui-lock-styles')?.remove();
     document.getElementById('forum-release-styles')?.remove();
     document.getElementById('evaluation-gallery-leaderboard-styles')?.remove();
+    document.getElementById('forum-qa-styles')?.remove();
     const polishStyle = document.createElement('style');
     polishStyle.id = 'forum-mobile-polish';
     polishStyle.textContent = mobilePolish
@@ -6691,16 +6830,22 @@ const SPEAKERS = [
     galleryLink.rel = 'stylesheet';
     galleryLink.href = 'assets/evaluation-gallery-leaderboard.css?v=20260907-responsive-ceremony';
     document.head.appendChild(galleryLink);
-    // All six sheets have to sit at the end of <head>, in order: the
+    const qaLink = document.createElement('link');
+    qaLink.id = 'forum-qa-styles';
+    qaLink.rel = 'stylesheet';
+    qaLink.href = 'assets/forum-qa.css?v=20260908-ux';
+    document.head.appendChild(qaLink);
+    // All seven sheets have to sit at the end of <head>, in order: the
     // responsive polish layer, the brand layer, the audited responsive layer,
-    // the local Night Mode/fluid-layout lock, the release surface, then the
-    // namespaced Evaluation Gallery leaderboard.
+    // the local Night Mode/fluid-layout lock, the release surface, the
+    // Evaluation Gallery, then the isolated Q&A experience.
     //
     // Test the complete sequence as an ordered invariant, never as "each one
     // must be last". Corrective appends retrigger this observer, so the stable
     // sequence must be checked before appending anything.
     const keepResponsiveStylesLast = () => {
-      if (document.head.lastElementChild === galleryLink &&
+      if (document.head.lastElementChild === qaLink &&
+          qaLink.previousElementSibling === galleryLink &&
           galleryLink.previousElementSibling === releaseLink &&
           releaseLink.previousElementSibling === uiLockLink &&
           uiLockLink.previousElementSibling === responsiveLink &&
@@ -6714,6 +6859,7 @@ const SPEAKERS = [
       document.head.appendChild(uiLockLink);
       document.head.appendChild(releaseLink);
       document.head.appendChild(galleryLink);
+      document.head.appendChild(qaLink);
     };
     const polishObserver = new MutationObserver(keepResponsiveStylesLast);
     polishObserver.observe(document.head, { childList: true });
@@ -7864,6 +8010,14 @@ const SPEAKERS = [
             const shown = document.querySelectorAll('.speaker-card').length;
             announce(shown + ' resource ' + (shown === 1 ? 'person' : 'people') + ' shown for ' + chip.textContent.trim() + '.');
           }, 0);
+        });
+      });
+      document.querySelectorAll('.qa-room-button:not([data-announce-wired])').forEach(button => {
+        button.dataset.announceWired = '1';
+        button.addEventListener('click', () => {
+          const place = button.querySelector('.qa-room-button__place')?.textContent.trim() || 'Room';
+          const group = button.closest('.qa-room-group')?.querySelector('.qa-room-group__heading span:first-child')?.textContent.trim() || 'session';
+          announce(group + ', ' + place + ' Q&A selected.');
         });
       });
     };
