@@ -416,6 +416,27 @@ document.addEventListener('DOMContentLoaded', async function() {
       /\s*<div class="hero__actions">[\s\S]*?<\/div>/,
       ''
     );
+    // The countdown is useful only before opening. Once the Forum begins,
+    // replace the session-specific ticker with a truthful all-day status.
+    template = template.replace(
+      '        <div class="countdown" role="timer" aria-label="{{ countdownLabel }}">',
+      '        <sc-if value="{{ isBefore }}">\n          <div class="countdown" role="timer" aria-label="{{ countdownLabel }}">'
+    );
+    template = template.replace(
+      '          <p class="countdown__note">until the Forum opens · 7:30 a.m.</p>\n        </div>',
+      '          <p class="countdown__note">until the Forum opens · 7:30 a.m.</p>\n          </div>\n        </sc-if>'
+    );
+    template = template.replace(
+      '        <span style="opacity: .55;">10:30</span>\n        <strong style="font-weight: 500;">Breakout 1 — Unpacking the Cocoon: Practical AI Use Cases in Public Sector Monitoring</strong>',
+      '        <strong style="font-weight: 500;">The Forum is now underway</strong>'
+    );
+    // Keep the live state through the full event date, including the evening
+    // socials, and allow phase preview controls only on the /dev route.
+    template = template.replaceAll('2026-09-09T17:30:00+08:00', '2026-09-10T00:00:00+08:00');
+    template = template.replace(
+      '    const previewMode = valid.includes(preview);',
+      '    const previewMode = /^\\/dev(?:\\/|$)/.test(window.location.pathname) && valid.includes(preview);'
+    );
     const VENUE_MAP_HREF = 'https://www.google.com/maps/search/?api=1&query=EDSA%20Shangri-La%2C%20Manila%2C%201%20Garden%20Way%2C%20Ortigas%20Centre%2C%20Mandaluyong%20City%201550%2C%20Philippines';
     template = template.replace(
       '          <span class="tag tag-neutral">Indicative program</span>',
