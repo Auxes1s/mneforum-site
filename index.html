@@ -372,18 +372,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       .replaceAll('Questions and upvotes will be handled inside Slido when the Forum opens. This panel will mirror the room\'s board for public viewing.', 'Participants can submit questions and upvote them in Slido once the Forum opens. This panel will display the room\'s question board for public viewing.')
       .replaceAll('Opens Sept 9', 'Opens September 9');
 
-    // Do not ship generic Slido-home links as if they were event rooms. Keep
-    // the original button treatment, but make the unavailable destinations
-    // explicit until the Secretariat publishes verified room URLs.
-    template = template
-      .replaceAll(
-        '<a class="btn btn-primary" href="https://app.sli.do" target="_blank" rel="noopener" style="text-decoration: none;">Open in Slido <span class="sr-only">(opens in a new tab)</span></a>',
-        '<span class="btn btn-secondary" aria-disabled="true" style="opacity: .58; cursor: default;">Slido room pending</span>'
-      )
-      .replaceAll(
-        '<a class="btn btn-secondary" href="https://app.sli.do" target="_blank" rel="noopener" style="text-decoration: none;">Poll results <span class="sr-only">(opens in a new tab)</span></a>',
-        '<span class="btn btn-secondary" aria-disabled="true" style="opacity: .58; cursor: default;">Poll results pending</span>'
-      );
+    // Slido destinations are now active and wired directly to verified room URLs
+    // and event codes provided by the Secretariat.
 
     // Keep presenter identity in the speaker section only. The program remains
     // a stable agenda of times, rooms, topics, and session descriptions, while
@@ -663,6 +653,253 @@ const SPEAKERS = [
       'speakerFilters, speakers,',
       'speakerFilters, speakerSessions,'
     );
+
+    // Activate the Q&A Section with verified Slido links, event codes, and
+    // interactive live boards across every plenary and breakout room.
+    const verifiedRooms = `const ROOMS = [
+  {
+    id: "plenary-1",
+    short: "Plenary 1",
+    badge: "Plenary Hall · 8:45 AM",
+    time: "8:45 AM – 10:15 AM",
+    label: "Plenary 1 — Setting the Chrysalis: AI Readiness and Evidence Gaps in the Public Sector",
+    desc: "Examine international and regional AI experience alongside the readiness, governance, institutional, and capability gaps facing Philippine public agencies.",
+    code: "2283519",
+    url: "https://app.sli.do/event/7rJzDn8XdHgUsUNqN8ToeS",
+    qr: "assets/qr/slido-plenary-1.svg",
+    live: true
+  },
+  {
+    id: "breakout-1-1",
+    short: "BR 1.1",
+    badge: "Track A · Hall 1 · 10:30 AM",
+    time: "10:30 AM – 11:45 AM",
+    label: "Breakout 1.1 (Track A) — Signals from Antennae: Prototyping Naga City’s AI Planner",
+    desc: "Demonstration of computer vision and automated data capture used to model municipal traffic, public transport, and urban infrastructure.",
+    code: "3536711",
+    url: "https://app.sli.do/event/u9LkCNFj8QviNc3EcotuPk",
+    qr: "assets/qr/slido-breakout-1-1.svg",
+    live: true
+  },
+  {
+    id: "breakout-1-2",
+    short: "BR 1.2",
+    badge: "Track B · Hall 2 · 10:30 AM",
+    time: "10:30 AM – 11:45 AM",
+    label: "Breakout 1.2 (Track B) — A Data Path: Tracking Data on Environment, Mobility, and Tourism",
+    desc: "Data analytics and sensor fusion to monitor environmental conditions, pedestrian movement, and tourism activity in Baguio City.",
+    code: "1293730",
+    url: "https://app.sli.do/event/uKytfFVHpWPAYeTcRqwQcW",
+    qr: "assets/qr/slido-breakout-1-2.svg",
+    live: true
+  },
+  {
+    id: "breakout-1-3",
+    short: "BR 1.3",
+    badge: "Track C · Hall 3 · 10:30 AM",
+    time: "10:30 AM – 11:45 AM",
+    label: "Breakout 1.3 (Track C) — Flying from Afar: Advanced Technologies for Monitoring",
+    desc: "Earth observation data, satellite imagery, computer vision, and drone analytics for large-area monitoring of infrastructure and food security.",
+    code: "2139425",
+    url: "https://app.sli.do/event/wBdLpfpkf8qD4ntuNcYnvT",
+    qr: "assets/qr/slido-breakout-1-3.svg",
+    live: true
+  },
+  {
+    id: "breakout-2-1",
+    short: "BR 2.1",
+    badge: "Track A · Hall 1 · 1:45 PM",
+    time: "1:45 PM – 3:00 PM",
+    label: "Breakout 2.1 (Track A) — Laying the Foundation: Processing Qualitative Evidence at Scale",
+    desc: "Processing qualitative evidence at scale with AI and NLP while maintaining rigorous qualitative data safeguards and human oversight.",
+    code: "1973556",
+    url: "https://app.sli.do/event/6pxpYf5tT9phwTSiDfmwtR",
+    qr: "assets/qr/slido-breakout-2-1.svg",
+    live: true
+  },
+  {
+    id: "breakout-2-2",
+    short: "BR 2.2",
+    badge: "Track B · Hall 2 · 1:45 PM",
+    time: "1:45 PM – 3:00 PM",
+    label: "Breakout 2.2 (Track B) — Unfolding the Wings: Enhancing Causal Inference and Impact Evaluation with Machine Learning",
+    desc: "Advanced machine learning and econometric methods to strengthen causal identification and impact estimation in public sector programs.",
+    code: "2282758",
+    url: "https://app.sli.do/event/eEJv3GCRJ3Z8zwX9Hkw5yn",
+    qr: "assets/qr/slido-breakout-2-2.svg",
+    live: true
+  },
+  {
+    id: "plenary-2",
+    short: "Plenary 2",
+    badge: "Plenary Hall · 3:00 PM",
+    time: "3:00 PM – 4:30 PM",
+    label: "Plenary 2 — Blooming Forward: Safeguarding Trust, Integrity, and Governance in AI-Enabled M&E",
+    desc: "Closing plenary on institutional requirements, ethical safeguards, and transparency standards needed before AI-supported evidence can inform public decisions.",
+    code: "3613753",
+    url: "https://app.sli.do/event/g5G5E2sdEXMToNuTWUa7sF",
+    qr: "assets/qr/slido-plenary-2.svg",
+    live: true
+  }
+];`;
+    template = template.replace(/const ROOMS = \[[\s\S]*?\n\];/, verifiedRooms);
+
+    template = template.replace(
+      /const activeRoom = ROOMS\.find\(r => r\.id === st\.room\) \|\| ROOMS\[0\];[\s\S]*?const mirrorFoot =[\s\S]*?;\n/,
+`const activeRoom = ROOMS.find(r => r.id === st.room) || ROOMS[0];
+    const rooms = ROOMS.map(r => ({
+      id: r.id,
+      short: r.short,
+      cls: r.id === activeRoom.id ? "is-selected" : "",
+      pressed: r.id === activeRoom.id,
+      select: () => this.setState({ room: r.id })
+    }));
+`
+    );
+
+    template = template.replace(
+      'rooms, activeRoomLabel: activeRoom.label, activeRoomShort: activeRoom.short,\n      mirror, mirrorEmpty, mirrorState, mirrorFoot,\n      mirrorDot: phase === "live" && activeRoom.live ? "#f1a81e" : "var(--color-neutral-400)",',
+`rooms,
+      activeRoom,
+      activeRoomId: activeRoom.id,
+      activeRoomShort: activeRoom.short,
+      activeRoomBadge: activeRoom.badge,
+      activeRoomTime: activeRoom.time,
+      activeRoomLabel: activeRoom.label,
+      activeRoomDesc: activeRoom.desc,
+      activeRoomCode: activeRoom.code,
+      activeRoomUrl: activeRoom.url,
+      activeRoomQr: activeRoom.qr,
+      copiedCode: !!st.copiedCode,
+      notCopiedCode: !st.copiedCode,
+      copyCode: () => {
+        if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(activeRoom.code).catch(() => {});
+        }
+        this.setState({ copiedCode: true });
+        setTimeout(() => this.setState({ copiedCode: false }), 2200);
+      },`
+    );
+
+    const qaSection = `<section id="qa" class="qa-section" aria-labelledby="qa-title">
+    <div class="section-shell">
+      <div class="qa-header">
+        <div class="qa-eyebrow">
+          <img src="assets/butterfly-mark.svg" class="qa-eyebrow__mark" width="26" height="29" alt="" aria-hidden="true">
+          <span>Evidence in Dialogue · Live Audience Exchange</span>
+        </div>
+        <div class="qa-header__row">
+          <h2 id="qa-title" style="margin: 0; font-size: 38px;">Join the Q&amp;A</h2>
+          <span class="qa-header__powered">Powered by Slido · 7 Dedicated Session Rooms</span>
+        </div>
+        <p class="qa-lead">
+          Participate directly in plenary and breakout discussions. Choose your session room below to submit questions, upvote audience inquiries, and follow the live moderator queue in Slido.
+        </p>
+      </div>
+
+      <div class="filter-group qa-room-nav" role="group" aria-label="Select session room for Q&amp;A">
+        <sc-for list="{{ rooms }}" as="r" hint-placeholder-count="7">
+          <button class="filter-chip qa-room-chip {{ r.cls }}" type="button" aria-pressed="{{ r.pressed }}" sc-camel-on-click="{{ r.select }}">
+            <span class="qa-room-chip__dot" aria-hidden="true"></span>
+            <span>{{ r.short }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div class="qa-layout">
+        <div>
+          <div class="brandcard qa-passport-card">
+            <div class="qa-passport-header">
+              <span class="tag tag-accent">{{ activeRoomBadge }}</span>
+              <span class="qa-passport-time">{{ activeRoomTime }}</span>
+            </div>
+
+            <h3 class="qa-passport-title">{{ activeRoomLabel }}</h3>
+            <p class="qa-passport-desc">{{ activeRoomDesc }}</p>
+
+            <div class="qa-code-card">
+              <div>
+                <span class="qa-code-label">Slido Event Code</span>
+                <div class="qa-code-val">#{{ activeRoomCode }}</div>
+                <span class="qa-code-sub">Join at <strong>slido.com</strong> or scan QR</span>
+              </div>
+              <button class="btn btn-secondary qa-copy-btn" type="button" sc-camel-on-click="{{ copyCode }}" aria-label="Copy event code {{ activeRoomCode }}">
+                <sc-if value="{{ copiedCode }}">
+                  <span>✓ Copied</span>
+                </sc-if>
+                <sc-if value="{{ notCopiedCode }}">
+                  <span>Copy Code</span>
+                </sc-if>
+              </button>
+            </div>
+
+            <div class="qa-actions">
+              <a class="btn btn-primary qa-btn-primary" href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">
+                <span>Open in Slido App</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+              <a class="btn btn-secondary qa-btn-secondary" href="https://www.sli.do" target="_blank" rel="noopener noreferrer">
+                <span>slido.com</span>
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            </div>
+
+            <div class="qa-qr-card">
+              <div class="qa-qr-box">
+                <img src="{{ activeRoomQr }}" width="88" height="88" alt="QR code for {{ activeRoomShort }} Slido room" loading="lazy" decoding="async">
+              </div>
+              <div class="qa-qr-meta">
+                <strong>Scan from your seat</strong>
+                <p>Instant phone access to the {{ activeRoomShort }} interactive board. No account or app install required.</p>
+              </div>
+            </div>
+
+            <div class="qa-guide-card">
+              <div class="qa-guide-title">How Q&amp;A runs</div>
+              <ul class="qa-guide-list">
+                <li>Moderators track the live question queue on their podium screen.</li>
+                <li>Upvote questions from fellow participants to elevate priority topics.</li>
+                <li>The Secretariat exports the official Slido transcript at close of session.</li>
+                <li>Unanswered questions receive written responses in the official session notes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="brandcard qa-stage-card">
+            <div class="qa-stage-header">
+              <div class="qa-beacon">
+                <span class="qa-beacon-dot" aria-hidden="true"></span>
+                <span class="qa-beacon-text">Live Slido Room</span>
+              </div>
+              <div class="qa-stage-meta">
+                <span class="qa-stage-title">{{ activeRoomShort }}</span>
+                <span class="tag tag-accent">#{{ activeRoomCode }}</span>
+              </div>
+              <a class="qa-popout-link" href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer" title="Open {{ activeRoomShort }} full screen in Slido (opens in a new tab)">
+                <span>Full screen</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+
+            <div class="qa-iframe-shell">
+              <iframe class="qa-slido-frame" src="{{ activeRoomUrl }}" title="Slido Live Q&amp;A and Polls for {{ activeRoomShort }}" allow="clipboard-read; clipboard-write" loading="lazy">
+                <p>Your browser does not display embedded frames. <a href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">Open {{ activeRoomShort }} directly on Slido</a>.</p>
+              </iframe>
+            </div>
+
+            <div class="qa-stage-footer">
+              <span>Submit questions and upvote in real time · Accessible on any device</span>
+              <a href="{{ activeRoomUrl }}" target="_blank" rel="noopener noreferrer">Open on Slido ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+    template = template.replace(/<section id="qa" class="qa-section">[\s\S]*?<\/section>/, qaSection);
 
     // Embed yesterday's deployed Philippine responsible-AI game as a guarded,
     // same-site experience. The full-page route remains available for small
