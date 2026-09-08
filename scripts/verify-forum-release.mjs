@@ -216,6 +216,8 @@ assert(fs.existsSync(path.join(root, 'scripts', 'run-gallery-closeout.sh')) &&
   !JSON.stringify(encryptedVoterRegistry).includes('vote_code') &&
   galleryCloseoutJs.includes("run('git', ['push', 'origin', branch])") &&
   galleryCloseoutJs.includes('MNEFORUM_VOTER_REGISTRY_PASSPHRASE') &&
+  galleryCloseoutJs.includes('google-sheets-gviz-csv') &&
+  galleryCloseoutJs.includes('Live response sheet returned HTTP') &&
   !galleryCloseoutJs.includes('current-run.json') &&
   !galleryCloseoutJs.includes('MNEFORUM_VOTING_REPO_PATH'),
   'The portable encrypted Gallery closeout pipeline is incomplete.');

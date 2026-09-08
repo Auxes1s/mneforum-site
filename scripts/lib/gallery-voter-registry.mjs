@@ -61,13 +61,13 @@ export function authorizationRecords(registryRows) {
   return records;
 }
 
-export function encryptRegistry(records, passphrase, createdAt = new Date().toISOString()) {
+export function encryptRegistry(records, passphrase, createdAt = new Date().toISOString(), source = {}) {
   if (String(passphrase).length < 24) throw new Error('Registry passphrase must contain at least 24 characters.');
   const salt = crypto.randomBytes(32);
   const iv = crypto.randomBytes(12);
   const key = crypto.scryptSync(passphrase, salt, 32, {N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024});
   const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
-  const payload = Buffer.from(JSON.stringify({format: FORMAT, version: VERSION, records}), 'utf8');
+  const payload = Buffer.from(JSON.stringify({format: FORMAT, version: VERSION, records, source}), 'utf8');
   const ciphertext = Buffer.concat([cipher.update(payload), cipher.final()]);
   return {
     format: FORMAT,
@@ -82,7 +82,7 @@ export function encryptRegistry(records, passphrase, createdAt = new Date().toIS
   };
 }
 
-export function decryptRegistry(bundle, passphrase) {
+export function decryptRegistryBundle(bundle, passphrase) {
   if (bundle?.format !== FORMAT || bundle?.version !== VERSION || bundle?.cipher !== 'aes-256-gcm' || bundle?.kdf?.name !== 'scrypt') {
     throw new Error('Unsupported encrypted voter registry format.');
   }
@@ -97,10 +97,14 @@ export function decryptRegistry(bundle, passphrase) {
       decipher.update(Buffer.from(bundle.ciphertext, 'base64')), decipher.final()
     ]).toString('utf8'));
     if (payload.format !== FORMAT || payload.version !== VERSION || !Array.isArray(payload.records)) throw new Error('bad payload');
-    return authorizationRecords(payload.records);
+    return {records: authorizationRecords(payload.records), source: payload.source || {}};
   } catch {
     throw new Error('Could not decrypt the voter registry; check the passphrase.');
   }
+}
+
+export function decryptRegistry(bundle, passphrase) {
+  return decryptRegistryBundle(bundle, passphrase).records;
 }
 
 export const votingCodePattern = CODE_PATTERN;

@@ -46,33 +46,35 @@ are never committed in plaintext. Keep the passphrase separately in a password
 manager. On a working machine, either create the ignored
 `.gallery-closeout.key` file or set `MNEFORUM_VOTER_REGISTRY_PASSPHRASE`.
 
-After closing Google Forms, download its response sheet as CSV. Rehearse without
+After closing Google Forms, rehearse the live collection and tally without
 changing the website:
 
 ```sh
-bash scripts/run-gallery-closeout.sh --input "/path/to/People's Choice Voting.csv" --dry-run
+bash scripts/run-gallery-closeout.sh --dry-run
 ```
 
 ```powershell
-.\scripts\run-gallery-closeout.ps1 --input "C:\path\to\People's Choice Voting.csv" --dry-run
+.\scripts\run-gallery-closeout.ps1 --dry-run
 ```
 
 For the approved final release, use `--deploy` and type `PUBLISH` after the
 aggregate totals have been reviewed:
 
 ```sh
-bash scripts/run-gallery-closeout.sh --input "/path/to/People's Choice Voting.csv" --deploy
+bash scripts/run-gallery-closeout.sh --deploy
 ```
 
 ```powershell
-.\scripts\run-gallery-closeout.ps1 --input "C:\path\to\People's Choice Voting.csv" --deploy
+.\scripts\run-gallery-closeout.ps1 --deploy
 ```
 
-The command authenticates codes, enforces verified-email and first-valid-ballot
+The command downloads the live response sheet directly, preserves that exact
+CSV in its ignored audit run, authenticates codes, enforces verified-email and first-valid-ballot
 rules, applies the official voting window, produces an ignored audit run under
 `.gallery-closeout-runs/`, checks the frozen snapshot, builds the site, commits
 only the two generated pages, pushes the current branch, and polls the live page
-for the published snapshot ID. Omit `--deploy` to prepare the two page changes
+for the published snapshot ID. Pass `--input "/path/to/file.csv"` only for an
+offline rehearsal or recovery. Omit `--deploy` to prepare the two page changes
 for separate review and manual publication.
 
 The lower-level snapshot installer remains available on a clean release branch:
@@ -99,7 +101,7 @@ the sealing command from a trusted machine with the same passphrase, then commit
 only the resulting `.enc.json` file:
 
 ```sh
-npm run gallery:registry:seal -- --registry "/restricted/path/to/registry.csv"
+npm run gallery:registry:seal -- --registry "/restricted/path/to/registry.csv" --spreadsheet-id "<response-sheet-id>"
 ```
 
 ## Release gates

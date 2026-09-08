@@ -5,7 +5,7 @@ import process from 'node:process';
 import readline from 'node:readline/promises';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {decryptRegistry, parseCsvMatrix, votingCodePattern} from './lib/gallery-voter-registry.mjs';
+import {decryptRegistryBundle, parseCsvMatrix, votingCodePattern} from './lib/gallery-voter-registry.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const defaultOpen = '2026-09-09T10:15:00+08:00';
@@ -23,7 +23,6 @@ function parseArgs(argv) {
     else if (valued.includes(value) && argv[index + 1]) result[value.slice(2).replaceAll('-', '_')] = argv[++index];
     else throw new Error(`Unexpected or incomplete argument: ${value}`);
   }
-  if (!result.input) throw new Error('Missing required --input CSV path.');
   if (result.deploy && result.dryRun) throw new Error('--deploy cannot be combined with --dry-run.');
   return result;
 }
@@ -183,19 +182,39 @@ async function waitForLive(snapshotId, liveUrl) {
   throw new Error(`Push completed, but the live page did not expose snapshot ${snapshotId} within 90 seconds.`);
 }
 
+async function collectResponses(options, source) {
+  if (options.input) {
+    const inputPath = path.resolve(options.input);
+    if (path.extname(inputPath).toLowerCase() !== '.csv') throw new Error('--input must identify a CSV file.');
+    return {bytes: await readFile(inputPath), label: 'operator-supplied CSV'};
+  }
+  if (source?.type !== 'google-sheets-gviz-csv' || !source.spreadsheet_id) {
+    throw new Error('Encrypted registry does not contain the live response-sheet source.');
+  }
+  const query = new URLSearchParams({tqx: 'out:csv', _: String(Date.now())});
+  const url = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(source.spreadsheet_id)}/gviz/tq?${query}`;
+  const response = await fetch(url, {redirect: 'follow', headers: {'cache-control': 'no-cache'}});
+  if (!response.ok) throw new Error(`Live response sheet returned HTTP ${response.status}.`);
+  const bytes = Buffer.from(await response.arrayBuffer());
+  if (!String(response.headers.get('content-type')).toLowerCase().includes('text/csv')) {
+    throw new Error('Live response sheet did not return CSV; check its controlled read access.');
+  }
+  return {bytes, label: 'live Google response sheet'};
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
-  const inputPath = path.resolve(options.input);
-  if (path.extname(inputPath).toLowerCase() !== '.csv') throw new Error('Download the closed Google response sheet as CSV.');
   const registryPath = path.resolve(options.registry || path.join(root, 'data', 'evaluation-gallery-voters.enc.json'));
-  const [inputBytes, bundleBytes, config] = await Promise.all([
-    readFile(inputPath), readFile(registryPath), readFile(path.join(root, 'data', 'evaluation-gallery-event.json'), 'utf8').then(JSON.parse)
+  const [bundleBytes, config] = await Promise.all([
+    readFile(registryPath), readFile(path.join(root, 'data', 'evaluation-gallery-event.json'), 'utf8').then(JSON.parse)
   ]);
-  const authorization = decryptRegistry(JSON.parse(bundleBytes), await getPassphrase(options));
+  const authorizationBundle = decryptRegistryBundle(JSON.parse(bundleBytes), await getPassphrase(options));
+  const collected = await collectResponses(options, authorizationBundle.source);
+  const inputBytes = collected.bytes;
   const votingOpen = options.voting_open || defaultOpen;
   const votingClose = options.voting_close || defaultClose;
   const publishedAt = options.published_at || new Date().toISOString();
-  const {rows, summary} = tally(parseCsvMatrix(inputBytes.toString('utf8')), authorization, config, votingOpen, votingClose);
+  const {rows, summary} = tally(parseCsvMatrix(inputBytes.toString('utf8')), authorizationBundle.records, config, votingOpen, votingClose);
   const releaseId = runId();
   const output = path.join(root, '.gallery-closeout-runs', releaseId);
   await mkdir(output, {recursive: true});
@@ -205,15 +224,20 @@ async function main() {
   summary.rankings_sha256 = sha256(Buffer.from(csv));
   summary.voting_open = votingOpen;
   summary.voting_close = votingClose;
+  summary.response_source = collected.label;
   const snapshotRows = rows.map(row => Object.fromEntries(['rank', 'poster_id', 'display_title', 'presenting_unit', 'first_count', 'second_count', 'third_count', 'total_points'].map(key => [key, row[key]])));
   const sourceDigest = sha256(JSON.stringify({summary, rows: snapshotRows}));
   const snapshot = {schemaVersion: config.schema_version, eventId: config.event_id, status: 'FINAL', snapshotId: sourceDigest.slice(0, 12), sourceDigest, publishedAt, ballotCount: summary.valid_ballots, ignoredCount: summary.invalid_ballots, rows: snapshotRows};
   const snapshotPath = path.join(output, 'evaluation-gallery-snapshot.json');
   await Promise.all([
+    writeFile(path.join(output, 'response-export.csv'), inputBytes, {mode: 0o600}),
     writeFile(path.join(output, 'voting-rankings.csv'), csv, 'utf8'),
     writeFile(path.join(output, 'voting-audit-summary.json'), JSON.stringify(summary, null, 2) + '\n', 'utf8'),
     writeFile(snapshotPath, JSON.stringify(snapshot, null, 2) + '\n', 'utf8')
   ]);
+  if (summary.valid_ballots < 1) {
+    throw new Error(`No valid ballots were collected from the ${collected.label}; audit artifacts: ${output}`);
+  }
   run('npm', ['run', 'gallery:prepare', '--', '--snapshot', snapshotPath, '--dry-run']);
   process.stdout.write(`Aggregate QA passed: ${summary.valid_ballots} valid, ${summary.invalid_ballots} ignored, 12 poster rows.\nRun artifacts: ${output}\n`);
   if (options.dryRun) { run('npm', ['run', 'check']); run('npm', ['run', 'build']); process.stdout.write('Dry run complete; website source was not changed.\n'); return; }

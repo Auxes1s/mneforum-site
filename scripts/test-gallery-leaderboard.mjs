@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {interpolateScore, normalizeSnapshot, podiumGroups} from '../assets/evaluation-gallery-leaderboard.mjs';
 import {replaceSnapshotBlock, validateSnapshotForSite} from './publish-gallery-results.mjs';
-import {authorizationRecords, decryptRegistry, encryptRegistry, parseCsv} from './lib/gallery-voter-registry.mjs';
+import {authorizationRecords, decryptRegistry, decryptRegistryBundle, encryptRegistry, parseCsv} from './lib/gallery-voter-registry.mjs';
 
 const config = JSON.parse(await readFile(new URL('../data/evaluation-gallery-event.json', import.meta.url), 'utf8'));
 const publishedAt = '2026-09-09T08:00:00.000Z';
@@ -77,8 +77,10 @@ const sampleAuthorization = authorizationRecords([{
   vote_code: '2345', active: 'true', eligible_to_vote: 'true',
   authorized_google_email: '', bound_email: ''
 }]);
-const encrypted = encryptRegistry(sampleAuthorization, testPassphrase, publishedAt);
+const testSource = {type: 'google-sheets-gviz-csv', spreadsheet_id: 'test-sheet'};
+const encrypted = encryptRegistry(sampleAuthorization, testPassphrase, publishedAt, testSource);
 assert.deepEqual(decryptRegistry(encrypted, testPassphrase), sampleAuthorization);
+assert.deepEqual(decryptRegistryBundle(encrypted, testPassphrase).source, testSource);
 assert.throws(() => decryptRegistry(encrypted, 'incorrect passphrase that is long enough'), /Could not decrypt/);
 assert.equal(parseCsv('vote_code,active,eligible_to_vote,authorized_google_email,bound_email\r\n2345,true,true,,\r\n').length, 1);
 
