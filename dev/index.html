@@ -756,7 +756,7 @@ const SPEAKERS = [
     );
 
     template = template.replace(
-      'rooms, activeRoomLabel: activeRoom.label, activeRoomShort: activeRoom.short,\n      mirror, mirrorEmpty, mirrorState, mirrorFoot,\n      mirrorDot: phase === "live" && activeRoom.live ? "#f1a81e" : "var(--color-neutral-400)",',
+      /rooms,\s*activeRoomLabel:\s*activeRoom\.label,\s*activeRoomShort:\s*activeRoom\.short,[\s\S]*?mirrorDot:[\s\S]*?,/,
 `rooms,
       activeRoom,
       activeRoomId: activeRoom.id,
