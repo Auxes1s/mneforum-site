@@ -36,20 +36,30 @@ The check verifies the original bundled-runtime markers, local references,
 metadata, pending live-room safeguards, guarded form pages, retired paths, the
 asset allowlist, and required Apache rules.
 
-## Publish the Evaluation Gallery results
+## Prepare the Evaluation Gallery results
 
-At the official reveal time, run this once from an interactive terminal on a
-clean, synchronized `master` branch:
+The voting system publishes its approved result into a separate, PII-free
+Google workbook. After the Secretariat has resolved review ballots and ties,
+set the public workbook ID for the current shell and run the preparation step
+from an interactive terminal on a clean release branch:
 
 ```sh
-npm run gallery:publish
+export GALLERY_PUBLIC_SPREADSHEET_ID='the-public-workbook-id'
+npm run gallery:prepare
 ```
 
-The command reads ranking columns D:P from the public response Sheet once,
-prints the computed podium, and requires `PUBLISH` confirmation. It then freezes
-the aggregate result into the site, runs the release checks and build, commits
-only the generated result pages, and pushes `master` for deployment. Visitors
-never poll the Sheet; later responses do not change the published snapshot.
+The command reads only `Public_Metadata!A1:B7` and
+`Public_Leaderboard!A2:J14`. It requires the versioned contract in
+`data/evaluation-gallery-event.json`, a `FINAL` state, twelve catalog-matching
+aggregate rows, matching timestamps, a SHA-256 audit digest, and valid 3-2-1
+accounting. It prints the final podium and requires `PREPARE` confirmation before
+freezing a PII-free snapshot into `index.html` and `dev/index.html`.
+
+Preparation runs all checks and the static build, but it never commits or
+pushes. Review the two generated-page diffs, commit them on the release branch,
+and merge or push through the normal authorized production workflow. This split
+prevents a validation or test command from triggering a DigitalOcean deployment.
+The site never reads raw Form responses or recalculates ranks.
 
 ## Release gates
 

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "gallery:publish": "node scripts/publish-gallery-results.mjs",
+    "gallery:prepare": "node scripts/publish-gallery-results.mjs",
     "sync:dev": "node scripts/dev-preview.mjs",
     "check": "node scripts/verify-forum-release.mjs && node scripts/test-gallery-leaderboard.mjs && npm run test:game",
     "test:game": "node game/tests/engine.test.js && node game/tests/embed.test.js && node game/tests/integration.test.js && node game/tests/case-packs.test.js",
