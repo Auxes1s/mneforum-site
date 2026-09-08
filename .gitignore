@@ -2,6 +2,8 @@
 .Rhistory
 *.zip
 /dist/
+/.gallery-closeout.key
+/.gallery-closeout-runs/
 assets/*-canva.mp4
 assets/*-transformation.gif
 *-i-want-you-to-improve-the-flow-of-the-svg-transfo.txt

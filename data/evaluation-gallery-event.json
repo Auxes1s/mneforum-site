@@ -22,17 +22,9 @@
     {"poster_id": "P11", "presenting_unit": "MES/SEED", "display_title": "Process Evaluation of the Implementation of Telemedicine in the Delivery of Individual-Based Health Services in the Philippines", "title_status": "working", "active": true},
     {"poster_id": "P12", "presenting_unit": "MES/SEED", "display_title": "Quasi-experimental Impact Evaluation of the Tulong Panghanapbuhay sa Ating Disadvantaged Workers (TUPAD) Program of the Department of Labor and Employment", "title_status": "working", "active": true}
   ],
-  "public_contract": {
-    "publication_state": "FINAL",
-    "leaderboard": {
-      "sheet_name": "Public_Leaderboard",
-      "range": "A2:J14",
-      "columns": ["rank", "poster_id", "display_title", "presenting_unit", "first_count", "second_count", "third_count", "total_points", "status", "updated_at"]
-    },
-    "metadata": {
-      "sheet_name": "Public_Metadata",
-      "range": "A1:B7",
-      "keys": ["schema_version", "event_id", "publication_state", "published_at", "valid_ballot_count", "invalid_ballot_count", "audit_digest"]
-    }
+  "website_snapshot": {
+    "statuses": ["PENDING", "FINAL"],
+    "fields": ["schemaVersion", "eventId", "status", "snapshotId", "sourceDigest", "publishedAt", "ballotCount", "ignoredCount", "rows"],
+    "row_fields": ["rank", "poster_id", "display_title", "presenting_unit", "first_count", "second_count", "third_count", "total_points"]
   }
 }

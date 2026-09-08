@@ -17,6 +17,8 @@ const brandCss = readText(path.join(root, 'assets', 'forum-brand.css'));
 const galleryCss = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.css'));
 const galleryJs = readText(path.join(root, 'assets', 'evaluation-gallery-leaderboard.mjs'));
 const galleryPublisherJs = readText(path.join(root, 'scripts', 'publish-gallery-results.mjs'));
+const galleryCloseoutJs = readText(path.join(root, 'scripts', 'run-gallery-closeout.mjs'));
+const encryptedVoterRegistry = JSON.parse(readText(path.join(root, 'data', 'evaluation-gallery-voters.enc.json')));
 const packageJson = JSON.parse(readText(path.join(root, 'package.json')));
 const galleryEvent = JSON.parse(readText(path.join(root, 'data', 'evaluation-gallery-event.json')));
 const speakerCss = readText(path.join(root, 'speaker-launch.css'));
@@ -189,18 +191,33 @@ assert(!galleryJs.includes('setInterval(') &&
   !galleryJs.includes('Voting Code'),
   'The visitor-facing leaderboard must use only the frozen aggregate snapshot, with no polling or voter data.');
 assert(packageJson.scripts?.['gallery:prepare'] === 'node scripts/publish-gallery-results.mjs' &&
+  packageJson.scripts?.['gallery:closeout'] === 'node scripts/run-gallery-closeout.mjs' &&
+  packageJson.scripts?.['gallery:registry:seal'] === 'node scripts/seal-gallery-voter-registry.mjs' &&
   !packageJson.scripts?.['gallery:publish'] &&
-  galleryEvent.public_contract.leaderboard.sheet_name === 'Public_Leaderboard' &&
-  galleryEvent.public_contract.leaderboard.range === 'A2:J14' &&
-  galleryEvent.public_contract.metadata.sheet_name === 'Public_Metadata' &&
-  galleryEvent.public_contract.metadata.range === 'A1:B7' &&
-  galleryPublisherJs.includes('process.env.GALLERY_PUBLIC_SPREADSHEET_ID') &&
-  galleryPublisherJs.includes("answer.trim() !== 'PREPARE'") &&
+  JSON.stringify(galleryEvent.website_snapshot.statuses) === JSON.stringify(['PENDING', 'FINAL']) &&
+  galleryPublisherJs.includes('Missing required --snapshot path.') &&
+  galleryPublisherJs.includes("answer.trim() !== 'INSTALL'") &&
+  galleryPublisherJs.includes('validateSnapshotForSite') &&
+  !galleryPublisherJs.includes('docs.google.com/spreadsheets') &&
+  !galleryPublisherJs.includes('GALLERY_PUBLIC_SPREADSHEET_ID') &&
   !galleryPublisherJs.includes("run('git', ['push'") &&
   !galleryPublisherJs.includes("run('git', ['commit'") &&
   !galleryPublisherJs.includes('12kMj_aYeBsnbiEGEHZUfkiQlkNIyrdMb_q8UgQ1abQA') &&
   !galleryPublisherJs.includes('D1:P'),
   'The prepare-only sanitized Gallery publication pipeline is incomplete.');
+assert(fs.existsSync(path.join(root, 'scripts', 'run-gallery-closeout.sh')) &&
+  fs.existsSync(path.join(root, 'scripts', 'run-gallery-closeout.ps1')) &&
+  encryptedVoterRegistry.format === 'mneforum-gallery-voter-registry' &&
+  encryptedVoterRegistry.cipher === 'aes-256-gcm' &&
+  encryptedVoterRegistry.kdf?.name === 'scrypt' &&
+  encryptedVoterRegistry.record_count > 0 &&
+  typeof encryptedVoterRegistry.ciphertext === 'string' &&
+  !JSON.stringify(encryptedVoterRegistry).includes('vote_code') &&
+  galleryCloseoutJs.includes("run('git', ['push', 'origin', branch])") &&
+  galleryCloseoutJs.includes('MNEFORUM_VOTER_REGISTRY_PASSPHRASE') &&
+  !galleryCloseoutJs.includes('current-run.json') &&
+  !galleryCloseoutJs.includes('MNEFORUM_VOTING_REPO_PATH'),
+  'The portable encrypted Gallery closeout pipeline is incomplete.');
 const gallerySnapshotMatch = homepage.match(/\/\/ EVALUATION_GALLERY_SNAPSHOT_START\n  const evaluationGallerySnapshot = Object\.freeze\((\{[\s\S]*?\})\);\n  \/\/ EVALUATION_GALLERY_SNAPSHOT_END/);
 assert(gallerySnapshotMatch, 'The embedded Evaluation Gallery snapshot marker is missing.');
 const gallerySnapshot = JSON.parse(gallerySnapshotMatch[1]);

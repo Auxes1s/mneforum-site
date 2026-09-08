@@ -36,30 +36,71 @@ The check verifies the original bundled-runtime markers, local references,
 metadata, pending live-room safeguards, guarded form pages, retired paths, the
 asset allowlist, and required Apache rules.
 
-## Prepare the Evaluation Gallery results
+## Close and publish the Evaluation Gallery vote
 
-The voting system publishes its approved result into a separate, PII-free
-Google workbook. After the Secretariat has resolved review ballots and ties,
-set the public workbook ID for the current shell and run the preparation step
-from an interactive terminal on a clean release branch:
+The complete closeout pipeline lives in this repository and does not depend on
+the participant-ID repository or on a machine-specific path. The committed
+`data/evaluation-gallery-voters.enc.json` contains the voting authorization
+registry encrypted with AES-256-GCM; usable Voting Codes and participant data
+are never committed in plaintext. Keep the passphrase separately in a password
+manager. On a working machine, either create the ignored
+`.gallery-closeout.key` file or set `MNEFORUM_VOTER_REGISTRY_PASSPHRASE`.
+
+After closing Google Forms, download its response sheet as CSV. Rehearse without
+changing the website:
 
 ```sh
-export GALLERY_PUBLIC_SPREADSHEET_ID='the-public-workbook-id'
-npm run gallery:prepare
+bash scripts/run-gallery-closeout.sh --input "/path/to/People's Choice Voting.csv" --dry-run
 ```
 
-The command reads only `Public_Metadata!A1:B7` and
-`Public_Leaderboard!A2:J14`. It requires the versioned contract in
+```powershell
+.\scripts\run-gallery-closeout.ps1 --input "C:\path\to\People's Choice Voting.csv" --dry-run
+```
+
+For the approved final release, use `--deploy` and type `PUBLISH` after the
+aggregate totals have been reviewed:
+
+```sh
+bash scripts/run-gallery-closeout.sh --input "/path/to/People's Choice Voting.csv" --deploy
+```
+
+```powershell
+.\scripts\run-gallery-closeout.ps1 --input "C:\path\to\People's Choice Voting.csv" --deploy
+```
+
+The command authenticates codes, enforces verified-email and first-valid-ballot
+rules, applies the official voting window, produces an ignored audit run under
+`.gallery-closeout-runs/`, checks the frozen snapshot, builds the site, commits
+only the two generated pages, pushes the current branch, and polls the live page
+for the published snapshot ID. Omit `--deploy` to prepare the two page changes
+for separate review and manual publication.
+
+The lower-level snapshot installer remains available on a clean release branch:
+
+```sh
+npm run gallery:prepare -- --snapshot "/path/to/evaluation-gallery-snapshot.json"
+```
+
+The command requires the versioned contract in
 `data/evaluation-gallery-event.json`, a `FINAL` state, twelve catalog-matching
-aggregate rows, matching timestamps, a SHA-256 audit digest, and valid 3-2-1
-accounting. It prints the final podium and requires `PREPARE` confirmation before
-freezing a PII-free snapshot into `index.html` and `dev/index.html`.
+aggregate rows, a SHA-256 audit digest, and valid 3-2-1 accounting. It requires
+`INSTALL` confirmation before freezing the snapshot into `index.html` and
+`dev/index.html`. Use `--dry-run` to validate without changing files.
 
 Preparation runs all checks and the static build, but it never commits or
 pushes. Review the two generated-page diffs, commit them on the release branch,
 and merge or push through the normal authorized production workflow. This split
 prevents a validation or test command from triggering a DigitalOcean deployment.
-The site never reads raw Form responses or recalculates ranks.
+The browser never reads raw Form responses, the encrypted registry, or
+participant-level data; all tallying happens in the local closeout command.
+
+To rotate the encrypted authorization bundle after participant IDs change, run
+the sealing command from a trusted machine with the same passphrase, then commit
+only the resulting `.enc.json` file:
+
+```sh
+npm run gallery:registry:seal -- --registry "/restricted/path/to/registry.csv"
+```
 
 ## Release gates
 
