@@ -118,6 +118,7 @@
       "wave": "wave1",
       "status": "confirmed",
       "publication": {"dev": true, "live": true},
+      "photo": "assets/speakers/2026/suparna-roy.jpg",
       "source": {"kind": "user-confirmed-update", "highlighted": true}
     },
     {

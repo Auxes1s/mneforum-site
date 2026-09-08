@@ -80,7 +80,7 @@ Avoid injecting `forum-logo-transformation.svg` into decorative fields: it inclu
 
 The 2026 public speaker portraits live in `assets/speakers/2026/`. They are generated from the authoritative Resource Persons folder by `scripts/prepare-speaker-assets.ps1`; the adjacent `manifest.csv` records each source, extraction method, dimensions, byte size, focal position, and verification state.
 
-The initial verified set covers Arsenio M. Balisacan, Christophe Bahuet, Roderick M. Planta, Diane Gail L. Maharjan, Joseph J. Capuno, and Vivien Suerte-Cortez. Capuno's portrait is copied from `word/media/image1.jpeg` inside his current DOCX bionote; the other five use standalone current-event files. Each public derivative is WebP, fits within 720 × 900 pixels without upscaling, strips metadata, and stays below 150 KB.
+The initial verified set covers Arsenio M. Balisacan, Christophe Bahuet, Roderick M. Planta, Diane Gail L. Maharjan, Joseph J. Capuno, and Vivien Suerte-Cortez. Suparna Roy's portrait is supplied as a square current-event photo; Capuno's portrait is copied from `word/media/image1.jpeg` inside his current DOCX bionote; the other portraits use standalone current-event files. Each public derivative fits within the square avatar frame, uses the centered focal position recorded in the manifest, and is verified before publication.
 
 Do not restore or attach the historical 2025 presenter files by filename guessing. Current speaker cards join only on an explicitly verified 2026 name and leave the branded initials fallback in place when no approved portrait exists. Mixed aspect ratios are displayed in a square frame with `object-fit: cover` and the focal position recorded in the manifest.
 
