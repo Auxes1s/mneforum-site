@@ -11,7 +11,6 @@ const readText = file => fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const homepage = readText(path.join(root, 'index.html'));
 const devHomepage = readText(path.join(root, 'dev', 'index.html'));
 const releaseCss = readText(path.join(root, 'assets', 'forum-release.css'));
-const qaCss = readText(path.join(root, 'assets', 'forum-qa.css'));
 const responsiveCss = readText(path.join(root, 'assets', 'forum-responsive.css'));
 const uiLockCss = readText(path.join(root, 'assets', 'forum-ui-lock.css'));
 const brandCss = readText(path.join(root, 'assets', 'forum-brand.css'));
@@ -233,39 +232,12 @@ assert(!/(email|voting.?code|uuid|response.?id)/i.test(JSON.stringify(gallerySna
   'The embedded Evaluation Gallery snapshot must remain PII-free.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),
   'The production homepage must remain indexable.');
-assert(homepage.includes('assets/forum-qa.css?v=20260908-ux') &&
-  homepage.includes("qaLink.id = 'forum-qa-styles'") &&
-  homepage.includes('document.head.lastElementChild === qaLink'),
-  'The isolated Q&A stylesheet is missing or is not protected as the final cascade layer.');
-for (const roomMetadata of [
-  'scheduleBlock: "plenary-1"',
-  'scheduleBlock: "morning-breakouts"',
-  'scheduleBlock: "afternoon-breakouts"',
-  'scheduleBlock: "plenary-2"',
-  'hall: "Hall 1"',
-  'hall: "Hall 2"',
-  'hall: "Hall 3"'
-]) {
-  assert(homepage.includes(roomMetadata), `Missing Q&A schedule metadata: ${roomMetadata}`);
-}
-assert(homepage.includes('const breakoutChoiceRequired = phase === "live" && currentRooms.length > 1 && !selectedRoom;') &&
-  homepage.includes('Choose your breakout hall') &&
-  homepage.includes('Join Q&amp;A on Slido') &&
-  !homepage.includes('<span>Open in Slido App</span>'),
-  'The Q&A selection and primary-action flow is incomplete.');
-for (const safeguard of [
-  '.qa-room-picker',
-  '.qa-room-group__options',
-  '.qa-layout',
-  '.qa-stage-card',
-  '.qa-embed-toggle',
-  '@media (max-width: 700px)',
-  '@media (prefers-reduced-motion: reduce)'
-]) {
-  assert(qaCss.includes(safeguard), `Missing Q&A layout safeguard: ${safeguard}`);
-}
-assert(!qaCss.includes('.brandcard') && !qaCss.includes('.filter-chip'),
-  'The isolated Q&A stylesheet must not depend on globally overridden card or filter primitives.');
+assert(homepage.includes("// Q&A and all public Slido entry points are intentionally redacted.") &&
+  homepage.includes("template = template.replace(/<section id=\"qa\" class=\"qa-section\">[\\s\\S]*?<\\/section>/, '');") &&
+  homepage.includes("template = template.replace(/<a\\b[^>]*\\bhref=\"#qa\"[^>]*>[\\s\\S]*?<\\/a>/g, '');") &&
+  !homepage.includes('assets/forum-qa.css') &&
+  !homepage.includes('https://app.sli.do/event/'),
+  'The Q&A section, navigation entry points, or retired stylesheet are still publicly enabled.');
 assert(devHomepage.includes('<meta name="robots" content="noindex,nofollow">'),
   'The development preview shell must not be indexed.');
 assert(devHomepage.includes("'<meta name=\"robots\" content=\"noindex,nofollow\"><link rel=\"canonical\""),
