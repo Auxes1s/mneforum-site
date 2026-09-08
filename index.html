@@ -199,14 +199,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // fallback if the embed is unavailable.
     template = template
       .replace(
-        '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a>',
-        '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a>' +
-        '<a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
-      )
-      .replace(
         '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>',
         '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>' +
-        '<a href="#past-forums" aria-current="{{ navPastForumsCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Past Forums</a>'
+        '<a href="#past-forums" aria-current="{{ navPastForumsCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Past Forums</a>' +
+        '<a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
       );
     const pastForumsSection = `<section id="past-forums" class="past-forums-section">
     <div class="section-shell">
@@ -748,7 +744,7 @@ const SPEAKERS = [
       </div>
     </div>
   </section>`;
-    template = template.replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
+    template = template.replace('\n  </main>', '\n  ' + gameSection + '\n  </main>');
     template = template.replace('</body>', '<script defer src="game/embed-v1.js"></' + 'script></body>');
     // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
     // document's manifest; frame srcs carry an about:blank#<uuid> marker

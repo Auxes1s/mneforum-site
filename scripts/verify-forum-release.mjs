@@ -95,8 +95,8 @@ assert(!homepage.includes('PROGRAM_REVEAL_AT') && !homepage.includes('programRel
 
 rendered = rendered
   .replace(
-    '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a>',
-    '<a href="#overview" aria-current="{{ navOverviewCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Overview</a><a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
+    '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a>',
+    '<a href="#gallery" aria-current="{{ navGalleryCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Gallery</a><a href="#past-forums" aria-current="{{ navPastForumsCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Past Forums</a><a href="#game" aria-current="{{ navGameCurrent }}" sc-camel-on-click="{{ closeMobileNav }}">Game</a>'
   )
   .replace(
     '<a href="#speakers" style="color: inherit; text-decoration: none; opacity: .85;">Resource persons</a>',
@@ -106,7 +106,7 @@ rendered = rendered
     'Strategic Outcome Evaluation Division<br><a href="mailto:mes-soed@depdev.gov.ph" style="color: inherit;">mes-soed@depdev.gov.ph</a>',
     'M&amp;E Forum Secretariat<br><a href="mailto:m%26enetworksecretariat@depdev.gov.ph" style="color: inherit;">m&amp;enetworksecretariat@depdev.gov.ph</a><br>Strategic Outcome Evaluation Division<br><a href="mailto:%26mes-soed@depdev.gov.ph" style="color: inherit;">&amp;mes-soed@depdev.gov.ph</a>'
   )
-  .replace('\n  <section id="program"', '\n  ' + gameSection + '\n\n  <section id="program"');
+  .replace('\n  </main>', '\n  ' + gameSection + '\n  </main>');
 
 assert((rendered.match(/<section id="program" class="program-section">/g) || []).length === 1,
   'The Program section must render exactly once.');
@@ -561,8 +561,8 @@ const navGame = rendered.indexOf('<a href="#game" aria-current=');
 const navProgram = rendered.indexOf('<a href="#program" aria-current=');
 assert(navOverview !== -1 && navGame !== -1 && navProgram !== -1,
   'Overview, Game, and Program must all appear in the primary navigation.');
-assert(navOverview < navGame && navGame < navProgram,
-  'Primary navigation must begin Overview, Game, Program.');
+assert(navOverview < navProgram && navProgram < navGame,
+  'The Game link must follow the main Forum navigation links.');
 
 const expectedAddress = 'm&amp;enetworksecretariat@depdev.gov.ph';
 const expectedMailto = 'mailto:m%26enetworksecretariat@depdev.gov.ph';
@@ -577,15 +577,12 @@ assert(!/m(?:%26|&amp;)eforumsecretariat@depdev\.gov\.ph/i.test(rendered), 'The 
 const sectionIds = Array.from(rendered.matchAll(/<section\b[^>]*\bid="([^"]+)"/g), match => match[1]);
 assert(new Set(sectionIds).size === sectionIds.length, 'Rendered section IDs are not unique.');
 assert(sectionIds.includes('overview') && sectionIds.includes('game') && sectionIds.includes('program') && sectionIds.includes('speakers') && sectionIds.includes('notes'),
-  'The overview-to-game-to-program launch sequence is incomplete.');
-assert(rendered.indexOf('<section id="overview"') < rendered.indexOf('<section id="game"'),
-  'The game must follow the Overview section.');
-assert(rendered.indexOf('<section id="game"') < rendered.indexOf('<section id="program"'),
-  'The Game section must precede the Program section.');
+  'The required Forum sections are incomplete.');
 assert(rendered.indexOf('<section id="program"') < rendered.indexOf('<section id="speakers"'),
   'The Program section must precede the speaker launch.');
 assert(rendered.indexOf('<section id="speakers"') < rendered.indexOf('<section id="notes"'),
   'The speaker launch must precede notes and materials.');
+assert(sectionIds.at(-1) === 'game', 'The Game section must be the final content section.');
 
 for (const required of [
   'html,\nbody',
