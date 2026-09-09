@@ -1021,9 +1021,8 @@ section h2::after {
 }
 
 /* Keep the footer partner lockup in the same reading order as the masthead:
-   M&E first, then DEPDev, then UNDP. The source bundle places the marks in a
-   legacy order, so explicit flex ordering keeps the visual sequence aligned
-   without changing the footer's dark institutional bar. */
+   DEPDev first, then M&E, then UNDP. Explicit flex ordering keeps the visual
+   sequence aligned across desktop and mobile. */
 .footer__partner-strip {
   display: flex !important;
   align-items: center !important;
@@ -1037,14 +1036,14 @@ section h2::after {
   flex: 0 0 auto !important;
 }
 
-.site-footer .footer__partner-strip > img[alt*="M&E"] {
+.site-footer .footer__partner-strip > img[alt*="Department"] {
   order: 1 !important;
-  height: 38px !important;
+  height: 42px !important;
 }
 
-.site-footer .footer__partner-strip > img[alt*="Department"] {
+.site-footer .footer__partner-strip > img[alt*="M&E"] {
   order: 2 !important;
-  height: 42px !important;
+  height: 38px !important;
 }
 
 .site-footer .footer__partner-strip > img[alt*="United Nations"] {
