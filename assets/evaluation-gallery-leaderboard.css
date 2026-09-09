@@ -8,7 +8,7 @@
 
 .eg-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: clamp(24px, 4vw, 56px);
   margin-bottom: 24px;
@@ -38,6 +38,18 @@
   font-size: 1rem;
   line-height: 1.65;
   color: color-mix(in srgb, var(--brand-midnight) 78%, transparent);
+}
+
+.eg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.eg-actions .btn {
+  min-height: 46px;
+  font-size: 0.94rem;
 }
 
 .eg-status-line {
@@ -672,6 +684,7 @@ html[data-thinking-mode="ultra"] #evaluation-gallery-leaderboard.eg-motion-ready
 @media (max-width: 860px) {
   #evaluation-gallery-leaderboard { --eg-winner-celebration-delay: 760ms; }
   .eg-heading { grid-template-columns: 1fr; align-items: start; }
+  .eg-actions { justify-content: flex-start; }
   .eg-podium {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
@@ -718,6 +731,8 @@ html[data-thinking-mode="ultra"] #evaluation-gallery-leaderboard.eg-motion-ready
 @media (max-width: 600px) {
   #evaluation-gallery-leaderboard { --eg-winner-celebration-delay: 680ms; }
   .eg-heading h2 { font-size: clamp(2.45rem, 15vw, 4rem) !important; }
+  .eg-actions { display: grid; grid-template-columns: 1fr; }
+  .eg-actions .btn { width: 100%; padding-inline: 12px; }
   .eg-status-line { align-items: flex-start; flex-direction: column; }
   .eg-section-label { align-items: flex-start; flex-direction: column-reverse; gap: 4px; }
   .eg-podium {

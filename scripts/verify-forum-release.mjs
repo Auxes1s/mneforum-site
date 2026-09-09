@@ -171,13 +171,12 @@ assert(homepage.includes('<div id="evaluation-gallery-leaderboard" aria-busy="tr
   homepage.includes('assets/evaluation-gallery-leaderboard.mjs?v=20260907-responsive-ceremony') &&
   homepage.includes('id="evaluation-gallery-results"'),
   'The frozen Evaluation Gallery snapshot is not mounted with its release assets.');
-assert(galleryJs.includes(`eventId: '${galleryEvent.event_id}'`) &&
+assert(galleryJs.includes(`voteUrl: '${galleryEvent.form_responder_url}'`) &&
+  galleryJs.includes(`eventId: '${galleryEvent.event_id}'`) &&
   galleryJs.includes(`schemaVersion: ${galleryEvent.schema_version}`),
-  'The Evaluation Gallery module does not match the approved event contract.');
-assert(!galleryJs.includes('Vote now') &&
-  !galleryJs.includes(galleryEvent.form_responder_url) &&
-  !galleryJs.includes('eg-vote'),
-  'The Evaluation Gallery voting control must remain hidden until explicit launch approval.');
+  'The Evaluation Gallery vote button is not wired to the approved Google Form.');
+assert(galleryJs.includes('Vote now') && galleryJs.includes('eg-vote'),
+  'The Evaluation Gallery voting control must be visible after launch approval.');
 assert(galleryJs.includes('assets/butterfly-mark.svg') &&
   galleryCss.includes('.eg-butterfly') && galleryCss.includes('.eg-podium-winner-mark'),
   'The podium must reuse the Forum butterfly asset.');

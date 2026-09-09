@@ -1,6 +1,7 @@
 const CONFIG = Object.freeze({
   schemaVersion: 1,
-  eventId: '13th-me-network-forum-2026'
+  eventId: '13th-me-network-forum-2026',
+  voteUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeDM6dpnmSMSehh682HVQUO7TP9Cx-Md_lEtM0HOC-iwhtTLQ/viewform'
 });
 
 const POSTER_ID = /^P(?:0[1-9]|1[0-2])$/;
@@ -345,6 +346,9 @@ function mount() {
         <p class="eg-kicker">People’s Choice Award</p>
         <h2>Evaluation Gallery</h2>
         <p class="eg-intro">First Choice receives 3 points, Second Choice 2 points, and Third Choice 1 point. Official standings will be published after voting closes.</p>
+      </div>
+      <div class="eg-actions">
+        <a class="btn btn-primary eg-vote" href="${CONFIG.voteUrl}" target="_blank" rel="noopener noreferrer" aria-label="Vote for the Evaluation Gallery People’s Choice Award (opens in a new tab)">Vote now</a>
       </div>
     </header>
     <div class="eg-status-line" role="status" aria-live="polite">
