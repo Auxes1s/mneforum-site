@@ -614,6 +614,19 @@ assert(uiLockCss.includes('--mobile-gutter: clamp(16px, 2.5vw, 24px)'),
   'Tablet mobile rails must align with the shell instead of widening the page.');
 assert(uiLockCss.includes('--mobile-gutter: clamp(16px, 5vw, 22px)'),
   'Mobile edge rails must share the phone shell gutter and stay within the viewport.');
+assert(homepage.includes("document.documentElement.style.setProperty('--live-banner-offset', height + 'px')") &&
+  homepage.includes("document.documentElement.style.removeProperty('--live-banner-offset')"),
+  'The live banner must track the measured desktop masthead and clear that offset on mobile.');
+assert(count(homepage, /assets\/forum-release\.css\?v=20260909-live-banner/g) === 3,
+  'The live-banner release stylesheet must use its current cache-busting version everywhere.');
+assert(/@media \(min-width: 881px\)[\s\S]*?\.live-banner\s*\{[\s\S]*?position:\s*sticky\s*!important[\s\S]*?top:\s*var\(--live-banner-offset/.test(releaseCss),
+  'The desktop live banner must stick below the measured masthead.');
+assert(/@media \(max-width: 880px\)[\s\S]*?\.live-banner\s*\{[\s\S]*?position:\s*relative\s*!important[\s\S]*?top:\s*auto\s*!important/.test(releaseCss),
+  'The mobile live banner must remain in normal flow without an inherited top offset.');
+assert(releaseCss.includes('grid-template-columns: auto minmax(0, 1fr)') &&
+  releaseCss.includes('padding: 8px 0 !important') &&
+  releaseCss.includes('overflow-wrap: break-word'),
+  'The live banner content must retain its responsive two-column layout and safe wrapping.');
 
 for (const required of [
   'overflow-x: auto',

@@ -1195,3 +1195,41 @@ html[data-thinking-mode="ultra"] .qa-qr-card {
     height: 520px;
   }
 }
+
+/* Event-day live banner ---------------------------------------------------
+   The masthead has several responsive heights. On larger screens its actual
+   measured height is exposed as --live-banner-offset; on mobile the banner
+   stays in normal flow so it does not consume the viewport while scrolling. */
+.live-banner > div {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center !important;
+  column-gap: clamp(8px, 1.2vw, 14px) !important;
+  padding: 8px 0 !important;
+}
+
+.live-banner > div > span:first-child {
+  white-space: nowrap;
+}
+
+.live-banner > div > strong {
+  min-width: 0;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 881px) {
+  .live-banner {
+    position: sticky !important;
+    top: var(--live-banner-offset, var(--masthead-height, 82px)) !important;
+    z-index: 45 !important;
+  }
+}
+
+@media (max-width: 880px) {
+  .live-banner {
+    position: relative !important;
+    top: auto !important;
+    z-index: 1 !important;
+  }
+}

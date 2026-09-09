@@ -30,7 +30,7 @@
   <link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style">
   <link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style">
   <link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style">
-  <link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">
+  <link rel="preload" href="assets/forum-release.css?v=20260909-live-banner" as="style">
   <!-- The approved brand faces are local so the page cannot silently fall
        back to a device font when Fontshare's API is restricted. -->
   <link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin>
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       '<meta name="description" content="MEtamorphosis — 13th M&amp;E Network Forum, September 9, 2026.">' +
       '<link rel="canonical" href="https://mnenetwork.forum/"><link rel="icon" href="network_logo.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">' +
       '<link rel="preload" href="assets/forum-logo-v5-static.svg" as="image" type="image/svg+xml" fetchpriority="high">' +
-      '<link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260827-program-mobile" as="style">' +
+      '<link rel="preload" href="assets/forum-brand.css?v=20260827-local-fonts" as="style"><link rel="preload" href="assets/forum-responsive.css?v=20260813-ultra-mobile" as="style"><link rel="preload" href="assets/forum-ui-lock.css?v=20260826-night-layout" as="style"><link rel="preload" href="assets/forum-release.css?v=20260909-live-banner" as="style">' +
       '<link rel="preload" href="assets/fonts/Plein-Black.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>' +
       '<style id="forum-prepaint">.hero__transformation-logo{display:none!important}' +
       'html[data-thinking-mode="ultra"]:not([data-transformation-ready]) .hero__identity-logo{' +
@@ -6494,7 +6494,7 @@ const SPEAKERS = [
     const releaseLink = document.createElement('link');
     releaseLink.id = 'forum-release-styles';
     releaseLink.rel = 'stylesheet';
-    releaseLink.href = 'assets/forum-release.css?v=20260827-program-mobile';
+    releaseLink.href = 'assets/forum-release.css?v=20260909-live-banner';
     document.head.appendChild(releaseLink);
     const galleryLink = document.createElement('link');
     galleryLink.id = 'evaluation-gallery-leaderboard-styles';
@@ -6642,8 +6642,10 @@ const SPEAKERS = [
         return false;
       }
 
-      // Keep viewport-bound mobile sheets below the measured header instead
-      // of relying only on the compact one-row fallback value.
+      // Keep viewport-bound mobile sheets below the measured header and give
+      // the desktop live banner an exact sticky offset. The masthead changes
+      // height across the one-row, two-row, and mobile layouts, so fixed CSS
+      // values drift and can make the banner overlap the header while scrolling.
       const siteHeader = document.querySelector('.site-header');
       let mastheadSyncFrame = 0;
       const syncMobileMasthead = () => {
@@ -6651,14 +6653,15 @@ const SPEAKERS = [
         mastheadSyncFrame = window.requestAnimationFrame(() => {
           mastheadSyncFrame = 0;
           if (!siteHeader) return;
+          const height = Math.ceil(siteHeader.getBoundingClientRect().height);
+          if (height <= 0) return;
           if (!window.matchMedia('(max-width: 880px)').matches) {
             document.documentElement.style.removeProperty('--mobile-masthead');
+            document.documentElement.style.setProperty('--live-banner-offset', height + 'px');
             return;
           }
-          const height = Math.ceil(siteHeader.getBoundingClientRect().height);
-          if (height > 0) {
-            document.documentElement.style.setProperty('--mobile-masthead', height + 'px');
-          }
+          document.documentElement.style.removeProperty('--live-banner-offset');
+          document.documentElement.style.setProperty('--mobile-masthead', height + 'px');
         });
       };
       syncMobileMasthead();
