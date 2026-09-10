@@ -247,8 +247,14 @@ const gallerySnapshot = JSON.parse(gallerySnapshotMatch[1]);
 assert(['PENDING', 'FINAL'].includes(gallerySnapshot.status), 'The Evaluation Gallery snapshot status is invalid.');
 assert(gallerySnapshot.schemaVersion === galleryEvent.schema_version && gallerySnapshot.eventId === galleryEvent.event_id,
   'The embedded Evaluation Gallery snapshot does not match the versioned event contract.');
-assert(gallerySnapshot.status === 'PENDING' ? gallerySnapshot.rows.length === 0 : gallerySnapshot.rows.length === 12,
+assert(gallerySnapshot.resultScope === 'PODIUM', 'The embedded Evaluation Gallery snapshot must be podium-only.');
+assert(gallerySnapshot.status === 'PENDING' ? gallerySnapshot.rows.length === 0 :
+  gallerySnapshot.rows.length > 0 && gallerySnapshot.rows.every(row =>
+    row.rank >= 1 && row.rank <= 3 &&
+    JSON.stringify(Object.keys(row).sort()) === JSON.stringify(['display_title', 'poster_id', 'presenting_unit', 'rank', 'total_points'])),
   'The Evaluation Gallery snapshot does not match its publication status.');
+assert(!gallerySnapshot.rows.some(row => 'first_count' in row || 'second_count' in row || 'third_count' in row),
+  'The public Evaluation Gallery snapshot must not expose vote-breakdown data.');
 assert(!/(email|voting.?code|uuid|response.?id)/i.test(JSON.stringify(gallerySnapshot)),
   'The embedded Evaluation Gallery snapshot must remain PII-free.');
 assert(homepage.includes('<meta name="robots" content="index,follow">'),

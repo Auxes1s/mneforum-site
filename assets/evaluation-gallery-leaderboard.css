@@ -424,8 +424,7 @@
   color: var(--brand-midnight) !important;
 }
 
-.eg-podium-unit,
-.eg-ranking-unit {
+.eg-podium-unit {
   margin: 0;
   color: color-mix(in srgb, var(--brand-midnight) 68%, transparent);
   font-size: 0.84rem;
@@ -472,78 +471,6 @@
   text-align: center;
   color: color-mix(in srgb, var(--brand-midnight) 70%, transparent);
 }
-
-.eg-ranking-section { margin-top: clamp(42px, 7vw, 82px); }
-.eg-ranking-section[hidden] { display: none; }
-
-.eg-ranking {
-  display: grid;
-  gap: 10px;
-  margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.eg-ranking-row {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 86px;
-  align-items: center;
-  gap: 16px;
-  min-height: 96px;
-  padding: 14px 18px;
-  border: 1px solid var(--brand-line-soft);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 8px 24px rgba(22, 22, 91, 0.05);
-}
-
-.eg-ranking-position {
-  color: var(--brand-midnight);
-  font: 900 1.8rem/1 "Plein", system-ui, sans-serif;
-  text-align: center;
-}
-
-.eg-ranking-identity { min-width: 0; }
-
-.eg-ranking-heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
-}
-
-.eg-ranking-heading strong {
-  overflow: hidden;
-  color: var(--brand-midnight);
-  font-size: 0.98rem;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-}
-
-.eg-ranking-track {
-  display: block;
-  height: 5px;
-  margin-top: 12px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--brand-cerulean) 16%, transparent);
-  border-radius: 999px;
-}
-
-.eg-ranking-bar {
-  display: block;
-  height: 100%;
-  min-width: 0;
-  background: linear-gradient(90deg, var(--brand-royal), var(--brand-cerulean), var(--brand-sun-gold));
-  border-radius: inherit;
-  transition: width 420ms ease;
-}
-
-.eg-ranking-score { text-align: right; }
-.eg-ranking-score strong {
-  display: block;
-  color: var(--brand-text-berry);
-  font: 900 1.7rem/1 "Plein", system-ui, sans-serif;
-}
-.eg-ranking-score span { color: var(--brand-midnight); font-size: 0.75rem; }
 
 @keyframes eg-podium-rise {
   0% { opacity: 0; transform: translate3d(0, 72px, 0) scale(0.94); }
@@ -627,9 +554,6 @@ html[data-thinking-mode="ultra"] #evaluation-gallery-leaderboard {
 html[data-thinking-mode="ultra"] .eg-heading h2,
 html[data-thinking-mode="ultra"] .eg-section-label h3,
 html[data-thinking-mode="ultra"] .eg-podium-title,
-html[data-thinking-mode="ultra"] .eg-ranking-heading strong,
-html[data-thinking-mode="ultra"] .eg-ranking-position,
-html[data-thinking-mode="ultra"] .eg-ranking-score span,
 html[data-thinking-mode="ultra"] .eg-podium-points {
   color: #fff !important;
 }
@@ -637,14 +561,12 @@ html[data-thinking-mode="ultra"] .eg-podium-points {
 html[data-thinking-mode="ultra"] .eg-intro,
 html[data-thinking-mode="ultra"] .eg-status-detail,
 html[data-thinking-mode="ultra"] .eg-podium-unit,
-html[data-thinking-mode="ultra"] .eg-ranking-unit,
 html[data-thinking-mode="ultra"] .eg-empty {
   color: rgba(255, 255, 255, 0.76);
 }
 
 html[data-thinking-mode="ultra"] .eg-status-line,
-html[data-thinking-mode="ultra"] .eg-podium-entry,
-html[data-thinking-mode="ultra"] .eg-ranking-row {
+html[data-thinking-mode="ultra"] .eg-podium-entry {
   border-color: rgba(255, 255, 255, 0.18);
   background: rgba(14, 24, 66, 0.86);
 }
@@ -678,7 +600,6 @@ html[data-thinking-mode="ultra"] #evaluation-gallery-leaderboard.eg-motion-ready
   }
   .eg-podium-place--1 .eg-podium-entry::after,
   .eg-winner-flight { display: none; }
-  .eg-ranking-bar { transition: none; }
 }
 
 @media (max-width: 860px) {
@@ -855,11 +776,6 @@ html[data-thinking-mode="ultra"] #evaluation-gallery-leaderboard.eg-motion-ready
     inset: 6px;
     border-radius: 12px 0 0 12px;
   }
-  .eg-ranking-row { grid-template-columns: 38px minmax(0, 1fr) 60px; gap: 10px; padding: 13px 10px; }
-  .eg-ranking-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
-  .eg-ranking-heading strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal; }
-  .eg-ranking-position { font-size: 1.45rem; }
-  .eg-ranking-score strong { font-size: 1.4rem; }
 }
 
 @media (max-width: 380px) {

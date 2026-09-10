@@ -4,7 +4,7 @@ import process from 'node:process';
 import readline from 'node:readline/promises';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath, pathToFileURL} from 'node:url';
-import {normalizeSnapshot} from '../assets/evaluation-gallery-leaderboard.mjs';
+import {normalizeSnapshot, publicPodiumSnapshot} from '../assets/evaluation-gallery-leaderboard.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
@@ -116,7 +116,7 @@ export async function prepareGalleryResults(argv = process.argv.slice(2)) {
   if (!args.yes) await confirmInstallation();
 
   const source = await readFile(indexPath, 'utf8');
-  await writeFile(indexPath, replaceSnapshotBlock(source, snapshot), 'utf8');
+  await writeFile(indexPath, replaceSnapshotBlock(source, publicPodiumSnapshot(snapshot)), 'utf8');
   run('npm', ['run', 'sync:dev']);
   run('npm', ['run', 'check']);
   run('npm', ['run', 'build']);

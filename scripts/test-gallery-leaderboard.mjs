@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {interpolateScore, normalizeSnapshot, podiumGroups} from '../assets/evaluation-gallery-leaderboard.mjs';
+import {interpolateScore, normalizePublicSnapshot, normalizeSnapshot, podiumGroups, publicPodiumSnapshot} from '../assets/evaluation-gallery-leaderboard.mjs';
 import {replaceSnapshotBlock, validateSnapshotForSite} from './publish-gallery-results.mjs';
 import {authorizationRecords, decryptRegistry, decryptRegistryBundle, encryptRegistry, parseCsv} from './lib/gallery-voter-registry.mjs';
 
@@ -36,11 +36,29 @@ assert.equal(published.status, 'FINAL');
 assert.equal(published.ballotCount, 12);
 assert.equal(published.rows.length, 12);
 assert.deepEqual(podiumGroups(published.rows).map(group => group.rank), [1]);
+const publicSnapshot = publicPodiumSnapshot(published);
+assert.equal(publicSnapshot.resultScope, 'PODIUM');
+assert.equal(publicSnapshot.rows.length, 12);
+assert.deepEqual(Object.keys(publicSnapshot.rows[0]), ['rank', 'poster_id', 'display_title', 'presenting_unit', 'total_points']);
+assert.equal(normalizePublicSnapshot(publicSnapshot).status, 'FINAL');
+assert.throws(() => normalizePublicSnapshot({
+  ...publicSnapshot,
+  rows: [{...publicSnapshot.rows[0], rank: 4}]
+}), /invalid podium row/);
+const leaderboardSource = await readFile(new URL('../assets/evaluation-gallery-leaderboard.mjs', import.meta.url), 'utf8');
+assert.doesNotMatch(leaderboardSource, /data-eg-ranking|Final ranking|renderRanking/);
 
 assert.equal(normalizeSnapshot({
   schemaVersion: 1,
   eventId: config.event_id,
   status: 'PENDING',
+  rows: []
+}).status, 'PENDING');
+assert.equal(normalizePublicSnapshot({
+  schemaVersion: 1,
+  eventId: config.event_id,
+  status: 'PENDING',
+  resultScope: 'PODIUM',
   rows: []
 }).status, 'PENDING');
 assert.equal(interpolateScore(10, 0), 0);

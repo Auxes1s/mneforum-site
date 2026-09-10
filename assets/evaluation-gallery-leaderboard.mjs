@@ -109,6 +109,72 @@ export function normalizeSnapshot(snapshot) {
   });
 }
 
+export function publicPodiumSnapshot(snapshot) {
+  const full = normalizeSnapshot(snapshot);
+  if (full.status === 'PENDING') return {...full, resultScope: 'PODIUM'};
+  return Object.freeze({
+    schemaVersion: full.schemaVersion,
+    eventId: full.eventId,
+    status: full.status,
+    resultScope: 'PODIUM',
+    snapshotId: full.snapshotId,
+    sourceDigest: full.sourceDigest,
+    publishedAt: full.publishedAt,
+    ballotCount: full.ballotCount,
+    ignoredCount: full.ignoredCount,
+    rows: Object.freeze(full.rows.filter(row => row.rank <= 3).map(row => Object.freeze({
+      rank: row.rank,
+      poster_id: row.poster_id,
+      display_title: row.display_title,
+      presenting_unit: row.presenting_unit,
+      total_points: row.total_points
+    })))
+  });
+}
+
+export function normalizePublicSnapshot(snapshot) {
+  if (!snapshot || !['PENDING', 'FINAL'].includes(snapshot.status) || snapshot.resultScope !== 'PODIUM') {
+    throw new Error('The public Evaluation Gallery snapshot is invalid.');
+  }
+  if (snapshot.status === 'PENDING') {
+    if (snapshot.schemaVersion !== CONFIG.schemaVersion || snapshot.eventId !== CONFIG.eventId ||
+        (Array.isArray(snapshot.rows) && snapshot.rows.length !== 0)) {
+      throw new Error('The pending public Evaluation Gallery snapshot has the wrong event contract.');
+    }
+    return Object.freeze({...snapshot, rows: Object.freeze([])});
+  }
+  if (snapshot.schemaVersion !== CONFIG.schemaVersion || snapshot.eventId !== CONFIG.eventId ||
+      !/^[a-f0-9]{12}$/.test(String(snapshot.snapshotId || '')) ||
+      !/^[a-f0-9]{64}$/.test(String(snapshot.sourceDigest || '')) ||
+      !Number.isSafeInteger(Number(snapshot.ballotCount)) || Number(snapshot.ballotCount) < 1 ||
+      !Number.isSafeInteger(Number(snapshot.ignoredCount)) || Number(snapshot.ignoredCount) < 0 ||
+      !String(snapshot.publishedAt || '').trim() || !Number.isFinite(Date.parse(snapshot.publishedAt)) ||
+      !Array.isArray(snapshot.rows) || snapshot.rows.length < 1) {
+    throw new Error('The published public Evaluation Gallery snapshot is incomplete.');
+  }
+  const rows = snapshot.rows.map(row => {
+    const normalized = {
+      rank: Number(row.rank),
+      poster_id: String(row.poster_id || '').trim().toUpperCase(),
+      display_title: String(row.display_title || '').trim(),
+      presenting_unit: String(row.presenting_unit || '').trim(),
+      total_points: Number(row.total_points)
+    };
+    if (!POSTER_ID.test(normalized.poster_id) || !normalized.display_title || !normalized.presenting_unit ||
+        !Number.isSafeInteger(normalized.rank) || normalized.rank < 1 || normalized.rank > 3 ||
+        !Number.isSafeInteger(normalized.total_points) || normalized.total_points < 0) {
+      throw new Error('The published public Evaluation Gallery snapshot contains an invalid podium row.');
+    }
+    return Object.freeze(normalized);
+  });
+  if (new Set(rows.map(row => row.poster_id)).size !== rows.length ||
+      rows.some((row, index) => index > 0 && (rows[index - 1].rank > row.rank || rows[index - 1].total_points < row.total_points)) ||
+      rows[0].rank !== 1) {
+    throw new Error('The published public Evaluation Gallery podium is not canonical.');
+  }
+  return Object.freeze({...snapshot, rows: Object.freeze(rows)});
+}
+
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -262,33 +328,6 @@ function prepareCeremony(root) {
   observer.observe(podiumSection);
 }
 
-function renderRanking(root, rows) {
-  const list = root.querySelector('[data-eg-ranking]');
-  list.replaceChildren();
-  const maximum = Math.max(1, ...rows.map(row => row.total_points));
-  rows.forEach(row => {
-    const item = element('li', 'eg-ranking-row');
-    item.append(element('span', 'eg-ranking-position', String(row.rank)));
-    const identity = element('div', 'eg-ranking-identity');
-    const heading = element('div', 'eg-ranking-heading');
-    heading.append(element('span', 'eg-poster-code', row.poster_id));
-    heading.append(element('strong', '', row.display_title));
-    identity.appendChild(heading);
-    identity.append(element('span', 'eg-ranking-unit', row.presenting_unit));
-    const track = element('span', 'eg-ranking-track');
-    const bar = element('span', 'eg-ranking-bar');
-    bar.style.width = `${Math.max(0, Math.min(100, row.total_points / maximum * 100))}%`;
-    track.appendChild(bar);
-    identity.appendChild(track);
-    item.appendChild(identity);
-    const score = element('div', 'eg-ranking-score');
-    score.append(element('strong', '', String(row.total_points)));
-    score.append(element('span', '', `point${row.total_points === 1 ? '' : 's'}`));
-    item.appendChild(score);
-    list.appendChild(item);
-  });
-}
-
 function formatPublishedAt(value) {
   const date = new Date(value);
   if (!Number.isFinite(date.getTime())) return value;
@@ -302,7 +341,6 @@ function render() {
   if (!root || root.dataset.egInitialized !== 'true') return;
   const status = root.querySelector('[data-eg-status]');
   const detail = root.querySelector('[data-eg-detail]');
-  const rankingSection = root.querySelector('[data-eg-ranking-section]');
   const snapshot = state.snapshot;
 
   if (state.error) {
@@ -310,7 +348,6 @@ function render() {
     status.textContent = 'Results unavailable';
     status.dataset.state = 'error';
     detail.textContent = 'The saved results could not be read.';
-    rankingSection.hidden = true;
     renderPodium(root, [], true);
     return;
   }
@@ -320,7 +357,6 @@ function render() {
     status.textContent = 'Results will be announced';
     status.dataset.state = 'pending';
     detail.textContent = 'The final tally will appear here after voting closes.';
-    rankingSection.hidden = true;
     renderPodium(root, [], true);
     return;
   }
@@ -330,9 +366,7 @@ function render() {
   status.dataset.state = 'ready';
   const noun = snapshot.ballotCount === 1 ? 'ballot' : 'ballots';
   detail.textContent = `${snapshot.ballotCount} complete ${noun} counted · published ${formatPublishedAt(snapshot.publishedAt)}.`;
-  rankingSection.hidden = false;
   renderPodium(root, snapshot.rows);
-  renderRanking(root, snapshot.rows);
   prepareCeremony(root);
 }
 
@@ -360,14 +394,10 @@ function mount() {
       <img class="eg-butterfly eg-butterfly--right" src="assets/butterfly-mark.svg" width="255" height="285" alt="" aria-hidden="true">
       <div class="eg-section-label"><span>Top three</span><h3 id="eg-podium-title">Podium</h3></div>
       <div class="eg-podium" data-eg-podium></div>
-    </section>
-    <section class="eg-ranking-section" data-eg-ranking-section aria-labelledby="eg-ranking-title" hidden>
-      <div class="eg-section-label"><span>All entries</span><h3 id="eg-ranking-title">Final ranking</h3></div>
-      <ol class="eg-ranking" data-eg-ranking></ol>
     </section>`;
   try {
     const snapshotElement = document.querySelector('#evaluation-gallery-results');
-    state.snapshot = normalizeSnapshot(JSON.parse(snapshotElement?.textContent || 'null'));
+    state.snapshot = normalizePublicSnapshot(JSON.parse(snapshotElement?.textContent || 'null'));
   } catch (error) {
     state.error = error.message;
   }
